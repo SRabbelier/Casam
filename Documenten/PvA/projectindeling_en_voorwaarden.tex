@@ -5,23 +5,70 @@ Geef aan het begin van dit hoofdstuk een korte inleiding, want dat is tof. %Sjor
 
 \subsection{Projectinrichting}
 
-Het doel van projectinrichting is het zichtbaar maken van de wijze waarop de projectmanager,
-van plan is het project in te richten om de opdracht uit te voeren volgens de voorgestelde aanpak.
-Hierbij zal de gekozen inrichting afhankelijk zijn van de resultaten van de risico analyse,
-kwaliteitseisen en de cruciale succesfactoren.
+Het project zal onderverdeeld moeten worden in eenduidige onderdelen zodat er een planning gemaakt kan worden,
+maar deze planning ook aangepast kan worden als blijkt dat er meer of minder tijd nodig is dan gedacht.
+Door het project in onderdelen te verdelen kuinnen er onderdelen aan de planning worden toegevoegd,
+of juist weggelaten, zonder dat de kwaliteit van het product hierdoor verminderd.
 
-Afhankelijk van de opdracht en de organisatie komen de OPAFIT aspecten aan de orde:
+\subsection{Risico analyse}
+
+Het product maakt gebruik van meerdere software pakketten,
+hier komt van nature een bepaald risico bij kijken in verband met het integreren in het product.
+Op grond van een risicoanalyse kunnen de volgende maatregelen worden genomen:
 \begin{description}
-  \item[Organisatie] waarbij aangegeven wordt hoe de projectorganisatie eruit komt te zien inclusief taken en verantwoordelijkheden.
-  Deze worden per persoon en per rol gesteld
-  \item[Personeel] waarbij de eisen aan de gewenste inzet en beschikbaarheid van personeel worden aangegeven,
-  zoals condities voor het betrekken van personeel, per groep de vereiste vakkennis, skills gerelateerd aan de plannen
-  \item[Administratieve procedures] waarin alle binnen en rond het project van toepassing zijnde procedures worden genoemd
-  \item[Financing] alle financi\"ele zaken worden hier behandeld, bij voorkeur met verwijzingen of, bij afwezigheid,
-  expliciet opgenomen zoals tariefwijzigingen, facturering, subcontractors, btw en dergelijke;
-  \item[Informatie] waarbij ingegaan wordt op alle informatie rond het project, overleg- en rapportagestructuren;
-  \item[Techniek] waarbij wordt ingegaan op de voorgestelde inrichting qua hard- en software, werkplekken, hulpmiddelen en dergelijke.
+    \item[preventie] het voorkomen dat iets gebeurt of het verminderen van de kans dat het gebeurt;
+    \item[repressie] het beperken van de schade wanneer een bedreiging optreedt;
+    \item[acceptatie] geen maatregelen, men accepteert de kans en het mogelijke gevolg van een bedreiging;
+    \item[manipulatie] het wijzigen van parameters in de berekening om tot een gewenst resultaat te komen.
 \end{description}
+
+De bedoeling van een risicoanalyse is dat er na de analyse wordt vastgesteld op welke wijze de risico's beheerst kunnen worden, of teruggebracht tot een aanvaardbaar niveau. \cite{wiki:risico_analyse}
+
+We hebben de volgende risico factoren geidentificeerd:
+\begin{description}
+    \item[python] niet iedereen is bekend met python en heeft dus tijd nodig om op snelheid te komen
+    \item[django] django is een template taal en vereist zeer weinig nieuwe kennis
+    \item[database] het gebruik van een beveiligde database kan problemen veroorzaken
+    \item[python image libraries] er zijn vanuit de Delft Computer Graphics group, niemand heeft deze eerder gebruikt
+    \item[nose test] testen met een nieuw framework is altijd even wennen, en kan veel tijd kosten
+\end{description}
+
+Aan de hand van deze risico's hebben we de volgende milestone's opgesteld:
+\begin{enumerate}
+    \item Een eenvoudige applicatie die mbv Django een 'Hello world' pagina kan laten zien
+    \item CRUD (Create, Read, Update, Delete) van data naar een database mbv Django
+    \item Verwerken van images mbv python image libraries
+    \item Tests voor iedere milestone
+\end{enumerate}
+
+\subsection{OPAFIT}
+
+In deze sectie zullen we volgens de OPAFIT aspecten de projectrichting bespreken.
+
+\subsubsection{Organisatie}
+
+Tijdens het project zullen we ons opdelen in groepen van twee die steeds samen aan een feature werken.
+Deze groepen worden zo vaak mogelijk afgewisseld zodat ieder teamlid ervaring heeft met alle onderdelen van het product.
+We zullen voor verschillende taken een hoofdverantwoordelijke aanstellen zodat voor die onderdelen het overzicht goed bewaard wordt.
+Een aantal taken die een hoofdverwantwoordelijke nodig zouden kunnen hebben zijn:
+\begin{itemize}
+    \item Database ontwerp en integriteit
+    \item User Interface Design en Usability
+    \item Import/export van data
+\end{itemize}
+
+% Afhankelijk van de opdracht en de organisatie komen de OPAFIT aspecten aan de orde:
+% \begin{description}
+%  \item[Organisatie] waarbij aangegeven wordt hoe de projectorganisatie eruit komt te zien inclusief taken en verantwoordelijkheden.
+%  Deze worden per persoon en per rol gesteld
+%  \item[Personeel] waarbij de eisen aan de gewenste inzet en beschikbaarheid van personeel worden aangegeven,
+%  zoals condities voor het betrekken van personeel, per groep de vereiste vakkennis, skills gerelateerd aan de plannen
+%  \item[Administratieve procedures] waarin alle binnen en rond het project van toepassing zijnde procedures worden genoemd
+%  \item[Financing] alle financi\"ele zaken worden hier behandeld, bij voorkeur met verwijzingen of, bij afwezigheid,
+%  expliciet opgenomen zoals tariefwijzigingen, facturering, subcontractors, btw en dergelijke;
+%  \item[Informatie] waarbij ingegaan wordt op alle informatie rond het project, overleg- en rapportagestructuren;
+%  \item[Techniek] waarbij wordt ingegaan op de voorgestelde inrichting qua hard- en software, werkplekken, hulpmiddelen en dergelijke.
+%\end{description}
 
 \subsection{Voorwaarden aan opdrachtnemer}
 Opsomming van voorwaarden, die gerealiseerd dienen te worden door de opdrachtnemer om het project volgens plan te kunnen uitvoeren.
