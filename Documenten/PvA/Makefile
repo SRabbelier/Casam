@@ -1,4 +1,4 @@
-DOC=seminarium
+DOC=casam
 BIB=casam.bib
 
 all: pdf ps
