@@ -5,7 +5,7 @@ all: pdf ps
 
 $(DOC).dvi: $(DOC).tex
 	latex $(DOC)
-	bibtex $(DOC)
+	#bibtex $(DOC)
 	latex $(DOC)
 	latex $(DOC)
 
