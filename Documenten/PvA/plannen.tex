@@ -4,6 +4,9 @@
 %De verschillende paragrafen worden als volgt ingevuld:
 
 \subsection{Normen en aannames}
+Een van de door ons aangenomen normen is dat er voor het hele project gebruik wordt gemaakt van open source software, en dat het product van het project ook een open source product is. 
+Daarnaast nemen we aan dat de algoritmes, geleverd door de TU Delft, correct en bewezen zijn.
+Ook nemen we aan dat de foto's, geleverd door het CASAM project, onder gelijke omstandigheden zijn genomen en worden aangeleverd.
 %Hierbij worden de gehanteerde normen, aannames en veronderstellingen zowel ten aanzien van de schattingen,
 %als ten aanzien van planning vermeld, zoveel mogelijk per eenheid verbijzonderd.
 %Deze kunnen afkomstig zijn uit geraadpleegde literatuur aangevuld met ``ervaringscijfers''.
@@ -17,19 +20,19 @@ Het project is ingedeeld in 3 fasen:
 \end{itemize}
 Deze fasen worden hieronder per stuk verder toegelicht.
 
-\subsubsection{Database applicatie}
+\subsubsection{Fase 1: Database applicatie}
 In eerste instantie zal alle data die op dit moment in het CASAM project aanwezig is, gecentraliseerd worden en beheersbaar gemaakt d.m.v. een database en bijbehorende interface. 
 Ook moet het mogelijk zijn om nieuwe data toe te voegen en in selecties van de data te zoeken. 
 Ook het visualiseren van de resultaten is uiteraard van groot belang. 
 Verder moet er een interface zijn voor de huidige onderzoeken en moet deze uitbreidbaar/aanpasbaar zijn voor nieuwe onderzoeken.
 
-\subsubsection{Active Shape Moddeling}
+\subsubsection{Fase 2: Active Shape Modeling}
 In het tweede deel van het project worden de foto's uit een van de projecten d.m.v. landmarks naar elkaar gewarped. 
 Voor dit warpen maken we gebruik van verschillende al bestaande, uit wetenschappelijk onderzoek gebleken correcte, algoritmes.
 Uiteraard moet het ook in deze fase mogelijk zijn voor een gebruiker om de foto's voor het warpen uit verschillende subsets van de data te halen.
 
-\subsubsetion{Image Processing}
-In de laatste fase van het project, waarvan het niet zeker is dat we deze gaan halen, moet het mogelijk worden voor de onderzoekers om zelf landmarks aan te geven op r\"ontgenfoto's van de pati\"enten, om deze te warpen naar de reeds aanwezige foto's in de database.
+\subsubsection{Fase 3: Image Processing}
+In de laatste fase van het project, waarvan het niet zeker is dat we deze gaan halen, moet het mogelijk worden voor de onderzoekers om zelf landmarks aan te geven op r\"ontgenfoto's van de pati\"enten, om deze te warpen naar de reeds aanwezige foto's in de database. Deze fase zien wij als leuke toevoeging voor de dan bestaande presentatie, maar is geen vereiste voor het slagen van het project.
 %In deze paragraaf worden de uit te voeren activiteiten beschreven.
 %De detaillering hiervan is sterk afhankelijk van de opdrachtformulering en de fase waarin het project zich bevindt.
 %Per activiteit wordt weergegeven de benodigde inspanning, de tijdsduur,
@@ -38,8 +41,15 @@ In de laatste fase van het project, waarvan het niet zeker is dat we deze gaan h
 \subsection{Mijlpalen-/Productenplan}
 De mijlpalen die gehaald moeten worden, staan aangegeven op de door ons gebruikte Trac server.
 \begin{description}
-	\item[Plan van Aanpak] Het plan van aanpak moet af zijn op 17 april.
+	\item[Fase 0: Plan van Aanpak] Het plan van aanpak moet af zijn op 17 april.
+	\item[Fase 1: Database applicatie] Fase 1 moet af zijn op 8 mei.
+	\item[Fase 2: Active Shape Modeling] Fase 2 moet af zijn op 25 mei.
+	\item[Fase 3: Image Processing] Fase 3 moet af zijn op 11 juni.
+	\item[Fase 4: Eindverslag] Het eindverslag moet af zijn op 12 juni.
+	\item[Fase 5: Eindpresentatie] De eindpresentatie moet gegeven zijn op 19 juni.
 \end{description}
+Het kan goed gebeuren dat de deadline van fase 3 niet gehaald wordt.
+Een precieze datum voor de eindpresentatie wordt t.z.t. bepaald.
 %Het mijlpalenplan geeft de meet- of beslismomenten weer.
 %Hierbij worden de meest belangrijke momenten voor toetsing en sturing benadrukt.
 %Het productenplan geeft de momenten weer waarop de (tussen)producten zullen worden opgeleverd en geaccepteerd.
@@ -56,11 +66,11 @@ De studenten van de TU Delft die aan dit project werken, zijn:
 \end{itemize}
 Al deze personen zitten in hun derde studiejaar van de opleiding Technische Informatica, en zitten dus op hetzelfde niveau. 
 De overige personen die hun medewerking verlenen aan dit project zijn:
-\begin{itemize}
-	\item Dr. Botha, begeleider van de TU Delft
-	\item Anton Kerver, Student aan het EMC, nauw betrokken bij het CASAM project
-	\item Dr. Kleinrensink, CASAM Project leider
-\end{itemize}
+\begin{description}
+	\item[Dr. Botha] Begeleider van de TU Delft
+	\item[Anton Kerver] Student aan het EMC, nauw betrokken bij het CASAM project
+	\item[Dr. Kleinrensink] CASAM Project leider
+\end{description}
 De niet personele middelen waar wij gebruik van maken zijn:
 \begin{itemize}
 	\item SVN Server van de TU Delft
