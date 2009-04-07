@@ -1,0 +1,47 @@
+\subsection{Functionele Eisen}
+\label{functionele_eisen}
+In ons systeem onderscheiden wij twee soorten gebruikers:
+\begin{description}
+	\item[Chirurg] Deze rol wordt vervuld door mensen die operaties op pati\"enten uitvoeren, en daarbij gebruik maken van de data uit de onderzoeken.
+	\item[Onderzoeker] Deze rol wordt vervuld door mensen die de onderzoeken uitvoeren. De onderzoeker kan foto's en andere data aan het systeem toevoegen, en bestaande data bekijken.	
+\end{description}
+De functionele eisen die we aan ons systeem stellen, zijn verdeeld tussen deze twee gebruikers. Hierbij moet vermeld worden, dat de acties die een chirurg uit kan voeren, ook uitgevoerd moeten kunnen worden door de onderzoeker.
+\subsubsection{Chirurg}
+
+De chirurg kan van een project alle gegevens opvragen.
+\begin{itemize}
+	\item Als er data aanwezig is in het systeem, moet hiervan een gemiddelde foto weergegeven worden. 
+	\item Als er geen data aanwezig in het systeem, krijgt de chirurg hier een melding van. 
+\end{itemize}
+
+De chirurg kan van een project slechts een deel van de gegevens opvragen.
+\begin{itemize}
+	\item Als er data aanwezig is in het systeem, kan de chirurg een verdere selectie aangeven.
+	\item Als er geen data in het systeem aanwezig is, krijgt de chirurg hier een melding van.
+\end{itemize}
+
+\subsubsection{Onderzoeker}
+
+De onderzoeker kan nieuwe projecten toevoegen aan het systeem.
+\begin{itemize}
+	\item Als er al een onderzoek bestaat met dezelfde naam, wordt de onderzoeker gevraagd om een nieuwe naam voor zijn onderzoek te bedenken.
+	\item Als het onderzoek nog niet bestaat, wordt er een project toegevoegd aan de lijst met projecten.
+\end{itemize}
+
+De onderzoeker kan foto's en data toevoegen aan bestaande projecten in het systeem.
+\begin{itemize}
+	\item Als het project bestaat, kan de onderzoeker foto's en data toevoegen aan het project.
+	\item Als het project niet bestaat, krijgt de onderzoeker de mogelijkheid het onderzoek toe te voegen, en de data toe te voegen.
+\end{itemize}
+
+De onderzoeker kan bestaande foto's en data verwijderen uit een project.
+\begin{itemize}
+	\item Als er foto's en data aanwezig zijn in het project, worden de geselecteerde foto's en data verwijderd.
+	\item Als er geen foto's en data aanwezig zijn in het project, krijgt de onderzoeker hier een melding van, en gebeurt er verder niets.
+\end{itemize}
+
+De onderzoeker kan bestaande projecten verwijderen.
+\begin{itemize}
+	\item Als er nog foto's en data aanwezig zijn in het project, wordt hier een melding van gegeven, en dient de onderzoeker deze eerst te verwijderen.
+	\item Als er geen foto's en data meer aanwezig waren in het project, wordt het project, en alle verwijzingen daarnaartoe, verwijdert.
+\end{itemize}
