@@ -1,29 +1,82 @@
 \section{Plannen}
-In het hoofdstuk plannen wordt de resultante vastgelegd van het evenwicht tussen activiteiten, tijd,
-geld en middelen teneinde de opdracht te kunnen uitvoeren.
-De verschillende paragrafen worden als volgt ingevuld:
+%In het hoofdstuk plannen wordt de resultante vastgelegd van het evenwicht tussen activiteiten, tijd,
+%geld en middelen teneinde de opdracht te kunnen uitvoeren.
+%De verschillende paragrafen worden als volgt ingevuld:
 
 \subsection{Normen en aannames}
-Hierbij worden de gehanteerde normen, aannames en veronderstellingen zowel ten aanzien van de schattingen,
-als ten aanzien van planning vermeld, zoveel mogelijk per eenheid verbijzonderd.
-Deze kunnen afkomstig zijn uit geraadpleegde literatuur aangevuld met ``ervaringscijfers''.
+%Hierbij worden de gehanteerde normen, aannames en veronderstellingen zowel ten aanzien van de schattingen,
+%als ten aanzien van planning vermeld, zoveel mogelijk per eenheid verbijzonderd.
+%Deze kunnen afkomstig zijn uit geraadpleegde literatuur aangevuld met ``ervaringscijfers''.
 
 \subsection{Activiteitenplan}
-In deze paragraaf worden de uit te voeren activiteiten beschreven.
-De detaillering hiervan is sterk afhankelijk van de opdrachtformulering en de fase waarin het project zich bevindt.
-Per activiteit wordt weergegeven de benodigde inspanning, de tijdsduur,
-de samenhang met andere activiteiten en het benodigde resourceniveau.
+Het project is ingedeeld in 3 fasen:
+\begin{itemize}
+	\item Database applicatie
+	\item Active Shape Moddeling
+	\item Image Processing
+\end{itemize}
+Deze fasen worden hieronder per stuk verder toegelicht.
+
+\subsubsection{Database applicatie}
+In eerste instantie zal alle data die op dit moment in het CASAM project aanwezig is, gecentraliseerd worden en beheersbaar gemaakt d.m.v. een database en bijbehorende interface. 
+Ook moet het mogelijk zijn om nieuwe data toe te voegen en in selecties van de data te zoeken. 
+Ook het visualiseren van de resultaten is uiteraard van groot belang. 
+Verder moet er een interface zijn voor de huidige onderzoeken en moet deze uitbreidbaar/aanpasbaar zijn voor nieuwe onderzoeken.
+
+\subsubsection{Active Shape Moddeling}
+In het tweede deel van het project worden de foto's uit een van de projecten d.m.v. landmarks naar elkaar gewarped. 
+Voor dit warpen maken we gebruik van verschillende al bestaande, uit wetenschappelijk onderzoek gebleken correcte, algoritmes.
+Uiteraard moet het ook in deze fase mogelijk zijn voor een gebruiker om de foto's voor het warpen uit verschillende subsets van de data te halen.
+
+\subsubsetion{Image Processing}
+In de laatste fase van het project, waarvan het niet zeker is dat we deze gaan halen, moet het mogelijk worden voor de onderzoekers om zelf landmarks aan te geven op r\"ontgenfoto's van de pati\"enten, om deze te warpen naar de reeds aanwezige foto's in de database.
+%In deze paragraaf worden de uit te voeren activiteiten beschreven.
+%De detaillering hiervan is sterk afhankelijk van de opdrachtformulering en de fase waarin het project zich bevindt.
+%Per activiteit wordt weergegeven de benodigde inspanning, de tijdsduur,
+%de samenhang met andere activiteiten en het benodigde resourceniveau.
 
 \subsection{Mijlpalen-/Productenplan}
-Het mijlpalenplan geeft de meet- of beslismomenten weer.
-Hierbij worden de meest belangrijke momenten voor toetsing en sturing benadrukt.
-Het productenplan geeft de momenten weer waarop de (tussen)producten zullen worden opgeleverd en geaccepteerd.
+De mijlpalen die gehaald moeten worden, staan aangegeven op de door ons gebruikte Trac server.
+\begin{description}
+	\item[Plan van Aanpak] Het plan van aanpak moet af zijn op 17 april.
+\end{description}
+%Het mijlpalenplan geeft de meet- of beslismomenten weer.
+%Hierbij worden de meest belangrijke momenten voor toetsing en sturing benadrukt.
+%Het productenplan geeft de momenten weer waarop de (tussen)producten zullen worden opgeleverd en geaccepteerd.
 
 \subsection{Resourceplan}
-Het resourceplan verschaft duidelijkheid over personele en overige middelen.
-Het plan geeft weer over welke perioden inzet benodigd is. Bij de personele middelen wordt tevens het niveau van de resource aangegeven.
+De studenten van de TU Delft die aan dit project werken, zijn:
+\begin{itemize}
+	\item Sjors van Berkel
+	\item Bastiaan Bijl
+	\item Jaap den Hollander
+	\item Sverre Rabbelier
+	\item Ben Sedee
+	\item Noeska Smit
+\end{itemize}
+Al deze personen zitten in hun derde studiejaar van de opleiding Technische Informatica, en zitten dus op hetzelfde niveau. 
+De overige personen die hun medewerking verlenen aan dit project zijn:
+\begin{itemize}
+	\item Dr. Botha, begeleider van de TU Delft
+	\item Anton Kerver, Student aan het EMC, nauw betrokken bij het CASAM project
+	\item Dr. Kleinrensink, CASAM Project leider
+\end{itemize}
+De niet personele middelen waar wij gebruik van maken zijn:
+\begin{itemize}
+	\item SVN Server van de TU Delft
+	\item Trac Server van de TU Delft
+	\item Django Server van de TU Delft
+	\item Eclipse in combinatie met de PyDev plugin
+\end{itemize}
+Alle voor dit project gebruikte software, is vrij gegeven onder een open source licentie.
+Het gehele project begint op 6 april 2009, en eindigt op 19 juni 2009. 
+Gedurende deze periode zal er full-time (40 uur per week) gewerkt worden aan het project.
+
+%Het resourceplan verschaft duidelijkheid over personele en overige middelen.
+%Het plan geeft weer over welke perioden inzet benodigd is. Bij de personele middelen wordt tevens het niveau van de resource %aangegeven.
 
 \subsection{Financieel plan}
-In deze paragraaf wordt inzicht gegeven in de kosten (mensen, middelen en overig) van het project.
-Aangegeven worden de resources die in de planning zijn opgenomen,
-de hiervoor gehanteerde tarieven en de hieruit resulterende verwachte kosten.\
+Aangezien dit project een bachelorproject is van studenten van de TU Delft, en alle resources die benodigd zijn worden geleverd door de TU Delft en / of het CASAM project, zijn er met dit project geen kosten gemoeid.
+%In deze paragraaf wordt inzicht gegeven in de kosten (mensen, middelen en overig) van het project.
+%Aangegeven worden de resources die in de planning zijn opgenomen,
+%de hiervoor gehanteerde tarieven en de hieruit resulterende verwachte kosten.\
