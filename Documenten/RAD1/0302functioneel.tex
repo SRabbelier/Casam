@@ -12,6 +12,7 @@ De superuser heeft zelf geen toegang tot de projecten, en hij mag deze dus niet 
 De administrator heeft toegang tot het hele systeem. 
 Hij is hierbij niet gebonden aan rechten om bepaalde dingen te mogen doen, en heeft alle rechten op het hele systeem. 
 Deze gebruiker mag alleen onder hoogst uitzonderlijke omstandigheden inloggen.
+Voor iedere gebruiker is het mogelijk om zijn of haar wachtwoord voor het systeem te veranderen.
 \subsubsection{Chirurg}
 
 De chirurg kan van een project alle gegevens opvragen.
@@ -27,8 +28,6 @@ De chirurg kan van een project slechts een deel van de gegevens opvragen.
 	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
 	\item Als er geen data in het systeem aanwezig is, krijgt de chirurg hier een melding van.
 \end{itemize}
-
-De chirurg kan zijn wachtwoord voor het systeem wijzigen.
 
 \subsubsection{Onderzoeker}
 
@@ -54,15 +53,15 @@ De onderzoeker kan foto's en data van een project wijzigen.
 De onderzoeker kan bestaande foto's en data verwijderen uit een project.
 \begin{itemize}
 	\item Als er foto's en data aanwezig zijn in het project, worden de geselecteerde foto's en data verwijderd.
+	\item Als de onderzoeker niet de eigenaar is van het project, kan hij geen data uit het project verwijderen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft. Ook krijgt de eigenaar van het project een melding dat er geprobeerd is foto's of data uit het project te verwijderen.	
 	\item Als er geen foto's en data aanwezig zijn in het project, krijgt de onderzoeker hier een melding van, en gebeurt er verder niets.
-	\item Als de onderzoeker niet de eigenaar is van het project, kan hij geen data uit het project verwijderen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft. Ook krijgt de eigenaar van het project een melding dat er geprobeerd is foto's of data uit het project te verwijderen.
 \end{itemize}
 
 De onderzoeker kan bestaande projecten verwijderen.
 \begin{itemize}
 	\item Als er nog foto's en data aanwezig zijn in het project, wordt hier een melding van gegeven, en dient de onderzoeker deze eerst te verwijderen.
-	\item Als er geen foto's en data meer aanwezig waren in het project, wordt het project, en alle verwijzingen daarnaartoe, verwijdert.
 	\item Als de onderzoeker niet de eigenaar is van het project, kan hij het project ook niet verwijderen. De onderzoeker krijg een melding dat hij niet voldoende rechten heeft. Ook krijgt de eigenaar van het project een melding dat er geprobeerd is om het project geheel te verwijderen.
+	\item Als er geen foto's en data meer aanwezig waren in het project, wordt het project, en alle verwijzingen daarnaartoe, verwijdert.
 \end{itemize}
 
 De onderzoeker kan bestaande gebruikers toevoegen aan een project.
@@ -132,4 +131,10 @@ De superuser kan de rol van een gebruiker wijzigen.
 De superuser kan gebruikers verwijderen.
 \begin{itemize}
 	\item Als een gebruiker wordt verwijderd uit het systeem, gebeurt er verder niets in het systeem. De superuser krijgt een melding dat er een nieuwe projecteigenaar gekozen moet worden voor de projecten waar de gebruiker de eigenaar van was.
+\end{itemize}
+
+De superuser kan het wachtwoord van andere gebruikers wijzigen.
+\begin{itemize}
+	\item Als de andere gebruiker de administrator is, kan het wachtwoord hiervan niet gewijzigd worden.
+	\item De superuser kan het wachtwoord van andere gebruikers alleen resetten naar een 'factory default'.
 \end{itemize}
