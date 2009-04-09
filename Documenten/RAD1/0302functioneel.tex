@@ -8,6 +8,10 @@ In ons systeem onderscheiden wij vier soorten gebruikers:
 	\item[Administrator] Deze rol wordt vervuld door een persoon die alle rechten binnen het systeem heeft.
 \end{description}
 De functionele eisen die we aan ons systeem stellen, zijn verdeeld tussen deze twee gebruikers. Hierbij moet vermeld worden, dat de acties die een chirurg uit kan voeren, ook uitgevoerd moeten kunnen worden door de onderzoeker.
+De superuser heeft zelf geen toegang tot de projecten, en hij mag deze dus niet aanpassen of verwijderen.
+De administrator heeft toegang tot het hele systeem. 
+Hij is hierbij niet gebonden aan rechten om bepaalde dingen te mogen doen, en heeft alle rechten op het hele systeem. 
+Deze gebruiker mag alleen onder hoogst uitzonderlijke omstandigheden inloggen.
 \subsubsection{Chirurg}
 
 De chirurg kan van een project alle gegevens opvragen.
@@ -99,16 +103,33 @@ De onderzoeker kan papers verwijderen uit een project.
 	\item Als er geen papers aanwezig zijn in het project, krijgt de onderzoeker hier een melding van, en gebeurt er verder niets.
 \end{itemize}
 
-De onderzoeker kan een project wat hij kan bewerken exporteren uit het systeem.
+De onderzoeker kan een project exporteren uit het systeem.
+\begin{itemize}
+	\item Als de onderzoeker de eigenaar is van het project, kan hij het project exporteren.
+	\item Als er geen data en foto's aanwezig zijn in het project, kan het project niet ge\"exporteerd worden.
+\end{itemize}
 
-De onderzoeker kan een project importeren in eht systeem.
+De onderzoeker kan een project importeren in het systeem.
+\begin{itemize}
+	\item De onderzoeker wordt, na de import van het project, de eigenaar van het project.
+	\item Als de onderzoeker probeert een leeg project te importern, krijgt hij hier een melding van, en wordt er niets ge\"importeerd.
+\end{itemize}
 
 \subsubsection{Superuser}
 
 De superuser kan gebruikers aanmaken
+\begin{itemize}
+	\item Als er al een gebruiker bestaat met de naam van de nieuwe gebruiker, wordt de superuser hiervan op de hoogte gesteld, en wordt hem gevraagd een nieuwe naam te kiezen.
+	\item De superuser kan de gebruiker een bepaalde rol geven, die voor de rest van het systeem geldt.
+\end{itemize}
 
-De superuser kan gebruikers verwijderen
+De superuser kan de rol van een gebruiker wijzigen.
+\begin{itemize}
+	\item Als de gebruiker een rol krijgt met meer mogelijkheden, worden de huidige projectrechten direct overgenomen naar de nieuwe rol.
+	\item Als de gebruiker een rol krijgt met minder mogelijkheden, krijgt de gebruiker op de projecten waar hij rechten toe had, alleen nog maar de lees rechten. Projecten waar de gebruiker geen toegang tot had blijven gesloten.
+\end{itemize}
 
-\subsubsection{Administrator}
-
-De administrator kan het hele systeem leeggooien.
+De superuser kan gebruikers verwijderen.
+\begin{itemize}
+	\item Als een gebruiker wordt verwijderd uit het systeem, gebeurt er verder niets in het systeem. De superuser krijgt een melding dat er een nieuwe projecteigenaar gekozen moet worden voor de projecten waar de gebruiker de eigenaar van was.
+\end{itemize}
