@@ -2,9 +2,72 @@
 %%OMSCHRIJVING SECTIE
 %Eventuele bijlagen waarnaar verwezen wordt zullen hier worden opgenomen. Notulen van eerder gevoerde gesprekken behoren tot deze documenten.
 
-In dit hoofdstuk wordt verwezen naar de relevante standaards en projectprocedures.
-In het voorkomend geval zal verwezen worden naar reeds bestaande c.q. gebruikelijke bedrijfsstandaards.
-Voorwaarde is wel dat deze gedocumenteerd zijn.
-In de bijlagen worden ook Begrippen en definities opgenomen om begripsverwarring te voorkomen.
-De begrippenlijst hoeft niet uitputtend te zijn, alleen de gehanteerde begrippen in het Plan van Aanpak komen hiervoor in aanmerking.
+In dit hoofdstuk zijn de relevante bijlagen beschikbaar. 
 
+\subsection{Notulen Kick-Off meeting 1 april}
+
+\textbf{Algemeen}
+Een gedetailleerde anatomiebeschrijving is van zeer groot belang voor chirurgie omdat bij iedere ingreep onbedoelde schade aan gezond weefsel kan optreden. Er zijn twee hoofdvormen van chirurgie onderscheidbaar: 
+
+\begin{itemize}
+	\item Electief: planbaar 
+	\item Ad-hoc: bij trauma, ongepland 
+\end{itemize}
+
+Er worden bij bepaalde operaties incisies gemaakt langs hoofdtakken van het zenuwstelsel, er is hierbij kans op beschadiging. Dit kan leiden tot uitval (verlamming) of zelfs tot een neuroom (voortdurende onbehandelbare pijnklachten). Incisieadviezen worden gegeven aan de hand van oude kennis van anatomische preparaten. Door jarenlange kennisoverdracht via de meester-gezel verhouding, die in de chirurgie gebruikelijk is, is er slijtage opgetreden en informatieverlies. 
+
+Niet alleen voor de eerste incisie is de precieze locatie van de zenuwen van belang. Bij de behandeling van spataderen wordt gebruik gemaakt van lasercoagulatie om de vene (ader) van binnenuit dicht te maken (Endoveneuze Lasertherapie). De warmteontwikkeling die bij het gebruik van deze lasers optreed kan nabijgelegen zenuwen beschadigen. De anatomische varianten bij verschillende patiënten zijn nog niet helder in kaart gebracht. 
+
+Om een goede chirurg te zijn moeten ook de techniek die gebruikt wordt ook goed begrepen worden. Er is een gebrek aan technische kennis onder de chirurgen. Als hoofdvaardigheden zijn voor chirurgen drie dingen belangrijk: 
+
+\begin{itemize}
+	\item Handigheid / Skill 
+	\item Anatomiebeheersing 
+	\item Techniek 
+\end{itemize}
+
+Er is een start gemaakt met het prepareren van 20 benen om de anatomie van de venen en zenuwen van met name het onderbeen in kaart te brengen en deze kennis op chirurgen over te brengen. Traditioneel werd deze kennis overgebracht via tabellen of enkele foto’s, maar om het praktisch nuttiger te maken is er een goede visualisatie nodig, waarvan de correctheid ook bewezen kan worden. Via warpprogramma's en met gebruik van Photoshop heeft Anton deze 20 benen ‘met de hand’ tot één gemiddeld been gebracht. In de toekomst zou het fijn zijn om aan de hand van zogeheten bony landmarks (herkenningspunten die vaak aan de buitenkant voelbaar zijn) de verwachte structuren over een röntgenfoto te projecteren bij een pre-operatieve planning of de operatie zelf. 
+
+Er is ons aangeboden om in groepen van twee zelf te trachten de vaat- en zenuwstructuren van het been te prepareren om inzicht te krijgen in de praktijksituatie en wat de belangrijkste aandachtspunten zijn voor het project. Het kost twee dagen om een been volledig te prepareren. 
+
+\textbf{Anatomie}
+Er zit op sommige plekken in het been een fascie (bindweefsellaag) die de zenuwen kan beschermen. Door via een echogeleide naald naar de vene het gebied onder de vene te verdoven kan door een bepaalde stof ook de warmtewerking beperkt worden. Als deze fascie niet aanwezig is is het beter niet te laseren in dat gebied. Als de fascie superficieel is wordt er op dit moment wel gelazered maar is het waarschijnlijk verstandiger dit niet te doen. Bij een diepliggende fascie is laseren verstandiger, omdat hier de zenuw goed beschermt wordt. 
+
+Bij de huidige situatie is er 60\% kans op een recidief (terugkomen van de spataderen), 6\% kans op zenuwuitval en 0.6\% kans op een neuroom. Dat de kans op recidieven zo hoog is komt omdat de vene in sommige gebieden splitst en later weer bijeenkomt. Als ter hoogte van zo’n splitsing gecoaguleerd wordt blijft de vene gewoon werken en kan er weer een spatader ontstaan. 
+
+Naast de toepassing bij spatadertherapie zijn er talloze andere toepassingen waar het systeem gebruikt moet kunnen worden, bijvoorbeeld spiergroepen in kaart te brengen om bij verlammingsklachten toch nog bepaalde functies te herstellen. 
+
+Belangrijke eissen aan het systeem zijn: 
+
+\begin{itemize}
+	\item Snelheid (arts moet binnen minuut al resultaat kunnen zien, anders kan zijn tijd nuttiger besteed worden) 
+	\item Gemakkelijk aan te leren (intuïtief) 
+	\item Duidelijke interface 
+\end{itemize}
+
+\textbf{Project}
+Stap 1: 
+
+Database voor het opslaan van metingen en foto’s, hierbij moeten analyses per been, per subgroep, voor verschillende landmarks opvraagbaar zijn. 
+
+Ook het visualiseren van de resultaten is uiteraard van groot belang. 
+
+Verder moet er een interface zijn voor de huidige onderzoeken en moet deze uitbreidbaar/aanpasbaar zijn voor nieuwe onderzoeken. 
+
+Stap 2: 
+
+Aggregate Analysis, Active Shape Modeling, Warpen, Variaties in kaart brengen, Landmark-based images warpen met gevestigde warptechnieken. 
+
+Stap '41': 
+
+Landmarks op röntgenfoto aangeven, en ‘gemiddelde’ anatomie erop mappen. 
+
+We maken gebruik van Agile Programming bij het ontwikkelen van de applicatie. 
+
+Op de TU wordt gebruik gemaakt van een Trac server en SVN (Trac heeft wiki, tickets, alle belangrijke dingen voor goed teamwork). De data wordt tijdelijk opgeslagen op een goedbeveiligde server. Uiteindelijk moet de data en software allemaal op de Erasmus servers gaan draaien. 
+
+De belangrijkste gebruiker in dit stadium is de onderzoeker (read + write). In een later stadium kunnen eventueel artsen de gegevens opvragen (read). Voor een eventuele internationale samenwerking wordt gedacht aan een methode om de database te kunnen exporten en importen. 
+
+Of de software gratis beschikbaar moet worden gesteld en aan het gebruik van de data kosten worden verbonden wordt nog in overweging genomen. 
+
+Vanwege de gevoeligheid van de informatie is het erg belangrijk de informatie niet met derden te delen. 
