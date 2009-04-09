@@ -1,5 +1,5 @@
-DOC=casam
-BIB=casam.bib
+DOC=PvA
+BIB=PvA.bib
 
 all: pdf ps
 
