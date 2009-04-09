@@ -1,23 +1,13 @@
 DOC=rad1
-BIB=rad1.bib
 
-all: pdf ps
+all: clean pdf cleanmess
 
-$(DOC).dvi: $(DOC).tex
-	latex $(DOC)
-	#bibtex $(DOC)
-	latex $(DOC)
-	latex $(DOC)
-
+$(DOC).pdf: $(DOC).tex
+	texi2pdf $(DOC).tex
 clean:
-	rm -f $(DOC).dvi $(DOC).ps $(DOC).pdf *.log *.blg *.bbl *.aux *~
+	rm -f $(DOC).dvi $(DOC).ps $(DOC).pdf *.toc *.log *.blg *.bbl *.aux *~
 
-%.ps: %.dvi
-	dvips -f $(DOC).dvi > $(DOC).ps
-
-%.pdf: %.ps
-	ps2pdf $(DOC).ps $(DOC).pdf
+cleanmess:
+	rm -f $(DOC).dvi $(DOC).ps *.toc *.log *.blg *.bbl *.aux *~
 
 pdf: $(DOC).pdf
-
-ps: $(DOC).ps
