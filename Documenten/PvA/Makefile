@@ -10,7 +10,7 @@ $(DOC).dvi: $(DOC).tex
 	latex $(DOC)
 
 clean:
-	rm -f $(DOC).dvi $(DOC).ps $(DOC).pdf *.log *.blg *.bbl *.aux *~
+	rm -f $(DOC).dvi $(DOC).ps $(DOC).pdf *.toc *.log *.blg *.bbl *.aux *~
 
 %.ps: %.dvi
 	dvips -f $(DOC).dvi > $(DOC).ps
