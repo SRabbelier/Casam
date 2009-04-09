@@ -7,6 +7,37 @@ Als laatste worden de maatregelen beschreven die beide partijen zullen treffen o
 In dit hoofdstuk wordt een kort overzicht gegeven van de kwaliteitseisen die aan het product en het proces worden gesteld,
 en worden een aantal maatregelen voorgesteld om aan deze eisen te kunnen voldoen.
 
+\subsection{Risicoanalyse}
+
+Het product maakt gebruik van meerdere software pakketten,
+hier komt van nature een bepaald risico bij kijken in verband met het integreren in het product.
+Op grond van een risicoanalyse kunnen de volgende maatregelen worden genomen:
+\begin{description}
+    \item[preventie] het voorkomen dat iets gebeurt of het verminderen van de kans dat het gebeurt;
+    \item[repressie] het beperken van de schade wanneer een bedreiging optreedt;
+    \item[acceptatie] geen maatregelen, men accepteert de kans en het mogelijke gevolg van een bedreiging;
+    \item[manipulatie] het wijzigen van parameters in de berekening om tot een gewenst resultaat te komen.
+\end{description}
+
+De bedoeling van een risicoanalyse is dat er na de analyse wordt vastgesteld op welke wijze de risico's beheerst kunnen worden, of teruggebracht tot een aanvaardbaar niveau. \cite{wiki:risico_analyse}
+
+We hebben de volgende risico factoren geidentificeerd:
+\begin{description}
+    \item[python] niet iedereen is bekend met python en heeft dus tijd nodig om op snelheid te komen
+    \item[django] django is een template taal en vereist zeer weinig nieuwe kennis
+    \item[database] het gebruik van een beveiligde database kan problemen veroorzaken
+    \item[python image libraries] er zijn vanuit de Delft Computer Graphics group, niemand heeft deze eerder gebruikt
+    \item[nose test] testen met een nieuw framework is altijd even wennen, en kan veel tijd kosten
+\end{description}
+
+Aan de hand van deze risico's hebben we de volgende milestone's opgesteld:
+\begin{enumerate}
+    \item Een eenvoudige applicatie die mbv Django een 'Hello world' pagina kan laten zien
+    \item CRUD (Create, Read, Update, Delete) van data naar een database mbv Django
+    \item Verwerken van images mbv python image libraries
+    \item Tests voor iedere milestone
+\end{enumerate}
+
 \subsection{Productkwaliteit}
 Om de kwaliteit van het product te garanderen worden een aantal eisen gesteld waar het eindproduct aan zal moeten voldoen.
 Er zijn eisen door de opdrachtgever gegeven om te zorgen dat het product daadwerkelijk aan de gebruikerseisen voldoet.
@@ -28,3 +59,11 @@ Om bovenstaande kwaliteitsnormen te halen worden de volgende maatregelen voorges
 \item wekelijkse review van het proces en de software met de opdrachtgever
 \item unit testing van de software
 \end{itemize}
+
+
+
+
+
+Een van de door ons aangenomen normen is dat er voor het hele project gebruik wordt gemaakt van open source software, en dat het product van het project ook een open source product is. 
+Daarnaast nemen we aan dat de algoritmes, geleverd door de TU Delft, correct en bewezen zijn.
+Ook nemen we aan dat de foto's, geleverd door het \casamproject, onder gelijke omstandigheden zijn genomen en worden aangeleverd.
