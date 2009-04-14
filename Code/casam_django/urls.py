@@ -4,9 +4,9 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-import views.main
+import casam.views.main
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
-    (r'^$', views.main.home),
+    (r'^$', casam.views.main.home),
 )
