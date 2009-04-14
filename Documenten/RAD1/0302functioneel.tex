@@ -1,67 +1,65 @@
 \subsection{Functionele Eisen}
 \label{functionele_eisen}
-In ons systeem onderscheiden wij vier soorten gebruikers:
+In ons systeem onderscheiden wij drie soorten gebruikers:
 \begin{description}
-	\item[Chirurg] Deze rol wordt vervuld door mensen die operaties op pati\"enten uitvoeren, en daarbij gebruik maken van de data uit de onderzoeken.
-	\item[Onderzoeker] Deze rol wordt vervuld door mensen die de onderzoeken uitvoeren. De onderzoeker kan foto's en andere data aan het systeem toevoegen, en bestaande data bekijken.	
-	\item[Superuser] Deze rol wordt vervuld door een of twee personen, die meer rechten binnen het systeem moeten hebben dan een onderzoeker, maar nog niet alle rechten.
-	\item[Administrator] Deze rol wordt vervuld door een persoon die alle rechten binnen het systeem heeft.
+	\item[Chirurg] Deze rol wordt vervuld door mensen die operaties op pati\"enten uitvoeren.
+	\item[Onderzoeker] Deze rol wordt vervuld door mensen die de onderzoeken uitvoeren. 
+	\item[Administrator] Deze rol wordt vervuld door mensen die alle rechten binnen het systeem heeft.
 \end{description}
-De functionele eisen die we aan ons systeem stellen, zijn verdeeld tussen deze twee gebruikers. Hierbij moet vermeld worden, dat de acties die een chirurg uit kan voeren, ook uitgevoerd moeten kunnen worden door de onderzoeker.
-De superuser heeft zelf geen toegang tot de projecten, en hij mag deze dus niet aanpassen of verwijderen.
-De administrator heeft toegang tot het hele systeem. 
-Hij is hierbij niet gebonden aan rechten om bepaalde dingen te mogen doen, en heeft alle rechten op het hele systeem. 
-Deze gebruiker mag alleen onder hoogst uitzonderlijke omstandigheden inloggen.
+De functionele eisen die we aan ons systeem stellen zijn verdeeld over deze drie gebruikers. Hierbij moet vermeld worden, dat alle functionaliteiten van een chirurg ook uitgevoerd kunnen worden door een onderzoeker.
+De administrator heeft toegang tot het hele systeem maar heeft zelf geen toegang tot de projecten. Hij mag deze projecten dus niet aanpassen of verwijderen. Deze gebruiker logt alleen in voor administratieve werkzaamheden, zoals het toevoegen van gebruikers en het toekennen van rechten.
 Voor iedere gebruiker is het mogelijk om zijn of haar wachtwoord voor het systeem te veranderen.
+
 \subsubsection{Chirurg}
 
 De chirurg kan van een project alle gegevens opvragen.
 \begin{itemize}
-	\item Als er data aanwezig is in het systeem, moet hiervan een gemiddelde foto weergegeven worden. 
+	\item Als er data over een project aanwezig is in het systeem, dan wordt deze data weergegeven.
 	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
 	\item Als er geen data aanwezig in het systeem, krijgt de chirurg hier een melding van. 
 \end{itemize}
 
 De chirurg kan van een project slechts een deel van de gegevens opvragen.
 \begin{itemize}
-	\item Als er data aanwezig is in het systeem, kan de chirurg een verdere selectie aangeven.
+	\item Als er data aanwezig is in het systeem, wordt de mogelijke selectie weergegeven.
 	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
-	\item Als er geen data in het systeem aanwezig is, krijgt de chirurg hier een melding van.
+	\item Als er geen data aanwezig in het systeem, krijgt de chirurg hier een melding van.
 \end{itemize}
 
 \subsubsection{Onderzoeker}
 
 De onderzoeker kan nieuwe projecten toevoegen aan het systeem.
 \begin{itemize}
-	\item Als er al een onderzoek bestaat met dezelfde naam, wordt de onderzoeker gevraagd om een nieuwe naam voor zijn onderzoek te bedenken.
-	\item Als het onderzoek nog niet bestaat, wordt er een project toegevoegd aan de lijst met projecten. De onderzoeker wordt automatisch de eigenaar van het project.
+	\item Als er al een project bestaat met dezelfde naam, wordt de onderzoeker gevraagd om een nieuwe naam voor zijn project te bedenken.
+	\item Als het project nog niet bestaat, wordt het project toegevoegd aan de lijst met projecten. De onderzoeker wordt automatisch de eigenaar van het project.
 \end{itemize}
 
 De onderzoeker kan foto's en data toevoegen aan bestaande projecten in het systeem.
 \begin{itemize}
 	\item Als het project bestaat, kan de onderzoeker foto's en data toevoegen aan het project.
-	\item Als het project niet bestaat, krijgt de onderzoeker de mogelijkheid het onderzoek toe te voegen, en de data toe te voegen.
+	\item Als het project niet bestaat, krijgt de onderzoeker de mogelijkheid het onderzoek toe te voegen, en vervolgens de data toe te voegen.
 	\item Als de onderzoeker niet de rechten heeft om het project te wijzigen, kan hij er geen foto's en data aan toe voegen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft.
 \end{itemize}
 
 De onderzoeker kan foto's en data van een project wijzigen.
 \begin{itemize}
-  \item Als er geen data aanwezig is in het project, krijgt de onderzoeker hier een melding van, en gebeurt er verder niets.
+	\item Als de data aanwezig is, kan de onderzoeker foto's en data van het project wijzigen.
+  \item Als er geen data aanwezig is in het project, krijgt de onderzoeker hier een melding van.
 	\item Als de onderzoeker niet de rechten heeft om het project te wijzigen, kan hij ook geen bestaande foto's en data wijzigen.
 \end{itemize}
 
 De onderzoeker kan bestaande foto's en data verwijderen uit een project.
 \begin{itemize}
 	\item Als er foto's en data aanwezig zijn in het project, worden de geselecteerde foto's en data verwijderd.
-	\item Als de onderzoeker niet de eigenaar is van het project, kan hij geen data uit het project verwijderen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft. Ook krijgt de eigenaar van het project een melding dat er geprobeerd is foto's of data uit het project te verwijderen.	
-	\item Als er geen foto's en data aanwezig zijn in het project, krijgt de onderzoeker hier een melding van, en gebeurt er verder niets.
+	\item Als de onderzoeker niet de eigenaar is van het project, kan hij geen data uit het project verwijderen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft. 
+	\item Als er geen foto's en data aanwezig zijn in het project, krijgt de onderzoeker hier een melding van.
 \end{itemize}
 
 De onderzoeker kan bestaande projecten verwijderen.
 \begin{itemize}
-	\item Als er nog foto's en data aanwezig zijn in het project, wordt hier een melding van gegeven, en dient de onderzoeker deze eerst te verwijderen.
-	\item Als de onderzoeker niet de eigenaar is van het project, kan hij het project ook niet verwijderen. De onderzoeker krijg een melding dat hij niet voldoende rechten heeft. Ook krijgt de eigenaar van het project een melding dat er geprobeerd is om het project geheel te verwijderen.
-	\item Als er geen foto's en data meer aanwezig waren in het project, wordt het project, en alle verwijzingen daarnaartoe, verwijdert.
+	\item Als er nog foto's en data aanwezig zijn in het project, wordt hier een melding van gegeven en dient de onderzoeker te bevestigen dat alle data en foto's in het project ook zullen worden verwijderd.
+	\item Als de onderzoeker niet de eigenaar is van het project, kan hij het project ook niet verwijderen. De onderzoeker krijg een melding dat hij niet voldoende rechten heeft.
+	\item Als er geen foto's en data meer aanwezig zijn in het project wordt dit verwijderd.
 \end{itemize}
 
 De onderzoeker kan bestaande gebruikers toevoegen aan een project.
@@ -73,7 +71,7 @@ De onderzoeker kan bestaande gebruikers toevoegen aan een project.
 De onderzoeker kan landmarks toevoegen aan een project.
 \begin{itemize}
 	\item Als de onderzoeker niet de eigenaar is van het project, kan hij dit niet.
-	\item Als er al een landmark in het project bestaat met dezelfde naam als de nieuwe landmark, krijgt de onderzoeker hier een melding van, en wordt hij gevraagd een andere naam te geven.
+	\item Als er al een landmark in het project bestaat met dezelfde naam als de nieuwe landmark, krijgt de onderzoeker hier een melding van, en wordt hij gevraagd een andere naam te geven of de mogelijkheid de al bestaande landmark te wijzigen.
 \end{itemize}
 
 De onderzoeker kan bestaande landmarks van een project wijzigen.
