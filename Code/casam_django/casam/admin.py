@@ -1,7 +1,7 @@
 from django.contrib import admin
-from casam.models import OriginalImage
-from casam.models import WarpedImage
-from casam.models import Patient
+from models import OriginalImage
+from models import WarpedImage
+from models import Patient
 
 # new code will go here later on
 admin.site.register(OriginalImage)
