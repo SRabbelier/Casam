@@ -2,6 +2,8 @@
 
 import os
 
+ROOT_PATH = os.path.dirname(__file__)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -12,7 +14,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = '/home/casam/casam_django/casam_django.db'             # Or path to database file if using sqlite3.
+DATABASE_NAME = os.path.join(ROOT_PATH, 'casam_django.db')
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -69,8 +71,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'casam_django.urls'
-
-ROOT_PATH = os.path.dirname(__file__)
 
 TEMPLATE_DIRS = (
     os.path.join(ROOT_PATH, 'templates')
