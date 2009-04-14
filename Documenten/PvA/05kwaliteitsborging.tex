@@ -1,58 +1,57 @@
-\section{Kwaliteitsborging}
+\section{Kwaliteitswaarborging}
 \label{kwaliteit}
 %%OMSCHRIJVING SECTIE
 %In het laatste hoofdstuk wordt uitgewerkt op welke wijze de opdrachtgever en de projectleden in staat zijn de kwaliteit van het project te beïnvloeden. Hoewel harde voorwaarden in hoofdstuk 2 zijn verwoord, wordt hier verder uitgewerkt wat met name de opdrachtgever kan doen om bij te dragen aan een hoge kwaliteit.
 
-Als laatste worden de maatregelen beschreven die beide partijen zullen treffen om bekende risico's te voorkomen.
+Als laatste worden de maatregelen beschreven die alle partijen zullen treffen om bekende risico's te voorkomen.
 
-In dit hoofdstuk wordt een kort overzicht gegeven van de kwaliteitseisen die aan het product en het proces worden gesteld,
-en worden een aantal maatregelen voorgesteld om aan deze eisen te kunnen voldoen.
+In deze sectie wordt een kort overzicht gegeven van de kwaliteitseisen die aan het product en het proces worden gesteld,
+ook worden er een aantal maatregelen voorgesteld om aan deze eisen te kunnen voldoen.
 
 \subsection{Risicoanalyse}
 
-Het product maakt gebruik van meerdere software pakketten.
+Het product maakt gebruik van verschillende software pakketten.
 Hier komt van nature een bepaald risico bij kijken in verband met het integreren in het product.
 Op grond van een risicoanalyse kunnen de volgende maatregelen worden genomen:
 \begin{description}
-    \item[preventie] het voorkomen dat iets gebeurt of het verminderen van de kans dat het gebeurt;
+    \item[preventie] het voorkomen of verminderen van de kans dat problemen optreden;
     \item[repressie] het beperken van de schade wanneer een bedreiging optreedt;
     \item[acceptatie] geen maatregelen, men accepteert de kans en het mogelijke gevolg van een bedreiging;
     \item[manipulatie] het wijzigen van parameters in de berekening om tot een gewenst resultaat te komen.
 \end{description}
 
-De bedoeling van een risicoanalyse is dat er na de analyse wordt vastgesteld op welke wijze de risico's beheerst kunnen worden, of teruggebracht tot een aanvaardbaar niveau. \cite{wiki:risico_analyse}
+De bedoeling van een risicoanalyse is dat er na de analyse wordt vastgesteld op welke wijze de risico's beheerst kunnen worden of teruggebracht tot een aanvaardbaar niveau. \cite{wiki:risico_analyse}
 
-We hebben de volgende risico factoren geidentificeerd:
+We hebben de volgende risicofactoren ge\"identificeerd:
 \begin{description}
-    \item[python] niet iedereen is bekend met python en heeft dus tijd nodig om op snelheid te komen
-    \item[django] django is een template taal en vereist zeer weinig nieuwe kennis
+    \item[python] niet alle leden van de groep zijn bekend met python en hebben dus tijd nodig om de taal te leren
+    \item[django] django vereist zeer weinig nieuwe kennis en is dus een kleine risicofactor
     \item[database] het gebruik van een beveiligde database kan problemen veroorzaken
-    \item[python image libraries] deze zijn vanuit de Delft Computer Graphics group beschikbaar gesteld. Niemand heeft deze echter eerder gebruikt
+    \item[python image libraries] deze zijn vanuit de Delft Computer Graphics group beschikbaar gesteld. De groep heeft nog geen kennis van deze libraries.
     \item[nose test] testen met een nieuw framework is altijd even wennen, en kan veel tijd kosten
 \end{description}
 
-Aan de hand van deze risico's hebben we de volgende milestone's opgesteld:
+Aan de hand van deze risico's hebben we de volgende mijlpalen opgesteld:
 \begin{enumerate}
-    \item Een eenvoudige applicatie die m.b.v. Django een 'Hello world' pagina kan laten zien
-    \item CRUD (Create, Read, Update, Delete) van data naar een database m.b.v. Django
+    \item Een eenvoudige applicatie uitschrijven die m.b.v. Django een `Hello world' pagina kan laten zien
+    \item CRUD (Create, Read, Update, Delete) van data naar een database met behulp van Django
     \item Verwerken van images m.b.v. python image libraries
     \item Tests voor iedere milestone
 \end{enumerate}
 
 \subsection{Productkwaliteit}
-Om de kwaliteit van het product te garanderen, worden een aantal eisen gesteld waar het eindproduct aan zal moeten voldoen.
+Om de kwaliteit van het product te garanderen worden een aantal eisen gesteld waar het eindproduct aan zal voldoen.
 Er zijn eisen door de opdrachtgever gegeven om te zorgen dat het product daadwerkelijk aan de gebruikerseisen voldoet.
 Zo is vastgesteld dat het systeem zoveel mogelijk moet doen om te voorkomen dat de gebruikte data niet uitlekt naar een ongeautoriseerde gebruiker. 
-Ook is bepaald dat de warping-technologie die gebruikt wordt, wiskundig onderbouwd en bewezen is.
-Daarnaast moet het product simpel in de omgang zijn en moet het weinig tijd kosten om er mee bekend te raken.
+Ook is bepaald dat de morphing-technologie die gebruikt wordt wiskundig onderbouwd en bewezen is.
+Daarnaast moet het product makkelijk te gebruiken zijn en moet het weinig tijd kosten om er mee bekend te raken.
 Ook moet er automatisch orde worden aangebracht in de aangeleverde data, zodat deze uniform en uitwisselbaar wordt en blijft.
 Andere kwaliteitseisen aan het product zijn van meer technische aard, en zijn gespecificeerd in het requirements document.
-De kwaliteit van het product wordt zowel door kwaliteitsverzekering als door kwaliteitscontrole veiliggesteld.
 
 \subsection{Proceskwaliteit}
 De kwaliteit van het proces wordt bereikt door de vakbekwaamheid van de projectuitvoerders,
 de ervaringen in de gebruikte software engineering methode en het zorgvuldig vaststellen van de gebruikte methoden en componenten.
-Bovendien wordt gebruikt gemaakt van agile programmeren, waardoor er regelmatig contact met de opdrachtgever is en het proces  tijdig kan worden bijgestuurd als dit nodig is. Aan het eind onstaat dan vanzelf een product van hoge kwaliteit.
+Bovendien wordt gebruik gemaakt van agile programmeren, waardoor er regelmatig contact met de opdrachtgever is en het proces  tijdig kan worden bijgestuurd als dit nodig is. Aan het eind onstaat daardoor een product van hoge kwaliteit.
 
 \subsection{Voorgestelde maatregelen}
 Om bovenstaande kwaliteitsnormen te halen worden de volgende maatregelen voorgesteld
