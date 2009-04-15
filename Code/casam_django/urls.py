@@ -5,8 +5,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 import casam.views.main
+import casam.views.fileupload
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^$', casam.views.main.home),
+    (r'^fileupload$', casam.views.fileupload.fileupload),
 )
