@@ -7,6 +7,8 @@ from django import http
 from django.template import loader
 from django import forms
 import time
+import mimetypes
+import os
 
 class UploadFileForm(forms.Form):
   file = forms.FileField()
@@ -33,11 +35,9 @@ def handle_uploaded_file(file):
   return location
 
 def viewfile(request, name):
-  mimes = {'jpg' : 'image/jpeg',
-           'peg' : 'image/jpeg',
-           'png' : 'image/png',
-           'gif' : 'image/gif',
-           'bmp' : 'image/bmp',
-           'tif' : 'image/tiff',
-           'iff' : 'image/tiff'}
-  return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimes[name[-3:]])
+  mime = mimetypes.MimeTypes
+  mime = mime()
+  if os.path.exists('data/'+name):
+    return http.HttpResponse(open('data/'+name,'rb'),mimetype=mime.guess_type('data/'+name))
+  else:
+    return http.HttpResponse("file doesn't exist",mimetype="text/plain")
