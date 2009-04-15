@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^$', casam.views.main.home),
     (r'^fileupload$', casam.views.fileupload.fileupload),
+    (r'^data/(.*)', casam.views.fileupload.viewfile),
 )

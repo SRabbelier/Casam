@@ -16,7 +16,7 @@ def fileupload(request):
     form = UploadFileForm(request.POST, request.FILES)
     if form.is_valid():
       location = handle_uploaded_file(request.FILES['file'])
-      context = {'locatie': location}
+      context = {'location': location}
       content = loader.render_to_string('main/succes.html', dictionary=context)
       return http.HttpResponse(content)
   else:
@@ -26,8 +26,18 @@ def fileupload(request):
 
 def handle_uploaded_file(file):
   location = "data/%d-%s" % (time.time(), file.name)
-  destination = open(location, 'wb+') #wb+ is write binary 
+  destination = open(location, 'wb+') #wb+ is write binary
   for chunk in file.chunks():
-    destination.write(chunk)
+      destination.write(chunk)
   destination.close
   return location
+
+def viewfile(request, name):
+  mimes = {'jpg' : 'image/jpeg',
+           'peg' : 'image/jpeg',
+           'png' : 'image/png',
+           'gif' : 'image/gif',
+           'bmp' : 'image/bmp',
+           'tif' : 'image/tiff',
+           'iff' : 'image/tiff'}
+  return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimes[name[-3:]])
