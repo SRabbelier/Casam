@@ -3,7 +3,7 @@ from django.db import models
 from django_tools import fields
 
 class Project(models.Model):
-  id = models.AutoField(primary_key=True)
+  id = fields.UUIDField(primary_key=True,auto=True)
   name = models.CharField(max_length=100)
   added = models.DateField(auto_now_add=True)
   
@@ -12,12 +12,12 @@ class Project(models.Model):
     
   
 class Patient(models.Model):
-  id = models.AutoField(primary_key=True)
+  id = fields.UUIDField(primary_key=True,auto=True)
   corpse_id = models.IntegerField()
   sex = models.BooleanField()
 
 class Image(models.Model):
-  id = models.AutoField(primary_key=True)
+  id = fields.UUIDField(primary_key=True,auto=True)
   project = models.ForeignKey('Project')
   path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)

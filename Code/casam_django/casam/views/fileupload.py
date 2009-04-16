@@ -67,7 +67,7 @@ def handle_uploaded_file(file,post):
   #safe the uploaded image
   OriginalImage.objects.all()
   projects = Project.objects.all()
-  proj = Project.objects.get(id=post['project'])
+  proj = Project.objects.get(id=uuid.UUID(post['project']))
   oi = OriginalImage(patient=pat,name=post['name'],path=location,is_left=post['is_left'],project=proj)
   oi.save()
   return oi
