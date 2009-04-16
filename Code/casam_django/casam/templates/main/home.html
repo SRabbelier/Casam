@@ -5,5 +5,11 @@
 <body>
 O Hello!
 Dit is {{ name }}.
+<table>
+{%for im in images%}
+<tr><td><img src="{{im.path}}" style="width: 50px" /><b>{{im.project_id}}</b><a href="{{im.path}}">{{im.name}}</a></td></tr>
+{%endfor%}
+<tr><td><a href="fileupload">Voeg een foto toe</a></td></tr>
+</table>
 </body>
 </html>
