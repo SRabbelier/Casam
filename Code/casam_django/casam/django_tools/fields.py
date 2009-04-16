@@ -37,9 +37,6 @@ class UUIDField(models.CharField):
             args = ()
         return getattr(uuid, 'uuid%s' % (self.version,))(*args)
 
-    def db_type(self):
-        return 'char'
-
     def pre_save(self, model_instance, add):
         """ see CharField.pre_save
             This is used to ensure that we auto-set values if required.
@@ -65,4 +62,7 @@ class UUIDField(models.CharField):
     def get_db_prep_value(self, value):
         if not value: return
         assert(isinstance(value, uuid.UUID))
-        return unicode(value)
+        return value.hex
+    
+    def get_db_prep_lookup(self, lookup_type, value):
+        return [self.get_db_prep_value(value)]
