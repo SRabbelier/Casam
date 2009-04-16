@@ -25,6 +25,23 @@ function ResetPhoto(id){
 	document.getElementById('big_image'+id).src = "#";
 	document.getElementById('big_image'+id).style.display = "none";
 }
+
+function getMouseXY(e) {
+	if(document.getElementById('big_image1').style.display == 'block'){
+		document.getElementById('MouseX').value = e.pageX-document.getElementById('big_image1').offsetLeft; 
+		document.getElementById('MouseY').value = e.pageY-document.getElementById('big_image1').offsetTop;
+	}
+	else{
+		document.getElementById('MouseX').value = "";
+		document.getElementById('MouseY').value = ""; 
+	}
+}
+function saveLandMark(id){
+	var mousex = document.getElementById('MouseX').value; 
+	var mousey = document.getElementById('MouseY').value; 
+	alert("landmark wordt opgeslagen voor foto: "+id+". Op ("+mousex+","+mousey+").");
+}
+document.onmousemove = getMouseXY;
 </script>
 </head>
 <body>
@@ -54,8 +71,11 @@ function ResetPhoto(id){
 					<button onClick="ChangeOp()" style="cursor: pointer;">Wijzig opacity</button></td></tr>
 <tr><th>Reset foto's</th></tr>
 <tr><td><button onClick="ResetPhoto('1')">Reset foto 1</button><br /><button onClick="ResetPhoto('2')">Reset foto 2</button></td></tr>
+<tr><th>Coordinaten</th></tr>
+<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
+		<input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
 </table>
-<img id="big_image1" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter:alpha(opacity=40)" />
-<img id="big_image2" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter:alpha(opacity=40)" />
+<img onclick="saveLandMark(1)" id="big_image1" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter:alpha(opacity=40)" />
+<img onclick="saveLandMark(2)" id="big_image2" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter:alpha(opacity=40)" />
 </body>
 </html>
