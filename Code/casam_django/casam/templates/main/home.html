@@ -1,13 +1,36 @@
 <html>
 <head>
 <title>Overzicht projecten en foto's</title>
+<style>
+th {
+ background-color: grey;
+}
+</style>
+<script>
+function show_image(location){
+if(document.getElementById('big_image1').style.display != 'block'){
+	document.getElementById('big_image1').src = location;
+	document.getElementById('big_image1').style.display = 'block';
+}
+else{
+	document.getElementById('big_image2').src = location;
+	document.getElementById('big_image2').style.display = 'block';
+}
+}
+function ChangeOp(){
+	document.getElementById('big_image1').style.opacity = document.getElementById('opac').value/100;
+	document.getElementById('big_image2').style.opacity = document.getElementById('opac2').value/100;
+}
+function ResetPhoto(id){
+	document.getElementById('big_image'+id).src = "#";
+	document.getElementById('big_image'+id).style.display = "none";
+}
+</script>
 </head>
 <body>
-O Hello!
-Dit is {{ name }}.
-<table style="width: 200px; border: 1px solid grey;">
+<table style="float: left; width: 200px; border: 1px solid grey;">
 {%for im in images%}
-<tr><th colspan="2" style="background-color: grey;"><b>{{im.project.name}}</b></th></tr>
+<tr><th colspan="2"><b>{{im.project.name}}</b></th></tr>
 <tr>
 	<td style="width: 50px;"><img src="{{im.path}}" style="width: 50px" /></td>
 	<td>{{im.name}}<br />
@@ -18,11 +41,21 @@ Dit is {{ name }}.
 			Rechts
 		{% endifequal %}
 		<br />
-		<a href="{{im.path}}">Link</a>
+		<span onClick="show_image('{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
 	</td>
 	</tr>
 {%endfor%}
 <tr><td colspan="2" style="border-top: 2px solid grey;"><a href="fileupload">Voeg een foto toe</a></td></tr>
 </table>
+<table style="float: right; width: 200px; border: 1px solid grey;">
+<tr><th>Doorzichtbaarheid instellen</th></tr>
+<tr><td colspan="2" >Foto 1: <input type="text" style="width: 70px;" id="opac" value="40" /><br />
+					 Foto 2: <input type="text" style="width: 70px;" id="opac2" value="40" /><br />
+					<button onClick="ChangeOp()" style="cursor: pointer;">Wijzig opacity</button></td></tr>
+<tr><th>Reset foto's</th></tr>
+<tr><td><button onClick="ResetPhoto('1')">Reset foto 1</button><br /><button onClick="ResetPhoto('2')">Reset foto 2</button></td></tr>
+</table>
+<img id="big_image1" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter:alpha(opacity=40)" />
+<img id="big_image2" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter:alpha(opacity=40)" />
 </body>
 </html>
