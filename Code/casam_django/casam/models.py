@@ -2,6 +2,11 @@ from django.db import models
 
 from django_tools import fields
 
+class Project(models.Model):
+  id = fields.UUIDField(primary_key=True,auto=True)
+  name = models.CharField(max_length=100)
+  added = models.DateField(auto_now_add=True)
+  
 class Patient(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
   corpse_id = models.IntegerField()
@@ -9,6 +14,7 @@ class Patient(models.Model):
 
 class Image(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
+  project_id = models.ForeignKey('Project')
   path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)
   added = models.DateField(auto_now_add=True)
