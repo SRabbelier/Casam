@@ -1,13 +1,27 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Leuk geprobeerd</title>
+<style type="text/css">
+form ul {
+	list-style-type: none;
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+form ul li {
+	display: inline;
+}
+</style>
 </head>
 <body>
 <form enctype="multipart/form-data" method="post" action="fileupload">
 <table>
 {{ form }}
+<tr><td><input type="submit" value="upload" /></td></tr>
 </table>
-<input type="submit" value="upload" />
+
 </form>
 </body>
 </html>

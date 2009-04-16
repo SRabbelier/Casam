@@ -7,6 +7,10 @@ class Project(models.Model):
   name = models.CharField(max_length=100)
   added = models.DateField(auto_now_add=True)
   
+  def __unicode__(self):
+    return str(self.id)
+    
+  
 class Patient(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
   corpse_id = models.IntegerField()
@@ -14,7 +18,7 @@ class Patient(models.Model):
 
 class Image(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
-  project_id = models.ForeignKey('Project')
+  project = models.ForeignKey('Project')
   path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)
   added = models.DateField(auto_now_add=True)

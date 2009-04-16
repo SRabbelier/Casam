@@ -8,44 +8,63 @@ from django.template import loader
 from django import forms
 from casam.models import Image
 from casam.models import Patient
+from casam.models import Project
 from casam.models import OriginalImage
 
+import uuid
 import time
 import mimetypes
 import os
 
 class UploadFileForm(forms.Form):
+ 
+  projects = Project.objects.all()
+  choices = []
+  for pr in projects:
+    choices.append((pr.id,pr.name))
+    
+  project = forms.CharField(max_length=36, widget=forms.Select(choices=choices))
+  is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
+
   name = forms.CharField(max_length=50)
   file = forms.FileField()
+  
+  
 
 def fileupload(request):
   if request.method == 'POST':
     form = UploadFileForm(request.POST, request.FILES)
-    if form.is_valid():
-      oi = handle_uploaded_file(request.FILES['file'],request.POST['name'])
+    
+    if form.is_valid(): 
+      oi = handle_uploaded_file(request.FILES['file'],request.POST)
       context = {'image': oi}
       content = loader.render_to_string('main/succes.html', dictionary=context)
       return http.HttpResponse(content)
+    else:
+      print form.errors
   else:
-    context = {'form': UploadFileForm()}
-    content = loader.render_to_string('main/fileupload.html', dictionary=context)
-    return http.HttpResponse(content)
+    pass
+      
+  context = {'form': UploadFileForm()}
+  content = loader.render_to_string('main/fileupload.html', dictionary=context)
+  return http.HttpResponse(content)
 
-def handle_uploaded_file(file,name):
+def handle_uploaded_file(file,post):
   location = "data/%d-%s" % (time.time(), file.name)
   destination = open(location, 'wb+') #wb+ is write binary
   for chunk in file.chunks():
       destination.write(chunk)
   destination.close
-  #Image.objects.all()
+  #temporarly create a patient object
+  #because we need this info
   Patient.objects.all()
-  OriginalImage.objects.all()
   pat = Patient(corpse_id=234,sex=True)
   pat.save()
-  #i = Image()
-  #i.save()
-  OriginalImage()
-  oi = OriginalImage(patient=pat,name=name,path=location,is_left=False)
+  #safe the uploaded image
+  OriginalImage.objects.all()
+  Project.objects.all()
+  proj = Project.objects.get(id=uuid.UUID(post['project']))
+  oi = OriginalImage(patient=pat,name=post['name'],path=location,is_left=post['is_left'],project=proj)
   oi.save()
   return oi
 
