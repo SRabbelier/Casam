@@ -8,7 +8,7 @@ class Project(models.Model):
   added = models.DateField(auto_now_add=True)
   
   def __unicode__(self):
-    return str(self.id)
+    return 'name=\'' + str(self.name) + '\' id=\'' + str(self.id) + '\''
     
   
 class Patient(models.Model):
