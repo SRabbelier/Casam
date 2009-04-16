@@ -16,6 +16,13 @@ def main():
 
   import manage
   manage.main()
+  
+  from casam.models import Project
+  pr1 = Project(name='Project A')
+  pr1.save()
+  pr2 = Project(name='Project B')
+  pr2.save()
+  
 
 if __name__ == '__main__':
   main()
