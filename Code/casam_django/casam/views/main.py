@@ -4,6 +4,8 @@ from casam.models import OriginalImage
 from casam.models import Project
 
 def home(request):
-  context = {'name': 'ben','images':OriginalImage.objects.all(), 'projects': Project.objects.all()}
+  img = OriginalImage.objects.select_related().order_by('project__name')
+  context = {'name': 'ben','images':img}
+  
   content = loader.render_to_string('main/home.html', dictionary=context)
   return http.HttpResponse(content)

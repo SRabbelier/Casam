@@ -19,6 +19,10 @@ import os
 class UploadFileForm(forms.Form):
  
   projects = Project.objects.all()
+  #pr = Project(name="Project A")
+  #pr.save()
+  #pr = Project(name="Project B")
+  #pr.save()
   choices = []
   for pr in projects:
     choices.append((pr.id,pr.name))
@@ -63,13 +67,7 @@ def handle_uploaded_file(file,post):
   #safe the uploaded image
   OriginalImage.objects.all()
   projects = Project.objects.all()
-  for p in projects:
-    if p.id==uuid.UUID(post['project']):
-      proj = p
-    else:
-      pass
-  #SVERRE: FIX IT!!!! THIS IS NOT THE WAY   
-  #proj = Project.objects.get(id=uuid.UUID(post['project']))
+  proj = Project.objects.get(id=post['project'])
   oi = OriginalImage(patient=pat,name=post['name'],path=location,is_left=post['is_left'],project=proj)
   oi.save()
   return oi

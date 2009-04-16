@@ -1,15 +1,28 @@
 <html>
 <head>
-<title>O HI!</title>
+<title>Overzicht projecten en foto's</title>
 </head>
 <body>
 O Hello!
 Dit is {{ name }}.
-<table>
+<table style="width: 200px; border: 1px solid grey;">
 {%for im in images%}
-<tr><td><img src="{{im.path}}" style="width: 50px" /><b>{{im.project_id}}</b><a href="{{im.path}}">{{im.name}}</a></td></tr>
+<tr><th colspan="2" style="background-color: grey;"><b>{{im.project.name}}</b></th></tr>
+<tr>
+	<td style="width: 50px;"><img src="{{im.path}}" style="width: 50px" /></td>
+	<td>{{im.name}}<br />
+		{{im.added}}<br />
+		{% ifequal im.is_left True %}
+			Links
+		{% else %}
+			Rechts
+		{% endifequal %}
+		<br />
+		<a href="{{im.path}}">Link</a>
+	</td>
+	</tr>
 {%endfor%}
-<tr><td><a href="fileupload">Voeg een foto toe</a></td></tr>
+<tr><td colspan="2" style="border-top: 2px solid grey;"><a href="fileupload">Voeg een foto toe</a></td></tr>
 </table>
 </body>
 </html>
