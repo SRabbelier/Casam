@@ -4,6 +4,8 @@
 
 {% block body %}
 
+<p><a href="/project/new">New Project</a></p>
+
 {% for project, images in projects.iteritems %}
 <h1>{{ project.name }}</h1>
   <a href="/project/{{ project.id }}">
