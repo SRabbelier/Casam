@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     (r'^$', casam.views.main.home),
     (r'^project/new$', casam.views.project.new),
     (r'^project/(.*)$', casam.views.project.home),
-    (r'^fileupload$', casam.views.fileupload.fileupload),
+    (r'^fileupload/(.*)$', casam.views.fileupload.fileupload),
     (r'^data/(.*)', casam.views.fileupload.viewfile),
     (r'^landmarks/save', casam.views.landmarks.save),
 )

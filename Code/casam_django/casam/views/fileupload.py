@@ -12,26 +12,18 @@ import mimetypes
 import os
 
 class UploadFileForm(forms.Form):
-
-  projects = Project.objects.all()
-  choices = []
-  for pr in projects:
-    choices.append((pr.id,pr.name))
-
-  project = forms.CharField(max_length=36, widget=forms.Select(choices=choices))
   is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
 
   name = forms.CharField(max_length=50)
   file = forms.FileField()
 
 
-
-def fileupload(request):
+def fileupload(request, id_str):
   if request.method == 'POST':
     form = UploadFileForm(request.POST, request.FILES)
 
     if form.is_valid():
-      oi = handle_uploaded_file(request.FILES['file'],request.POST)
+      oi = handle_uploaded_file(request.FILES['file'],request.POST, id_str)
       context = {'image': oi}
       content = loader.render_to_string('main/succes.html', dictionary=context)
       return http.HttpResponse(content)
@@ -44,7 +36,7 @@ def fileupload(request):
   content = loader.render_to_string('main/fileupload.html', dictionary=context)
   return http.HttpResponse(content)
 
-def handle_uploaded_file(file,post):
+def handle_uploaded_file(file,post, id_str):
   location = "data/%d-%s" % (time.time(), file.name)
   destination = open(location, 'wb+') #wb+ is write binary
   for chunk in file.chunks():
@@ -57,8 +49,8 @@ def handle_uploaded_file(file,post):
   pat.save()
   #safe the uploaded image
   OriginalImage.objects.all()
-  projects = Project.objects.all()
-  proj = Project.objects.get(id=uuid.UUID(post['project']))
+  
+  proj = Project.objects.get(id=uuid.UUID(id_str))
   oi = OriginalImage(patient=pat,name=post['name'],path=location,is_left=post['is_left'],project=proj)
   oi.save()
   return oi

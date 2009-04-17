@@ -12,11 +12,11 @@ class ProjectForm(forms.Form):
   description = forms.CharField(max_length=500, widget=forms.widgets.Textarea())
 
 
-def home(request, id):
-  id = uuid.UUID(id)
+def home(request, id_str):
+  id = uuid.UUID(id_str)
   img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
 
-  context = {'images':img}
+  context = {'images':img, 'id': id_str}
 
   content = loader.render_to_string('project/home.html', dictionary=context)
   return http.HttpResponse(content)
