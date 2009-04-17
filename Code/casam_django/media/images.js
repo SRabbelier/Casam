@@ -1,11 +1,13 @@
 function ChangeOp(id,value){
-  $('big_image'+id).style.opacity = value;
-  $('big_image'+id).filters.alpha.opacity = value*100;
+//  $('big_image'+id).style.opacity = value;
+//  $('big_image'+id).filters.alpha.opacity = value*100;
+  $('big_image'+id).setOpacity(value);
 }
 function hide_image(id){
-  $('big_image'+id).src = "#";
-  $('big_image'+id).style.display = "none";
-  
+//  $('big_image'+id).src = "#";
+//  $('big_image'+id).style.display = "none";
+	$('big_image'+id).hide();
+
   $('delete_images').removeChild($('delete_photo_'+id));  
 }
 
@@ -35,5 +37,6 @@ function show_image(location){
   } 
   
   $('big_image'+insert).src = location;
-  $('big_image'+insert).style.display = 'block';
+  //$('big_image'+insert).style.display = 'block';
+  $('big_image'+insert).show();
 }
