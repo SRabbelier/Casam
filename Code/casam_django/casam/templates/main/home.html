@@ -27,13 +27,25 @@ function ResetPhoto(id){
 }
 
 function getMouseXY(e) {
-	if(document.getElementById('big_image1').style.display == 'block'){
-		document.getElementById('MouseX').value = e.pageX-document.getElementById('big_image1').offsetLeft; 
-		document.getElementById('MouseY').value = e.pageY-document.getElementById('big_image1').offsetTop;
+	if(document.all){
+		if(document.getElementById('big_image1').style.display == 'block'){
+			document.getElementById('MouseX').value = event.clientX-document.getElementById('big_image1').offsetLeft; 
+			document.getElementById('MouseY').value = event.clientY-document.getElementById('big_image1').offsetTop;
+		}
+		else{
+			document.getElementById('MouseX').value = "";
+			document.getElementById('MouseY').value = ""; 
+		}
 	}
 	else{
-		document.getElementById('MouseX').value = "";
-		document.getElementById('MouseY').value = ""; 
+		if(document.getElementById('big_image1').style.display == 'block'){
+			document.getElementById('MouseX').value = e.pageX-document.getElementById('big_image1').offsetLeft; 
+			document.getElementById('MouseY').value = e.pageY-document.getElementById('big_image1').offsetTop;
+		}
+		else{
+			document.getElementById('MouseX').value = "";
+			document.getElementById('MouseY').value = ""; 
+		}
 	}
 }
 function saveLandMark(id){
