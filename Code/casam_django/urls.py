@@ -4,12 +4,12 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-import casam.views.main
-import casam.views.fileupload
+import casam_django.casam.views.main
+import casam_django.casam.views.fileupload
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
-    (r'^$', casam.views.main.home),
-    (r'^fileupload$', casam.views.fileupload.fileupload),
-    (r'^data/(.*)', casam.views.fileupload.viewfile),
+    (r'^$', casam_django.casam.views.main.home),
+    (r'^fileupload$', casam_django.casam.views.fileupload.fileupload),
+    (r'^data/(.*)', casam_django.casam.views.fileupload.viewfile),
 )

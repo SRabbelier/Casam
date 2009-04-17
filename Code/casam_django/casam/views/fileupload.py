@@ -6,10 +6,10 @@ Created on 15 apr 2009
 from django import http
 from django.template import loader
 from django import forms
-from casam.models import Image
-from casam.models import Patient
-from casam.models import Project
-from casam.models import OriginalImage
+from ..models import Image
+from ..models import Patient
+from ..models import Project
+from ..models import OriginalImage
 
 import uuid
 import time
