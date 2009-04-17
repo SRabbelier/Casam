@@ -76,6 +76,7 @@ def viewfile(request, name):
   mime = mimetypes.MimeTypes
   mime = mime()
   if os.path.exists('data/'+name):
-    return http.HttpResponse(open('data/'+name,'rb'),mimetype=mime.guess_type('data/'+name))
+    mimetype, _ = mime.guess_type('data/'+name)
+    return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimetype)
   else:
     return http.HttpResponse("file doesn't exist",mimetype="text/plain")
