@@ -2,11 +2,11 @@ import uuid
 
 from django import http
 from django.template import loader
+from casam.models import OriginalImage
+from casam.models import Project
+
 
 def home(request, id):
-  from casam.models import OriginalImage
-  from casam.models import Project
-
   id = uuid.UUID(id)
   img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
 
