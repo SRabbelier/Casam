@@ -2,8 +2,6 @@
 import os
 import sys
 
-from django.conf import settings
-
 def main():
   HERE = os.path.abspath(__file__)
   HERE = os.path.join(os.path.dirname(HERE), '..')
@@ -25,13 +23,14 @@ def main():
 
   import manage
   manage.main()
-  
+
   from casam_django.casam.models import Project
   pr1 = Project(name='Project A')
   pr1.save()
   pr2 = Project(name='Project B')
   pr2.save()
 
+  from django.conf import settings
   settings.DEBUG = True
 
 if __name__ == '__main__':

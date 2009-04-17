@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>Overzicht projecten en foto's</title>
+<style type="text/css">
+tr th {
+ background-color: #ccc;
+}
+</style>
+  <script src="/media/prototype.js" type="text/javascript"></script>
+  <script src="/media/scriptaculous.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+var total_images = 0;
+/*function show_image(location){
+  if(document.getElementById('big_image1').style.display != 'block'){
+    document.getElementById('big_image1').src = location;
+    document.getElementById('big_image1').style.display = 'block';
+  }
+  else{
+    document.getElementById('big_image2').src = location;
+    document.getElementById('big_image2').style.display = 'block';
+  }
+}*/
+function ChangeOp(id,value){
+  document.getElementById('big_image'+id).style.opacity = value;
+  document.getElementById('big_image'+id).filters.alpha.opacity = value*100;
+}
+function ResetPhoto(id){
+  document.getElementById('big_image'+id).src = "#";
+  document.getElementById('big_image'+id).style.display = "none";
+  
+  document.getElementById('delete_images').removeChild(document.getElementById('delete_photo_'+id));  
+}
+
+function getMouseXY(e) {
+  if(document.getElementById('big_image1')){
+    //ugly IE fix for getting the value of the mouse
+    if(document.all){
+      mX = event.clientX
+      mY = event.clientY
+    }
+    else{
+      mX = e.pageX
+      mY = e.pageY
+    }
+    if(document.getElementById('big_image1').style.display == 'block'){
+      if( mX-document.getElementById('big_image1').offsetLeft >=0 && 
+        mX-document.getElementById('big_image1').offsetLeft <= document.getElementById('big_image1').width &&
+        mY-document.getElementById('big_image1').offsetTop >=0 && 
+        mY-document.getElementById('big_image1').offsetTop <= document.getElementById('big_image1').height  
+        ){
+        document.getElementById('MouseX').value = mX-document.getElementById('big_image1').offsetLeft;
+        document.getElementById('MouseY').value = mY-document.getElementById('big_image1').offsetTop;
+      }
+      else{
+        document.getElementById('MouseX').value = "";
+        document.getElementById('MouseY').value = "";
+      } 
+    }
+    else{
+      document.getElementById('MouseX').value = "";
+      document.getElementById('MouseY').value = ""; 
+    }
+  }
+}
+
+function show_image(location){
+  var insert = 0;
+  for(var i = 1; i <= total_images; i++){
+    if(document.getElementById('big_image'+i).style.display != 'block')
+      insert = i;
+  }
+  if(insert == 0){
+    total_images++;
+    insert = total_images;
+  }
+  
+  document.getElementById('big_images').innerHTML = document.getElementById('big_images').innerHTML+'<img onclick="saveLandMark('+insert+')" id="big_image'+insert+'" src="#" alt="plaatje" style="display: none; position: absolute; top: 25; left: 225; opacity: 0.4; filter: alpha(opacity=40)" />';
+  document.getElementById('sliders').innerHTML = document.getElementById('sliders').innerHTML+'<div id="track'+insert+'" style="width:200px; background-color:#ccc; height:10px;"><div id="handle'+insert+'" style="width:10px; height:15px; background-color:#f00; cursor:move;"></div></div><p id="valueopac'+insert+'">&nbsp;</p>';
+  
+  //creating the delete button
+  var newbutton = document.createElement('button');
+  newbutton.innerHTML = 'Reset foto '+insert;
+  newbutton.onclick = function() { ResetPhoto(insert) };
+  newbutton.setAttribute('id','delete_photo_'+insert);
+  document.getElementById('delete_images').appendChild(newbutton);
+  for(var i = 1; i <=total_images; i++){
+    eval("new Control.Slider('handle"+i+"', 'track"+i+"', {onSlide: function(v) { $('valueopac"+i+"').innerHTML = 'slide: ' + v*100; ChangeOp("+i+",v) },onChange: function(v) { $('valueopac"+i+"').innerHTML = 'changed: ' + v*100;  ChangeOp("+i+",v) },sliderValue: 0.4})");
+  } 
+  
+  document.getElementById('big_image'+insert).src = location;
+  document.getElementById('big_image'+insert).style.display = 'block';
+}
+
+function saveLandMark(id){
+  var mousex = document.getElementById('MouseX').value; 
+  var mousey = document.getElementById('MouseY').value; 
+  alert("landmark wordt opgeslagen voor foto: "+id+". Op ("+mousex+","+mousey+").");
+}
+document.onmousemove = getMouseXY;
+</script>
+</head>
+<body>
+<table style="float: left; width: 200px; border: 1px solid grey;">
+{%for im in images%}
+<tr><th colspan="2"><b>{{im.project.name}}</b></th></tr>
+<tr>
+  <td style="width: 50px;"><img src="/{{im.path}}" style="width: 50px" /></td>
+  <td>{{im.name}}<br />
+    {{im.added}}<br />
+    {% ifequal im.is_left True %}
+      Links
+    {% else %}
+      Rechts
+    {% endifequal %}
+    <br />
+    <span onClick="show_image('/{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
+  </td>
+  </tr>
+{%endfor%}
+<tr><td colspan="2" style="border-top: 2px solid grey;"><a href="/fileupload">Voeg een foto toe</a></td></tr>
+</table>
+<table style="float: right; width: 200px; border: 1px solid grey;">
+<tr><th>Doorzichtbaarheid instellen</th></tr>
+<tr><td colspan="2" id="sliders"></td></tr>
+<tr><th>Reset foto's</th></tr>
+<tr><td id="delete_images"></td></tr>
+<tr><th>Coordinaten</th></tr>
+<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
+    <input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
+</table>
+<div id="big_images">
+</div>
+</body>
+</html>

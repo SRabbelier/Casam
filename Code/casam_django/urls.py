@@ -6,13 +6,15 @@ from django.conf import settings
 admin.autodiscover()
 
 import casam.views.main
+import casam.views.project
 import casam.views.fileupload
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^$', casam.views.main.home),
+    (r'^project/(.*)$', casam.views.project.home),
     (r'^fileupload$', casam.views.fileupload.fileupload),
-    (r'^data/(.*)', casam.views.fileupload.viewfile)
+    (r'^data/(.*)', casam.views.fileupload.viewfile),
 )
 
 if settings.DEBUG:

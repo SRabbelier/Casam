@@ -6,11 +6,10 @@ class Project(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
   name = models.CharField(max_length=100)
   added = models.DateField(auto_now_add=True)
-  
+
   def __unicode__(self):
     return 'name=\'' + str(self.name) + '\' id=\'' + str(self.id) + '\''
-    
-  
+
 class Patient(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
   corpse_id = models.IntegerField()
