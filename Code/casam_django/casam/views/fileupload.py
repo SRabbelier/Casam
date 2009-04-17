@@ -19,10 +19,6 @@ import os
 class UploadFileForm(forms.Form):
 
   projects = Project.objects.all()
-  #pr = Project(name="Project A")
-  #pr.save()
-  #pr = Project(name="Project B")
-  #pr.save()
   choices = []
   for pr in projects:
     choices.append((pr.id,pr.name))

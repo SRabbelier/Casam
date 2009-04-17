@@ -8,6 +8,7 @@ admin.autodiscover()
 import casam.views.main
 import casam.views.project
 import casam.views.fileupload
+import casam.views.landmarks
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
     (r'^project/(.*)$', casam.views.project.home),
     (r'^fileupload$', casam.views.fileupload.fileupload),
     (r'^data/(.*)', casam.views.fileupload.viewfile),
+    (r'^landmarks/save', casam.views.landmarks.save),
 )
 
 if settings.DEBUG:
