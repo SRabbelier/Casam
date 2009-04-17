@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Nieuw project{% endblock title %}
+
+{% block body%}
+
+<form enctype="multipart/form-data" method="post" action="new">
+<table>
+{{ form }}
+<tr><td><input type="submit" value="save" /></td></tr>
+</table>
+</form>
+
+{% endblock body %}
