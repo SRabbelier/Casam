@@ -1,58 +1,61 @@
-<html>
-<head>
-<title>Overzicht projecten en foto's</title>
-<style type="text/css">
-tr th {
- background-color: #ccc;
-}
-</style>
-<script type="text/javascript">
-var total_images = 0;
-</script>
+{% extends 'base.html' %}
+
+{% block title %}Overzicht projecten en foto's{% endblock title %}
+
+{% block scripts %}
+  <style type="text/css">
+  tr th {
+   background-color: #ccc;
+  }
+  </style>
+  <script type="text/javascript">
+  var total_images = 0;
+  </script>
+  
   <script src="/media/prototype.js" type="text/javascript"></script>
   <script src="/media/scriptaculous.js" type="text/javascript"></script>
   <script src="/media/ajax.js" type="text/javascript"></script>
   <script src="/media/getmouse.js" type="text/javascript"></script>
   <script src="/media/images.js" type="text/javascript"></script>
   <script src="/media/landmarks.js" type="text/javascript"></script>
+  
+  <script type="text/javascript">
+    document.onmousemove = getMouseXY;
+  </script>
 
+{% endblock scripts %}
 
-<script type="text/javascript">
-document.onmousemove = getMouseXY;
-</script>
-</head>
-<body>
-<table style="float: left; width: 200px; border: 1px solid grey;">
-{%for im in images%}
-<tr><th colspan="2"><b>{{im.project.name}}</b></th></tr>
-<tr>
-  <td style="width: 50px;"><img src="/{{im.path}}" style="width: 50px" /></td>
-  <td>{{im.name}}<br />
-    {{im.added}}<br />
-    {% ifequal im.is_left True %}
-      Links
-    {% else %}
-      Rechts
-    {% endifequal %}
-    <br />
-    <span onClick="show_image('/{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
-  </td>
-  </tr>
-{%endfor%}
-<tr><td colspan="2" style="border-top: 2px solid grey;"><a href="/fileupload">Voeg een foto toe</a></td></tr>
-</table>
-<table style="float: right; width: 200px; border: 1px solid grey;">
-<tr><th>Doorzichtbaarheid instellen</th></tr>
-<tr><td colspan="2" id="sliders"></td></tr>
-<tr><th>Reset foto's</th></tr>
-<tr><td id="delete_images"></td></tr>
-<tr><th>Coordinaten</th></tr>
-<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
-    <input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
-<tr><th>Ajax resultaten</th></tr>
-<tr><td id="ajax_result"></td></tr>
-</table>
-<div id="big_images">
-</div>
-</body>
-</html>
+{% block body %}
+  <table style="float: left; width: 200px; border: 1px solid grey;">
+  {%for im in images%}
+  <tr><th colspan="2"><b>{{im.project.name}}</b></th></tr>
+  <tr>
+    <td style="width: 50px;"><img src="/{{im.path}}" style="width: 50px" /></td>
+    <td>{{im.name}}<br />
+      {{im.added}}<br />
+      {% ifequal im.is_left True %}
+        Links
+      {% else %}
+        Rechts
+      {% endifequal %}
+      <br />
+      <span onClick="show_image('/{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
+    </td>
+    </tr>
+  {%endfor%}
+  <tr><td colspan="2" style="border-top: 2px solid grey;"><a href="/fileupload">Voeg een foto toe</a></td></tr>
+  </table>
+  <table style="float: right; width: 200px; border: 1px solid grey;">
+  <tr><th>Doorzichtbaarheid instellen</th></tr>
+  <tr><td colspan="2" id="sliders"></td></tr>
+  <tr><th>Reset foto's</th></tr>
+  <tr><td id="delete_images"></td></tr>
+  <tr><th>Coordinaten</th></tr>
+  <tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
+      <input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
+  <tr><th>Ajax resultaten</th></tr>
+  <tr><td id="ajax_result"></td></tr>
+  </table>
+  <div id="big_images">
+  </div>
+{% endblock body %}
