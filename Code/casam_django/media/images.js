@@ -17,11 +17,11 @@ function show_image(location){
     insert = total_images;
   }
   
-  alert(insert);
+
   //creating the new image
-  var newimg = document.createElement('img');
+  var newimg = Element.extend(document.createElement('img'));
   newimg.src = location;
-  newimg.setStyle({position: 'absolute', top: 25, left: 225, opacity: 0.4, filter: 'alpha(opacity=40)'});
+  newimg.setStyle("position: 'absolute'; top: 25; left: 225; opacity: 0.4; filter: 'alpha(opacity=40)';");
   newimg.onclick = function() { saveLandMark(insert) };
   newimg.setAttribute('id','big_image'+insert);
   $('big_images').appendChild(newimg);
