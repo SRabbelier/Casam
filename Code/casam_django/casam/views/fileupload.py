@@ -1,34 +1,33 @@
 from django import http
 from django.template import loader
 from django import forms
-from casam.models import Image
-from casam.models import Patient
-from casam.models import Project
-from casam.models import OriginalImage
 
 import uuid
 import time
 import mimetypes
 import os
 
-class UploadFileForm(forms.Form):
+def getUploadForm(*args, **kwargs):
+  from casam.models import Project
 
   projects = Project.objects.all()
   choices = []
   for pr in projects:
     choices.append((pr.id,pr.name))
 
-  project = forms.CharField(max_length=36, widget=forms.Select(choices=choices))
-  is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
+  class UploadFileForm(forms.Form):
+    project = forms.CharField(max_length=36, widget=forms.Select(choices=choices))
+    is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
 
-  name = forms.CharField(max_length=50)
-  file = forms.FileField()
+    name = forms.CharField(max_length=50)
+    file = forms.FileField()
 
+  return UploadFileForm(*args, **kwargs)
 
 
 def fileupload(request):
   if request.method == 'POST':
-    form = UploadFileForm(request.POST, request.FILES)
+    form = getUploadForm(request.POST, request.FILES)
 
     if form.is_valid():
       oi = handle_uploaded_file(request.FILES['file'],request.POST)
@@ -40,11 +39,15 @@ def fileupload(request):
   else:
     pass
 
-  context = {'form': UploadFileForm()}
+  context = {'form': getUploadForm()}
   content = loader.render_to_string('main/fileupload.html', dictionary=context)
   return http.HttpResponse(content)
 
 def handle_uploaded_file(file,post):
+  from casam.models import Patient
+  from casam.models import Project
+  from casam.models import OriginalImage
+
   location = "data/%d-%s" % (time.time(), file.name)
   destination = open(location, 'wb+') #wb+ is write binary
   for chunk in file.chunks():
