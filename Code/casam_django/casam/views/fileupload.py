@@ -17,7 +17,7 @@ import mimetypes
 import os
 
 class UploadFileForm(forms.Form):
- 
+
   projects = Project.objects.all()
   #pr = Project(name="Project A")
   #pr.save()
@@ -26,20 +26,20 @@ class UploadFileForm(forms.Form):
   choices = []
   for pr in projects:
     choices.append((pr.id,pr.name))
-    
+
   project = forms.CharField(max_length=36, widget=forms.Select(choices=choices))
   is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
 
   name = forms.CharField(max_length=50)
   file = forms.FileField()
-  
-  
+
+
 
 def fileupload(request):
   if request.method == 'POST':
     form = UploadFileForm(request.POST, request.FILES)
-    
-    if form.is_valid(): 
+
+    if form.is_valid():
       oi = handle_uploaded_file(request.FILES['file'],request.POST)
       context = {'image': oi}
       content = loader.render_to_string('main/succes.html', dictionary=context)
@@ -48,7 +48,7 @@ def fileupload(request):
       print form.errors
   else:
     pass
-      
+
   context = {'form': UploadFileForm()}
   content = loader.render_to_string('main/fileupload.html', dictionary=context)
   return http.HttpResponse(content)
