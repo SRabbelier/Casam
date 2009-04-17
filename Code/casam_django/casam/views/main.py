@@ -1,3 +1,13 @@
+import sys
+import os
+
+HERE = os.path.abspath(__file__)
+HERE = os.path.join(os.path.dirname(HERE), '..', '..')
+HERE = os.path.normpath(HERE)
+
+CASAM = [os.path.join(HERE, 'casam')]
+sys.path = CASAM + sys.path
+
 from django import http
 from django.template import loader
 from casam.models import Project
