@@ -61,8 +61,20 @@ class UUIDField(models.CharField):
 
     def get_db_prep_value(self, value):
         if not value: return
-        assert(isinstance(value, uuid.UUID))
-        return value.hex
+        #Make distinction between list of values or a single value, very important!!!
+        if isinstance(value,list):
+            newlist = []
+            for uuidRow in value:
+                assert(isinstance(uuidRow,uuid.UUID))
+                newlist.append(uuidRow.hex)
+        else:
+            assert(isinstance(value, uuid.UUID))
+            return value.hex
     
     def get_db_prep_lookup(self, lookup_type, value):
-        return [self.get_db_prep_value(value)]
+        if lookup_type == 'exact':
+            return [self.get_db_prep_value(value)]
+        elif lookup_type == 'in':
+            return [self.get_db_prep_value(value)]            
+        else:
+            raise TypeError('Lookup type %r not supported.' % lookup_type)
