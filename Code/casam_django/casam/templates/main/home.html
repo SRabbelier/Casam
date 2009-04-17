@@ -1,11 +1,9 @@
-<html>
-<head>
-<title>Kies een project</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
+{% block title %}Kies een project{% endblock title %}
 
-{{ len }}
+{% block body %}
+
 {% for project, images in projects.iteritems %}
 <h1>{{ project.name }}</h1>
   <a href="/project/{{ project.id }}">
@@ -18,5 +16,5 @@
   {% endif %}
   </a>
 {% endfor %}
-</body>
-</html>
+
+{% endblock body %}
