@@ -9,12 +9,12 @@ function handleResponseSaveLandmark() {
 }
 
 function saveLandMark(id){
-  var mousex = $('MouseX').value; 
-  var mousey = $('MouseY').value; 
-    
+  var mousex = $('MouseX').value;
+  var mousey = $('MouseY').value;
+
    savelm.open('post', '/landmarks/save');
-   savelm.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+   savelm.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
    savelm.onreadystatechange = handleResponseSaveLandmark;
    savelm.send('x='+escape(mousex)+'&y='+escape(mousey));
-    
+
 }

@@ -10,16 +10,16 @@ function getMouseXY(e) {
       mX = e.pageX
       mY = e.pageY
     }
-    if( mX-$('big_image1').offsetLeft >=0 && 
+    if( mX-$('big_image1').offsetLeft >=0 &&
         mX-$('big_image1').offsetLeft <= $('big_image1').width &&
-        mY-$('big_image1').offsetTop >=0 && 
-        mY-$('big_image1').offsetTop <= $('big_image1').height  
+        mY-$('big_image1').offsetTop >=0 &&
+        mY-$('big_image1').offsetTop <= $('big_image1').height
       ){
       $('MouseX').value = mX-$('big_image1').offsetLeft;
       $('MouseY').value = mY-$('big_image1').offsetTop;
       return;
     }
-  }  
+  }
   $('MouseX').value = "";
-  $('MouseY').value = ""; 
+  $('MouseY').value = "";
 }
