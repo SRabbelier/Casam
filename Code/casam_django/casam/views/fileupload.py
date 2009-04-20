@@ -51,6 +51,12 @@ def handle_uploaded_file(file,post, id_str):
   
   #open the file and create a thumbnail out of it
   fullImage = Image.open(location)
+  fullImageWidth = fullImage.size[0]
+  fullImageHeight = fullImage.size[1]
+  squareSize = min(fullImageWidth, fullImageHeight)
+  box = ((fullImageWidth-squareSize)/2,(fullImageHeight-squareSize)/2,(fullImageWidth-squareSize)/2+squareSize,(fullImageHeight-squareSize)/2+squareSize)
+  fullImage = fullImage.crop(box)
+  
   
   sizes = 50,100,200,300
   for singleSize in sizes:
