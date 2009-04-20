@@ -30,7 +30,7 @@
   <tr><th colspan="2">Foto's</th></tr>
   {%for im in images%}
   <tr>
-    <td style="width: 50px;"><img src="/{{im.path}}" style="width: 50px" /></td>
+    <td style="width: 50px;"><img src="{{DATADIR}}thumbnail/50/{{im.path}}" style="width: 50px" /></td>
     <td>{{im.name}}<br />
       {{im.added}}<br />
       {% ifequal im.is_left True %}
@@ -39,7 +39,7 @@
         Rechts
       {% endifequal %}
       <br />
-      <span onClick="show_image('/{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
+      <span onClick="show_image('{{DATADIR}}{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
     </td>
     </tr>
   {%endfor%}

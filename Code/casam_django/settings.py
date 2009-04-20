@@ -85,3 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'casam_django.casam',
 )
+
+DATADIR = 'data/'
+

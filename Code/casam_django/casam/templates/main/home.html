@@ -11,7 +11,7 @@
   <a href="/project/{{ project.id }}">
   {% if images %}
     {% for image in images %}
-      <img src="{{ image.path }}" style="height: 100px" alt="plaatje" />
+      <img src="{{DATADIR}}thumbnail/100/{{ image.path }}" alt="plaatje" />
     {% endfor %}
   {% else %}
      <img src="/media/newproject.png" style="height: 100px" alt="new project" />

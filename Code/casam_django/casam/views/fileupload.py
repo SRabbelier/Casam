@@ -5,6 +5,7 @@ from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
 from casam.models import OriginalImage
+from django.conf import settings
 
 import uuid
 import time
@@ -25,7 +26,8 @@ def fileupload(request, id_str):
 
     if form.is_valid():
       oi = handle_uploaded_file(request.FILES['file'],request.POST, id_str)
-      context = {'image': oi}
+      DATADIR = "../"+getattr(settings, 'DATADIR')
+      context = {'image': oi, 'DATADIR':DATADIR}
       content = loader.render_to_string('main/succes.html', dictionary=context)
       return http.HttpResponse(content)
     else:
@@ -38,8 +40,10 @@ def fileupload(request, id_str):
   return http.HttpResponse(content)
 
 def handle_uploaded_file(file,post, id_str):
+  DATADIR = getattr(settings, "DATADIR")
   timestamp = time.time()
-  location = "data/%d-%s" % (timestamp, file.name)
+  fileNameOnly = "%d-%s" % (timestamp, file.name)
+  location = DATADIR+"%d-%s" % (timestamp, file.name)
   destination = open(location, 'wb+') #wb+ is write binary
   for chunk in file.chunks():
       destination.write(chunk)
@@ -48,9 +52,9 @@ def handle_uploaded_file(file,post, id_str):
   #open the file and create a thumbnail out of it
   fullImage = Image.open(location)
   
-  sizes = 64,128,256
+  sizes = 50,100,200,300
   for singleSize in sizes:
-      thumbnailLocation = "data/thumbnail/%d/%d-%s" % (singleSize,timestamp, file.name)
+      thumbnailLocation = DATADIR+"thumbnail/%d/%d-%s" % (singleSize,timestamp, file.name)
       thumbnail=fullImage.copy()
       thumbnail.thumbnail((singleSize,singleSize),Image.ANTIALIAS)
       thumbnail.save(thumbnailLocation)
@@ -64,7 +68,7 @@ def handle_uploaded_file(file,post, id_str):
   OriginalImage.objects.all()
   
   proj = Project.objects.get(id=uuid.UUID(id_str))
-  oi = OriginalImage(patient=pat,name=post['name'],path=location,is_left=post['is_left'],project=proj)
+  oi = OriginalImage(patient=pat,name=post['name'],path=fileNameOnly,is_left=post['is_left'],project=proj)
   oi.save()
   return oi
 

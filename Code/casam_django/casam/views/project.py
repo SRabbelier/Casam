@@ -3,6 +3,7 @@ import uuid
 from django import http
 from django.template import loader
 from django import forms
+from django.conf import settings
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import MogelijkeMeting
@@ -17,11 +18,12 @@ class ProjectForm(forms.Form):
 
 
 def home(request, id_str):
+  DATADIR = '../'+getattr(settings, 'DATADIR')
   id = uuid.UUID(id_str)
   img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
   punten = Meting.objects.select_related().filter(project__id=id);
   mmetings = MogelijkeMeting.objects.all().filter(project__id=id);
-  context = {'images':img, 'id': id_str, 'mmetings':mmetings,'punten':punten}
+  context = {'images':img, 'id': id_str, 'mmetings':mmetings,'punten':punten, 'DATADIR':DATADIR}
 
   content = loader.render_to_string('project/home.html', dictionary=context)
   return http.HttpResponse(content)
@@ -43,8 +45,3 @@ def new(request):
 def handle_add_project(post):
   project = Project(name=post['name'])
   project.save()
-  
-  mmeting1 = MogelijkeMeting(project=project, name=post['mmeting1'])
-  mmeting2 = MogelijkeMeting(project=project, name=post['mmeting2'])
-  mmeting1.save()
-  mmeting2.save()
