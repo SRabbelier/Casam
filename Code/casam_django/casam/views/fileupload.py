@@ -10,6 +10,7 @@ import uuid
 import time
 import mimetypes
 import os
+import Image
 
 class UploadFileForm(forms.Form):
   is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
@@ -37,11 +38,23 @@ def fileupload(request, id_str):
   return http.HttpResponse(content)
 
 def handle_uploaded_file(file,post, id_str):
-  location = "data/%d-%s" % (time.time(), file.name)
+  timestamp = time.time()
+  location = "data/%d-%s" % (timestamp, file.name)
   destination = open(location, 'wb+') #wb+ is write binary
   for chunk in file.chunks():
       destination.write(chunk)
-  destination.close
+  destination.close()
+  
+  #open the file and create a thumbnail out of it
+  fullImage = Image.open(location)
+  
+  sizes = 64,128,256
+  for singleSize in sizes:
+      thumbnailLocation = "data/thumbnail/%d/%d-%s" % (singleSize,timestamp, file.name)
+      thumbnail=fullImage.copy()
+      thumbnail.thumbnail((singleSize,singleSize),Image.ANTIALIAS)
+      thumbnail.save(thumbnailLocation)
+  
   #temporarly create a patient object
   #because we need this info
   Patient.objects.all()
