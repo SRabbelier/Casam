@@ -32,3 +32,17 @@ class OriginalImage(Image):
 
 class WarpedImage(Image):
   pass
+
+
+class MogelijkeMeting(models.Model):
+  id = fields.UUIDField(primary_key=True,auto=True)
+  project = models.ForeignKey('Project')
+  name = models.CharField(max_length=30)
+  
+class Meting(models.Model):
+  id = fields.UUIDField(primary_key=True,auto=True)
+  project = models.ForeignKey('Project')
+  mogelijkemeting = models.ForeignKey('MogelijkeMeting')
+  x = models.CharField(max_length=4)
+  y = models.CharField(max_length=4)
+  
