@@ -16,12 +16,7 @@ def home(request):
   for img in imgs:
     projects[img.project] += [img]
 
-  context = {'projects': projects,
-             'is_local': settings.DEBUG}
+  context = {'projects': projects}
 
   content = loader.render_to_string('main/home.html', dictionary=context)
   return http.HttpResponse(content)
-
-
-def debug(request):
-  return http.HttpResponse(os.environ)
