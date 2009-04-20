@@ -24,4 +24,4 @@ def home(request):
 
 
 def debug(request):
-  return http.HttpResponse(os.environ['SERVER_SOFTWARE'])
+  return http.HttpResponse(os.environ)
