@@ -1,4 +1,5 @@
 from django import http
+from django import forms
 
 class Handler(object):
   """Handler base class for Django requests.
@@ -35,6 +36,18 @@ class Handler(object):
 
     if self.is_post:
       return self.getPostForm()
+
+    return self.getGetForm()
+
+  def getGetForm(self):
+    """Default implementation, returns an empty form.
+    """
+
+    return forms.Form()
+
+  def getPostForm(self):
+    """Default implementation, returns the get form.
+    """
 
     return self.getGetForm()
 
