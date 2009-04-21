@@ -21,7 +21,7 @@ class LandmarkForm(forms.Form):
   """TODO: dosctring
   """
 
-  mm = fields.UUIDField()
+  mm = forms.CharField() # TODO fix forms.UUIDField?
   x = forms.IntegerField(min_value=-5000, max_value=5000)
   y = forms.IntegerField(min_value=-5000, max_value=5000)
 
