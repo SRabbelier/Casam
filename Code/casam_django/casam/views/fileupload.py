@@ -1,17 +1,17 @@
 from django import http
 from django.template import loader
 from django import forms
-from casam.models import Image
-from casam.models import Patient
-from casam.models import Project
-from casam.models import OriginalImage
+from ..models import Image
+from ..models import Patient
+from ..models import Project
+from ..models import OriginalImage
 from django.conf import settings
 
 import uuid
 import time
 import mimetypes
 import os
-import Image
+#import Image
 
 class UploadFileForm(forms.Form):
   is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
