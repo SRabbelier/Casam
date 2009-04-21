@@ -1,31 +1,64 @@
-'''
-Created on 17 apr 2009
-
-@author: Jaap den Hollander
-'''
-import uuid
-
-from django import http
-from django.template import loader
-from django import forms
-from ..models import Image
-from ..models import Patient
-from ..models import Project
-from ..models import Meting
-from ..models import MogelijkeMeting
-from ..models import OriginalImage
-
 import uuid
 import time
 import mimetypes
 import os
 
-def save(request):
-  id = uuid.UUID(request.POST['mm']);
-  mmeting = MogelijkeMeting.objects.select_related().get(id=id);
-  punt = Meting(mogelijkemeting=mmeting,project=mmeting.project, x=request.POST['x'],y=request.POST['y'])
-  punt.save();
-  
-  context = {'x': punt.x,'y':punt.y,'mm':mmeting.name}
-  content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
-  return http.HttpResponse(content)
+from django import http
+from django.template import loader
+from django import forms
+
+from casam.django_tools import fields
+from casam.models import Image
+from casam.models import Patient
+from casam.models import Project
+from casam.models import Meting
+from casam.models import MogelijkeMeting
+from casam.models import OriginalImage
+from casam.views import handler
+
+
+class LandmarkForm(forms.Form):
+  """TODO: dosctring
+  """
+
+  mm = fields.UUIDField()
+  x = forms.IntegerField(min_value=-5000, max_value=5000)
+  y = forms.IntegerField(min_value=-5000, max_value=5000)
+
+
+class LandmarkSaver(handler.Handler):
+  """Handler to handle a save Landmark request.
+  """
+
+  def getGetForm(self):
+    return LandmarkForm()
+
+  def getPostForm(self):
+    return LandmarkForm(self.POST)
+
+  def get(self):
+    # TODO: implement this?
+    pass
+
+  def post(self):
+    mm = self.cleaned_data['mm']
+    id = uuid.UUID(mm);
+    mmeting = MogelijkeMeting.objects.select_related().get(id=id);
+
+    x = self.cleaned_data['x']
+    y = self.cleaned_data['y']
+
+    properties = dict(
+        mogelijkemeting=mmeting,
+        project=mmeting.project,
+        x=x,
+        y=y,
+        )
+
+    punt = Meting(**properties)
+    punt.save();
+
+    context = {'x': punt.x,'y':punt.y,'mm':mmeting.name}
+    content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
+
+    return http.HttpResponse(content)

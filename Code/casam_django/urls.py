@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     (r'^project/(.*)$', casam.views.project.home),
     (r'^fileupload/(?P<id_str>.*)$', casam.views.fileupload.FileUpload()),
     (r'^data/(.*)', casam.views.fileupload.viewfile),
-    (r'^landmarks/save', casam.views.landmarks.save),
+    (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
 )
 
 if settings.DEBUG:
