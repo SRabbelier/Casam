@@ -2,7 +2,21 @@
 
 <style type="text/css">
 
-div {overflow:hidden;}
+div {
+	overflow:hidden;
+	font-family:verdana;
+}
+
+div.main_project_title {
+	font-size:8pt;
+	font-weight: bold;
+	padding:2px;
+}
+div.main_project_description {
+	font-size:7pt;
+	font-weight: normal;
+	padding:4px;
+}
 
 </style>
 
@@ -35,7 +49,10 @@ div {overflow:hidden;}
 				
 					<div style="width:240px;height:100px;padding:10px;background-color:#dddddd;float:left;margin:5px;
 								background-position: bottom right;background-image:url('../../../media/img/project_background.jpg');">
-						<image src="" style="width:100px;heigth:100px;" /></div>
+						<image src="" style="width:100px;heigth:100px;float:left;" />
+						<div class="main_project_title">Titel of research</div>
+						<div class="main_project_description">Description that contains a lot of keywords where we can search for in the keyword-bar.</div>
+						</div>
 					<div style="width:240px;height:100px;padding:10px;background-color:#dddddd;float:left;margin:5px;cursor:pointer;
 								background-position: bottom right;background-image:url('../../../media/img/project_add.jpg');"></div>
 					<div style="width:240px;height:100px;padding:10px;background-color:#dddddd;float:left;margin:5px;cursor:pointer;
