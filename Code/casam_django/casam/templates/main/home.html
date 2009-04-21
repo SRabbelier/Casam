@@ -8,13 +8,13 @@
 
 {% for project, images in projects.iteritems %}
 <h1>{{ project.name }}</h1>
-  <a href="/project/{{ project.id }}">
+  <a href="project/{{ project.id }}">
   {% if images %}
     {% for image in images %}
       <img src="{{DATADIR}}thumbnail/100/{{ image.path }}" alt="plaatje" />
     {% endfor %}
   {% else %}
-     <img src="/media/newproject.png" style="height: 100px" alt="new project" />
+     <img src="media/newproject.png" style="height: 100px" alt="new project" />
   {% endif %}
   </a>
 {% endfor %}
