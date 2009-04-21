@@ -1,0 +1,37 @@
+div {
+	overflow:hidden;
+	font-family:verdana;
+	font-size:10pt;
+}
+
+div.main_project_title {
+	font-size:8pt;
+	font-weight: bold;
+	padding:2px;
+}
+div.main_project_description {
+	font-size:7pt;
+	font-weight: normal;
+	padding:4px;
+}
+div.main_project_empty_container {
+	width:240px;
+	height:100px;
+	padding:10px;
+	background-color:#dddddd;
+	float:left;
+	margin:5px;
+	cursor:pointer;
+	background-position: bottom right;
+	background-image:url('../img/project_add.jpg');
+}
+div.main_project_container {
+	width:240px;
+	height:100px;
+	padding:10px;
+	background-color:#dddddd;
+	float:left;
+	margin:5px;
+	background-position: bottom right;
+	background-image:url('../img/project_background.jpg');
+}
