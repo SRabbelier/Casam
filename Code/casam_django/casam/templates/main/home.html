@@ -1,25 +1,80 @@
-{% extends 'base.html' %}
+<body style="background-color:black;">
 
-{% block title %}Kies een project{% endblock title %}
+<link rel="stylesheet" href="../../../media/css/main.css">
 
-{% block body %}
+<center style="background-color:black;">
+	<img src="../../../media/img/casam_banner.jpg" />
+	<div style="width:866px;height:546px;overflow:none;">
 
-<p><a href="./project/new">New Project</a></p>
+		<!-- Top white frame -->
+		<div style="width:866px;height:20px;">
+			<div style="width:20px;height:20px;background-image:url('../../../media/img/left_top.jpg');float:left;"></div>
+			<div style="width:826px;height:20px;background-image:url('../../../media/img/top.jpg');float:left;"></div>
+			<div style="width:20px;height:20px;background-image:url('../../../media/img/right_top.jpg');float:right;"></div>
+		</div>
+
+		<div style="width:866px;height:506px;background-color:white;clear:both;">
+
+			<!-- Left white frame -->
+			<div style="width:20px;height:506px;background-image:url('../../../media/img/left.jpg');float:left;"></div>
+
+			<!-- Content white frame -->
+			<div style="width:826px;height:506px;float:left;overflow:auto;text-align:left;">
+
+				<!-- Top buttons -->
+				<div style="width:58px;height:48px;float:left;background-image:url('../../../media/img/search.jpg');background-repeat:no-repeat;"></div>
+				<div style="width:217px;height:48px;float:left;">Department:<br><select><option style="width:181px;">...</option></select></div>
+				<div style="width:280px;height:48px;float:left;">Keywords:<br><input style="width:260px;" /></div><br>
+
+				<!-- Projects -->
+				<div style="width:826px;height:390px;float:left;overflow-x:hidden;overflow-y:scroll;text-align:left;">
 
 {% for project, images in projects.iteritems %}
-<h1>{{ project.name }}</h1>
-  <a href="./project/{{ project.id }}">
-  {% if images %}
-    {% for image in images %}
-      <img src="{{DATADIR}}thumbnail/100/{{ image.path }}" alt="plaatje" />
-    {% endfor %}
-  {% else %}
-     <img src="./media/img/newproject.png" style="height: 100px" alt="new project" />
-  {% endif %}
-  </a>
+					<div class="main_project_container">
+					
+						<a href="./project/{{ project.id }}">
+					
+						{% if images %}
+  							{% for image in images %}
+							<image src="{{DATADIR}}thumbnail/100/{{ image.path }}" 
+								   style="width:100px;heigth:100px;float:left;" />
+						    {% endfor %}
+  						{% endif %}
+  							
+						</a>
+						<div class="main_project_title">{{ project.name }}</div>
+						<div class="main_project_description">{{ project.description }}</div>
+					</div>
 {% endfor %}
-<p>
-<a href="./user/home">Gebruikers</a>
-</p>
+					
+					
+					
+					<a href="./project/new"><div class="main_project_empty_container"></div></a><br>
 
-{% endblock body %}
+
+				</div>
+
+				<!-- Bottom buttons -->
+				<div style="width:48px;height:48px;float:left;">
+					<a href="www.google.nl" onfocus="blur()"><img src="../../../media/img/users.jpg" alt="User management" border="0" /></a></div>
+				<div style="width:48px;height:34px;float:right;">
+					<a href="www.google.nl" alt="Export data" onfocus="blur()"><img src="../../../media/img/export.jpg" border="0" /></a></div><br>
+				<div style="width:48px;height:34px;float:right;clear:right;">
+					<a href="www.google.nl" onfocus="blur()"><img src="../../../media/img/import.jpg" alt="Import data" border="0" /></a></div>
+
+			</div>
+
+			<!-- Right white frame -->
+			<div style="width:20px;height:506px;background-image:url('../../../media/img/right.jpg');float:right;"></div>
+
+		</div>
+
+		<!-- Bottom white frame -->
+		<div style="height:20px;width:866px;">
+			<div style="width:20px;height:20px;background-image:url('../../../media/img/left_bottom.jpg');float:left;"></div>
+			<div style="width:826px;height:20px;background-image:url('../../../media/img/bottom.jpg');float:left;"></div>
+			<div style="width:20px;height:20px;background-image:url('../../../media/img/right_bottom.jpg');float:right;"></div>
+		</div>
+	</div>
+</center>
+</body>
