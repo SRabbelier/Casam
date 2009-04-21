@@ -11,7 +11,7 @@ import uuid
 import time
 import mimetypes
 import os
-#import Image
+import Image
 
 class UploadFileForm(forms.Form):
   is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))

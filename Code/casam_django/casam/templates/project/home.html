@@ -26,45 +26,50 @@
 {% endblock scripts %}
 
 {% block body %}
-  <table style="float: left; width: 200px; border: 1px solid grey;">
-  <tr><th colspan="2">Foto's</th></tr>
-  {%for im in images%}
-  <tr>
-    <td style="width: 50px;"><img src="{{DATADIR}}thumbnail/50/{{im.path}}" style="width: 50px" /></td>
-    <td>{{im.name}}<br />
-      {{im.added}}<br />
-      {% ifequal im.is_left True %}
-        Links
-      {% else %}
-        Rechts
-      {% endifequal %}
-      <br />
-      <span onClick="show_image('{{DATADIR}}{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
-    </td>
-    </tr>
-  {%endfor%}
-  <tr><td colspan="2" style="border-top: 2px solid grey;"><a href="/fileupload/{{ id }}">Voeg een foto toe</a></td></tr>
-  <tr><th colspan="2">Landmarks</th></tr>
-  {%for mm in mmetings%}
-    <tr><td><div id="mm{{mm.id}}" style="width: 10px; height: 10px; background-color: red; display: inline; cursor: pointer;"> {{mm.name}}</div></td></tr>
-  {% endfor %}
-  <tr><th colspan="2">Geplaatste punten</th></tr>
-  {%for pt in punten %}
-    <tr><td>({{pt.x}},{{pt.y}})</td><td> in {{pt.mogelijkemeting.name}}</td></tr>
-  {% endfor %}
-  </table>
+	<div style="float: left; border: 1px solid grey;">
+	  <table style="width:200px">
+	  <tr><th colspan="2">Foto's</th></tr>
+	  {%for im in images%}
+	  <tr>
+	    <td style="width: 50px;"><img src="{{DATADIR}}thumbnail/50/{{im.path}}" style="width: 50px" /></td>
+	    <td>{{im.name}}<br />
+	      {{im.added}}<br />
+	      {% ifequal im.is_left True %}
+	        Links
+	      {% else %}
+	        Rechts
+	      {% endifequal %}
+	      <br />
+	      <span onClick="show_image('{{DATADIR}}{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
+	    </td>
+	    </tr>
+	  {%endfor%}
+	  <tr><td colspan="2" style="border-top: 2px solid grey;"><a href="/fileupload/{{ id }}">Voeg een foto toe</a></td></tr>
+	  <tr><th colspan="2">Landmarks</th></tr>
+	  {%for mm in mmetings%}
+	    <tr><td><div id="mm{{mm.id}}" style="width: 10px; height: 10px; background-color: red; display: inline; cursor: pointer;"> {{mm.name}}</div></td></tr>
+	  {% endfor %}
+	  <tr><th colspan="2">Geplaatste punten</th></tr>
+	  {%for pt in punten %}
+	    <tr><td>({{pt.x}},{{pt.y}})</td><td> in {{pt.mogelijkemeting.name}}</td></tr>
+	  {% endfor %}
+	  </table>
+  </div>
   
-  <table style="float: right; width: 200px; border: 1px solid grey;">
-  <tr><th>Doorzichtbaarheid instellen</th></tr>
-  <tr><td colspan="2" id="sliders"></td></tr>
-  <tr><th>Reset foto's</th></tr>
-  <tr><td id="delete_images"></td></tr>
-  <tr><th>Coordinaten</th></tr>
-  <tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
-      <input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
-  <tr><th>Ajax resultaten</th></tr>
-  <tr><td id="ajax_result"></td></tr>
-  </table>
+  <div id="photosContextMenu" style="cursor:pointer;position:absolute; width:200px; right:20px; top:20px; border: 1px solid grey; z-index:9999">
+	  <table style="width:200px">
+	  <tr><th>Doorzichtbaarheid instellen</th></tr>
+	  <tr><td colspan="2" id="sliders"></td></tr>
+	  <tr><th>Reset foto's</th></tr>
+	  <tr><td id="delete_images"></td></tr>
+	  <tr><th>Coordinaten</th></tr>
+	  <tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
+	      <input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
+	  <tr><th>Ajax resultaten</th></tr>
+	  <tr><td id="ajax_result"></td></tr>
+	  </table>
+	</div>
+	
   <div id="big_images">
   </div>
   

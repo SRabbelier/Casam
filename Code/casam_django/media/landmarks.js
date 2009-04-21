@@ -35,3 +35,10 @@ function LoadMMDD(){
   $('lmmy').value = mousey;
   $('lmdd').show();
 }
+
+document.observe("dom:loaded", function() {
+	if($('photosContextMenu'))
+	{
+		new Draggable('photosContextMenu');
+	}
+});
