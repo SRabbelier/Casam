@@ -19,6 +19,7 @@ div.main_project_empty_container {
 	height:100px;
 	padding:10px;
 	background-color:#dddddd;
+	color:black;
 	float:left;
 	margin:5px;
 	cursor:pointer;
@@ -30,6 +31,7 @@ div.main_project_container {
 	height:100px;
 	padding:10px;
 	background-color:#dddddd;
+	color:black;
 	float:left;
 	margin:5px;
 	background-position: bottom right;
