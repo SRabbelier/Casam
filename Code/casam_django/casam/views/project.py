@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core import serializers
 from django.template import loader
 
+from casam.logic import project as project_logic
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import MogelijkeMeting
@@ -42,26 +43,31 @@ class Home(handler.Handler):
     return http.HttpResponse(content)
 
 
-def new(request):
-  if request.method == 'POST':
-    form = ProjectForm(request.POST)
+class NewProject(handler.Handler):
+  """Handler for the creation of a new project.
+  """
 
-    if form.is_valid():
-      handle_add_project(request.POST)
-      return http.HttpResponseRedirect('/')
+  def getGetForm(self):
+    return ProjectForm()
 
-  context = {'form': ProjectForm()}
-  content = loader.render_to_string('project/new.html', dictionary=context)
-  return http.HttpResponse(content)
+  def getPostForm(self):
+    return ProjectForm(self.POST)
 
-def handle_add_project(post):
-  project = Project(name=post['name'])
-  project.save()
-  mm1 = MogelijkeMeting(name=post['mmeting1'], project=project)
-  mm1.save()
-  mm2 = MogelijkeMeting(name=post['mmeting2'], project=project)
-  mm2.save()
-  
+  def post(self):
+    name = self.cleaned_data['name']
+    mmeting1 = self.cleaned_data['mmeting1']
+    mmeting2 = self.cleaned_data['mmeting2']
+
+    project_logic.handle_add_project(name, mmeting1, mmeting2)
+
+    return http.HttpResponseRedirect('/')
+
+  def get(self):
+    context = {'form': self.form}
+    content = loader.render_to_string('project/new.html', dictionary=context)
+    return http.HttpResponse(content)
+
+
 def projectImagesJSON(request,id_str):
   id = uuid.UUID(id_str)
   img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
