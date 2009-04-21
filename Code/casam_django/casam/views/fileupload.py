@@ -48,7 +48,7 @@ def handle_uploaded_file(file,post, id_str):
   for chunk in file.chunks():
       destination.write(chunk)
   destination.close()
-  
+
   #open the file and create a thumbnail out of it
   fullImage = Image.open(location)
   fullImageWidth = fullImage.size[0]
@@ -56,15 +56,15 @@ def handle_uploaded_file(file,post, id_str):
   squareSize = min(fullImageWidth, fullImageHeight)
   box = ((fullImageWidth-squareSize)/2,(fullImageHeight-squareSize)/2,(fullImageWidth-squareSize)/2+squareSize,(fullImageHeight-squareSize)/2+squareSize)
   fullImage = fullImage.crop(box)
-  
-  
+
+
   sizes = 50,100,200,300
   for singleSize in sizes:
       thumbnailLocation = DATADIR+"thumbnail/%d/%d-%s" % (singleSize,timestamp, file.name)
       thumbnail=fullImage.copy()
       thumbnail.thumbnail((singleSize,singleSize),Image.ANTIALIAS)
       thumbnail.save(thumbnailLocation)
-  
+
   #temporarly create a patient object
   #because we need this info
   Patient.objects.all()
@@ -72,7 +72,7 @@ def handle_uploaded_file(file,post, id_str):
   pat.save()
   #safe the uploaded image
   OriginalImage.objects.all()
-  
+
   proj = Project.objects.get(id=uuid.UUID(id_str))
   oi = OriginalImage(patient=pat,name=post['name'],path=fileNameOnly,is_left=post['is_left'],project=proj)
   oi.save()
