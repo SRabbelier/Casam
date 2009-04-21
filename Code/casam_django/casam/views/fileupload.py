@@ -13,6 +13,7 @@ from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
 from casam.models import OriginalImage
+from casam.views import handler
 
 
 class UploadFileForm(forms.Form):
@@ -25,29 +26,33 @@ class UploadFileForm(forms.Form):
   file = forms.FileField()
 
 
-def fileupload(request, id_str):
-  """TODO: Docstring
+class FileUpload(handler.Handler):
+  """Handler to handle a File Upload request.
   """
 
-  if request.method == 'POST':
-    form = UploadFileForm(request.POST, request.FILES)
+  def getPostForm(self):
+    return UploadFileForm(self.POST, self.FILES)
 
-    if form.is_valid():
-      oi = fileupload_logic.handle_uploaded_file(request.FILES['file'],
-                                                 request.POST, id_str)
+  def getGetForm(self):
+    return UploadFileForm()
 
-      DATADIR = "../"+getattr(settings, 'DATADIR')
-      context = {'image': oi, 'DATADIR':DATADIR}
-      content = loader.render_to_string('main/succes.html', dictionary=context)
-      return http.HttpResponse(content)
-    else:
-      print form.errors
-  else:
-    pass
+  def post(self):
+    file = self.FILES['file']
+    name = self.cleaned_data['name']
+    is_left = self.cleaned_data['is_left']
+    id_str = self.kwargs['id_str']
 
-  context = {'form': UploadFileForm()}
-  content = loader.render_to_string('main/fileupload.html', dictionary=context)
-  return http.HttpResponse(content)
+    oi = fileupload_logic.handle_uploaded_file(file, name, is_left, id_str)
+
+    DATADIR = "../" + settings.DATADIR
+    context = {'image': oi, 'DATADIR': DATADIR}
+    content = loader.render_to_string('main/succes.html', dictionary=context)
+    return http.HttpResponse(content)
+
+  def get(self):
+    context = {'form': self.form}
+    content = loader.render_to_string('main/fileupload.html', dictionary=context)
+    return http.HttpResponse(content)
 
 
 def viewfile(request, name):
