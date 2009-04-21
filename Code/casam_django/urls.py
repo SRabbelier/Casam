@@ -13,6 +13,7 @@ import casam.views.landmarks
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^$', casam.views.main.home),
+    (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
     (r'^project/new$', casam.views.project.new),
     (r'^project/(.*)$', casam.views.project.home),
     (r'^fileupload/(?P<id_str>.*)$', casam.views.fileupload.FileUpload()),

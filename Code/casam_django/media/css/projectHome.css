@@ -1,0 +1,32 @@
+.projectPictureDiv{
+	background-color:white;
+	color:black;
+	width:200px;
+	height:100px;
+	position:relative;
+	margin-bottom:2px;
+}
+
+.projectPictureInfo{
+	display:block;
+}
+
+.pictureContainerRightDiv{
+	float:left;
+	margin-top:10px;
+}
+.pictureContainerLeftDiv{
+	float:left;
+	margin-top:25px;
+	margin-left:5px;
+	margin-right:5px;
+	
+}
+
+#pictureContainerHeader{
+	background:grey;
+	cursor:pointer;	
+}
+tr th {
+ background-color: #ccc;
+}

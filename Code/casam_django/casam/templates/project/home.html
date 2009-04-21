@@ -3,11 +3,7 @@
 {% block title %}Overzicht projecten en foto's{% endblock title %}
 
 {% block scripts %}
-  <style type="text/css">
-  tr th {
-   background-color: #ccc;
-  }
-  </style>
+  <link href="/media/css/projectHome.css" rel="stylesheet" type="text/css" media="screen" />
   <script type="text/javascript">
   var total_images = 0;
   </script>
@@ -16,30 +12,70 @@
   <script type="text/javascript">
 	  document.observe("dom:loaded", function() {
 			document.observe('mousemove',getMouseXY);
+			$('pictureContainer').hide();
+			getProjectImages();
+			$('pictureContainerHeader').observe('click',function(){
+					Effect.toggle('pictureContainer','blind');
+				});
 		});
+
+		function getProjectImages()
+		{			
+			var url = 'projectImagesJSON/{{id}}'
+				// notice the use of a proxy to circumvent the Same Origin Policy.
+				new Ajax.Request(url, {
+				  method: 'get',
+				  onSuccess: function(transport,json) {
+				     var json = transport.responseText.evalJSON();
+				     $('pictureContainerHeader').update('Pictures('+json.length+')');
+				     for(i=0;i < json.length;i++)
+				     {
+								makePictureContainer(json[i]);
+				     }
+				     Effect.BlindDown('pictureContainer');
+					}
+				});
+		}
+
+		function makePictureContainer(pictureJSON)
+		{
+		     var mainDiv = new Element('div');
+		     var leftDiv = new Element('div');
+		     leftDiv.addClassName('pictureContainerLeftDiv');
+		     var rightDiv = new Element('div');
+		     rightDiv.addClassName('pictureContainerRightDiv');
+		     mainDiv.addClassName('projectPictureDiv');
+		     leftDiv.insert(new Element('img',{'src':'{{DATADIR}}thumbnail/50/'+pictureJSON.fields.path}));
+		     rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
+		     rightDiv.insert(new Element('span').update(pictureJSON.fields.added).addClassName('projectPictureInfo'));
+		     if(pictureJSON.fields.isLeft)
+		     {
+		    	 rightDiv.insert(new Element('span').update('Left').addClassName('projectPictureInfo'));
+		     }else{
+		    	 rightDiv.insert(new Element('span').update('Right').addClassName('projectPictureInfo'));
+		     }
+		     var useLink = new Element('a',{'href':'#'}).update('Use');
+		     rightDiv.insert(useLink);
+		     $('pictureContainer').insert(mainDiv);
+		     useLink.observe('click',function(){
+		    	 show_image('{{DATADIR}}'+pictureJSON.fields.path);
+		    	 return false;
+			   });
+			   mainDiv.insert(leftDiv);
+			   mainDiv.insert(rightDiv);
+		}
   </script>
 
 {% endblock scripts %}
 
 {% block body %}
 	<div style="float: left; border: 1px solid grey;">
+		<div id="pictureContainerHeader">Pictures (loading)</div>
+		<div id="pictureContainer">
+		</div>
+		
 	  <table style="width:200px">
-	  <tr><th colspan="2">Foto's</th></tr>
-	  {%for im in images%}
-	  <tr>
-	    <td style="width: 50px;"><img src="{{DATADIR}}thumbnail/50/{{im.path}}" style="width: 50px" /></td>
-	    <td>{{im.name}}<br />
-	      {{im.added}}<br />
-	      {% ifequal im.is_left True %}
-	        Links
-	      {% else %}
-	        Rechts
-	      {% endifequal %}
-	      <br />
-	      <span onClick="show_image('{{DATADIR}}{{im.path}}')" style='cursor: pointer; text-decoration: underline;'>Link</a>
-	    </td>
-	    </tr>
-	  {%endfor%}
+	  
 	  <tr><td colspan="2" style="border-top: 2px solid grey;"><a href="../fileupload/{{ id }}">Voeg een foto toe</a></td></tr>
 	  <tr><th colspan="2">Landmarks</th></tr>
 	  {%for mm in mmetings%}

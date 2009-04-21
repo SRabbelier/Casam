@@ -8,6 +8,8 @@ from ..models import OriginalImage
 from ..models import Project
 from ..models import MogelijkeMeting
 from ..models import Meting
+from django.core import serializers 
+
 
 
 class ProjectForm(forms.Form):
@@ -41,11 +43,6 @@ def new(request):
   content = loader.render_to_string('project/new.html', dictionary=context)
   return http.HttpResponse(content)
 
-def project(request):
-  print 'hallo'
-  content = loader.render_to_string('project/project.html')
-  return http.HttpResponse(content)
-
 def handle_add_project(post):
   project = Project(name=post['name'])
   project.save()
@@ -53,3 +50,9 @@ def handle_add_project(post):
   mm1.save()
   mm2 = MogelijkeMeting(name=post['mmeting2'], project=project)
   mm2.save()
+  
+def projectImagesJSON(request,id_str):
+  id = uuid.UUID(id_str)
+  img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
+  data = serializers.serialize("json", img)
+  return http.HttpResponse(data, mimetype="application/javascript")
