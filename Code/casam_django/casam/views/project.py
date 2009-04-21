@@ -41,6 +41,10 @@ def new(request):
   content = loader.render_to_string('project/new.html', dictionary=context)
   return http.HttpResponse(content)
 
+def project(request):
+  print 'hallo'
+  content = loader.render_to_string('project/project.html')
+  return http.HttpResponse(content)
 
 def handle_add_project(post):
   project = Project(name=post['name'])
