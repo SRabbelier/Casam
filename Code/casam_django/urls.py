@@ -9,6 +9,7 @@ import casam.views.main
 import casam.views.project
 import casam.views.fileupload
 import casam.views.landmarks
+import casam.views.users
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
@@ -19,6 +20,9 @@ urlpatterns = patterns('',
     (r'^fileupload/(?P<id_str>.*)$', casam.views.fileupload.FileUpload()),
     (r'^data/(.*)', casam.views.fileupload.viewfile),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
+    (r'^user/new$', casam.views.users.new),
+    (r'^user/home$', casam.views.users.home),
+    (r'^user/(.*)$', casam.views.users.view)
 )
 
 if settings.DEBUG:

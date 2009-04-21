@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Gebruikers{% endblock title %}
+
+{% block body %}
+
+<p>
+<a href='./new'>New User</a>
+</p>
+
+{% for user in users %}
+<h1><a href='./{{user.id}}'>{{ user.name }}</a></h1>
+  {{user.login}}<br>
+  {{user.password}}<br>
+  {{user.type}}
+{% endfor %}
+
+{% endblock body %}
