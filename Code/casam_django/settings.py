@@ -4,6 +4,12 @@ import os
 
 ROOT_PATH = os.path.dirname(__file__)
 
+
+if os.environ.get('HTTP_HOST'):
+  BASE_PATH = os.environ.get('HTTP_HOST')
+else:
+  BASE_PATH = 'http://localhost:8000/'
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

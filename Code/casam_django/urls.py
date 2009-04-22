@@ -13,7 +13,7 @@ import casam.views.users
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
-    (r'^$', casam.views.main.home),
+    (r'^$', casam.views.main.Home()),
     (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
     (r'^project/new$', casam.views.project.NewProject()),
     (r'^project/(?P<id_str>.*)$', casam.views.project.Home()),

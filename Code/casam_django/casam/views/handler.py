@@ -1,5 +1,6 @@
 from django import http
 from django import forms
+from django.conf import settings
 
 class Handler(object):
   """Handler base class for Django requests.
@@ -30,6 +31,12 @@ class Handler(object):
 
     return self.get()
 
+  def getContext(self):
+    """Returns a dictionary for every class
+    """
+    
+    return {'BASE_PATH': settings.BASE_PATH, 'DATADIR': settings.DATADIR}
+  
   def getForm(self):
     """Returns the appropriate form for the current request.
     """
