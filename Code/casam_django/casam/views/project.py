@@ -26,8 +26,7 @@ class Home(handler.Handler):
   """
 
   def get(self):
-    DATADIR = '../' + settings.DATADIR
-
+    
     id_str = self.kwargs['id_str']
     id = uuid.UUID(id_str)
 
@@ -35,8 +34,12 @@ class Home(handler.Handler):
 
     punten = Measurement.objects.select_related().filter(project__id=id);
     mmetings = ProjectMeasurementList.objects.all().filter(project__id=id);
-
-    context = {'images':img, 'id': id_str, 'mmetings':mmetings,'punten':punten, 'DATADIR':DATADIR}
+    
+    context = self.getContext();
+    context['images'] = img
+    context['id'] = id_str
+    context['mmetings'] = mmetings
+    context['punten'] = punten
   
     content = loader.render_to_string('project/home.html', dictionary=context)
 

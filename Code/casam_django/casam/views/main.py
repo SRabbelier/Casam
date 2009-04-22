@@ -22,6 +22,7 @@ class Home(handler.Handler):
   
     context = self.getContext();
     context['projects'] = projects
+    context['os'] = os.environ
 
     content = loader.render_to_string('main/home.html', dictionary=context)
     return http.HttpResponse(content)
