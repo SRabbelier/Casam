@@ -6,79 +6,89 @@
 
 <link rel="stylesheet" href="./media/css/main.css">
 
-<center style="background-color:black;">
-	<img src="./media/img/casam_banner.jpg" />
-	<div style="width:866px;height:546px;overflow:none;">
+<img src="./media/img/casam_banner.jpg" />
+<div id="whiteFrame_container">
 
-		<!-- Top white frame -->
-		<div style="width:867px;height:20px;">
-			<div style="width:20px;height:20px;background-image:url('./media/img/left_top.jpg');float:left;"></div>
-			<div style="width:827px;height:20px;background-image:url('./media/img/top.jpg');float:left;"></div>
-			<div style="width:20px;height:20px;background-image:url('./media/img/right_top.jpg');float:right;"></div>
-		</div>
+	<!-- Top white frame -->
+	<div id="whiteFrame_top_container">
+		<div id="whiteFrame_top_left"></div>
+		<div id="whiteFrame_top_middle"></div>
+		<div id="whiteFrame_top_right"></div>
+	</div>
 
-		<div style="width:867px;height:506px;background-color:white;clear:both;">
+	<div id="whiteFrame_center_container">
 
-			<!-- Left white frame -->
-			<div style="width:20px;height:506px;background-image:url('./media/img/left.jpg');float:left;"></div>
+		<!-- Left white frame -->
+		<div id="whiteFrame_center_left"></div>
 
-			<!-- Content white frame -->
-			<div style="width:827px;height:506px;float:left;text-align:left;">
+		<!-- Content white frame -->
+		<div id="whiteFrame_center_middle">
 
-				<!-- Top buttons -->
-				<div style="width:58px;height:48px;float:left;background-image:url('./media/img/search.jpg');background-repeat:no-repeat;"></div>
-				<div style="width:217px;height:48px;float:left;">Department:<br><select><option style="width:181px;">...</option></select></div>
-				<div style="width:280px;height:48px;float:left;">Keywords:<br><input style="width:260px;" /></div><br>
+			<!-- Top buttons -->
+			<div id="whiteFrame_searchIcon"></div>
+			<div id="whiteFrame_departmentSelection_container">
+				Department:<br>
+				<select id="whiteFrame_departmentSelection_dropdown">
+					<option>...</option>
+				</select>
+			</div>
+			<div id="whiteFrame_keywordSearch_container">
+				Keywords:<br>
+				<input id="whiteFrame_keywordSearch_textbox" />
+			</div>
+			
+			
+<br>
 
-				<!-- Projects -->
-				<div style="width:827px;height:390px;float:left;overflow-x:hidden;overflow-y:scroll;text-align:left;">
+			<!-- Projects -->
+			<div id="whiteFrame_projects_container">
 
-				{% for project, images in projects.iteritems %}
+			{% for project, images in projects.iteritems %}
 
-					<a href="./project/{{ project.id }}">
-					<div class="main_project_container">
+				<a href="./project/{{ project.id }}">
+				<div class="main_project_container">
+				
+				
+					{% if images %}
+ 							{% for image in images %}
+						<image src="{{DATADIR}}thumbnail/100/{{ image.path }}" 
+							   class="project_image" border="0" />
+					    {% endfor %}
+ 						{% endif %}
+ 							
 					
-					
-						{% if images %}
-  							{% for image in images %}
-							<image src="{{DATADIR}}thumbnail/100/{{ image.path }}" 
-								   style="width:100px;heigth:100px;float:left;" border="0" />
-						    {% endfor %}
-  						{% endif %}
-  							
-						
-						<div class="main_project_title">{{ project.name }}</div>
-						<div class="main_project_description">{{ project.description }}</div>
-					</div>
-					</a>
-				{% endfor %}
-					
-					<a href="./project/new"><div class="main_project_empty_container"></div></a>
-
-
+					<div class="main_project_title">{{ project.name }}</div>
+					<div class="main_project_description">{{ project.description }}</div>
 				</div>
+				</a>
+			{% endfor %}
+				
+				<a href="./project/new"><div class="main_project_empty_container"></div></a>
 
-				<!-- Bottom buttons -->
-				<div style="width:48px;height:48px;float:left;">
-					<a href="./user/home" onfocus="blur()"><img src="./media/img/users.jpg" alt="User management" border="0" /></a></div>
-				<div style="width:48px;height:34px;float:right;">
-					<a href="www.google.nl" alt="Export data" onfocus="blur()"><img src="./media/img/export.jpg" border="0" /></a></div><br>
-				<div style="width:48px;height:34px;float:right;clear:right;">
-					<a href="www.google.nl" onfocus="blur()"><img src="./media/img/import.jpg" alt="Import data" border="0" /></a></div>
 
 			</div>
 
-			<!-- Right white frame -->
-			<div style="width:20px;height:506px;background-image:url('./media/img/right.jpg');float:right;"></div>
+			<!-- Bottom buttons -->
+			<div id="whiteFrame_userMangement_container">
+				<a href="./user/home" onfocus="blur()"><img src="./media/img/users.jpg" alt="User management" border="0" /></a></div>
+			<div id="whiteFrame_export_container">
+				<a href="www.google.nl" alt="Export data" onfocus="blur()"><img src="./media/img/export.jpg" border="0" /></a></div><br>
+			<div id="whiteFrame_export_container">
+				<a href="www.google.nl" onfocus="blur()"><img src="./media/img/import.jpg" alt="Import data" border="0" /></a></div>
 
 		</div>
 
-		<!-- Bottom white frame -->
-		<div style="height:20px;width:867px;">
-			<div style="width:20px;height:20px;background-image:url('./media/img/left_bottom.jpg');float:left;"></div>
-			<div style="width:827px;height:20px;background-image:url('./media/img/bottom.jpg');float:left;"></div>
-			<div style="width:20px;height:20px;background-image:url('./media/img/right_bottom.jpg');float:right;"></div>
-		</div>
+		<!-- Right white frame -->
+		<div id="whiteFrame_center_right"></div>
+
 	</div>
-</center>
+
+	<!-- Bottom white frame -->
+	<div id="whiteFrame_bottom_container">
+		<div id="whiteFrame_bottom_left"></div>
+		<div id="whiteFrame_bottom_center"></div>
+		<div id="whiteFrame_bottom_right"></div>
+	</div>
+</div>
+
 {% endblock body %}
