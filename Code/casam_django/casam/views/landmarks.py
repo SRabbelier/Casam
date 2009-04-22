@@ -42,7 +42,7 @@ class LandmarkSaver(handler.Handler):
 
   def post(self):
     mm = self.cleaned_data['mm']
-    id = uuid.UUID(mm);
+    id = mm;
     mmeting = ProjectMeasurementList.objects.select_related().get(id=id);
 
     x = self.cleaned_data['x']

@@ -27,12 +27,11 @@ class Home(handler.Handler):
 
   def get(self):
     id_str = self.kwargs['id_str']
-    id = uuid.UUID(id_str)
 
-    img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
+    img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
 
-    punten = Measurement.objects.select_related().filter(project__id=id);
-    mmetings = ProjectMeasurementList.objects.all().filter(project__id=id);
+    punten = Measurement.objects.select_related().filter(project__id=id_str);
+    mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
     
     context = self.getContext();
     context['images'] = img
@@ -71,7 +70,6 @@ class NewProject(handler.Handler):
 
 
 def projectImagesJSON(request,id_str):
-  id = uuid.UUID(id_str)
-  img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
+  img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
   data = serializers.serialize("json", img)
   return http.HttpResponse(data, mimetype="application/javascript")

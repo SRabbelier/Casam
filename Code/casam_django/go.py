@@ -15,11 +15,13 @@ def main():
   HERE = os.path.join(os.path.dirname(HERE), '..')
   HERE = os.path.normpath(HERE)
 
+  WERKZEUG = [os.path.join(HERE, 'werkzeug')]
+  DJANGO_EXTENSIONS = [os.path.join(HERE, 'django_extensions')]
   DJANGO = [os.path.join(HERE, 'django')]
   CASAM = [os.path.join(HERE, 'casam_django', 'casam')]
   #CASAM_CASAM = [os.path.join(CASAM, 'casam')]
 
-  sys.path = DJANGO + CASAM + sys.path
+  sys.path = WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
   #sys.path = CASAM + sys.path
   #print sys.path
   #sys.path = CASAM_CASAM + sys.path

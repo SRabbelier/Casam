@@ -58,7 +58,7 @@ def handle_uploaded_file(file, name, is_left, id_str):
   #safe the uploaded image
   OriginalImage.objects.all()
 
-  proj = Project.objects.get(id=uuid.UUID(id_str))
+  proj = Project.objects.get(id=id_str)
 
   properties = dict(
       patient=pat,

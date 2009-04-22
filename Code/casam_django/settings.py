@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'casam_django.casam',
+    'django_extensions',
 )
 
 DATADIR = 'data/'

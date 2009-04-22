@@ -20,7 +20,7 @@ class SimpleApplicationTestCase(unittest.TestCase):
         self.assertEquals(Project.objects.all().count(),2)
         
         #Assure that the id's of the 2 projects are not the same
-        self.assertNotEquals(self.project1.id.hex,self.project2.id.hex)
+        self.assertNotEquals(self.project1.id,self.project2.id)
         
         #Project 1 should be added before Project 2
         self.assertTrue(self.project1.added < self.project2.added)
@@ -28,14 +28,11 @@ class SimpleApplicationTestCase(unittest.TestCase):
         #DELETING FAILS
         #oldid = self.project1.id
         #after deleting Project 1, the counter should be back to 1
-        #self.project1.clear()
-        #Project.objects.all().delete()
-        #self.assertEquals(Project.objects.all().count(),1)
-        #Project.objects.get(id = oldid).entry_set.remove()
-        #p1 = Project.objects.get(id = oldid)
-        #print p1
+        Project.objects.all().get(id=self.project1.id).delete()
+        self.assertEquals(Project.objects.all().count(),1)
         
-        #Project.objects.all().remove()
+        Project.objects.all().delete()
+        self.assertEquals(Project.objects.all().count(),0)
         
     #def tearDown(self):
     #    allProjects = Project.objects.all()

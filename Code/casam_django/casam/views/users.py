@@ -47,7 +47,7 @@ def handle_add_user(post):
 
 def view(request, id_str):
   DATADIR = '../'+getattr(settings, 'DATADIR')
-  id = uuid.UUID(id_str)
+  id = id_str
   user = User.objects.get(id=id)
   initial = {'name': user.name, 'login': user.login, 'password': user.password, 'type': user.type, 'id': id}
   context = {'form': UserForm(initial=initial)}
