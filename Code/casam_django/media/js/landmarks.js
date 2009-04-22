@@ -17,7 +17,7 @@ function saveLandMark(){
     alert("you suck!");
   }
   else{
-   savelm.open('post', 'landmarks/save');
+   savelm.open('post', '../landmarks/save');
    savelm.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
    savelm.onreadystatechange = handleResponseSaveLandmark;
    savelm.send('x='+escape(mousex)+'&y='+escape(mousey)+'&mm='+escape(mm));
