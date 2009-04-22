@@ -2,6 +2,14 @@
 import os
 import sys
 
+# Log errors.
+def log_exception(*args, **kwds):
+  """Function used for logging exceptions.
+  """
+  import logging
+  logging.exception('Exception in request:')
+
+
 def main():
   HERE = os.path.abspath(__file__)
   HERE = os.path.join(os.path.dirname(HERE), '..')
@@ -15,7 +23,7 @@ def main():
   #sys.path = CASAM + sys.path
   #print sys.path
   #sys.path = CASAM_CASAM + sys.path
-  
+
   #print sys.path
 
   if len(sys.argv) == 1:
@@ -33,6 +41,11 @@ def main():
   from django.conf import settings
   settings.DEBUG = True
 
+  import django.core.signals
+
+  # Log all exceptions detected by Django.
+  django.core.signals.got_request_exception.connect(log_exception)
+
+
 if __name__ == '__main__':
   main()
-
