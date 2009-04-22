@@ -1,0 +1,201 @@
+/* GENERAL */
+
+body {
+	background-color: black;
+}
+
+div {
+	overflow:hidden;
+	font-family:verdana;
+	font-size:10pt;
+	color:black;
+}
+
+/* Project display container */
+
+div.main_project_title {
+	font-size:8pt;
+	font-weight: bold;
+	padding:2px;
+}
+
+div.main_project_description {
+	font-size:7pt;
+	font-weight: normal;
+	padding:4px;
+}
+
+div.main_project_empty_container {
+	width:240px;
+	height:100px;
+	padding:10px;
+	background-color:#dddddd;
+	color:black;
+	float:left;
+	margin:5px;
+	cursor:pointer;
+	background-position: bottom right;
+	background-image:url('../img/project_add.jpg');
+}
+
+div.main_project_container {
+	width:240px;
+	height:100px;
+	padding:10px;
+	background-color:#dddddd;
+	color:black;
+	float:left;
+	margin:5px;
+	background-position: bottom right;
+	background-image:url('../img/project_background.jpg');
+}
+
+img.project_image {
+	width:100px;
+	height:100px;
+	float:left;
+}
+
+/* White frame */
+
+#whiteFrame_container {
+	 width:866px;
+	 height:546px;
+	 overflow:none;
+	 margin:auto;
+}
+
+#whiteFrame_top_container {
+	width:867px;
+	height:20px;	
+}
+
+#whiteFrame_top_left {
+	width:20px;
+	height:20px;
+	background-image:url('../img/left_top.jpg');
+	float:left;
+}
+
+#whiteFrame_top_middle {
+	width:827px;
+	height:20px;
+	background-image:url('../img/top.jpg');
+	float:left;
+}
+
+#whiteFrame_top_right {
+	width:20px;
+	height:20px;
+	background-image:url('../img/right_top.jpg');
+	float:right;
+}
+
+#whiteFrame_center_container {
+	width:867px;
+	height:506px;
+	background-color:white;
+	clear:both;
+}
+
+#whiteFrame_center_left {
+	width:20px;
+	height:506px;
+	background-image:url('../img/left.jpg');
+	float:left;
+}
+
+#whiteFrame_center_middle {
+	width:827px;
+	height:506px;
+	float:left;
+	text-align:left;
+}
+
+#whiteFrame_searchIcon {
+	width:58px;
+	height:48px;
+	float:left;
+	background-image:url('../img/search.jpg');
+	background-repeat:no-repeat;
+}
+
+#whiteFrame_departmentSelection_container {
+	width:217px;
+	height:48px;
+	float:left;
+}
+
+#whiteFrame_departmentSelection_dropdown {
+	width:181px;
+}
+
+#whiteFrame_keywordSearch_container {
+	width:280px;
+	height:48px;
+	float:left;
+}
+
+#whiteFrame_keywordSearch_textbox {
+	width:260px;
+}
+
+#whiteFrame_projects_container {
+	width:827px;
+	height:390px;
+	float:left;
+	overflow-x:hidden;
+	overflow-y:scroll;
+	text-align:left;
+}
+
+#whiteFrame_userMangement_container {
+	width:48px;
+	height:48px;
+	float:left;
+}
+#whiteFrame_export_container {
+	width:48px;
+	height:34px;
+	float:right;
+}
+
+#whiteFrame_export_container {
+	width:48px;
+	height:34px;
+	float:right;
+	clear:right;
+}
+
+#whiteFrame_center_right {
+	width:20px;
+	height:506px;
+	background-image:url('../img/right.jpg');
+	float:right;
+}
+
+#whiteFrame_bottom_container {
+	height:20px;
+	width:867px;
+}
+
+#whiteFrame_bottom_left {
+	width:20px;
+	height:20px;
+	background-image:url('../img/left_bottom.jpg');
+	float:left;
+}
+
+#whiteFrame_bottom_center {
+	width:827px;
+	height:20px;
+	background-image:url('../img/bottom.jpg');
+	float:left;
+}
+
+#whiteFrame_bottom_right {
+	width:20px;
+	height:20px;
+	background-image:url('../img/right_bottom.jpg');
+	float:right;
+}
