@@ -11,7 +11,7 @@ div {
 	color:black;
 }
 
-td {
+table {
 	text-align: right;
 }
 
@@ -68,7 +68,7 @@ td {
 	width:350px;
 	height:100px;
 	float:left;
-	text-align:left;
+	text-align:center;
 }
 
 
