@@ -8,7 +8,7 @@ from django.conf import settings
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
-from casam.modelsls import Measurement
+from casam.models import Measurement
 from casam.models import User
 
 class UserForm(forms.Form):
@@ -23,7 +23,7 @@ class UserForm(forms.Form):
   type = forms.CharField(max_length=1, widget=forms.Select(choices=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
   id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)
-  read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
+  #read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
 
 def new(request):
   if request.method == 'POST':
@@ -39,11 +39,11 @@ def new(request):
 def handle_add_user(post):
   user = User(login=post['login'], name=post['name'],type=post['type'],password='12345', id=post['id'])
   user.save()
-  projid = uuid.UUID(post['read'])
-  pr = Project.objects.get(id=projid)
-  user.read.add(pr)
-  print user.read.all()
-  user.save()
+  #projid = uuid.UUID(post['read'])
+  #pr = Project.objects.get(id=projid)
+  #user.read.add(pr)
+  #print user.read.all()
+  #user.save()
 
 def view(request, id_str):
   DATADIR = '../'+getattr(settings, 'DATADIR')

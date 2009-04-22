@@ -52,4 +52,5 @@ class User(models.Model):
   name = models.CharField(max_length=100)
   type = models.CharField(max_length=1)
   password = models.CharField(max_length=10)
-  read = models.ManyToManyField(Project)
+  read = models.ManyToManyField('Project', related_name='ReadProject')
+  write = models.ManyToManyField('Project', related_name='WriteProject')
