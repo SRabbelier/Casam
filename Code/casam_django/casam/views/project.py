@@ -26,7 +26,6 @@ class Home(handler.Handler):
   """
 
   def get(self):
-    
     id_str = self.kwargs['id_str']
     id = uuid.UUID(id_str)
 
