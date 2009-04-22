@@ -5,8 +5,8 @@ import os
 ROOT_PATH = os.path.dirname(__file__)
 
 
-if os.environ.get('HTTP_HOST'):
-  BASE_PATH = os.environ.get('HTTP_HOST')
+if os.environ.get('HOST'):
+  BASE_PATH = 'https://graphics.tudelft.nl/casam/'
 else:
   BASE_PATH = 'http://localhost:8000/'
 
