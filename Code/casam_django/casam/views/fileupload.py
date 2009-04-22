@@ -1,7 +1,7 @@
 import mimetypes
 import os
 
-#from PIL import Image
+from PIL import Image
 
 from django import forms
 from django import http
