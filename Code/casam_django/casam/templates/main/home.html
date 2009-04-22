@@ -2,9 +2,14 @@
 
 {% block title %}Home at C.A.S.A.M.{% endblock title %}
 
-{% block bodytag %}
-<body onload="document.getElementById('whiteFrame_keywordSearch_textbox').focus();" >
-{% endblock bodytag %}
+{% block scripts %}
+	<script type="text/javascript">
+		document.observe("dom:loaded", function() {
+			$('whiteFrame_keywordSearch_textbox').focus();		
+		});
+	 </script>
+{% endblock scripts %}
+
 
 {% block body %}
 
