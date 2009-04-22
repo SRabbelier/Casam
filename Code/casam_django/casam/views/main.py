@@ -4,8 +4,8 @@ import os
 from django import http
 from django.conf import settings
 from django.template import loader
-from ..models import Project
-from ..models import OriginalImage
+from casam.models import Project
+from casam.models import OriginalImage
 from casam.views import handler
 
 class Home(handler.Handler):
