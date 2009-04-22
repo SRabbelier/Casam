@@ -17,8 +17,9 @@ class Home(handler.Handler):
 
     imgs = OriginalImage.objects.select_related().order_by('project__name')
 
-    img = imgs[0]
-    projects[img.project] = img
+    if imgs:
+      img = imgs[0]
+      projects[img.project] = img
   
     context = self.getContext();
     context['projects'] = projects
