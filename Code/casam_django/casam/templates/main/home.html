@@ -60,7 +60,7 @@
 				
 					{% if images %}
  						{% for image in images %}
-						<image src="{{DATADIR}}thumbnail/100/{{ image.path }}" 
+						<image src="{{BASE_PATH}}{{DATA_DIR}}thumbnail/100/{{ image.path }}" 
 							   class="project_image" border="0" />
 					    {% endfor %}
  					{% endif %}
