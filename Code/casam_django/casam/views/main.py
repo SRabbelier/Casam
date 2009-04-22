@@ -26,7 +26,3 @@ class Home(handler.Handler):
 
     content = loader.render_to_string('main/home.html', dictionary=context)
     return http.HttpResponse(content)
-
-
-
-
