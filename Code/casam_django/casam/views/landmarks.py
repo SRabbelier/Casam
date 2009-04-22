@@ -11,7 +11,7 @@ from casam.django_tools import fields
 from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
-from casam.models import Meting
+from casam.models import Measurement
 from casam.models import ProjectMeasurementList
 from casam.models import OriginalImage
 from casam.views import handler
@@ -55,7 +55,7 @@ class LandmarkSaver(handler.Handler):
         y=y,
         )
 
-    punt = Meting(**properties)
+    punt = Measurement(**properties)
     punt.save();
 
     context = {'x': punt.x,'y':punt.y,'mm':mmeting.name}

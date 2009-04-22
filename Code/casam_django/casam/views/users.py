@@ -7,7 +7,7 @@ from django.conf import settings
 from ..models import OriginalImage
 from ..models import Project
 from ..models import ProjectMeasurementList
-from ..models import Meting
+from ..models import Measurement
 from ..models import User
 
 class UserForm(forms.Form):

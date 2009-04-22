@@ -39,7 +39,7 @@ class ProjectMeasurementList(models.Model):
   project = models.ForeignKey('Project')
   name = models.CharField(max_length=30)
   
-class Meting(models.Model):
+class Measurement(models.Model):
   id = fields.UUIDField(primary_key=True,auto=True)
   project = models.ForeignKey('Project')
   mogelijkemeting = models.ForeignKey('ProjectMeasurementList')
