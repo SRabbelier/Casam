@@ -10,6 +10,7 @@ import casam.views.project
 import casam.views.fileupload
 import casam.views.landmarks
 import casam.views.users
+import casam.views.imageresizer
 
 UUID = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
 ID_STR = r"(?P<id_str>%s)" % UUID
@@ -27,7 +28,10 @@ urlpatterns = patterns('',
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
     (r'^user/new$', casam.views.users.Users()),
     (r'^user/home$', casam.views.users.home),
-    (r'^user/(.*)$', casam.views.users.view)
+    (r'^user/(.*)$', casam.views.users.view),
+    (r'^resizeImage/byRatio/(.*)/(.*)$', casam.views.imageresizer.byRatio),
+    (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
+
 )
 
 if settings.DEBUG:
