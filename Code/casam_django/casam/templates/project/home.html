@@ -49,7 +49,7 @@
 		     var rightDiv = new Element('div');
 		     rightDiv.addClassName('pictureContainerRightDiv');
 		     mainDiv.addClassName('projectPictureDiv');
-		     leftDiv.insert(new Element('img',{'src':'{{DATADIR}}thumbnail/50/'+pictureJSON.fields.path}));
+		     leftDiv.insert(new Element('img',{'src': base_path+data_dir+'thumbnail/50/'+pictureJSON.fields.path}));
 		     rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
 		     rightDiv.insert(new Element('span').update(pictureJSON.fields.added).addClassName('projectPictureInfo'));
 		     if(pictureJSON.fields.isLeft)

@@ -35,7 +35,7 @@ class Handler(object):
     """Returns a dictionary for every class
     """
     
-    return {'BASE_PATH': settings.BASE_PATH, 'DATADIR': settings.DATADIR}
+    return {'BASE_PATH': settings.BASE_PATH, 'DATA_DIR': settings.DATADIR}
   
   def getForm(self):
     """Returns the appropriate form for the current request.
