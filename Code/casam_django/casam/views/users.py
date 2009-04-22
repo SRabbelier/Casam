@@ -4,11 +4,12 @@ from django import http
 from django.template import loader
 from django import forms
 from django.conf import settings
-from ..models import OriginalImage
-from ..models import Project
-from ..models import ProjectMeasurementList
-from ..models import Measurement
-from ..models import User
+
+from casam.models import OriginalImage
+from casam.models import Project
+from casam.models import ProjectMeasurementList
+from casam.modelsls import Measurement
+from casam.models import User
 
 class UserForm(forms.Form):
   choices = []
