@@ -61,8 +61,8 @@
 		     var useLink = new Element('a',{'href':'#'}).update('Use');
 		     rightDiv.insert(useLink);
 		     $('pictureContainer').insert(mainDiv);
-		     useLink.observe('click',function(){
-		    	 show_image('{{DATADIR}}'+pictureJSON.fields.path);
+		     useLink.observe('click',function(){                                          
+		    	 show_image(base_path+data_dir+pictureJSON.fields.path);
 		    	 return false;
 			   });
 			   mainDiv.insert(leftDiv);
