@@ -9,7 +9,7 @@ from django.template import loader
 from casam.logic import project as project_logic
 from casam.models import OriginalImage
 from casam.models import Project
-from casam.models import MogelijkeMeting
+from casam.models import ProjectMeasurementList
 from casam.models import Meting 
 from casam.views import handler
 
@@ -34,7 +34,7 @@ class Home(handler.Handler):
     img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id)
 
     punten = Meting.objects.select_related().filter(project__id=id);
-    mmetings = MogelijkeMeting.objects.all().filter(project__id=id);
+    mmetings = ProjectMeasurementList.objects.all().filter(project__id=id);
 
     context = {'images':img, 'id': id_str, 'mmetings':mmetings,'punten':punten, 'DATADIR':DATADIR}
   

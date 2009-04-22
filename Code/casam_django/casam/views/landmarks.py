@@ -12,7 +12,7 @@ from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
 from casam.models import Meting
-from casam.models import MogelijkeMeting
+from casam.models import ProjectMeasurementList
 from casam.models import OriginalImage
 from casam.views import handler
 
@@ -43,7 +43,7 @@ class LandmarkSaver(handler.Handler):
   def post(self):
     mm = self.cleaned_data['mm']
     id = uuid.UUID(mm);
-    mmeting = MogelijkeMeting.objects.select_related().get(id=id);
+    mmeting = ProjectMeasurementList.objects.select_related().get(id=id);
 
     x = self.cleaned_data['x']
     y = self.cleaned_data['y']
