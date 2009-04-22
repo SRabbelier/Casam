@@ -16,14 +16,16 @@ ID_STR = r"(?P<id_str>%s)" % UUID
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
-    (r'^$', casam.views.main.Home()),
+    (r'^$', casam.views.users.Login()),
+    (r'^do_login', casam.views.users.Login()),
+    (r'^home', casam.views.main.Home()),
     (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
     (r'^project/new$', casam.views.project.NewProject()),
     (r'^project/%s$' % ID_STR, casam.views.project.Home()),
     (r'^fileupload/%s$' % ID_STR, casam.views.fileupload.FileUpload()),
     (r'^data/(.*)', casam.views.fileupload.viewfile),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
-    (r'^user/new$', casam.views.users.new),
+    (r'^user/new$', casam.views.users.Users()),
     (r'^user/home$', casam.views.users.home),
     (r'^user/(.*)$', casam.views.users.view)
 )

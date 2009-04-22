@@ -5,45 +5,73 @@ from django.template import loader
 from django import forms
 from django.conf import settings
 
+from casam.logic import users as user_logic
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
 from casam.models import Measurement
 from casam.models import User
+from casam.views import handler
 
 class UserForm(forms.Form):
+  """TODO: Docstring """
+  
   choices = []
   projects = Project.objects.all()
 
   for pr in projects:
     choices.append((pr.id,pr.name))
+    
+  types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))
 
   login = forms.CharField(max_length=30)
   name = forms.CharField(max_length=100)
-  type = forms.CharField(max_length=1, widget=forms.Select(choices=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))))
+  type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
   id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)
   #read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
+  
+class LoginForm(forms.Form):
+  """TODO: Docstring """
+  username = forms.CharField(max_length=30)
+  password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
+  
+class Users(handler.Handler):
+  """Handler to handle user requests"""
+  
+  def getPostForm(self):
+    return UserForm(self.POST)
+  
+  def getGetForm(self):
+    return UserForm()
+  
+  def post(self):
+    user_logic.handle_add_user(self.cleaned_data['login'], self.cleaned_data['name'], self.cleaned_data['type'], self.cleaned_data['id'])
+    return http.HttpResponseRedirect('./home')
 
-def new(request):
-  if request.method == 'POST':
-    form = UserForm(request.POST)
-    if form.is_valid():
-      handle_add_user(request.POST)
-      return http.HttpResponseRedirect('/')
+  def get(self):
+    context = self.getContext()
+    context['form'] = self.form
+    content = loader.render_to_string('user/new.html', dictionary=context)
+    return http.HttpResponse(content)
 
-  context = {'form': UserForm()}
-  content = loader.render_to_string('user/new.html', dictionary=context)
-  return http.HttpResponse(content)
+class Login(handler.Handler):
+  """Handler to handle Login requests"""
+  
+  def getPostForm(self):
+    return LoginForm(self.POST)
+  
+  def getGetForm(self):
+    return LoginForm()
+  
+  def post(self):
+    return user_logic.handle_login(self.cleaned_data['username'], self.cleaned_data['password'])
 
-def handle_add_user(post):
-  user = User(login=post['login'], name=post['name'],type=post['type'],password='12345', id=post['id'])
-  user.save()
-  #projid = uuid.UUID(post['read'])
-  #pr = Project.objects.get(id=projid)
-  #user.read.add(pr)
-  #print user.read.all()
-  #user.save()
+  def get(self):
+    context = self.getContext()
+    context['form'] = self.form
+    content = loader.render_to_string('main/login.html', dictionary=context)
+    return http.HttpResponse(content)  
 
 def view(request, id_str):
   DATADIR = '../'+getattr(settings, 'DATADIR')
@@ -68,3 +96,6 @@ def home(request):
 
   content = loader.render_to_string('user/home.html', dictionary=context)
   return http.HttpResponse(content)
+    
+  
+  
