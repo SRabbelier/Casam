@@ -2,7 +2,7 @@
 
 {% block title %}Home at C.A.S.A.M.{% endblock title %}
 
-{% block head_insert %}
+{% block head %}
 	<script type="text/javascript">
 		document.observe("dom:loaded", function() {
 			$('whiteFrame_keywordSearch_textbox').focus();		
@@ -10,7 +10,7 @@
 	 </script>
 	 
 	 <link rel="stylesheet" href="{{ BASE_PATH }}media/css/main.css">
-{% endblock head_insert %}
+{% endblock head %}
 
 
 {% block body %}
