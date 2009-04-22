@@ -14,11 +14,11 @@ class Home(handler.Handler):
 
   def get(self):
     projects = dict([(i,[]) for i in Project.objects.all()])
-          
+
     imgs = OriginalImage.objects.select_related().order_by('project__name')
-  
-    for img in imgs[:1]:
-      projects[img.project] += [img]
+
+    img = imgs[0]
+    projects[img.project] = img
   
     context = self.getContext();
     context['projects'] = projects

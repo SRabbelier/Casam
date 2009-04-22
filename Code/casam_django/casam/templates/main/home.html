@@ -54,20 +54,16 @@
 			<!-- Projects -->
 			<div id="whiteFrame_projects_container">
 
-			{% for project, images in projects.iteritems %}
+			{% for project, image in projects.iteritems %}
 
 				<a href="{{ BASE_PATH }}project/{{ project.id }}">
 				<div class="main_project_container">
-				
-				
-					{% if images %}
- 						{% for image in images %}
+
+					{% if image %}
 						<image src="{{BASE_PATH}}{{DATA_DIR}}thumbnail/100/{{ image.path }}" 
 							   class="project_image" border="0" />
-					    {% endfor %}
  					{% endif %}
- 							
-					
+
 					<div class="main_project_title">{{ project.name }}</div>
 					<div class="main_project_description">{{ project.description }}</div>
 				</div>
