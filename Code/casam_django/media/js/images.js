@@ -25,7 +25,7 @@ function show_image(location){
   var newimg = Element.extend(document.createElement('img'));
   newimg.setAttribute('src',location);
   newimg.setStyle("position: absolute; top: 25; left: 225; opacity: 0.4; filter: alpha(opacity=40); width: 1000px; cursor: crosshair;");
-  newimg.observe('click', function() { LoadMMDD(); });
+  newimg.observe('click', function() { LoadMMDD(""); });
   newimg.setAttribute('id','big_image'+insert);
   $('big_images').appendChild(newimg);
 

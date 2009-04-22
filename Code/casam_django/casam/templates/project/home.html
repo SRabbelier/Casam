@@ -83,7 +83,7 @@
 	  <tr><td colspan="2" style="border-top: 2px solid grey;"><a href="../fileupload/{{ id }}">Voeg een foto toe</a></td></tr>
 	  <tr><th colspan="2">Landmarks</th></tr>
 	  {%for mm in mmetings%}
-	    <tr><td><div id="mm{{mm.id}}" style="width: 10px; height: 10px; background-color: red; display: inline; cursor: pointer;"> {{mm.name}}</div></td></tr>
+	    <tr><td><img id="mm{{mm.id}}" style="cursor: pointer; z-index: 5;" src="{{BASE_PATH}}media/img/pin_red.gif" alt="pin" onMouseOver="showLandmarkTooltip('{{mm.id}}');" onMouseOut="hideLandmarkTooltip('{{mm.id}}');" />{{mm.name}}</td></tr>
 	  {% endfor %}
 	  <tr><th colspan="2">Geplaatste punten</th></tr>
 	  {%for pt in punten %}
@@ -91,6 +91,10 @@
 	  {% endfor %}
 	  </table>
   </div>
+  
+  {%for mm in mmetings%}
+    <div id="tooltip{{mm.id}}" style="position: absolute; z-index: 5;">{{mm.name}}</div>
+  {% endfor %}
   
   <div id="photosContextMenu" style="cursor:pointer;position:absolute; width:200px; right:20px; top:20px; border: 1px solid grey; z-index:9999">
 	  <table style="width:200px">
@@ -113,20 +117,22 @@
     <div style="background-color: #ccc;">Opslaan Meting</div>
     <label for="mmx">x: </label><input type="text" style="width: 25px;" id="lmmx" name="mmx" value="" />
     <label for="mmy">y: </label><input type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
-    <label for="mmmeting">Meting: </label><select id="mmmeting" name="mmmeting">
+    <label id="labelmmmeting" for="mmmeting">Meting: </label><select id="mmmeting" name="mmmeting">
     <option value=""></option>
     {%for mm in mmetings%}
-      <option value="{{mm.id}}">{{mm.name}}</option>
+      <option id="option{{mm.id}}" value="{{mm.id}}">{{mm.name}}</option>
     {% endfor %}
     </select><br />
     <button onClick="saveLandMark();">Bewaar</button>
   </div>
+  
   <div id="lmdisplay" style="display: none; position: absolute; background-color: red; width: 2px; height: 2px;">
+
   
   
   <script type="text/javascript" language="javascript">
   {%for mm in mmetings%}
-    new Draggable('mm{{mm.id}}');
+    new Draggable('mm{{mm.id}}', { onEnd: function() { if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD('{{mm.id}}') }});
   {% endfor %}
   new Draggable('lmdd');
   </script>

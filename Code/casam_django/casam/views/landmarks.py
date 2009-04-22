@@ -44,18 +44,23 @@ class LandmarkSaver(handler.Handler):
     mm = self.cleaned_data['mm']
     id = mm;
     mmeting = ProjectMeasurementList.objects.select_related().get(id=id);
-
-    x = self.cleaned_data['x']
-    y = self.cleaned_data['y']
-
+    
+    #lets check if there is already one measurement for this project of this type 
+    try:
+      meting = Measurement.objects.filter(mogelijkemeting=mmeting,project=mmeting.project).get()
+    except Measurement.DoesNotExist:
+      meting = None
+ 
     properties = dict(
         mogelijkemeting=mmeting,
         project=mmeting.project,
-        x=x,
-        y=y,
+        x=self.cleaned_data['x'],
+        y=self.cleaned_data['y'],
         )
-
+    
     punt = Measurement(**properties)
+    if meting:
+      punt.id = meting.id;
     punt.save();
 
     context = {'x': punt.x,'y':punt.y,'mm':mmeting.name}
