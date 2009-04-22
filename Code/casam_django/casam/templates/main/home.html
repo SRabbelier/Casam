@@ -2,6 +2,10 @@
 
 {% block title %}Home at C.A.S.A.M.{% endblock title %}
 
+{% block bodytag %}
+<body onload="document.getElementById('whiteFrame_keywordSearch_textbox').focus();" >
+{% endblock bodytag %}
+
 {% block body %}
 
 <link rel="stylesheet" href="./media/css/main.css">
@@ -50,11 +54,11 @@
 				
 				
 					{% if images %}
- 							{% for image in images %}
+ 						{% for image in images %}
 						<image src="{{DATADIR}}thumbnail/100/{{ image.path }}" 
 							   class="project_image" border="0" />
 					    {% endfor %}
- 						{% endif %}
+ 					{% endif %}
  							
 					
 					<div class="main_project_title">{{ project.name }}</div>
