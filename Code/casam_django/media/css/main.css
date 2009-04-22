@@ -160,7 +160,7 @@ img.project_image {
 	float:right;
 }
 
-#whiteFrame_export_container {
+#whiteFrame_import_container {
 	width:48px;
 	height:34px;
 	float:right;
@@ -175,8 +175,8 @@ img.project_image {
 }
 
 #whiteFrame_bottom_container {
-	height:20px;
 	width:867px;
+	height:20px;
 }
 
 #whiteFrame_bottom_left {
