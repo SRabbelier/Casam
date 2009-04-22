@@ -1,18 +1,62 @@
 {% extends 'base.html' %}
 
-{% block title %}Home at C.A.S.A.M.{% endblock title %}
+{% block title %}Login to C.A.S.A.M.{% endblock title %}
+
+{% block head %}
+	<link rel="stylesheet" href="{{ BASE_PATH }}media/css/login.css">
+{% endblock head %}
+
 
 {% block body %}
 
-<h1>Login</h1>
+<img class="casamLogo" src="{{ BASE_PATH }}media/img/casam_banner.jpg" />
+<div id="whiteFrame_container">
 
-<p>
-<form enctype="multipart/form-data" method="post" action="do_login">
-<table>
-{{ form }}
-<tr><td><input type="submit" value="Login" /></td></tr>
-</table>
-</form>
-</p>
+	<!-- Top white frame -->
+	<div id="whiteFrame_top_container">
+		<div id="whiteFrame_top_left"></div>
+		<div id="whiteFrame_top_middle"></div>
+		<div id="whiteFrame_top_right"></div>
+	</div>
+
+	<div id="whiteFrame_center_container">
+
+		<!-- Left white frame -->
+		<div id="whiteFrame_center_left"></div>
+
+		<!-- Content white frame -->
+		<div id="whiteFrame_center_middle">
+
+			<div style="background-image:url('{{ BASE_PATH }}media/img/user.jpg');height:48px;width:48px;float:left;"></div>
+			
+			<form enctype="multipart/form-data" method="post" action="do_login" style="margin:auto;display:block;">
+			<table>
+			{{ form }}
+			<tr><td><input type="submit" value="Login" /></td></tr>
+			</table>
+			</form>
+
+
+	
+		</div>
+
+		<!-- Right white frame -->
+		<div id="whiteFrame_center_right"></div>
+
+	</div>
+
+	<!-- Bottom white frame -->
+	<div id="whiteFrame_bottom_container">
+		<div id="whiteFrame_bottom_left"></div>
+		<div id="whiteFrame_bottom_center"></div>
+		<div id="whiteFrame_bottom_right"></div>
+	</div>
+</div>
+
+
+
+
+
+
 
 {% endblock body %}
