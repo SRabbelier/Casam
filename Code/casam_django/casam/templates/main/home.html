@@ -2,20 +2,22 @@
 
 {% block title %}Home at C.A.S.A.M.{% endblock title %}
 
-{% block scripts %}
+{% block head_insert %}
 	<script type="text/javascript">
 		document.observe("dom:loaded", function() {
 			$('whiteFrame_keywordSearch_textbox').focus();		
 		});
 	 </script>
-{% endblock scripts %}
+	 
+	 <link rel="stylesheet" href="{{ BASE_PATH }}media/css/main.css">
+{% endblock head_insert %}
 
 
 {% block body %}
 
-<link rel="stylesheet" href="./media/css/main.css">
 
-<img src="./media/img/casam_banner.jpg" />
+
+<img class="casamLogo" src="{{ BASE_PATH }}media/img/casam_banner.jpg" />
 <div id="whiteFrame_container">
 
 	<!-- Top white frame -->
@@ -47,14 +49,14 @@
 			</div>
 			
 			
-<br>
+
 
 			<!-- Projects -->
 			<div id="whiteFrame_projects_container">
 
 			{% for project, images in projects.iteritems %}
 
-				<a href="./project/{{ project.id }}">
+				<a href="{{ BASE_PATH }}project/{{ project.id }}">
 				<div class="main_project_container">
 				
 				
@@ -72,18 +74,24 @@
 				</a>
 			{% endfor %}
 				
-				<a href="./project/new"><div class="main_project_empty_container"></div></a>
+				<a href="{{ BASE_PATH }}project/new"><div class="main_project_empty_container"></div></a>
 
 
 			</div>
 
 			<!-- Bottom buttons -->
 			<div id="whiteFrame_userMangement_container">
-				<a href="./user/home" onfocus="blur()"><img src="./media/img/users.jpg" alt="User management" border="0" /></a></div>
+				<a href="{{ BASE_PATH }}user/home" onfocus="blur()">
+					<img src="{{ BASE_PATH }}media/img/users.jpg" alt="User management" border="0" /></a>
+			</div>
 			<div id="whiteFrame_export_container">
-				<a href="www.google.nl" alt="Export data" onfocus="blur()"><img src="./media/img/export.jpg" border="0" /></a></div><br>
+				<a href="www.google.nl" alt="Export data" onfocus="blur()">
+					<img src="{{ BASE_PATH }}media/img/export.jpg" border="0" /></a>
+			</div><br>
 			<div id="whiteFrame_export_container">
-				<a href="www.google.nl" onfocus="blur()"><img src="./media/img/import.jpg" alt="Import data" border="0" /></a></div>
+				<a href="www.google.nl" onfocus="blur()">
+					<img src="{{ BASE_PATH }}media/img/import.jpg" alt="Import data" border="0" /></a>
+			</div>
 
 		</div>
 

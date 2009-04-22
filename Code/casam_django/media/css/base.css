@@ -1,0 +1,14 @@
+body {
+  color: black;
+  background-color: white;
+}
+img {
+  background-color: white;
+}
+img.casamLogo {
+	margin:auto;
+	display:block;
+}
+a:visited {
+  color: red;
+}
