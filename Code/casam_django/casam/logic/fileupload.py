@@ -1,7 +1,7 @@
 import uuid
 import time
 
-#import Image
+import Image
 
 from django.conf import settings
 
