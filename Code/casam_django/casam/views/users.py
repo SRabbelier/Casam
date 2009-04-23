@@ -28,7 +28,7 @@ class UserForm(forms.Form):
   login = forms.CharField(max_length=30)
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
-  #type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
+  type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
   #id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)
   #read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
@@ -48,7 +48,12 @@ class Users(handler.Handler):
     return UserForm()
   
   def post(self):
-    user_logic.handle_add_user(self.cleaned_data['login'], self.cleaned_data['firstname'], self.cleaned_data['lastname'])
+    login = self.cleaned_data['login']
+    firstname = self.cleaned_data['firstname']
+    lastname = self.cleaned_data['lastname']
+    password = self.cleaned_data['password']
+    type = self.cleaned_data['type']
+    user_logic.handle_add_user(login, firstname, lastname, password, type)
     return http.HttpResponseRedirect('./home')
 
   def get(self):

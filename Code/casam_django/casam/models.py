@@ -66,8 +66,7 @@ class Measurement(models.Model):
   
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
-  user = models.ForeignKey(User, unique=True)
-  
+  user = models.ForeignKey(User, unique=True)  
 
 
 class Annotation(models.Model):

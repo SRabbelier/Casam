@@ -19,14 +19,8 @@ def main():
   DJANGO_EXTENSIONS = [os.path.join(HERE, 'django_extensions')]
   DJANGO = [os.path.join(HERE, 'django')]
   CASAM = [os.path.join(HERE, 'casam_django', 'casam')]
-  #CASAM_CASAM = [os.path.join(CASAM, 'casam')]
 
   sys.path = WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
-  #sys.path = CASAM + sys.path
-  #print sys.path
-  #sys.path = CASAM_CASAM + sys.path
-
-  #print sys.path
 
   if len(sys.argv) == 1:
     sys.argv += ['runserver']
@@ -39,6 +33,17 @@ def main():
   pr1.save()
   pr2 = Project(name='Project B')
   pr2.save()
+  
+  from django.contrib.auth.models import Group
+  try:
+    gr1 = Group.objects.get(name='Beheerder')
+  except Group.DoesNotExist:
+    gr1 = Group(name='Beheerder')
+    gr1.save()
+    gr2 = Group(name='Chirurg')
+    gr2.save()
+    gr3 = Group(name='Onderzoeker')
+    gr3.save()
 
   from django.conf import settings
   settings.DEBUG = True

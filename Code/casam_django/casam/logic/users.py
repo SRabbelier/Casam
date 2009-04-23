@@ -3,12 +3,19 @@ from django.contrib.auth import authenticate, login
 
 from casam.models import UserProfile
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
-def handle_add_user(rlogin, rfirstname, rlastname):
+def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
   rname = rfirstname+' '+rlastname
   
-  user = User.objects.create_user(rlogin,'','12345')
+  if rtype == 'C':
+    gtype = 'Chirurg'
+  elif rtype == 'O':
+    gtype = 'Onderzoeker'
+  else:
+    gtype = 'Beheerder'
+  
+  user = User.objects.create_user(rlogin,'',rpass)
   user.first_name = rfirstname
   user.last_name = rlastname
   user.is_staff = True
@@ -22,6 +29,14 @@ def handle_add_user(rlogin, rfirstname, rlastname):
     #up = user.get_profile()  
   
   user.save()
+    
+  try:
+    utype = Group.objects.get(name=gtype)
+    user.groups.add(utype)
+    user.save()
+  except Group.DoesNotExist:
+    print 'Group does not exist'
+    
   
   #pr = Project.objects.get(id=projid)
   #user.read.add(pr)
