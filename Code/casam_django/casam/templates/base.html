@@ -23,10 +23,10 @@
 	<img src="{{ BASE_PATH }}media/img/dock_user.jpg" style="float:left;width:48px;heigth:48px;font-size: 8pt;color:white;" />
 	<div style="float:left;color:white;width:200px;height:55px;font-size: 8pt;margin-top:4px;margin-left:5px;">
 		<b>Currently logged in:</b><br />
-		anton (<a href="#">incorrect?</a>)<br />
+		{{ NAME }} (<a href="#">incorrect?</a>)<br />
 		
 		
-		<div style="float:left;font-size: 8pt;color:white;">Automatic <a href="#">logout</a> in 
+		<div style="float:left;font-size: 8pt;color:white;">Automatic <a href="{{ BASE_PATH }}logout">logout</a> in 
 		<script type="text/javascript">
 
 var currentTime = new Date()

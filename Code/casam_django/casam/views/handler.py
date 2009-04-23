@@ -2,6 +2,8 @@ from django import http
 from django import forms
 from django.conf import settings
 
+from django.contrib.auth.models import User
+
 class Handler(object):
   """Handler base class for Django requests.
   """
@@ -35,7 +37,11 @@ class Handler(object):
     """Returns a dictionary for every class
     """
     
-    return {'BASE_PATH': settings.BASE_PATH, 'DATA_DIR': settings.DATADIR}
+    user = self.request.user
+    if user.is_authenticated():
+      return {'BASE_PATH': settings.BASE_PATH, 'DATA_DIR': settings.DATADIR, 'NAME': user.first_name, 'USER': user}
+    else:
+      return {'BASE_PATH': settings.BASE_PATH, 'DATA_DIR': settings.DATADIR, 'USER': user}
   
   def getForm(self):
     """Returns the appropriate form for the current request.

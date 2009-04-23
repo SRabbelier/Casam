@@ -1,5 +1,5 @@
 from django import http
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from casam.models import UserProfile
 from casam.models import Project
@@ -32,7 +32,16 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs):
   projid = projid[3:]
   pr = Project.objects.get(id=projid)
   profile.read.add(pr)
-  profile.save()    
+  profile.save()  
+  
+  for projid in read_projs:
+    print projid
+    try:
+      pr = Project.objects.get(id=projid)
+      profile.read.add(pr)
+    except Project.DoesNotExist:
+      pass
+    #up = user.get_profile()  
   
   user.save()
     
@@ -74,4 +83,8 @@ def handle_edit(rfirst_name, rlast_name, rtype, rid):
   user.groups.add(gr1)
   user.save()  
     
-  return http.HttpResponseRedirect('./home')                  
+  return http.HttpResponseRedirect('./home')           
+
+def handle_logout(request):
+  logout(request)
+  return http.HttpResponseRedirect('./')         

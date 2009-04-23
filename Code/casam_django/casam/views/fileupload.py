@@ -37,32 +37,46 @@ class FileUpload(handler.Handler):
     return UploadFileForm()
 
   def post(self):
-    file = self.FILES['file']
-    name = self.cleaned_data['name']
-    is_left = self.cleaned_data['is_left']
-    id_str = self.kwargs['id_str']
-
-    oi = fileupload_logic.handle_uploaded_file(file, name, is_left, id_str)
-
-    DATADIR = "../" + settings.DATADIR
-    context = {'image': oi, 'DATADIR': DATADIR}
-    content = loader.render_to_string('main/succes.html', dictionary=context)
-    return http.HttpResponse(content)
+    context = self.getContext()
+    user = context['USER']
+    if user.is_authenticated():
+      
+      file = self.FILES['file']
+      name = self.cleaned_data['name']
+      is_left = self.cleaned_data['is_left']
+      id_str = self.kwargs['id_str']
+  
+      oi = fileupload_logic.handle_uploaded_file(file, name, is_left, id_str)
+  
+      
+      context['image'] =oi 
+      content = loader.render_to_string('main/succes.html', dictionary=context)
+      return http.HttpResponse(content)
+    else:
+      return http.HttpResponse(context['BASE_PATH'])
 
   def get(self):
-    context = {'form': self.form}
-    content = loader.render_to_string('main/fileupload.html', dictionary=context)
-    return http.HttpResponse(content)
+    context = self.getContext()
+    user = context['USER']
+    if user.is_authenticated():
+      context['form'] = self.form
+      content = loader.render_to_string('main/fileupload.html', dictionary=context)
+      return http.HttpResponse(content)
+    else:
+      return http.HttpResponse(context['BASE_PATH'])
 
 
 def viewfile(request, name):
   """TODO: Docstring
   """
-
-  mime = mimetypes.MimeTypes
-  mime = mime()
-  if os.path.exists('data/'+name):
-    mimetype = mime.guess_type('data/'+name)
-    return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimetype)
+  user = request.user
+  if user.is_authenticated():  
+    mime = mimetypes.MimeTypes
+    mime = mime()
+    if os.path.exists('data/'+name):
+      mimetype = mime.guess_type('data/'+name)
+      return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimetype)
+    else:
+      return http.HttpResponse("file doesn't exist",mimetype="text/plain")
   else:
-    return http.HttpResponse("file doesn't exist",mimetype="text/plain")
+    return http.HttpResponseRedirect(getattr(settings, 'DATADIR'))

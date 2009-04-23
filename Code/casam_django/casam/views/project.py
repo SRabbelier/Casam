@@ -26,22 +26,28 @@ class Home(handler.Handler):
   """
 
   def get(self):
-    id_str = self.kwargs['id_str']
-
-    img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
-
-    punten = Measurement.objects.select_related().filter(project__id=id_str);
-    mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
-    
     context = self.getContext();
-    context['images'] = img
-    context['id'] = id_str
-    context['mmetings'] = mmetings
-    context['punten'] = punten
+    user = context['USER']
+    if user.is_authenticated():
+      
+      id_str = self.kwargs['id_str']
   
-    content = loader.render_to_string('project/home.html', dictionary=context)
-
-    return http.HttpResponse(content)
+      img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
+  
+      punten = Measurement.objects.select_related().filter(project__id=id_str);
+      mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
+      
+      
+      context['images'] = img
+      context['id'] = id_str
+      context['mmetings'] = mmetings
+      context['punten'] = punten
+    
+      content = loader.render_to_string('project/home.html', dictionary=context)
+  
+      return http.HttpResponse(content)
+    else:
+      return http.HttpResponseRedirect(context['BASE_PATH'])
 
 
 class NewProject(handler.Handler):
@@ -55,21 +61,36 @@ class NewProject(handler.Handler):
     return ProjectForm(self.POST)
 
   def post(self):
-    name = self.cleaned_data['name']
-    mmeting1 = self.cleaned_data['mmeting1']
-    mmeting2 = self.cleaned_data['mmeting2']
-
-    project_logic.handle_add_project(name, mmeting1, mmeting2)
-
-    return http.HttpResponseRedirect('/')
+    context = self.getContext()
+    user = context['USER']
+    if user.is_authenticated():
+      name = self.cleaned_data['name']
+      mmeting1 = self.cleaned_data['mmeting1']
+      mmeting2 = self.cleaned_data['mmeting2']
+  
+      project_logic.handle_add_project(name, mmeting1, mmeting2)
+  
+      return http.HttpResponseRedirect('/')
+    else:
+      return http.HttpResponseRedirect(context['BASE_PATH'])
 
   def get(self):
-    context = {'form': self.form}
-    content = loader.render_to_string('project/new.html', dictionary=context)
-    return http.HttpResponse(content)
+    context = self.getContext()
+    user = context['USER']
+    if user.is_authenticated():
+    
+      context['form'] = self.form
+      content = loader.render_to_string('project/new.html', dictionary=context)
+      return http.HttpResponse(content)
+    else:
+      return http.HttpResponseRedirect(context['BASE_PATH'])
 
 
 def projectImagesJSON(request,id_str):
-  img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
-  data = serializers.serialize("json", img)
-  return http.HttpResponse(data, mimetype="application/javascript")
+  user = request.user
+  if user.is_authenticated():
+    img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
+    data = serializers.serialize("json", img)
+    return http.HttpResponse(data, mimetype="application/javascript")
+  else:
+    return http.HttpResponseRedirect(getattr(settings, 'DATADIR'))

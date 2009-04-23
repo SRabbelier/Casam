@@ -71,6 +71,7 @@ class Users(handler.Handler):
     content = loader.render_to_string('user/new.html', dictionary=context)
     return http.HttpResponse(content)
 
+
 class Login(handler.Handler):
   """Handler to handle Login requests"""
   
@@ -110,9 +111,13 @@ class Edit(handler.Handler):
   
   def get(self):    
     context = self.getContext()
-    context['form'] = self.form
-    content = loader.render_to_string('user/edit.html', dictionary=context)
-    return http.HttpResponse(content)
+    user = context['USER']
+    if user.is_authenticated():
+      context['form'] = self.form
+      content = loader.render_to_string('user/edit.html', dictionary=context)
+      return http.HttpResponse(content)
+    else:
+      return http.HttpResponseRedirect(context['BASE_PATH'])
   
 class Save(handler.Handler):
   """Handler to handle the saving of the edited user"""
@@ -129,21 +134,27 @@ class Save(handler.Handler):
 
 
 def home(request):
-  DATADIR = '../'+getattr(settings, 'DATADIR')
-  users = User.objects.all()
+  user = request.user
+  if user.is_authenticated():
+    DATADIR = '../'+getattr(settings, 'DATADIR')
+    users = User.objects.all()
+  
+    #groups = []
+  
+    #for us in users:
+    #  groups.append(us.groups.all().get().name)
+      
+    #print groups
+  
+    #context = {'users':users, 'groups': groups, 'DATADIR':DATADIR}
+    context = {'users': users, 'DATADIR': DATADIR}
+  
+    content = loader.render_to_string('user/home.html', dictionary=context)
+    return http.HttpResponse(content)
+  else:
+    return http.HttpResponseRedirect(getattr(settings, 'DATADIR'))
 
-  #groups = []
-
-  #for us in users:
-  #  groups.append(us.groups.all().get().name)
-    
-  #print groups
-
-  #context = {'users':users, 'groups': groups, 'DATADIR':DATADIR}
-  context = {'users': users, 'DATADIR': DATADIR}
-
-  content = loader.render_to_string('user/home.html', dictionary=context)
-  return http.HttpResponse(content)
-    
+def logout(request):
+  return user_logic.handle_logout(request)
   
   
