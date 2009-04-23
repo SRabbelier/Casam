@@ -7,9 +7,11 @@ Draw at C.A.S.A.M.
 {% block head %}
 <script type="text/javascript">
 var BrushStroke = Class.create({
-  initialize: function(thickness,color) {
+  initialize: function(thickness,color,totalWidth,totalHeight) {
     this.thickness = thickness;
     this.color = color;
+    this.totalWidth = totalWidth;
+    this.totalHeight = totalHeight;
     this.positions = [];
   },
   addPosition: function(x,y) {
@@ -22,8 +24,9 @@ var BrushStroke = Class.create({
   }
 });
 
-var currentStroke = new BrushStroke(1,0);
+
 var drawing = false;
+var currentStroke;
 
 function startDrawing(){
 	if(!drawing){
@@ -45,6 +48,7 @@ function stopDrawing(){
 	}
 }
 document.observe('dom:loaded', function(){
+	currentStroke = new BrushStroke(1,0,$('drawTablet').getWidth(),$('drawTablet').getHeight());
 	$('drawTablet').observe('mousedown',startDrawing);
 	$('drawTablet').observe('mouseup',stopDrawing);
 	$('drawTablet').observe('mouseout',stopDrawing);
