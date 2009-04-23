@@ -5,10 +5,31 @@ Draw at C.A.S.A.M.
 {% endblock title %}
 
 {% block head %}
-<!--[if IE]><script src="excanvas.js"></script><![endif]-->
+
+<!--[if IE]><script src="{{ BASE_PATH }}media/js/excanvas.js"></script><![endif]-->
+<script type="text/javascript">
+
+
+  function draw(){
+    var canvas = $("testing");
+    var ctx = canvas.getContext("2d");
+	ctx.beginPath();
+	ctx.moveTo(50,0);
+	ctx.lineTo(50,100);
+	ctx.stroke();
+	alert(canvas.innerHTML);
+  }
+  document.observe('dom:loaded',function(){
+  	draw();
+  });
+</script>
 {% endblock head %}
 
 {% block body %}
 <img class="casamLogo" src="{{ BASE_PATH }}media/img/casam_banner.jpg" />
+<canvas id="testing" width="600" height="480" ></canvas>
+<script type="text/javascript">
+	
+</script>
 
 {% endblock body %}
