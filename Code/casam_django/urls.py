@@ -12,6 +12,7 @@ import casam.views.landmarks
 import casam.views.users
 import casam.views.draw
 import casam.views.imageresizer
+import casam.views.sjorsdraw
 
 UUID = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
 ID_STR = r"(?P<id_str>%s)" % UUID
@@ -35,7 +36,7 @@ urlpatterns = patterns('',
     (r'^resizeImage/byRatio/(.*)/(.*)$', casam.views.imageresizer.byRatio),
     (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
     (r'^draw', casam.views.draw.Main()),
-
+    (r'^sjorsdraw', casam.views.sjorsdraw.sjorsDraw),
 )
 
 if settings.DEBUG:
