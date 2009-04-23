@@ -6,39 +6,52 @@ Draw at C.A.S.A.M.
 
 {% block head %}
 <script type="text/javascript">
+var BrushStroke = Class.create({
+  initialize: function(thickness,color) {
+    this.thickness = thickness;
+    this.color = color;
+    this.positions = [];
+  },
+  addPosition: function(x,y) {
+    this.positions.push(new Array(x,y));
+	message = new Element('p')
+	.update('(' + x + ',' + y + ')');
+	
+	$('updateWindow').insert({'top': message});
+	new Effect.Highlight(message);
+  }
+});
+
+var currentStroke = new BrushStroke(1,0);
 var drawing = false;
+
+function startDrawing(){
+	if(!drawing){
+		drawing = true;
+		$('updateWindow').insert({'top':
+			new Element('p')
+			.update('start drawing')});
+	}
+}
+
+function stopDrawing(){
+	if(drawing){
+		drawing = false;
+		$('updateWindow').insert({'top':
+			new Element('p')
+			.update('stop drawing')});
+		alert(Object.toJSON(currentStroke));
+		currentStroke = new BrushStroke(1,0);
+	}
+}
 document.observe('dom:loaded', function(){
-	$('drawTablet').observe('mousedown',function(){
-		if(!drawing){
-			drawing = true;
-			$('updateWindow').insert({'top':
-				new Element('p')
-				.update('start drawing')});
-		}
-	});
-	$('drawTablet').observe('mouseup',function(){
-		if(drawing){
-			drawing = false;
-			$('updateWindow').insert({'top':
-				new Element('p')
-				.update('stop drawing')});
-		}
-	});
-	$('drawTablet').observe('mouseout',function(){
-		if(drawing){
-			drawing = false;
-			$('updateWindow').insert({'top':
-				new Element('p')
-				.update('stop drawing')});
-		}
-	});
+	$('drawTablet').observe('mousedown',startDrawing);
+	$('drawTablet').observe('mouseup',stopDrawing);
+	$('drawTablet').observe('mouseout',stopDrawing);
 	$('drawTablet').observe('mousemove',function(event){
 		if(drawing){
 			viewportOffset = $('drawTablet').viewportOffset();
-			message = new Element('p')
-			.update('(' + (event.clientX-viewportOffset.left) + ',' + (event.clientY-viewportOffset.top) + ')');
-			$('updateWindow').insert({'top': message});
-			new Effect.Highlight(message);
+			currentStroke.addPosition((event.clientX-viewportOffset.left), (event.clientY-viewportOffset.top) );
 		}
 	});
 
@@ -49,8 +62,6 @@ document.observe('dom:loaded', function(){
 	border: 1px solid black;
 	width:900px;
 	height:300px;
-
-
 }
 </style>
 {% endblock head %}
