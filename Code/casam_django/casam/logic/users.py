@@ -2,10 +2,11 @@ from django import http
 from django.contrib.auth import authenticate, login
 
 from casam.models import UserProfile
+from casam.models import Project
 
 from django.contrib.auth.models import User, Group
 
-def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
+def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs):
   rname = rfirstname+' '+rlastname
   
   if rtype == 'C':
@@ -22,11 +23,16 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
   user.set_password('12345')
   
   try:
-    user.get_profile()
+    profile = user.get_profile()
   except UserProfile.DoesNotExist:
     profile = UserProfile(user=user)
     profile.save()
-    #up = user.get_profile()  
+    
+  projid = read_projs[:-2]
+  projid = projid[3:]
+  pr = Project.objects.get(id=projid)
+  profile.read.add(pr)
+  profile.save()    
   
   user.save()
     
@@ -35,13 +41,7 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
     user.groups.add(utype)
     user.save()
   except Group.DoesNotExist:
-    print 'Group does not exist'
-    
-  
-  #pr = Project.objects.get(id=projid)
-  #user.read.add(pr)
-  #print user.read.all()
-  #user.save()
+    print 'Group does not exist'    
   
 def handle_login(request):
   rusername = request.POST['username']
@@ -54,4 +54,24 @@ def handle_login(request):
     else:
       return http.HttpResponseRedirect('.')
   else:
-    return http.HttpResponseRedirect('.')                     
+    return http.HttpResponseRedirect('.')   
+  
+def handle_edit(rfirst_name, rlast_name, rtype, rid):
+  user = User.objects.get(id=rid)
+  user.first_name = rfirst_name
+  user.last_name = rlast_name
+  user.save()
+  
+  if rtype == 'C':
+    gtype = 'Chirurg'
+  elif rtype == 'O':
+    gtype = 'Onderzoeker'
+  else:
+    gtype = 'Beheerder'  
+  
+  gr1 = Group.objects.get(name=gtype)
+  user.groups.clear()
+  user.groups.add(gr1)
+  user.save()  
+    
+  return http.HttpResponseRedirect('./home')                  

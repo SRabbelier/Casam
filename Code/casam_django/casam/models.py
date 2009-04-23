@@ -67,7 +67,7 @@ class Measurement(models.Model):
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   user = models.ForeignKey(User, unique=True)  
-
+  read = models.ManyToManyField('Project', related_name='ReadProject')
 
 class Annotation(models.Model):
   name = models.CharField(max_length=30)

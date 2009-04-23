@@ -9,10 +9,12 @@
 </p>
 
 {% for user in users %}
-<h1><a href='./{{user.id}}'>{{ user.name }}</a></h1>
-  {{user.login}}<br>
-  {{user.password}}<br>
-  {{user.type}}
+  <form enctype="multipart/form-data" method="post" action="./{{user.id}}">
+  <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+  <input id="id_id" type="hidden" name="id" value={{ user.id }} maxlength="40" />
+  <input type="submit" value="Edit" />
+  </form>
+  {{user.username}}<br>
 {% endfor %}
 
 {% endblock body %}

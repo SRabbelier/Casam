@@ -5,7 +5,7 @@ from django.template import loader
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from casam.logic import users as user_logic
 from casam.models import OriginalImage
@@ -30,8 +30,16 @@ class UserForm(forms.Form):
   lastname = forms.CharField(max_length=30)
   type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  #id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)
-  #read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
+  read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
+  
+class EditForm(forms.Form):
+  types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))
+  
+  firstname = forms.CharField(max_length=30)
+  lastname = forms.CharField(max_length=30)
+  type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
+  
+  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)  
   
 class LoginForm(forms.Form):
   """TODO: Docstring """
@@ -53,7 +61,8 @@ class Users(handler.Handler):
     lastname = self.cleaned_data['lastname']
     password = self.cleaned_data['password']
     type = self.cleaned_data['type']
-    user_logic.handle_add_user(login, firstname, lastname, password, type)
+    read_projs = self.cleaned_data['read']
+    user_logic.handle_add_user(login, firstname, lastname, password, type, read_projs)
     return http.HttpResponseRedirect('./home')
 
   def get(self):
@@ -80,28 +89,58 @@ class Login(handler.Handler):
     context['form'] = self.form
     content = loader.render_to_string('main/login.html', dictionary=context)
     return http.HttpResponse(content)  
+  
+class Edit(handler.Handler):
+  """Handler to handle the edits of a user"""
+  
+  def getPostForm(self):
+    user = User.objects.get(id=self.POST['id'])
+    rfirst_name = user.first_name
+    rlast_name= user.last_name
+    rlogin = user.username
+    rid = user.id
+    initial = {'firstname': rfirst_name, 'lastname': rlast_name , 'login': rlogin, 'id': rid}
+    return EditForm(initial = initial)
+  
+  def getGetForm(self):
+    return http.HttpResponseRedirect('../home')
+  
+  def post(self):
+    return http.HttpResponseRedirect('./home')
+  
+  def get(self):    
+    context = self.getContext()
+    context['form'] = self.form
+    content = loader.render_to_string('user/edit.html', dictionary=context)
+    return http.HttpResponse(content)
+  
+class Save(handler.Handler):
+  """Handler to handle the saving of the edited user"""
+  
+  def post(self):
+    return http.HttpResponseRedirect('../home')
+  
+  def get(self):
+    rfirst_name = self.POST['firstname']
+    rlast_name = self.POST['lastname']
+    rtype = self.POST['type']
+    rid = self.POST['id']
+    return user_logic.handle_edit(rfirst_name, rlast_name, rtype, rid)
 
-def view(request, id_str):
-  DATADIR = '../'+getattr(settings, 'DATADIR')
-  id = id_str
-  user = User.objects.get(id=id)
-  initial = {'name': user.name, 'login': user.login, 'password': user.password, 'type': user.type, 'id': id}
-  context = {'form': UserForm(initial=initial)}
-  content = loader.render_to_string('user/edit.html', dictionary=context)
-  return http.HttpResponse(content)
 
 def home(request):
   DATADIR = '../'+getattr(settings, 'DATADIR')
-  print request.session
   users = User.objects.all()
-#  for us in users:
-#    if us.type == 'O':
-#      us.type = 'Onderzoeker'
-#    elif us.type == 'C':
-#      us.type = 'Chirurg'
-#    else:
-#      us.type = 'Beheerder'
-  context = {'users':users, 'DATADIR':DATADIR}
+
+  #groups = []
+
+  #for us in users:
+  #  groups.append(us.groups.all().get().name)
+    
+  #print groups
+
+  #context = {'users':users, 'groups': groups, 'DATADIR':DATADIR}
+  context = {'users': users, 'DATADIR': DATADIR}
 
   content = loader.render_to_string('user/home.html', dictionary=context)
   return http.HttpResponse(content)
