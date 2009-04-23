@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     (r'^user/(.*)$', casam.views.users.view),
     (r'^resizeImage/byRatio/(.*)/(.*)$', casam.views.imageresizer.byRatio),
     (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
+    (r'^draw/', casam.views.draw.Main),
 
 )
 
