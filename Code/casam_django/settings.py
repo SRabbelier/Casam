@@ -95,3 +95,5 @@ INSTALLED_APPS = (
 
 DATADIR = 'data/'
 
+AUTH_PROFILE_MODULE = 'casam.UserProfile'
+

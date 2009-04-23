@@ -4,13 +4,14 @@ from django import http
 from django.template import loader
 from django import forms
 from django.conf import settings
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 from casam.logic import users as user_logic
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
 from casam.models import Measurement
-from casam.models import User
 from casam.views import handler
 
 class UserForm(forms.Form):
@@ -25,10 +26,11 @@ class UserForm(forms.Form):
   types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))
 
   login = forms.CharField(max_length=30)
-  name = forms.CharField(max_length=100)
-  type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
+  firstname = forms.CharField(max_length=30)
+  lastname = forms.CharField(max_length=30)
+  #type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)
+  #id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)
   #read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
   
 class LoginForm(forms.Form):
@@ -46,7 +48,7 @@ class Users(handler.Handler):
     return UserForm()
   
   def post(self):
-    user_logic.handle_add_user(self.cleaned_data['login'], self.cleaned_data['name'], self.cleaned_data['type'], self.cleaned_data['id'])
+    user_logic.handle_add_user(self.cleaned_data['login'], self.cleaned_data['firstname'], self.cleaned_data['lastname'])
     return http.HttpResponseRedirect('./home')
 
   def get(self):
@@ -65,7 +67,8 @@ class Login(handler.Handler):
     return LoginForm()
   
   def post(self):
-    return user_logic.handle_login(self.cleaned_data['username'], self.cleaned_data['password'])
+    #return user_logic.handle_login(self.cleaned_data['username'], self.cleaned_data['password'])
+    return user_logic.handle_login(self.request)
 
   def get(self):
     context = self.getContext()
@@ -84,14 +87,15 @@ def view(request, id_str):
 
 def home(request):
   DATADIR = '../'+getattr(settings, 'DATADIR')
+  print request.session
   users = User.objects.all()
-  for us in users:
-    if us.type == 'O':
-      us.type = 'Onderzoeker'
-    elif us.type == 'C':
-      us.type = 'Chirurg'
-    else:
-      us.type = 'Beheerder'
+#  for us in users:
+#    if us.type == 'O':
+#      us.type = 'Onderzoeker'
+#    elif us.type == 'C':
+#      us.type = 'Chirurg'
+#    else:
+#      us.type = 'Beheerder'
   context = {'users':users, 'DATADIR':DATADIR}
 
   content = loader.render_to_string('user/home.html', dictionary=context)
