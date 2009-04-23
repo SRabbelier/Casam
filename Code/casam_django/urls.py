@@ -10,6 +10,7 @@ import casam.views.project
 import casam.views.fileupload
 import casam.views.landmarks
 import casam.views.users
+import casam.views.draw
 import casam.views.imageresizer
 
 UUID = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
@@ -31,7 +32,7 @@ urlpatterns = patterns('',
     (r'^user/(.*)$', casam.views.users.view),
     (r'^resizeImage/byRatio/(.*)/(.*)$', casam.views.imageresizer.byRatio),
     (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
-    (r'^draw/', casam.views.draw.Main),
+    (r'^draw', casam.views.draw.Main()),
 
 )
 
