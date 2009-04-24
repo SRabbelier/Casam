@@ -21,6 +21,17 @@ var BrushStroke = Class.create({
 	
 	$('updateWindow').insert({'top': message});
 	new Effect.Highlight(message);
+  },
+  addStroke:function(){
+	  new Ajax.Request('./sjorsdraw/AddBrushStroke',{method:'post',
+		  parameters: {'fileName':'{{ BASE_PATH }}media/img/sjorsdraw.gif',
+		  						 'brushStroke':Object.toJSON(currentStroke)
+		  						},
+	  	onSuccess: function(transport, json){
+	      //alert(json ? Object.inspect(json) : "no JSON object");
+	      $('drawnImage').setAttribute("src",('{{ BASE_PATH }}media/img/sjorsdraw.gif?time='+new Date().getTime()));
+	    }
+	  });
   }
 });
 
@@ -35,6 +46,7 @@ function startDrawing(){
 			new Element('p')
 			.update('start drawing')});
 	}
+	return false;
 }
 
 function stopDrawing(){
@@ -43,8 +55,10 @@ function stopDrawing(){
 		$('updateWindow').insert({'top':
 			new Element('p')
 			.update('stop drawing')});
-		alert(Object.toJSON(currentStroke));
+		//alert(Object.toJSON(currentStroke));
+		currentStroke.addStroke();
 		currentStroke = new BrushStroke(1,0);
+		return false;
 	}
 }
 document.observe('dom:loaded', function(){
@@ -62,18 +76,44 @@ document.observe('dom:loaded', function(){
 });
 </script>
 <style>
-#drawTablet{
+
+div,img{
+		-moz-user-focus: ignore;
+  -moz-user-input: disabled;
+  -moz-user-select: none;
+}
+#drawContainer{
 	border: 1px solid black;
+	position:relative;
 	width:900px;
 	height:300px;
+}
+#drawTablet{
+	width:900px;
+	height:300px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:9999;
+	
+
+}
+#drawnImage{
+	width:900px;
+	height:300px;
+	position:absolute;
+	top:0px;
+	left:0px;
+
 }
 </style>
 {% endblock head %}
 
 {% block body %}
 <img class="casamLogo" src="{{ BASE_PATH }}media/img/casam_banner.jpg" />
-<div id="drawTablet">
-
+<div id="drawContainer">
+<img id="drawnImage" src="{{ BASE_PATH }}media/img/sjorsdraw.gif"></img>
+<div id="drawTablet"></div>
 </div>
 
 <div id="updateWindow">
