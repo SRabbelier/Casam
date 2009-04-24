@@ -30,7 +30,7 @@ class UserForm(forms.Form):
   lastname = forms.CharField(max_length=30)
   type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  read = forms.CharField(widget=forms.widgets.SelectMultiple(choices=choices))
+  read = forms.MultipleChoiceField(choices=choices)
   
 class EditForm(forms.Form):
   types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))

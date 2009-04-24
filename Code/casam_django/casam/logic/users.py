@@ -28,20 +28,18 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs):
     profile = UserProfile(user=user)
     profile.save()
     
-  projid = read_projs[:-2]
-  projid = projid[3:]
-  pr = Project.objects.get(id=projid)
-  profile.read.add(pr)
-  profile.save()  
+  #pr = Project.objects.get(id__exact=read_projs[0])
+  #profile.read.add(pr)
+  #profile.save()  
   
   for projid in read_projs:
     print projid
     try:
       pr = Project.objects.get(id=projid)
       profile.read.add(pr)
+      profile.save()
     except Project.DoesNotExist:
       pass
-    #up = user.get_profile()  
   
   user.save()
     
