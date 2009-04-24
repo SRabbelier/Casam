@@ -2,6 +2,7 @@ import uuid
 
 from django import http
 from django import forms
+from django.template import loader
 
 from casam.logic import annotation as annotation_logic
 from casam.views import handler
@@ -33,6 +34,12 @@ class NewAnnotation(handler.Handler):
   """
   """
 
+  def getGetForm(self):
+    return ProjectForm()
+
+  def getPostForm(self):
+    return ProjectForm(self.POST)
+
   def get(self):
     """
     """
@@ -46,4 +53,6 @@ class NewAnnotation(handler.Handler):
     """
     """
 
-    
+    name = self.cleaned_data['name']
+    url = self.cleaned_data['url']
+    annotation_logic.handle_add_annotation(name, url)

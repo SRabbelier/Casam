@@ -17,12 +17,13 @@ import casam.views.sjorsdraw
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 ID_STR = r"(?P<id_str>%s)" % UUID
-IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-.]+)"
+IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-./]+)"
 
 urlpatterns = patterns('',
     (r'^$', casam.views.users.Login()),
     (r'^admin/(.*)', admin.site.root),
-    (r'^annotation/%s$' % UUID, casam.views.annotation.ViewAnnotation()),
+    (r'^annotation/show%s$' % UUID, casam.views.annotation.ViewAnnotation()),
+    (r'^annotation/new$', casam.views.annotation.NewAnnotation()),
     (r'^data/%s' % IMG_NAME, casam.views.fileupload.ViewFile()),
     (r'^do_login', casam.views.users.Login()),
     (r'^draw', casam.views.draw.Main()),

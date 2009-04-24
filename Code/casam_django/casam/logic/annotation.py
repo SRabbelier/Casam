@@ -1,6 +1,6 @@
 from casam.models import Annotation
 
 
-def handle_add_project(name, url):
+def handle_add_annotation(name, url):
   atn = Annotation(name=name, url=url)
   atn.save()
