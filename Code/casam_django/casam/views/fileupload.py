@@ -59,6 +59,8 @@ class FileUpload(handler.Handler):
           context['image'] =oi 
           content = loader.render_to_string('main/succes.html', dictionary=context)
           return http.HttpResponse(content)
+        else:
+          return http.HttpReponse('no rights')
       else:
         return http.HttpResponseRedirect(context['BASE_PATH']+'home')
     else:
