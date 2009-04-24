@@ -17,7 +17,7 @@ import casam.views.sjorsdraw
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 ID_STR = r"(?P<id_str>%s)" % UUID
-IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-./]+)"
+IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-./_]+)"
 
 urlpatterns = patterns('',
     (r'^$', casam.views.users.Login()),
