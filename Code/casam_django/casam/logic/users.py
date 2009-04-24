@@ -108,3 +108,12 @@ def handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite):
 def handle_logout(request):
   logout(request)
   return http.HttpResponseRedirect('./')         
+
+def handle_pass_change(rlogin, rpass1, rpass2, rid):
+  user = User.objects.get(id=rid)
+  if rpass1 == rpass2:
+    user.set_password(rpass1)
+    return True
+  else:
+    return False
+  

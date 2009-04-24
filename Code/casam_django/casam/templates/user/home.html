@@ -11,10 +11,18 @@
 {% for user in users %}
   <form enctype="multipart/form-data" method="post" action="./{{user.id}}">
   <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-  <input id="id_id" type="hidden" name="id" value={{ user.id }} maxlength="40" />
+  <input id="id_id" type="hidden" name="id" value={{ user.id }} maxlength="40" readonly="readonly" />
   <input type="submit" value="Edit" />
   </form>
   {{user.username}}<br>
+  <form enctype="multipart/form-data" method="post" action="changepass">
+  <table>
+  <tr><td><input type="submit" value="Change Pass" /></td></tr>
+  <tr><td><input id="id_id" type="hidden" name="id" value={{ user.id }} maxlength="40" readonly="readonly" /></td></tr>
+  <tr><td><input id="username_id" type="hidden" name="login" value={{ user.username }} maxlength="40" readonly="readonly" /></td></tr>
+  </table>
+  </form>
+
 {% endfor %}
 
 {% endblock body %}

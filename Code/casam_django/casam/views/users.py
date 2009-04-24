@@ -38,18 +38,26 @@ class EditForm(forms.Form):
   for gr in groups:
     types.append((gr.name,gr.name))
   
+  login = forms.CharField(max_length=10, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly'}))
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
   read = forms.ModelMultipleChoiceField(Project.objects.all())
   write = forms.ModelMultipleChoiceField(Project.objects.all())
   
-  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)  
+  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(attrs={'readonly': 'readonly'}))  
   
 class LoginForm(forms.Form):
   """TODO: Docstring """
   username = forms.CharField(max_length=30)
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
+  
+class ChangePassForm(forms.Form):
+  """TODO: Docstring"""
+  login = forms.CharField(max_length=10, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly'}))
+  password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
+  password2 = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput(), label="Password (again)")
+  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(attrs={'readonly': 'readonly'}))  
   
 class Users(handler.Handler):
   """Handler to handle user requests"""
@@ -184,4 +192,59 @@ class Home(handler.Handler):
 def logout(request):
   return user_logic.handle_logout(request)
   
+class PassChange(handler.Handler):
+  """Handler to handle the change password requests"""
   
+  def getPostForm(self):
+    context = self.getUserAuthenticationContext()
+    user = self.user
+    if context['is_beheerder']:
+      print self.POST
+      user = User.objects.get(id=self.POST['id'])
+      rlogin = user.username
+      rid = self.POST['id']
+      initial = {
+          'login': rlogin,
+          'id': rid,
+          }
+      return ChangePassForm(initial = initial)
+    else:
+      return http.HttpResponseRedirect(context['BASEPATH']+'user/home')       
+  
+  def getGetForm(self):
+    return http.HttpResponseRedirect('../home')
+  
+  def post(self):
+    return http.HttpResponseRedirect('./home')
+  
+  def get(self):
+    context = self.getContext()
+    user = self.user
+    if user.is_authenticated():
+      if context['is_beheerder']:
+        content = loader.render_to_string('user/change.html', dictionary=context)
+        return http.HttpResponse(content)
+      else:
+        return http.HttpResponseRedirect(context['BASE_PATH']+'user/home')
+    else:
+      return http.HttpResponseRedirect(context['BASE_PATH'])
+    
+class Change(handler.Handler):
+  """Handler to save the changed password"""
+  
+  def post(self):
+    return http.HttpResponseRedirect('../home')
+  
+  def get(self):
+    rlogin = self.POST['login']
+    rpass1 = self.POST['password']
+    rpass2 = self.POST['password2']
+    rid = self.POST['id']
+    
+    if user_logic.handle_pass_change(rlogin, rpass1, rpass2, rid):
+      return http.HttpResponseRedirect('./home')
+    else:
+      context = self.getContext()
+      context['form'] = ChangePassForm(initial={'login': rlogin, 'id': rid})
+      content = loader.render_to_string('user/change.html', dictionary=context)
+      return http.HttpResponse(content)

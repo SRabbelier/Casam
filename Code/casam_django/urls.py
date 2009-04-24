@@ -41,6 +41,8 @@ urlpatterns = patterns('',
     (r'^user/home$', casam.views.users.Home()),
     (r'^user/new$', casam.views.users.Users()),
     (r'^user/save$', casam.views.users.Save()),
+    (r'^user/changepass$', casam.views.users.PassChange()),
+    (r'^user/change$', casam.views.users.Change()),
     (r'^user/(.*)$', casam.views.users.Edit()),
 )
 
