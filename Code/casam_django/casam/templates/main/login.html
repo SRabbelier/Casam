@@ -58,7 +58,19 @@
 </div>
 
 
+<script language="javascript">
 
+
+  document.observe("dom:loaded", function() {
+    if (document.forms.length > 0) {
+	  document.forms[0].elements[0].select();
+	}
+  });
+
+
+  
+
+</script>
 
 
 
