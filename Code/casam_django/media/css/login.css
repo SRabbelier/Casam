@@ -15,92 +15,37 @@ table {
 	text-align: right;
 }
 
-/* White frame */
+/* Overridings for whiteFrame */
 
 #whiteFrame_container {
-	 width:350px;
-	 height:140px;
-	 overflow:none;
-	 margin:auto;
-}
-
+	 width: 310px;					/* x + 10 */
+	 height: 136px;					/* y + 36 */
+	}
 #whiteFrame_top_container {
-	width:350px;
-	height:20px;	
+	width: 310px;						/* x + 10 */
 }
-
-#whiteFrame_top_left {
-	width:20px;
-	height:20px;
-	background-image:url('../img/left_top.jpg');
-	float:left;
-}
-
 #whiteFrame_top_middle {
-	width:310px;
-	height:20px;
-	background-image:url('../img/top.jpg');
-	float:left;
+	width: 274px;						/* x - 26 */
 }
-
-#whiteFrame_top_right {
-	width:20px;
-	height:20px;
-	background-image:url('../img/right_top.jpg');
-	float:right;
-}
-
 #whiteFrame_center_container {
-	width:350px;
-	height:100px;
-	background-color:white;
-	clear:both;
+	width: 310px;						/* x + 10 */
+	height: 100px;					/* y */
 }
-
 #whiteFrame_center_left {
-	width:20px;
-	height:100px;
-	background-image:url('../img/left.jpg');
-	float:left;
+	height: 100px;					/* y */
 }
-
 #whiteFrame_center_middle {
-	width:300px;
-	height:100px;
-	float:left;
-	text-align:right;
-	padding-right:10px;	
+	width: 290px;						/* x ( - padding) */
+	height: 100px;					/* y */
+	text-align: right;      /* OVERRIDE!! */
+	padding-right: 10px;    /* OVERRIDE!! */	
 }
-
 #whiteFrame_center_right {
-	width:20px;
-	height:100px;
-	background-image:url('../img/right.jpg');
-	float:right;
+	height: 100px;					/* y */
 }
-
 #whiteFrame_bottom_container {
-	width:350px;
-	height:20px;
+	width: 310px;						/* x + 10 */
 }
-
-#whiteFrame_bottom_left {
-	width:20px;
-	height:20px;
-	background-image:url('../img/left_bottom.jpg');
-	float:left;
-}
-
 #whiteFrame_bottom_center {
-	width:310px;
-	height:20px;
-	background-image:url('../img/bottom.jpg');
-	float:left;
-}
-
-#whiteFrame_bottom_right {
-	width:20px;
-	height:20px;
-	background-image:url('../img/right_bottom.jpg');
-	float:right;
+	width: 274px;						/* x - 26 */
 }

@@ -3,14 +3,28 @@
 {% block title %}Login to C.A.S.A.M.{% endblock title %}
 
 {% block head %}
+  <link rel="stylesheet" href="{{ BASE_PATH }}media/css/whiteFrame.css">
 	<link rel="stylesheet" href="{{ BASE_PATH }}media/css/login.css">
+	<script language="javascript">
+
+  function load() {
+    new Draggable('whiteFrame_container', { handle: 'whiteFrame_top_middle'});
+	  if (document.forms.length > 0)
+	    document.forms[0].elements[0].select();
+  }
+
+  document.observe("dom:loaded", load());
+
+  </script>
 {% endblock head %}
 
+{% block user_dock %}
+{% endblock user_dock %}
 
 {% block body %}
 
-<img class="casamLogo" src="{{ BASE_PATH }}media/img/casam_banner.jpg" />
-<div id="whiteFrame_container">
+
+<div id="whiteFrame_container" style="margin-top:125px;"></div>
 
 	<!-- Top white frame -->
 	<div id="whiteFrame_top_container">
@@ -56,23 +70,4 @@
 		<div id="whiteFrame_bottom_right"></div>
 	</div>
 </div>
-
-
-<script language="javascript">
-
-
-  document.observe("dom:loaded", function() {
-    if (document.forms.length > 0) {
-	  document.forms[0].elements[0].select();
-	}
-  });
-
-
-  
-
-</script>
-
-
-
-
 {% endblock body %}

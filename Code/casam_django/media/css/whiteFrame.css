@@ -1,0 +1,132 @@
+/* This creates a whiteFrame of 26 x 0 pixels
+   Use these overwrites:
+   
+#whiteFrame_container {
+  width: (x + 10)px;
+  height: (y + 36)px;
+}	 
+#whiteFrame_top_container {
+	 width: (x + 10)px;
+} 
+#whiteFrame_top_middle {
+  width: (x - 26)px;
+}
+#whiteFrame_center_container {
+  width: (x + 10)px;
+  height: (y)px;
+}
+#whiteFrame_center_left {
+  height: (y)px;
+}
+#whiteFrame_center_middle {
+  width: (x)px;
+  height: (y)px;
+}
+#whiteFrame_center_right {
+  height: (y)px;
+}
+#whiteFrame_bottom_container {
+  width: (x + 10)px;
+}
+#whiteFrame_bottom_center {
+  width: (x - 26 )px;
+}
+*/
+
+#whiteFrame_container {
+	 width: 36px;
+	 height: 36px;
+	 overflow: none;
+	 margin: auto;
+}
+
+#whiteFrame_top_container {
+	width: 36px;
+	height: 18px;	
+}
+
+#whiteFrame_top_left {
+	width: 18px;
+	height: 18px;
+	background-image: url('../img/wf_left_top.jpg');
+	float: left;
+}
+
+#whiteFrame_top_middle {
+	width: 0px;
+	height: 18px;
+	background-image: url('../img/wf_top.jpg');
+	background-repeat: repeat-x;
+	background-position: top;
+	background-color: white;
+	float: left;
+}
+
+#whiteFrame_top_right {
+	width: 18px;
+	height: 18px;
+	background-image: url('../img/wf_right_top.jpg');
+	float: right;
+}
+
+#whiteFrame_center_container {
+	width: 36px;
+	height: 0px;
+	background-color: white;
+	clear: both;
+}
+
+#whiteFrame_center_left {
+	width: 5px;
+	height: 0px;
+	background-image: url('../img/wf_left.jpg');
+	background-repeat: repeat-y;
+	background-position: left;
+	background-color: white;
+	float: left;
+}
+
+#whiteFrame_center_middle {
+	width: 26px;
+	height: 0px;
+	float: left;
+}
+
+#whiteFrame_center_right {
+	width: 5px;
+	height: 0px;
+	background-image: url('../img/wf_right.jpg');
+  background-repeat: repeat-y;
+	background-position: right;
+	background-color: white;
+	float: right;
+}
+
+#whiteFrame_bottom_container {
+	width: 36px;
+	height: 18px;
+}
+
+#whiteFrame_bottom_left {
+	width: 18px;
+	height: 18px;
+	background-image:url('../img/wf_left_bottom.jpg');
+	float: left;
+}
+
+#whiteFrame_bottom_center {
+	width: 0px;
+	height: 18px;
+	background-image: url('../img/wf_bottom.jpg');
+	background-repeat: repeat-x;
+	background-position: bottom;
+	background-color: white;
+	float: left;
+}
+
+#whiteFrame_bottom_right {
+	width: 18px;
+	height: 18px;
+	background-image: url('../img/wf_right_bottom.jpg');
+	float: right;
+}
