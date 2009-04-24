@@ -19,9 +19,11 @@ def main():
   DJANGO_EXTENSIONS = [os.path.join(HERE, 'django_extensions')]
   DJANGO = [os.path.join(HERE, 'django')]
   CASAM = [os.path.join(HERE, 'casam_django', 'casam')]
+  PIL = [os.path.join(HERE, 'PIL')]
 
-  sys.path = WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
+  sys.path = PIL + WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
 
+  print sys.path
   if len(sys.argv) == 1:
     sys.argv += ['runserver']
 
