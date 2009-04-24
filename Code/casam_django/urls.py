@@ -30,14 +30,14 @@ urlpatterns = patterns('',
     (r'^logout', casam.views.users.logout),
     (r'^project/new$', casam.views.project.NewProject()),
     (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
-    (r'^project/home/%s$' % ID_STR, casam.views.project.Home()),
+    (r'^project/%s$' % ID_STR, casam.views.project.Home()),
     (r'^resizeImage/byRatio/(.*)/(.*)$', casam.views.imageresizer.byRatio),
     (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
     (r'^sjorsdraw', casam.views.sjorsdraw.sjorsDraw),
-    (r'^user/edit/(.*)$', casam.views.users.Edit()),
-    (r'^user/home$', casam.views.users.home),
+    (r'^user/home$', casam.views.users.Home()),
     (r'^user/new$', casam.views.users.Users()),
     (r'^user/save$', casam.views.users.Save()),
+    (r'^user/(.*)$', casam.views.users.Edit()),
 )
 
 if settings.DEBUG:
