@@ -47,9 +47,9 @@ class Handler(object):
         'form': self.form,
         }
 
-    if user.is_authenticated():
+    if self.user.is_authenticated():
       profile = handler_logic.getProfile(user)
-      context['NAME'] = user.first_name
+      context['NAME'] = self.user.first_name
       context['TYPE'] = handler_logic.getType(user)
       context['is_chirurg'] = context['TYPE'] == 'Chirurg'
       context['is_onderzoeker'] = context['TYPE'] == 'Onderzoeker'
