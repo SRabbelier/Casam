@@ -10,10 +10,7 @@
 	<script src="../media/js/landmarks.js" type="text/javascript"></script>
   <script type="text/javascript">
   var total_images = 0;
-  </script>
-  
-  
-  <script type="text/javascript">
+
 	  document.observe("dom:loaded", function() {
 			document.observe('mousemove',getMouseXY);
 			$('pictureContainer').hide();
@@ -74,8 +71,6 @@
 
 {% block body %}
 
-
-
 	<div style="float: left; border: 1px solid grey;">
 		<div id="pictureContainerHeader">Pictures (loading)</div>
 		<div id="pictureContainer">
@@ -130,8 +125,6 @@
   </div>
   
   <div id="lmdisplay" style="display: none; position: absolute; background-color: red; width: 2px; height: 2px;">
-
-  
   
   <script type="text/javascript" language="javascript">
   {%for mm in mmetings%}
