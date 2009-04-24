@@ -95,7 +95,7 @@ class Edit(handler.Handler):
   """Handler to handle the edits of a user"""
   
   def getPostForm(self):
-    context = self.getContext()
+    context = self.getUserAuthenticationContext()
     user = self.user
     if context['is_beheerder']:
       user = User.objects.get(id=self.POST['id'])

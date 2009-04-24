@@ -36,6 +36,23 @@ class Handler(object):
 
     return self.get()
 
+  def getUserAuthenticationContext(self):
+    """Returns the context values related to authentication.
+    """
+
+    context = {}
+
+    if self.user.is_authenticated():
+      profile = handler_logic.getProfile(self.user)
+      context['NAME'] = self.user.first_name
+      context['TYPE'] = handler_logic.getType(self.user)
+      context['is_chirurg'] = context['TYPE'] == 'Chirurg'
+      context['is_onderzoeker'] = context['TYPE'] == 'Onderzoeker'
+      context['is_beheerder'] = context['TYPE'] == 'Beheerder'
+      context['PROFILE'] = profile
+
+    return context
+
   def getContext(self):
     """Returns a dictionary for every class
     """
@@ -47,19 +64,10 @@ class Handler(object):
         'form': self.form,
         }
 
-    if self.user.is_authenticated():
-      profile = handler_logic.getProfile(self.user)
-      context['NAME'] = self.user.first_name
-      context['TYPE'] = handler_logic.getType(self.user)
-      context['is_chirurg'] = context['TYPE'] == 'Chirurg'
-      context['is_onderzoeker'] = context['TYPE'] == 'Onderzoeker'
-      context['is_beheerder'] = context['TYPE'] == 'Beheerder'
-      context['PROFILE'] = profile
-      
+    context.update(self.getUserAuthenticationContext())
+
     return context
-      
-      
-  
+
   def getForm(self):
     """Returns the appropriate form for the current request.
     """
