@@ -21,18 +21,16 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, wri
     profile = UserProfile(user=user)
     profile.save()
   
-  for projid in read_projs:
+  for proj in read_projs:
     try:
-      pr = Project.objects.get(id=projid)
-      profile.read.add(pr)
+      profile.read.add(proj)
       profile.save()
     except Project.DoesNotExist:
       pass
     
-  for projid in write_projs:
+  for proj in write_projs:
     try:
-      pr = Project.objects.get(id=projid)
-      profile.write.add(pr)
+      profile.write.add(proj)
       profile.save()
     except Project.DoesNotExist:
       pass    

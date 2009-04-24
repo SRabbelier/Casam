@@ -28,8 +28,8 @@ class UserForm(forms.Form):
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  read = forms.MultipleChoiceField(choices=choices)
-  write = forms.MultipleChoiceField(choices=choices)
+  read = forms.ModelMultipleChoiceField(Project.objects.all())
+  write = forms.ModelMultipleChoiceField(Project.objects.all())
   
 class EditForm(forms.Form):
   groups = Group.objects.all()
