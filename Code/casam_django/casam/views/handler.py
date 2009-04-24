@@ -39,13 +39,12 @@ class Handler(object):
   def getContext(self):
     """Returns a dictionary for every class
     """
-    
-    user = self.request.user
 
     context = {
         'BASE_PATH': settings.BASE_PATH,
         'DATA_DIR': settings.DATADIR,
-        'USER': user,
+        'USER': self.user,
+        'form': self.form,
         }
 
     if user.is_authenticated():

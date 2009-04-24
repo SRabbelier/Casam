@@ -75,7 +75,6 @@ class FileUpload(handler.Handler):
         proj_rights = dict([(i.id,[]) for i in rights])
         
         if self.kwargs['id_str'] in proj_rights:
-          context['form'] = self.form
           content = loader.render_to_string('main/fileupload.html', dictionary=context)
           return http.HttpResponse(content)
       else:

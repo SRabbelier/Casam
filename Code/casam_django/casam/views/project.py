@@ -85,7 +85,7 @@ class NewProject(handler.Handler):
 
   def get(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
     
       context['form'] = self.form
