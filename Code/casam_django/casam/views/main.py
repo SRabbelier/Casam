@@ -15,7 +15,7 @@ class Home(handler.Handler):
 
   def get(self):
     context = self.getContext();
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
       projects = dict([(i,[]) for i in rights])

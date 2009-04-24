@@ -39,7 +39,7 @@ class FileUpload(handler.Handler):
 
   def post(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       
       if not context['is_chirurg']:
@@ -66,7 +66,7 @@ class FileUpload(handler.Handler):
 
   def get(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       
       if not context['is_chirurg']:

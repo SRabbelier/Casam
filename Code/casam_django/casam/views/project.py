@@ -28,7 +28,7 @@ class Home(handler.Handler):
 
   def get(self):
     context = self.getContext();
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       
       id_str = self.kwargs['id_str']
@@ -71,7 +71,7 @@ class NewProject(handler.Handler):
 
   def post(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       name = self.cleaned_data['name']
       mmeting1 = self.cleaned_data['mmeting1']

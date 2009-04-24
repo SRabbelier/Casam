@@ -42,7 +42,7 @@ class LandmarkSaver(handler.Handler):
 
   def post(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       
       if context['is_onderzoeker']:

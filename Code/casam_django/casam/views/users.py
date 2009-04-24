@@ -96,7 +96,7 @@ class Edit(handler.Handler):
   
   def getPostForm(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if context['is_beheerder']:
       user = User.objects.get(id=self.POST['id'])
       rfirst_name = user.first_name
@@ -116,7 +116,7 @@ class Edit(handler.Handler):
   
   def get(self):    
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       if context['is_beheerder']:
         content = loader.render_to_string('user/edit.html', dictionary=context)
@@ -147,7 +147,7 @@ class Home(handler.Handler):
     
   def get(self):
     context = self.getContext()
-    user = context['USER']
+    user = self.user
     if user.is_authenticated():
       if context['is_beheerder']:
         users = User.objects.all()
