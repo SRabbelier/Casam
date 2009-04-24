@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Show annotation{% endblock title %}
+
+{% block body%}
+
+{{ annotation.name }} = {{ annotation.url|urlize }}
+
+{% endblock body %}
+

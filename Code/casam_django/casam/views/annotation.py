@@ -29,6 +29,14 @@ class ViewAnnotation(handler.Handler):
     except Annotation.DoesNotExist, exception:
       return http.HttpResponse('No such annotation')
 
+    context = self.getContext()
+
+    context['annotation'] = annotation
+
+    content = loader.render_to_string('annotation/show.html', dictionary=context)
+    return http.HttpResponse(content)
+
+
 
 class NewAnnotation(handler.Handler):
   """
@@ -56,3 +64,6 @@ class NewAnnotation(handler.Handler):
     name = self.cleaned_data['name']
     url = self.cleaned_data['url']
     annotation_logic.handle_add_annotation(name, url)
+    context = self.getContext()
+
+    return http.HttpResponseRedirect(context['BASE_PATH']+'home') 
