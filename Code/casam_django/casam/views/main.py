@@ -1,5 +1,6 @@
 import sys
 import os
+import itertools
 
 from django import http
 from django.conf import settings
@@ -15,16 +16,16 @@ class Home(handler.Handler):
   def get(self):
     context = self.getContext();
     user = context['USER']
-    if user.is_authenticated():    
-      projects = dict([(i,[]) for i in Project.objects.all()])
+    if user.is_authenticated():
+      rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
+      projects = dict([(i,[]) for i in rights])
 
       imgs = OriginalImage.objects.select_related().order_by('project__name')
 
       if imgs:
         img = imgs[0]
         projects[img.project] = img
-  
-    
+     
       context['projects'] = projects
 
       content = loader.render_to_string('main/home.html', dictionary=context)

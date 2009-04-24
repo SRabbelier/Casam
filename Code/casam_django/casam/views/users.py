@@ -31,6 +31,7 @@ class UserForm(forms.Form):
   type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
   read = forms.MultipleChoiceField(choices=choices)
+  write = forms.MultipleChoiceField(choices=choices)
   
 class EditForm(forms.Form):
   types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))
@@ -62,7 +63,8 @@ class Users(handler.Handler):
     password = self.cleaned_data['password']
     type = self.cleaned_data['type']
     read_projs = self.cleaned_data['read']
-    user_logic.handle_add_user(login, firstname, lastname, password, type, read_projs)
+    write_projs = self.cleaned_data['write']
+    user_logic.handle_add_user(login, firstname, lastname, password, type, read_projs, write_projs)
     return http.HttpResponseRedirect('./home')
 
   def get(self):
@@ -95,13 +97,18 @@ class Edit(handler.Handler):
   """Handler to handle the edits of a user"""
   
   def getPostForm(self):
-    user = User.objects.get(id=self.POST['id'])
-    rfirst_name = user.first_name
-    rlast_name= user.last_name
-    rlogin = user.username
-    rid = user.id
-    initial = {'firstname': rfirst_name, 'lastname': rlast_name , 'login': rlogin, 'id': rid}
-    return EditForm(initial = initial)
+    context = self.getContext()
+    user = context['USER']
+    if context['is_beheerder']:
+      user = User.objects.get(id=self.POST['id'])
+      rfirst_name = user.first_name
+      rlast_name= user.last_name
+      rlogin = user.username
+      rid = user.id
+      initial = {'firstname': rfirst_name, 'lastname': rlast_name , 'login': rlogin, 'id': rid}
+      return EditForm(initial = initial)
+    else:
+      return http.HttpResponseRedirect(context['BASEPATH']+'user/home')
   
   def getGetForm(self):
     return http.HttpResponseRedirect('../home')
@@ -113,9 +120,12 @@ class Edit(handler.Handler):
     context = self.getContext()
     user = context['USER']
     if user.is_authenticated():
-      context['form'] = self.form
-      content = loader.render_to_string('user/edit.html', dictionary=context)
-      return http.HttpResponse(content)
+      if context['is_beheerder']:
+        context['form'] = self.form
+        content = loader.render_to_string('user/edit.html', dictionary=context)
+        return http.HttpResponse(content)
+      else:
+        return http.HttpResponseRedirect(context['BASE_PATH']+'user/home')
     else:
       return http.HttpResponseRedirect(context['BASE_PATH'])
   
@@ -132,27 +142,27 @@ class Save(handler.Handler):
     rid = self.POST['id']
     return user_logic.handle_edit(rfirst_name, rlast_name, rtype, rid)
 
-
-def home(request):
-  user = request.user
-  if user.is_authenticated():
-    DATADIR = '../'+getattr(settings, 'DATADIR')
-    users = User.objects.all()
+class Home(handler.Handler):
+  """Handler to handle the user views"""
   
-    #groups = []
-  
-    #for us in users:
-    #  groups.append(us.groups.all().get().name)
+  def post(self):
+    return http.HttpResponseRedirect('../home')
+    
+  def get(self):
+    context = self.getContext()
+    user = context['USER']
+    if user.is_authenticated():
+      if context['is_beheerder']:
+        users = User.objects.all()
+    
+        context['users'] = users
       
-    #print groups
-  
-    #context = {'users':users, 'groups': groups, 'DATADIR':DATADIR}
-    context = {'users': users, 'DATADIR': DATADIR}
-  
-    content = loader.render_to_string('user/home.html', dictionary=context)
-    return http.HttpResponse(content)
-  else:
-    return http.HttpResponseRedirect(getattr(settings, 'DATADIR'))
+        content = loader.render_to_string('user/home.html', dictionary=context)
+        return http.HttpResponse(content)
+      else:
+        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
+    else:
+      return http.HttpResponseRedirect(context['BASE_PATH'])
 
 def logout(request):
   return user_logic.handle_logout(request)

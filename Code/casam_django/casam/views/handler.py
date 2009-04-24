@@ -4,6 +4,8 @@ from django.conf import settings
 
 from django.contrib.auth.models import User
 
+from casam.logic import handler as handler_logic
+
 class Handler(object):
   """Handler base class for Django requests.
   """
@@ -39,10 +41,25 @@ class Handler(object):
     """
     
     user = self.request.user
+
+    context = {
+        'BASE_PATH': settings.BASE_PATH,
+        'DATA_DIR': settings.DATADIR,
+        'USER': user,
+        }
+
     if user.is_authenticated():
-      return {'BASE_PATH': settings.BASE_PATH, 'DATA_DIR': settings.DATADIR, 'NAME': user.first_name, 'USER': user}
-    else:
-      return {'BASE_PATH': settings.BASE_PATH, 'DATA_DIR': settings.DATADIR, 'USER': user}
+      profile = handler_logic.getProfile(user)
+      context['NAME'] = user.first_name
+      context['TYPE'] = handler_logic.getType(user)
+      context['is_chirurg'] = context['TYPE'] == 'Chirurg'
+      context['is_onderzoeker'] = context['TYPE'] == 'Onderzoeker'
+      context['is_beheerder'] = context['TYPE'] == 'Beheerder'
+      context['PROFILE'] = profile
+      
+    return context
+      
+      
   
   def getForm(self):
     """Returns the appropriate form for the current request.

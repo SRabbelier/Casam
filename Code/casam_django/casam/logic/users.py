@@ -6,7 +6,7 @@ from casam.models import Project
 
 from django.contrib.auth.models import User, Group
 
-def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs):
+def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, write_projs):
   rname = rfirstname+' '+rlastname
   
   if rtype == 'C':
@@ -33,13 +33,20 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs):
   #profile.save()  
   
   for projid in read_projs:
-    print projid
     try:
       pr = Project.objects.get(id=projid)
       profile.read.add(pr)
       profile.save()
     except Project.DoesNotExist:
       pass
+    
+  for projid in write_projs:
+    try:
+      pr = Project.objects.get(id=projid)
+      profile.write.add(pr)
+      profile.save()
+    except Project.DoesNotExist:
+      pass    
   
   user.save()
     

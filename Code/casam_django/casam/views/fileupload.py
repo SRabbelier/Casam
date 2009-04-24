@@ -1,5 +1,6 @@
 import mimetypes
 import os
+import itertools
 
 from PIL import Image
 
@@ -41,17 +42,25 @@ class FileUpload(handler.Handler):
     user = context['USER']
     if user.is_authenticated():
       
-      file = self.FILES['file']
-      name = self.cleaned_data['name']
-      is_left = self.cleaned_data['is_left']
-      id_str = self.kwargs['id_str']
-  
-      oi = fileupload_logic.handle_uploaded_file(file, name, is_left, id_str)
-  
+      if not context['is_chirurg']:
+        rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
+        
+        proj_rights = dict([(i.id,[]) for i in rights])
+        
+        if self.kwargs['id_str'] in proj_rights:
+          
+          file = self.FILES['file']
+          name = self.cleaned_data['name']
+          is_left = self.cleaned_data['is_left']
+          id_str = self.kwargs['id_str']
       
-      context['image'] =oi 
-      content = loader.render_to_string('main/succes.html', dictionary=context)
-      return http.HttpResponse(content)
+          oi = fileupload_logic.handle_uploaded_file(file, name, is_left, id_str) 
+          
+          context['image'] =oi 
+          content = loader.render_to_string('main/succes.html', dictionary=context)
+          return http.HttpResponse(content)
+      else:
+        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
     else:
       return http.HttpResponse(context['BASE_PATH'])
 
@@ -59,28 +68,33 @@ class FileUpload(handler.Handler):
     context = self.getContext()
     user = context['USER']
     if user.is_authenticated():
-      context['form'] = self.form
-      content = loader.render_to_string('main/fileupload.html', dictionary=context)
-      return http.HttpResponse(content)
+      
+      if not context['is_chirurg']:
+        rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
+        
+        proj_rights = dict([(i.id,[]) for i in rights])
+        
+        if self.kwargs['id_str'] in proj_rights:
+          context['form'] = self.form
+          content = loader.render_to_string('main/fileupload.html', dictionary=context)
+          return http.HttpResponse(content)
+      else:
+        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
     else:
       return http.HttpResponse(context['BASE_PATH'])
 
 
-class ViewFile(handler.Handler):
+def viewfile(request, name):
   """TODO: Docstring
   """
-
-  def get(self):
-    user = self.user
-    name = self.kwargs['img_name']
-
-    if user.is_authenticated():
-      mimetype, picture = fileupload_logic.load_file(name)
-  
-      if mimetype and picture:
-        return http.HttpResponse(picture,mimetype=mimetype)
-  
-      content = "file '%s' doesn't exist" % name
-      return http.HttpResponse(content,mimetype="text/plain")
-  
-    return http.HttpResponseRedirect(settings.DATADIR)
+  user = request.user
+  if user.is_authenticated():  
+    mime = mimetypes.MimeTypes
+    mime = mime()
+    if os.path.exists('data/'+name):
+      mimetype = mime.guess_type('data/'+name)
+      return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimetype)
+    else:
+      return http.HttpResponse("file doesn't exist",mimetype="text/plain")
+  else:
+    return http.HttpResponseRedirect(getattr(settings, 'DATADIR'))

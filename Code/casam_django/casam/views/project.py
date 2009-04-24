@@ -1,4 +1,5 @@
 import uuid
+import itertools
 
 from django import http
 from django import forms
@@ -31,21 +32,29 @@ class Home(handler.Handler):
     if user.is_authenticated():
       
       id_str = self.kwargs['id_str']
-  
-      img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
-  
-      punten = Measurement.objects.select_related().filter(project__id=id_str);
-      mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
       
+      rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
       
-      context['images'] = img
-      context['id'] = id_str
-      context['mmetings'] = mmetings
-      context['punten'] = punten
+      proj_rights = dict([(i.id,[]) for i in rights])
+      
+      if id_str in proj_rights:
     
-      content = loader.render_to_string('project/home.html', dictionary=context)
-  
-      return http.HttpResponse(content)
+        img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
+    
+        punten = Measurement.objects.select_related().filter(project__id=id_str);
+        mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
+        
+        
+        context['images'] = img
+        context['id'] = id_str
+        context['mmetings'] = mmetings
+        context['punten'] = punten
+      
+        content = loader.render_to_string('project/home.html', dictionary=context)
+    
+        return http.HttpResponse(content)
+      else:
+        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
     else:
       return http.HttpResponseRedirect(context['BASE_PATH'])
 
@@ -68,9 +77,9 @@ class NewProject(handler.Handler):
       mmeting1 = self.cleaned_data['mmeting1']
       mmeting2 = self.cleaned_data['mmeting2']
   
-      project_logic.handle_add_project(name, mmeting1, mmeting2)
+      project_logic.handle_add_project(context['PROFILE'], name, mmeting1, mmeting2)
   
-      return http.HttpResponseRedirect('/')
+      return http.HttpResponseRedirect(context['BASE_PATH']+'home')
     else:
       return http.HttpResponseRedirect(context['BASE_PATH'])
 

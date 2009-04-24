@@ -54,20 +54,12 @@ class Measurement(models.Model):
   x = models.CharField(max_length=4)
   y = models.CharField(max_length=4)
 
-
-#class User(models.Model):
-#  id = UUIDField(primary_key=True,auto=True)
-#  login = models.CharField(max_length=30, unique=True)
-#  name = models.CharField(max_length=100)
-#  type = models.CharField(max_length=1)
-#  password = models.CharField(max_length=10)
-#  read = models.ManyToManyField('Project', related_name='ReadProject')
-#  write = models.ManyToManyField('Project', related_name='WriteProject')
   
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   user = models.ForeignKey(User, unique=True)  
   read = models.ManyToManyField('Project', related_name='ReadProject')
+  write = models.ManyToManyField('Project', related_name='WriteProject')
 
 class Annotation(models.Model):
   name = models.CharField(max_length=30)

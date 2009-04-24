@@ -93,17 +93,22 @@ document.write(minutes + " min")
 				</div>
 				</a>
 			{% endfor %}
-				
+			
+      {% if is_onderzoeker %}	
 				<a href="{{ BASE_PATH }}project/new"><div class="main_project_empty_container"></div></a>
+      {% endif %}
 
 
 			</div>
 
 			<!-- Bottom buttons -->
+      {% if is_beheerder %}
 			<div id="whiteFrame_userMangement_container">
 				<a href="{{ BASE_PATH }}user/home" onfocus="blur()">
 					<img src="{{ BASE_PATH }}media/img/users.jpg" alt="User management" border="0" /></a>
 			</div>
+      {% endif %}
+      {% if not is_chirurg %}
 			<div id="whiteFrame_export_container">
 				<a href="www.google.nl" alt="Export data" onfocus="blur()">
 					<img src="{{ BASE_PATH }}media/img/export.jpg" border="0" /></a>
@@ -111,7 +116,8 @@ document.write(minutes + " min")
 			<div id="whiteFrame_export_container">
 				<a href="www.google.nl" onfocus="blur()">
 					<img src="{{ BASE_PATH }}media/img/import.jpg" alt="Import data" border="0" /></a>
-			</div>
+      </div>
+      {% endif %}
 
 		</div>
 
