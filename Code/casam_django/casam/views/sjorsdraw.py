@@ -8,7 +8,6 @@ import Image, ImageDraw
 from django.core.servers.basehttp import FileWrapper
 import os
 from django.utils import simplejson as json
-import aggdraw
 
 class BrushStrokeForm(forms.Form):
   """TODO: dosctring
