@@ -41,6 +41,8 @@ class EditForm(forms.Form):
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
+  read = forms.ModelMultipleChoiceField(Project.objects.all())
+  write = forms.ModelMultipleChoiceField(Project.objects.all())
   
   id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)  
   
@@ -106,15 +108,19 @@ class Edit(handler.Handler):
       rlogin = user.username
       rid = user.id
       rtype = user.groups.all().get()
-      
-      teller = 1
-      for gr in Group.objects.all():
-        if rtype == gr:
-          break
-        else:
-          teller += 1
+      rread = [i.id for i in user.get_profile().read.all()]
+      rwrite = [i.id for i in user.get_profile().write.all()]
            
-      initial = {'firstname': rfirst_name, 'lastname': rlast_name , 'login': rlogin, 'id': rid, 'type': teller}
+      initial = {
+          'firstname': rfirst_name,
+          'lastname': rlast_name,
+          'login': rlogin,
+          'id': rid,
+          'type': rtype.id,
+          'read': rread,
+          'write': rwrite,
+          }
+      
       return EditForm(initial = initial)
     else:
       return http.HttpResponseRedirect(context['BASEPATH']+'user/home')
@@ -148,7 +154,10 @@ class Save(handler.Handler):
     rlast_name = self.POST['lastname']
     rtype = self.POST['type']
     rid = self.POST['id']
-    return user_logic.handle_edit(rfirst_name, rlast_name, rtype, rid)
+    rread = self.POST.getlist('read')
+    rwrite = self.POST.getlist('write')
+
+    return user_logic.handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite)
 
 class Home(handler.Handler):
   """Handler to handle the user views"""

@@ -56,25 +56,52 @@ def handle_login(request):
   else:
     return http.HttpResponseRedirect('.')   
   
-def handle_edit(rfirst_name, rlast_name, rtype, rid):
+def handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite):
   user = User.objects.get(id=rid)
   user.first_name = rfirst_name
   user.last_name = rlast_name
   user.save()
   
   gtype = ''
-  teller = 1
   for gr in Group.objects.all():
-    if teller == int(rtype):
+    if gr.id == int(rtype):
       gtype = gr.name
-      break
-    else:
-      teller += 1  
+      break  
   
   gr1 = Group.objects.get(name=gtype)
   user.groups.clear()
   user.groups.add(gr1)
   user.save()  
+  
+  try:
+    profile = user.get_profile()
+    for projid in rread:
+      profile.read.clear()
+      profile.save()
+      try:
+        proj = Project.objects.get(id=projid)
+        profile.read.add(proj)
+        profile.save()
+      except Project.DoesNotExist:
+        pass
+      
+      print profile.read.all()
+      
+    for projid in rwrite:
+      profile.write.clear()
+      profile.save()
+      try:
+        proj = Project.objects.get(id=projid)
+        profile.write.add(proj)
+        profile.save()
+      except Project.DoesNotExist:
+        pass
+      
+    profile.save()
+  except UserProfile.DoesNotExist:
+    pass
+  
+  user.save()   
     
   return http.HttpResponseRedirect('./home')           
 
