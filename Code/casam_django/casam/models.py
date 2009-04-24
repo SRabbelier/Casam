@@ -62,5 +62,6 @@ class UserProfile(models.Model):
   write = models.ManyToManyField('Project', related_name='WriteProject')
 
 class Annotation(models.Model):
+  id = UUIDField(primary_key=True, auto=True)
   name = models.CharField(max_length=30)
   url = models.URLField(verify_exists=True)
