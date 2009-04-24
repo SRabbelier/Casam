@@ -3,7 +3,7 @@ import uuid
 from django import http
 from django import forms
 
-from casam.logic import annotations
+from casam.logic import annotation as annotation_logic
 from casam.views import handler
 from casam.models import Annotation
 
