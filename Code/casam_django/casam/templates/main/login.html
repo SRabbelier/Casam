@@ -13,7 +13,7 @@
 	    document.forms[0].elements[0].select();
   }
 
-  document.observe("dom:loaded", load());
+  document.observe("dom:loaded", load);
 
   </script>
 {% endblock head %}
@@ -24,7 +24,7 @@
 {% block body %}
 
 
-<div id="whiteFrame_container" style="margin-top:125px;"></div>
+<div id="whiteFrame_container" style="margin-top:125px;">
 
 	<!-- Top white frame -->
 	<div id="whiteFrame_top_container">
