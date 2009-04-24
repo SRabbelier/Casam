@@ -25,7 +25,7 @@ def main():
 
   print sys.path
   if len(sys.argv) == 1:
-    sys.argv += ['runserver_plus']
+    sys.argv += ['runserver']
 
   import manage
   manage.main()
