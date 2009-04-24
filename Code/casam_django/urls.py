@@ -16,6 +16,7 @@ import casam.views.sjorsdraw
 
 UUID = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
 ID_STR = r"(?P<id_str>%s)" % UUID
+IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-.]+)"
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
@@ -27,7 +28,7 @@ urlpatterns = patterns('',
     (r'^project/new$', casam.views.project.NewProject()),
     (r'^project/%s$' % ID_STR, casam.views.project.Home()),
     (r'^fileupload/%s$' % ID_STR, casam.views.fileupload.FileUpload()),
-    (r'^data/(.*)', casam.views.fileupload.viewfile),
+    (r'^data/%s' % IMG_NAME, casam.views.fileupload.ViewFile()),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
     (r'^user/new$', casam.views.users.Users()),
     (r'^user/home$', casam.views.users.home),

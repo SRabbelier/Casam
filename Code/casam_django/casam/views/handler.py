@@ -24,6 +24,7 @@ class Handler(object):
     self.GET = request.GET
     self.POST = request.POST
     self.FILES = request.FILES
+    self.user = request.user
 
     self.form = self.getForm()
 

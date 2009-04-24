@@ -66,17 +66,21 @@ class FileUpload(handler.Handler):
       return http.HttpResponse(context['BASE_PATH'])
 
 
-def viewfile(request, name):
+class ViewFile(handler.Handler):
   """TODO: Docstring
   """
-  user = request.user
-  if user.is_authenticated():  
-    mime = mimetypes.MimeTypes
-    mime = mime()
-    if os.path.exists('data/'+name):
-      mimetype = mime.guess_type('data/'+name)
-      return http.HttpResponse(open('data/'+name,'rb'),mimetype=mimetype)
-    else:
-      return http.HttpResponse("file doesn't exist",mimetype="text/plain")
-  else:
-    return http.HttpResponseRedirect(getattr(settings, 'DATADIR'))
+
+  def get(self):
+    user = self.user
+    name = self.kwargs['img_name']
+
+    if user.is_authenticated():
+      mimetype, picture = fileupload_logic.load_file(name)
+  
+      if mimetype and picture:
+        return http.HttpResponse(picture,mimetype=mimetype)
+  
+      content = "file '%s' doesn't exist" % name
+      return http.HttpResponse(content,mimetype="text/plain")
+  
+    return http.HttpResponseRedirect(settings.DATADIR)

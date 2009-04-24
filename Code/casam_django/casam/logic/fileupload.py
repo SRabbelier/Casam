@@ -1,5 +1,7 @@
+import mimetypes
 import uuid
 import time
+import os
 
 from PIL import Image
 
@@ -71,3 +73,17 @@ def handle_uploaded_file(file, name, is_left, id_str):
   oi = OriginalImage(**properties)
   oi.save()
   return oi
+
+
+def load_file(name):
+  mime = mimetypes.MimeTypes()
+  filename ='data/' + name
+
+  if os.path.exists(filename) and os.path.isfile(filename):
+    mimetype = mime.guess_type(filename)
+    picture = open(filename,'rb')
+    return mimetype, picture
+
+  return None, None
+
+
