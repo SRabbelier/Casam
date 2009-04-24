@@ -87,8 +87,6 @@ class NewProject(handler.Handler):
     context = self.getContext()
     user = self.user
     if user.is_authenticated():
-    
-      context['form'] = self.form
       content = loader.render_to_string('project/new.html', dictionary=context)
       return http.HttpResponse(content)
     else:

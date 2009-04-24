@@ -69,7 +69,6 @@ class Users(handler.Handler):
 
   def get(self):
     context = self.getContext()
-    context['form'] = self.form
     content = loader.render_to_string('user/new.html', dictionary=context)
     return http.HttpResponse(content)
 
@@ -89,7 +88,6 @@ class Login(handler.Handler):
 
   def get(self):
     context = self.getContext()
-    context['form'] = self.form
     content = loader.render_to_string('main/login.html', dictionary=context)
     return http.HttpResponse(content)  
   
@@ -121,7 +119,6 @@ class Edit(handler.Handler):
     user = context['USER']
     if user.is_authenticated():
       if context['is_beheerder']:
-        context['form'] = self.form
         content = loader.render_to_string('user/edit.html', dictionary=context)
         return http.HttpResponse(content)
       else:
