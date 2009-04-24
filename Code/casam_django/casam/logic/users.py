@@ -13,7 +13,7 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, wri
   user.first_name = rfirstname
   user.last_name = rlastname
   user.is_staff = True
-  user.set_password('12345')
+  user.set_password(rpass)
   
   try:
     profile = user.get_profile()
