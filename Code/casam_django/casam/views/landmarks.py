@@ -38,13 +38,12 @@ class LandmarkSaver(handler.Handler):
 
   def get(self):
     # TODO: implement this?
-    pass
+    return http.HttpResponse("GTFO")
 
   def post(self):
     context = self.getContext()
     user = self.user
     if user.is_authenticated():
-      
       if context['is_onderzoeker']:
         mm = self.cleaned_data['mm']
         id = mm;
@@ -74,5 +73,7 @@ class LandmarkSaver(handler.Handler):
         content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
     
         return http.HttpResponse(content)
+      else:
+        return http.HttpResponse("Not authenticated")
     else:
       return http.HttpResponseRedirect(context['BASE_PATH'])
