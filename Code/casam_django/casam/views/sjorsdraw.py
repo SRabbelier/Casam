@@ -8,9 +8,7 @@ import Image, ImageDraw
 from django.core.servers.basehttp import FileWrapper
 import os
 from django.utils import simplejson as json
-
-
-
+import aggdraw
 
 class BrushStrokeForm(forms.Form):
   """TODO: dosctring
@@ -43,6 +41,7 @@ class AddBrushStroke(handler.Handler):
     #im = Image.open(fileName,"RGBA")
     if os.path.exists(fileName):
       im = Image.open(fileName)
+      im = im.convert("RGBA")
     else:
       im = Image.new("RGBA",(900,300))
     draw = ImageDraw.Draw(im)
@@ -52,12 +51,13 @@ class AddBrushStroke(handler.Handler):
     #DRAWING CODE HERE
     
     previousPosition = 0
+    positionList = []
     for position in positions:
-      if previousPosition != 0:
-        draw.line((previousPosition[0],previousPosition[1],position[0],position[1]),fill=10,width=3)
-      previousPosition = position
-      print previousPosition
-    
+      positionList.append(position[0])
+      positionList.append(position[1])
+      
+    draw.line(positionList,fill=(255,0,0,100),width=3)
+    print positionList
     
     
     #print brushStroke.positions;
