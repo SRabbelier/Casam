@@ -23,22 +23,24 @@ class UserForm(forms.Form):
   for pr in projects:
     choices.append((pr.id,pr.name))
     
-  types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))
-
   login = forms.CharField(max_length=30)
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
-  type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
+  type = forms.ModelChoiceField(Group.objects.all())
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
   read = forms.MultipleChoiceField(choices=choices)
   write = forms.MultipleChoiceField(choices=choices)
   
 class EditForm(forms.Form):
-  types=(('C', 'Chirurg'),('O', 'Onderzoeker'), ('A', 'Beheerder'))
+  groups = Group.objects.all()
+  types = []
+  
+  for gr in groups:
+    types.append((gr.name,gr.name))
   
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
-  type = forms.CharField(max_length=1, widget=forms.Select(choices=types))
+  type = forms.ModelChoiceField(Group.objects.all())
   
   id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(), required=False)  
   
@@ -103,7 +105,16 @@ class Edit(handler.Handler):
       rlast_name= user.last_name
       rlogin = user.username
       rid = user.id
-      initial = {'firstname': rfirst_name, 'lastname': rlast_name , 'login': rlogin, 'id': rid}
+      rtype = user.groups.all().get()
+      
+      teller = 1
+      for gr in Group.objects.all():
+        if rtype == gr:
+          break
+        else:
+          teller += 1
+           
+      initial = {'firstname': rfirst_name, 'lastname': rlast_name , 'login': rlogin, 'id': rid, 'type': teller}
       return EditForm(initial = initial)
     else:
       return http.HttpResponseRedirect(context['BASEPATH']+'user/home')

@@ -9,13 +9,6 @@ from django.contrib.auth.models import User, Group
 def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, write_projs):
   rname = rfirstname+' '+rlastname
   
-  if rtype == 'C':
-    gtype = 'Chirurg'
-  elif rtype == 'O':
-    gtype = 'Onderzoeker'
-  else:
-    gtype = 'Beheerder'
-  
   user = User.objects.create_user(rlogin,'',rpass)
   user.first_name = rfirstname
   user.last_name = rlastname
@@ -27,10 +20,6 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, wri
   except UserProfile.DoesNotExist:
     profile = UserProfile(user=user)
     profile.save()
-    
-  #pr = Project.objects.get(id__exact=read_projs[0])
-  #profile.read.add(pr)
-  #profile.save()  
   
   for projid in read_projs:
     try:
@@ -51,8 +40,7 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, wri
   user.save()
     
   try:
-    utype = Group.objects.get(name=gtype)
-    user.groups.add(utype)
+    user.groups.add(rtype)
     user.save()
   except Group.DoesNotExist:
     print 'Group does not exist'    
@@ -76,12 +64,14 @@ def handle_edit(rfirst_name, rlast_name, rtype, rid):
   user.last_name = rlast_name
   user.save()
   
-  if rtype == 'C':
-    gtype = 'Chirurg'
-  elif rtype == 'O':
-    gtype = 'Onderzoeker'
-  else:
-    gtype = 'Beheerder'  
+  gtype = ''
+  teller = 1
+  for gr in Group.objects.all():
+    if teller == int(rtype):
+      gtype = gr.name
+      break
+    else:
+      teller += 1  
   
   gr1 = Group.objects.get(name=gtype)
   user.groups.clear()
