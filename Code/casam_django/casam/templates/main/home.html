@@ -60,6 +60,9 @@
 					{% if image %}
 						<image src="{{BASE_PATH}}{{DATA_DIR}}thumbnail/100/{{ image.path }}" 
 							   class="project_image" border="0" />
+					{% else %}
+					  <image src="{{BASE_PATH}}media/img/newproject.png"
+                 class="project_image" border="0" />
  					{% endif %}
 
 					<div class="main_project_title">{{ project.name }}</div>

@@ -87,7 +87,10 @@ class Users(handler.Handler):
 
 class Login(handler.Handler):
   """Handler to handle Login requests"""
-  
+
+  def authenticated(self):
+    return True
+
   def getPostForm(self):
     return LoginForm(self.POST)
   
