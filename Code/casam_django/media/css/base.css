@@ -6,6 +6,7 @@ body {
   background-image: url(../img/casam_banner.jpg);
   background-repeat: no-repeat;
   background-position: center top;
+  overflow: hidden;
 }
 a:visited {
   color: red;

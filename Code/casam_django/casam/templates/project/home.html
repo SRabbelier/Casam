@@ -92,10 +92,8 @@
 			    //$('pictureContainerHeader').update('Pictures('+json.length+')');
 			     
 			    // Create a picture container for each picture
-			    for(i=0; i < json.length; i++) {
+			    for(i=0; i < json.length; i++)
 						makePictureContainer(json[i]);
-						alert('box toegevoegd');
-			    }
 				}
 			});
 		}
@@ -138,7 +136,7 @@
 {% block body %}
 
 
-<div id="whiteFrame_container" style="float:left;">
+<div id="whiteFrame_container" style="float:left;position:absolute;">
 
 	<!-- Top white frame -->
 	<div id="whiteFrame_top_container">
@@ -170,7 +168,7 @@
 </div>
 
 
-<div id="big_images" style="width:300px;height:300px;overflow:hidden;border:dashed 1px yellow;"></div>
+<div id="big_images" style="margin:auto;width:700px;height:400px;overflow:hidden;border:dashed 1px yellow;"></div>
 
 
 
