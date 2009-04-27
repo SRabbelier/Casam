@@ -4,7 +4,7 @@ In ons systeem onderscheiden wij drie soorten gebruikers:
 \begin{description}
 	\item[Chirurg] Deze rol wordt vervuld door mensen die operaties op pati\"enten uitvoeren.
 	\item[Onderzoeker] Deze rol wordt vervuld door mensen die de onderzoeken uitvoeren. 
-	\item[Beheerder] Deze rol wordt vervuld door mensen die alle rechten binnen het systeem hebben.
+	\item[Beheerder] Deze rol wordt vervuld door mensen die administratieve rechten binnen het systeem hebben.
 \end{description}
 De functionele eisen die we aan ons systeem stellen zijn verdeeld over deze drie gebruikers. 
 Hierbij moet vermeld worden, dat alle functionaliteiten van een chirurg ook aan een onderzoeker zijn gegeven.
@@ -15,19 +15,25 @@ Voor iedere gebruiker is het mogelijk om zijn of haar wachtwoord voor het systee
 
 \subsubsection{Chirurg}
 
-De chirurg kan van een project alle gegevens opvragen.
+De chirurg kan van een project alle gegevens opvragen voor weergave.
 \begin{itemize}
 	\item Als er data over een project aanwezig is in het systeem, dan wordt deze data weergegeven.
-	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
+%	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
 	\item Als er geen data aanwezig is in het systeem, krijgt de chirurg hier een melding van. 
 \end{itemize}
 
 \noindent
-De chirurg kan van een project slechts een deel van de gegevens opvragen.
+De chirurg kan van een project slechts een deel van de gegevens opvragen voor weergave.
 \begin{itemize}
 	\item Als er data aanwezig is in het systeem, wordt de mogelijke selectie weergegeven.
-	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
+%	\item Als de chirurg geen rechten heeft om het project te bekijken, krijgt de chirurg hier een melding van.
 	\item Als er geen data aanwezig is in het systeem, krijgt de chirurg hier een melding van.
+\end{itemize}
+
+\noindent
+De chirurg kan zijn wachtwoord wijzigen.
+\begin{itemize}
+	\item Om dit te doen moet hij wel zijn originele wachtwoord eerst invoeren.
 \end{itemize}
 
 \subsubsection{Onderzoeker}
@@ -42,8 +48,8 @@ De onderzoeker kan nieuwe projecten toevoegen aan het systeem.
 De onderzoeker kan foto's en data toevoegen aan bestaande projecten in het systeem.
 \begin{itemize}
 	\item Als het project bestaat, kan de onderzoeker foto's en data toevoegen aan het project.
-	\item Als het project niet bestaat, krijgt de onderzoeker de mogelijkheid het onderzoek toe te voegen, en vervolgens de data toe te voegen.
-	\item Als de onderzoeker niet de rechten heeft om het project te wijzigen, kan hij er geen foto's en data aan toe voegen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft.
+	\item Als het project niet bestaat, krijgt de onderzoeker de mogelijkheid het project toe te voegen, en vervolgens de data toe te voegen.
+%	\item Als de onderzoeker niet de rechten heeft om het project te wijzigen, kan hij er geen foto's en data aan toe voegen. De onderzoeker krijgt een melding dat hij niet voldoende rechten heeft.
 \end{itemize}
 
 \noindent
@@ -51,7 +57,7 @@ De onderzoeker kan foto's en data van een project wijzigen.
 \begin{itemize}
 	\item Als de data aanwezig is, kan de onderzoeker foto's en data van het project wijzigen.
   \item Als er geen data aanwezig is over het project, krijgt de onderzoeker hier een melding van.
-	\item Als de onderzoeker niet de rechten heeft om het project te wijzigen, kan hij ook geen bestaande foto's en data wijzigen.
+%	\item Als de onderzoeker niet de rechten heeft om het project te wijzigen, kan hij ook geen bestaande foto's en data wijzigen.
 \end{itemize}
 
 \noindent
@@ -70,15 +76,15 @@ De onderzoeker kan bestaande projecten verwijderen.
 	\item Als er geen foto's en data meer aanwezig zijn over het project wordt dit verwijderd.
 \end{itemize}
 
-\noindent
-De onderzoeker kan bestaande gebruikers toevoegen aan een project.
-\begin{itemize}
-	\item Als de onderzoeker niet de eigenaar is van het project, krijgt de onderzoeker hier een melding van.
-	\item Als de onderzoeker de eigenaar is van het project, kan hij aan de geselecteerde gebruiker de gewenste rechten toekennen.
-\end{itemize}
+%\noindent
+%De onderzoeker kan bestaande gebruikers toevoegen aan een project.
+%\begin{itemize}
+%	\item Als de onderzoeker niet de eigenaar is van het project, krijgt de onderzoeker hier een melding van.
+% \item Als de onderzoeker de eigenaar is van het project, kan hij aan de geselecteerde gebruiker de gewenste rechten toekennen.
+%\end{itemize}
 
 \noindent
-De onderzoeker kan landmarks toevoegen aan een project.
+De onderzoeker kan mogelijke landmarks toevoegen aan een project.
 \begin{itemize}
 	\item Als de onderzoeker niet de eigenaar is van het project, kan hij dit niet.
 	\item Als er al een landmark in het project bestaat met dezelfde naam als de nieuwe landmark, krijgt de onderzoeker hier een melding van en wordt hem gevraagd een andere naam te geven, of de al bestaande landmark te wijzigen.
@@ -100,9 +106,10 @@ De onderzoeker kan bestaande landmarks van een project verwijderen.
 \end{itemize}
 
 \noindent
-De onderzoeker kan papers toevoegen aan een project.
+De onderzoeker kan relevante papers toevoegen aan een project.
 \begin{itemize}
-	\item Als de onderzoeker het project kan wijzigen, kan hij ook papers of links naar papers aan het project toevoegen. Er verschijnt geen melding als er al een paper met dezelfde naam bestaat. Bij het toevoegen van een paper kan er gekozen worden uit een aantal zichtbaarheidsopties voor andere gebruikers.
+	\item Als de onderzoeker het project kan wijzigen, kan hij ook papers of links naar papers op bijvoorbeeld PubMed aan het project toevoegen. Er verschijnt geen melding als er al een paper met dezelfde naam bestaat. 
+%Bij het toevoegen van een paper kan er gekozen worden uit een aantal zichtbaarheidsopties voor andere gebruikers.
 	\item Als de onderzoeker niet de rechten heeft om een project te wijzigen, wordt deze optie hem niet gegeven.
 \end{itemize}
 
@@ -118,7 +125,7 @@ De onderzoeker kan papers verwijderen uit een project.
 De onderzoeker kan een project exporteren uit het systeem.
 \begin{itemize}
 	\item Als de onderzoeker de eigenaar is van het project, kan hij het project exporteren.
-	\item Als er geen foto's en data aanwezig zijn over het project, kan het project niet ge\"exporteerd worden.
+	\item Als er geen foto's en data aanwezig zijn binnen het project, kan het project niet ge\"exporteerd worden.
 \end{itemize}
 
 \noindent

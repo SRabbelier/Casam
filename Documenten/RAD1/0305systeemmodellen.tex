@@ -18,22 +18,6 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 
 \begin{enumerate}
 
-\item   Naam: Add Image \\
-	Actor:
-	\begin{itemize}
-		\item Anton: Gebruiker met onderzoeker account
-	\end{itemize}
-	Flow of events
-	\begin{enumerate}
-        \item Anton heeft een account als onderzoeker op het systeem en wil een foto toevoegen. Hij start hiertoe de applicatie op.
-        \item Bij het opstarten vraagt het systeem Anton om zijn gebruikersnaam en wachtwoord.
-        \item Anton voert zijn gegevens in en klikt op de knop `Inloggen'.
-        \item Het systeem logt Anton in en laat de relevante mogelijkheden zien voor zijn gebruikersaccount.
-				\item Hij klikt op `foto toevoegen', selecteert een project en selecteert de foto.
-				\item Vervolgens voegt Anton meta-data over de foto toe en klikt op 'Toevoegen' 
-				\item Het resultaat (toegevoegde foto aan relevant project) wordt getoond.
-    \end{enumerate}
-
 \item   Naam: Add new project  \\
 	Actor:
 	\begin{itemize}
@@ -48,6 +32,20 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	\end{enumerate}
 \end{enumerate}
 
+\item   Naam: Add Image \\
+	Actor:
+	\begin{itemize}
+		\item Anton: Gebruiker met onderzoeker account
+	\end{itemize}
+	Flow of events
+	\begin{enumerate}
+        \item Anton wil een foto toevoegen aan een bestaand project
+				\item Hij selecteert eerst het project kiest ervoor om een nieuwe foto toe te voegen
+				\item Vervolgens voegt Anton de aanvullende gegevens over de foto toe en de foto zelf en klikt op 'Toevoegen' 
+				\item Het resultaat (toegevoegde foto aan relevant project) wordt getoond.
+    \end{enumerate}
+
+
 \item  Naam: View Images  \\
 	Actor:
 	\begin{itemize}
@@ -56,10 +54,10 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	\end{itemize}
 	Flow of events
 	\begin{enumerate}
-		\item De actor wil een specifiek aantal plaatjes bekijken van een project.
-		\item Hij selecteert het project en klikt op de thumbnails.
+		\item De actor wil een aantal plaatjes bekijken van een project.
+		\item Hij selecteert het project en klikt op de aanwezige thumbnails.
 		\item Nu krijgt hij alle images te zien voor dat project met aan de rechterkant een sidebar.
-		\item In deze sidebar kan hij aangeven welke plaatjes hij wil zien en met welke metingen
+		\item In deze sidebar kan hij aangeven welke plaatjes hij wil zien en met welke metingen. Ook kan hij de doorzichtigheid van de plaatjes aangeven om verschillende plaatjes tegelijk te belijken.
 	\end{enumerate}
 \end{enumerate}
 
@@ -84,11 +82,12 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	\end{itemize}
 	Flow of events
 	\begin{enumerate}
-		\item Anton wil een nieuwe meting toevoegen aan een foto.
+		\item Anton wil een nieuwe meting of landmark toevoegen aan een foto.
 		\item Hij selecteert het project en klikt erop.
-		\item Hierna klikt hij op de foto waarvan hij de meting wil toevoegen of voegt hij een nieuwe foto toe.
-		\item Hij sleept hierna de gewenste measurement naar de image op de goede locatie.
-		\item Als de measurement goed staat bevestigd hij de positie.
+		\item Hierna klikt hij op de foto waarvan hij de meting of landmark wil toevoegen of voegt hij een nieuwe foto toe.
+		\item Hij klikt vervolgens in de foto om een meting of landmarkt toe te voegen.
+		\item Hierna kiest hij het type meting en bevestigd.
+		\item Als de meting of landmark goed staat bevestigd hij de positie. Als het nog niet goedstaat kan de positie nog gewijzigd worden.
 	\end{enumerate}
 \end{enumerate}
 
@@ -102,7 +101,7 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 		\item Anton wil een nieuw type meting toevoegen aan een project.
 		\item Hij opent het project waar de meting bijhoort.
 		\item Hij voegt de meting toe door op het plusje te klikken in de lijst met metingen typen.
-		\item Hierna voert hij het type meting in (punt, piecewise linear length, area).
+		\item Hierna voert hij het type meting in (punt, lijn, oppervlakte).
 		\item Het metingtype staat nu in de lijst met mogelijke metingen voor het project.
 	\end{enumerate}
 \end{enumerate}
@@ -179,7 +178,7 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	\end{enumerate}
 \end{enumerate}
 
-\item   Naam: View Related Papers (lokaal, online (pubmed), powerpoints)  \\
+\item   Naam: View Related Papers (lokaal, online (PubMed), powerpoints)  \\
 	Actor:
 	\begin{itemize}
 		\item Anton: Gebruiker met onderzoeker account
@@ -189,7 +188,7 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	\begin{enumerate}
 		\item De actor wil gerelateerde papers van een project bekijken.
 		\item Hij selecteerd het project.
-		\item De gerelateerde papers worden weergegeven.
+		\item De gerelateerde papers worden weergegeven. 
 	\end{enumerate}
 \end{enumerate}
 
@@ -197,6 +196,7 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	Actor:
 	\begin{itemize}
 		\item Anton: Gebruiker met onderzoeker account
+		\item Dr. Kleinrensink: Gebruiker met chirurg account
 		\item Xanthos: Gebruiker met beheerder account
 	\end{itemize}
 	Flow of events
@@ -219,7 +219,7 @@ In deze paragraaf beschrijven we use cases van gebruikers die het systeem voor v
 	  \item De beheerder wil een nieuwe gebruiker toevoegen.
 		\item Hij logged in op het beheerders gedeelte.
 		\item Hij voert de inlognaam en de toegangsrechten toe.
-		\item Het password en de username wordt getoond
+		\item Het wachtwoord en de inlognaam wordt getoond
 	\end{enumerate}
 \end{enumerate}
 
