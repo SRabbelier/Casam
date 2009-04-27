@@ -56,7 +56,7 @@ class AddBrushStroke(handler.Handler):
       positionList.append(position[1])
       
     draw.line(positionList,fill=(255,0,0,100),width=3)
-    print positionList
+    #print positionList
     
     
     #print brushStroke.positions;
