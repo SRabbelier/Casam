@@ -21,7 +21,7 @@ def handle_uploaded_file(file, name):
 
   destination.close()
 
-  return location, fileNameOnly
+  return location, fileNameOnly, timestamp
 
 
 def load_file(name):

@@ -10,6 +10,7 @@ from django.conf import settings
 from django.template import loader
 
 from casam.logic import image as image_logic
+from casam.logic import fileupload as fileupload_logic
 from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
@@ -54,6 +55,7 @@ class FileUpload(handler.Handler):
   def get(self):
     context = self.getContext()
     content = loader.render_to_string('main/fileupload.html', dictionary=context)
+    return http.HttpResponse(content)
 
 class ViewFile(handler.Handler):
   """TODO: Docstring

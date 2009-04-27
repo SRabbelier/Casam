@@ -1,5 +1,7 @@
 import uuid
 
+from django.conf import settings
+
 from PIL import Image
 
 from casam.logic import fileupload as fileupload_logic
@@ -8,7 +10,7 @@ from casam.models import Project
 from casam.models import OriginalImage
 
 
-def handle_crop_image(location):
+def handle_crop_image(file, location, timestamp):
   """TODO: Docstring
   """
 
@@ -29,7 +31,7 @@ def handle_crop_image(location):
   sizes = 50,100,200,300
 
   for singleSize in sizes:
-    thumbnailLocation = DATADIR + "thumbnail/%d/%d-%s" % (
+    thumbnailLocation = settings.DATADIR + "thumbnail/%d/%d-%s" % (
         singleSize,timestamp, file.name)
 
     thumbnail=fullImage.copy()
@@ -41,7 +43,8 @@ def handle_uploaded_image(file, name, is_left, id_str):
   """TODO: Docstring
   """
 
-  location, fileNameOnly = fileupload_logic.handle_uploaded_file(file, name)
+  location, fileNameOnly, timestamp = fileupload_logic.handle_uploaded_file(file, name)
+  handle_crop_image(file, location, timestamp)
 
   #temporarly create a patient object
   #because we need this info
