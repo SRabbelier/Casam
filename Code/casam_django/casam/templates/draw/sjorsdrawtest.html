@@ -16,10 +16,10 @@ var BrushStroke = Class.create({
   },
   addPosition: function(x,y) {
     this.positions.push(new Array(x,y));
-	message = new Element('p')
+	/*message = new Element('p')
 	.update('(' + x + ',' + y + ')');
 	
-	$('updateWindow').insert({'top': message});
+	$('updateWindow').insert({'top': message});*/
 	new Effect.Highlight(message);
   },
   addStroke:function(){
@@ -29,7 +29,15 @@ var BrushStroke = Class.create({
 		  						},
 	  	onSuccess: function(transport, json){
 	      //alert(json ? Object.inspect(json) : "no JSON object");
-	      $('drawnImage').setAttribute("src",('{{ BASE_PATH }}media/img/sjorsdraw.gif?time='+new Date().getTime()));
+	      var currentDateTime = new Date().getTime();
+	      var appearIMG = new Element('img',{'src':('{{ BASE_PATH }}media/img/sjorsdraw.gif?time='+currentDateTime)});
+	      appearIMG.hide();
+	      appearIMG.addClassName('drawnImageAppear');
+	      $('drawnImage').insert({'after':appearIMG});
+	      Effect.Appear(appearIMG,{afterFinish:function(){
+	      	$('drawnImage').setAttribute("src",('{{ BASE_PATH }}media/img/sjorsdraw.gif?time='+currentDateTime));
+	      	appearIMG.remove();
+	      }});
 	    }
 	  });
   }
@@ -42,9 +50,9 @@ var currentStroke;
 function startDrawing(){
 	if(!drawing){
 		drawing = true;
-		$('updateWindow').insert({'top':
+		/*$('updateWindow').insert({'top':
 			new Element('p')
-			.update('start drawing')});
+			.update('start drawing')});*/
 	}
 	return false;
 }
@@ -52,10 +60,9 @@ function startDrawing(){
 function stopDrawing(){
 	if(drawing){
 		drawing = false;
-		$('updateWindow').insert({'top':
+		/*$('updateWindow').insert({'top':
 			new Element('p')
-			.update('stop drawing')});
-		//alert(Object.toJSON(currentStroke));
+			.update('stop drawing')});*/
 		currentStroke.addStroke();
 		currentStroke = new BrushStroke(1,0);
 		return false;
@@ -98,7 +105,7 @@ div,img{
 	
 
 }
-#drawnImage{
+#drawnImage, .drawnImageAppear{
 	width:900px;
 	height:300px;
 	position:absolute;
@@ -113,6 +120,7 @@ div,img{
 <img class="casamLogo" src="{{ BASE_PATH }}media/img/casam_banner.jpg" />
 <div id="drawContainer">
 <img id="drawnImage" src="{{ BASE_PATH }}media/img/sjorsdraw.gif"></img>
+
 <div id="drawTablet"></div>
 </div>
 
