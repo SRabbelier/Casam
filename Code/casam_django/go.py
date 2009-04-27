@@ -30,12 +30,6 @@ def main():
   import manage
   manage.main()
 
-  from casam_django.casam.models import Project
-  pr1 = Project(name='Project A')
-  pr1.save()
-  pr2 = Project(name='Project B')
-  pr2.save()
-  
   from django.contrib.auth.models import Group
   try:
     gr1 = Group.objects.get(name='Beheerder')

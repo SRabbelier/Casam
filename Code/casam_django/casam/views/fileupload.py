@@ -9,7 +9,7 @@ from django import http
 from django.conf import settings
 from django.template import loader
 
-from casam.logic import fileupload as fileupload_logic
+from casam.logic import image as image_logic
 from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
@@ -54,7 +54,7 @@ class FileUpload(handler.Handler):
           is_left = self.cleaned_data['is_left']
           id_str = self.kwargs['id_str']
       
-          oi = fileupload_logic.handle_uploaded_file(file, name, is_left, id_str) 
+          oi = image_logic.handle_uploaded_image(file, name, is_left, id_str) 
           
           context['image'] =oi 
           content = loader.render_to_string('main/succes.html', dictionary=context)
@@ -70,7 +70,6 @@ class FileUpload(handler.Handler):
     context = self.getContext()
     user = self.user
     if user.is_authenticated():
-      
       if not context['is_chirurg']:
         rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
         
@@ -79,6 +78,8 @@ class FileUpload(handler.Handler):
         if self.kwargs['id_str'] in proj_rights:
           content = loader.render_to_string('main/fileupload.html', dictionary=context)
           return http.HttpResponse(content)
+        else:
+          return http.HttpResponse("%s %s" % (proj_rights, self.kwargs['id_str']))
       else:
         return http.HttpResponseRedirect(context['BASE_PATH']+'home')
     else:

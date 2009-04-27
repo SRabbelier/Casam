@@ -1,10 +1,5 @@
-{% extends 'base.html' %}
-
-{% block title %}Show annotation{% endblock title %}
-
-{% block body%}
-
-{{ annotation.name }} = {{ annotation.url|urlize }}
-
-{% endblock body %}
-
+<div class="annotation">
+  <div class="annotation_id">{{ annotation.id }}</div>
+  <div class="annotation_name">{{ annotation.name }}</div>
+  <div class="annotation_url">{{ annotation.url|urlize }}</div>
+</div>
