@@ -73,9 +73,9 @@ class NewAnnotation(handler.Handler):
     project_id = self.kwargs['uuid']
     name = self.cleaned_data['name']
     url = self.cleaned_data['url']
-    
+    file = self.FILES['file']
     annotation_logic.handle_add_annotation(name, url, project_id)
-    oi = fileupload_logic.handle_uploaded_image(file, name)
+    oi = fileupload_logic.handle_uploaded_file(file, name)
     context = self.getContext()
 
     return http.HttpResponseRedirect(context['BASE_PATH']+'home') 

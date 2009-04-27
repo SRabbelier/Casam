@@ -8,6 +8,7 @@ from django.core import serializers
 from django.template import loader
 
 from casam.logic import project as project_logic
+from casam.models import Annotation
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
@@ -31,9 +32,13 @@ class Home(handler.Handler):
     id_str = self.kwargs['id_str']
     img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
 
+    annotations = Annotation.objects.select_related().order_by(
+        'project__name').filter(project__id=id_str)
+
     punten = Measurement.objects.select_related().filter(project__id=id_str);
     mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
 
+    context['annotations'] = annotations
     context['images'] = img
     context['id'] = id_str
     context['mmetings'] = mmetings

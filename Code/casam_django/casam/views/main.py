@@ -17,8 +17,8 @@ class Home(handler.Handler):
     context = self.getContext();
     imgs = OriginalImage.objects.select_related().order_by('project__name')
 
-    rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
-    projects = dict([(i,[]) for i in rights])
+    projects = Project.objects.all()
+    projects = dict([(i,[]) for i in projects])
 
     if imgs:
       img = imgs[0]
