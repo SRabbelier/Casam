@@ -64,9 +64,4 @@ function showLandmarkTooltip(id){
 function hideLandmarkTooltip(id){
   $('tooltip'+id).hide();
 }
-document.observe("dom:loaded", function() {
-	if($('photosContextMenu'))
-	{
-		new Draggable('photosContextMenu');
-	}
-});
+

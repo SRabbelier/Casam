@@ -94,6 +94,15 @@
 			    // Create a picture container for each picture
 			    for(i=0; i < json.length; i++)
 						makePictureContainer(json[i]);
+
+					// Put bar in Pictures
+					var toolbar = new Element('div');
+					toolbar.style.clear = "both";
+					toolbar.style.float = "right";
+					toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
+					toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
+					toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
+					$('pictureContainer').insert(toolbar);
 				}
 			});
 		}
@@ -174,11 +183,7 @@
 
 <!-- NOT POSITIONED DIV's -->
   
-<div style="overflow:hidden;" id="pictureContainer">
-
-  <a href="../fileupload/{{ id }}">Voeg een foto toe</a>
-  
-</div>
+<div style="overflow:hidden;" id="pictureContainer"></div>
 	  	
       		
 <div id="tabContent_two" >
