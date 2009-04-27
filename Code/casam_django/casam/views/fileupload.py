@@ -39,52 +39,21 @@ class FileUpload(handler.Handler):
 
   def post(self):
     context = self.getContext()
-    user = self.user
-    if user.is_authenticated():
-      
-      if not context['is_chirurg']:
-        rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
-        
-        proj_rights = dict([(i.id,[]) for i in rights])
-        
-        if self.kwargs['id_str'] in proj_rights:
-          
-          file = self.FILES['file']
-          name = self.cleaned_data['name']
-          is_left = self.cleaned_data['is_left']
-          id_str = self.kwargs['id_str']
-      
-          oi = image_logic.handle_uploaded_image(file, name, is_left, id_str) 
-          
-          context['image'] =oi 
-          content = loader.render_to_string('main/succes.html', dictionary=context)
-          return http.HttpResponse(content)
-        else:
-          return http.HttpReponse('no rights')
-      else:
-        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
-    else:
-      return http.HttpResponse(context['BASE_PATH'])
+
+    file = self.FILES['file']
+    name = self.cleaned_data['name']
+    is_left = self.cleaned_data['is_left']
+    id_str = self.kwargs['id_str']
+
+    oi = image_logic.handle_uploaded_image(file, name, is_left, id_str)
+
+    context['image'] =oi
+    content = loader.render_to_string('main/succes.html', dictionary=context)
+    return http.HttpResponse(content)
 
   def get(self):
     context = self.getContext()
-    user = self.user
-    if user.is_authenticated():
-      if not context['is_chirurg']:
-        rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
-        
-        proj_rights = dict([(i.id,[]) for i in rights])
-        
-        if self.kwargs['id_str'] in proj_rights:
-          content = loader.render_to_string('main/fileupload.html', dictionary=context)
-          return http.HttpResponse(content)
-        else:
-          return http.HttpResponse("%s %s" % (proj_rights, self.kwargs['id_str']))
-      else:
-        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
-    else:
-      return http.HttpResponse(context['BASE_PATH'])
-
+    content = loader.render_to_string('main/fileupload.html', dictionary=context)
 
 class ViewFile(handler.Handler):
   """TODO: Docstring
@@ -94,13 +63,10 @@ class ViewFile(handler.Handler):
     user = self.user
     name = self.kwargs['img_name']
 
-    if user.is_authenticated():
-      mimetype, picture = fileupload_logic.load_file(name)
+    mimetype, picture = fileupload_logic.load_file(name)
 
-      if mimetype and picture:
-        return http.HttpResponse(picture,mimetype=mimetype)
+    if mimetype and picture:
+      return http.HttpResponse(picture,mimetype=mimetype)
 
-      content = "file '%s' doesn't exist" % name
-      return http.HttpResponse(content,mimetype="text/plain")
-
-    return http.HttpResponseRedirect(settings.DATADIR)
+    content = "file '%s' doesn't exist" % name
+    return http.HttpResponse(content,mimetype="text/plain")

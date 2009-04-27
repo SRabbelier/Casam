@@ -31,9 +31,6 @@ class AddBrushStroke(handler.Handler):
     return http.HttpResponse("")
   
   def post(self):
-
-  #user = request.user
-  #if user.is_authenticated():  
     brushStroke = self.cleaned_data['brushStroke']
     fileName = self.cleaned_data['fileName']
     #print self.cleaned_data['brushStroke']

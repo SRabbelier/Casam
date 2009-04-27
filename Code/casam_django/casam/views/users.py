@@ -108,30 +108,26 @@ class Edit(handler.Handler):
   
   def getPostForm(self):
     context = self.getUserAuthenticationContext()
-    user = self.user
-    if context['is_beheerder']:
-      user = User.objects.get(id=self.POST['id'])
-      rfirst_name = user.first_name
-      rlast_name= user.last_name
-      rlogin = user.username
-      rid = user.id
-      rtype = user.groups.all().get()
-      rread = [i.id for i in user.get_profile().read.all()]
-      rwrite = [i.id for i in user.get_profile().write.all()]
-           
-      initial = {
-          'firstname': rfirst_name,
-          'lastname': rlast_name,
-          'login': rlogin,
-          'id': rid,
-          'type': rtype.id,
-          'read': rread,
-          'write': rwrite,
-          }
-      
-      return EditForm(initial = initial)
-    else:
-      return http.HttpResponseRedirect(context['BASEPATH']+'user/home')
+    user = User.objects.get(id=self.POST['id'])
+    rfirst_name = user.first_name
+    rlast_name= user.last_name
+    rlogin = user.username
+    rid = user.id
+    rtype = user.groups.all().get()
+    rread = [i.id for i in user.get_profile().read.all()]
+    rwrite = [i.id for i in user.get_profile().write.all()]
+
+    initial = {
+        'firstname': rfirst_name,
+        'lastname': rlast_name,
+        'login': rlogin,
+        'id': rid,
+        'type': rtype.id,
+        'read': rread,
+        'write': rwrite,
+        }
+
+    return EditForm(initial = initial)
   
   def getGetForm(self):
     return http.HttpResponseRedirect('../home')
@@ -139,18 +135,11 @@ class Edit(handler.Handler):
   def post(self):
     return http.HttpResponseRedirect('./home')
   
-  def get(self):    
+  def get(self):
     context = self.getContext()
-    user = self.user
-    if user.is_authenticated():
-      if context['is_beheerder']:
-        content = loader.render_to_string('user/edit.html', dictionary=context)
-        return http.HttpResponse(content)
-      else:
-        return http.HttpResponseRedirect(context['BASE_PATH']+'user/home')
-    else:
-      return http.HttpResponseRedirect(context['BASE_PATH'])
-  
+    content = loader.render_to_string('user/edit.html', dictionary=context)
+    return http.HttpResponse(content)
+
 class Save(handler.Handler):
   """Handler to handle the saving of the edited user"""
   
@@ -175,19 +164,12 @@ class Home(handler.Handler):
     
   def get(self):
     context = self.getContext()
-    user = self.user
-    if user.is_authenticated():
-      if context['is_beheerder']:
-        users = User.objects.all()
-    
-        context['users'] = users
-      
-        content = loader.render_to_string('user/home.html', dictionary=context)
-        return http.HttpResponse(content)
-      else:
-        return http.HttpResponseRedirect(context['BASE_PATH']+'home')
-    else:
-      return http.HttpResponseRedirect(context['BASE_PATH'])
+    users = User.objects.all()
+
+    context['users'] = users
+
+    content = loader.render_to_string('user/home.html', dictionary=context)
+    return http.HttpResponse(content)
 
 def logout(request):
   return user_logic.handle_logout(request)
@@ -219,16 +201,9 @@ class PassChange(handler.Handler):
   
   def get(self):
     context = self.getContext()
-    user = self.user
-    if user.is_authenticated():
-      if context['is_beheerder']:
-        content = loader.render_to_string('user/change.html', dictionary=context)
-        return http.HttpResponse(content)
-      else:
-        return http.HttpResponseRedirect(context['BASE_PATH']+'user/home')
-    else:
-      return http.HttpResponseRedirect(context['BASE_PATH'])
-    
+    content = loader.render_to_string('user/change.html', dictionary=context)
+    return http.HttpResponse(content)
+
 class Change(handler.Handler):
   """Handler to save the changed password"""
   

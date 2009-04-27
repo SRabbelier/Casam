@@ -15,20 +15,13 @@ class Home(handler.Handler):
 
   def get(self):
     context = self.getContext();
-    user = self.user
-    if user.is_authenticated():
-      rights = itertools.chain(context['PROFILE'].read.all(), context['PROFILE'].write.all())
-      projects = dict([(i,[]) for i in rights])
+    imgs = OriginalImage.objects.select_related().order_by('project__name')
 
-      imgs = OriginalImage.objects.select_related().order_by('project__name')
+    if imgs:
+      img = imgs[0]
+      projects[img.project] = img
 
-      if imgs:
-        img = imgs[0]
-        projects[img.project] = img
-     
-      context['projects'] = projects
+    context['projects'] = projects
 
-      content = loader.render_to_string('main/home.html', dictionary=context)
-      return http.HttpResponse(content)
-    else:
-      return http.HttpResponseRedirect(context['BASE_PATH'])
+    content = loader.render_to_string('main/home.html', dictionary=context)
+    return http.HttpResponse(content)
