@@ -11,9 +11,11 @@ def handle_uploaded_file(file, name):
 
   DATADIR = settings.DATADIR
 
+  filename = file.name.replace(' ', '_')
+
   timestamp = time.time()
-  fileNameOnly = "%d-%s" % (timestamp, file.name)
-  location = DATADIR + "%d-%s" % (timestamp, file.name)
+  fileNameOnly = "%d-%s" % (timestamp, filename)
+  location = DATADIR + "%d-%s" % (timestamp, filename)
   destination = open(location, 'wb+') #wb+ is write binary
 
   for chunk in file.chunks():
