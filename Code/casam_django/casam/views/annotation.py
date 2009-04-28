@@ -92,6 +92,10 @@ class NewAnnotation(handler.Handler):
 
   def get(self):
     context = self.getContext()
+
+    if self.GET.get('type') not in ['file', 'url']:
+      context['submit_value'] = 'choose'
+
     content = loader.render_to_string('annotation/new.html', dictionary=context)
 
     return http.HttpResponse(content)

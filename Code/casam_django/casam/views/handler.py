@@ -74,6 +74,7 @@ class Handler(object):
         'DATA_DIR': self.DATA_DIR,
         'USER': self.user,
         'form': self.form,
+        'submit_value': 'save',
         }
 
     context.update(self.getUserAuthenticationContext())
