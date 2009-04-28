@@ -17,18 +17,11 @@
 }
 
 
-
-
-
-
-
-
-
 /* White frame */
 
 #whiteFrame_container {
   width: 230px;
-  height: 636px;
+  height: 436px;
 }	 
 #whiteFrame_top_container {
 	 width: 230px;
@@ -38,17 +31,19 @@
 }
 #whiteFrame_center_container {
   width: 230px;
-  height: 600px;
+  height: 100%
 }
 #whiteFrame_center_left {
-  height: 600px;
+  height: 100%;
 }
 #whiteFrame_center_middle {
   width: 220px;
-  height: 600px;
+  height: 100%;
+  overflow-y:auto;
+  overflow-x:hidden;
 }
 #whiteFrame_center_right {
-  height: 600px;
+  height: 100%;
 }
 #whiteFrame_bottom_container {
   width: 230px;

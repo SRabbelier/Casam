@@ -9,6 +9,7 @@
 	<script src="{{ BASE_PATH }}media/js/getmouse.js" type="text/javascript"></script>
 	<script src="{{ BASE_PATH }}media/js/images.js" type="text/javascript"></script>
 	<script src="{{ BASE_PATH }}media/js/landmarks.js" type="text/javascript"></script>
+  <script src="{{ BASE_PATH }}media/js/casamcustom.js" type="text/javascript"></script>
   <script type="text/javascript">
   
     var total_images = 0;
@@ -38,8 +39,22 @@
 			{% endfor %}
 			new Draggable('lmdd');
 			new Draggable('whiteFrame_container', { handle: 'whiteFrame_top_middle' });
-			
+			resizeScreenElements();
+			Event.observe(window,'resize',function(){
+				resizeScreenElements();
+			});
 		});
+
+		function resizeScreenElements(){
+			var remainingWidth = document.viewport.getWidth() - 500;
+			$('big_images').setWidth(remainingWidth);
+
+			var remainingHeight = document.viewport.getHeight() - 150;
+			$('big_images').setHeight(remainingHeight);
+			remainingHeightWhiteFrame = remainingHeight - 36; 
+			$('whiteFrame_container').setHeight(remainingHeightWhiteFrame);
+				
+		}
 
 		function toggleTab(tab)
 		{
