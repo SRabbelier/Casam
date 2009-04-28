@@ -17,35 +17,35 @@ table {
 
 /* Overridings for whiteFrame */
 
-#whiteFrame_container {
+div.whiteFrame_container {
 	 width: 310px;					/* x + 10 */
 	 height: 136px;					/* y + 36 */
 	}
-#whiteFrame_top_container {
+div.whiteFrame_top_container {
 	width: 310px;						/* x + 10 */
 }
-#whiteFrame_top_middle {
+div.whiteFrame_top_middle {
 	width: 274px;						/* x - 26 */
 }
-#whiteFrame_center_container {
+div.whiteFrame_center_container {
 	width: 310px;						/* x + 10 */
 	height: 100px;					/* y */
 }
-#whiteFrame_center_left {
+div.whiteFrame_center_left {
 	height: 100px;					/* y */
 }
-#whiteFrame_center_middle {
+div.whiteFrame_center_middle {
 	width: 290px;						/* x ( - padding) */
 	height: 100px;					/* y */
 	text-align: right;      /* OVERRIDE!! */
 	padding-right: 10px;    /* OVERRIDE!! */	
 }
-#whiteFrame_center_right {
+div.whiteFrame_center_right {
 	height: 100px;					/* y */
 }
-#whiteFrame_bottom_container {
+div.whiteFrame_bottom_container {
 	width: 310px;						/* x + 10 */
 }
-#whiteFrame_bottom_center {
+div.whiteFrame_bottom_center {
 	width: 274px;						/* x - 26 */
 }

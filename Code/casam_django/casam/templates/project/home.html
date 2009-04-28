@@ -17,13 +17,14 @@
 	  document.observe("dom:loaded", function()
 		{
       // Add tabs in whiteFrame
-      $('whiteFrame_center_middle').insert(newTab('Pictures', $('pictureContainer')));
-      $('whiteFrame_center_middle').insert(newTab('Possible measurements', $('tabContent_two')));
-      $('whiteFrame_center_middle').insert(newTab('Done measurements', $('tabContent_tree')));
-      $('whiteFrame_center_middle').insert(newTab('Transparency', $('photosContextMenu')));
-      $('whiteFrame_center_middle').insert(newTab('Papers', $('annotitionTab')));
-      
+      $('leftFrame_content').insert(newTab('Project information', $('projectinfo')));
+      $('leftFrame_content').insert(newTab('Possible measurements', $('tabContent_two')));
+      $('leftFrame_content').insert(newTab('Done measurements', $('tabContent_tree')));
+      $('leftFrame_content').insert(newTab('Transparency', $('photosContextMenu')));
+      $('leftFrame_content').insert(newTab('Papers', $('annotitionTab')));
 
+      $('rightFrame_content').insert(newTab('Pictures', $('pictureContainer')));
+	
 		  // Add mouse listener for image
 			document.observe('mousemove', getMouseXY);
 
@@ -38,21 +39,24 @@
 				});
 			{% endfor %}
 			new Draggable('lmdd');
-			new Draggable('whiteFrame_container', { handle: 'whiteFrame_top_middle' });
+			new Draggable('leftFrame', { handle: 'leftFrameHandle' });
+			new Draggable('rightFrame', { handle: 'rightFrameHandle' });
 			resizeScreenElements();
 			Event.observe(window,'resize',function(){
 				resizeScreenElements();
 			});
 		});
 
-		function resizeScreenElements(){
+		function resizeScreenElements()
+		{
 			var remainingWidth = document.viewport.getWidth() - 500;
 			$('big_images').setWidth(remainingWidth);
 
 			var remainingHeight = document.viewport.getHeight() - 150;
 			$('big_images').setHeight(remainingHeight);
 			remainingHeightWhiteFrame = remainingHeight - 36; 
-			$('whiteFrame_container').setHeight(remainingHeightWhiteFrame);
+			$('leftFrame').setHeight(remainingHeightWhiteFrame);
+			$('rightFrame').setHeight(remainingHeightWhiteFrame);
 				
 		}
 
@@ -114,8 +118,7 @@
 
 					// Put bar in Pictures
 					var toolbar = new Element('div');
-					toolbar.style.clear = "both";
-					toolbar.style.float = "right";
+					toolbar.setStyle("clear:both;float:right;");
 					toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
 					toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
 					toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
@@ -164,49 +167,84 @@
 <div id="annotitionTab">
 {% include 'annotation/list.html' %}
 
-<a href="../annotation/new/{{ id }}">new annotation</a>
+<br>
+<a href="../annotation/new/{{ id }}" style="float:right;clear:both;"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
 </div>
 
-<div id="whiteFrame_container" style="float:left;position:absolute;">
+<div id="leftFrame" class="whiteFrame_container" style="float:left;position:absolute;">
 
 	<!-- Top white frame -->
-	<div id="whiteFrame_top_container">
-		<div id="whiteFrame_top_left"></div>
-		<div id="whiteFrame_top_middle"></div>
-		<div id="whiteFrame_top_right"></div>
+	<div class="whiteFrame_top_container">
+		<div class="whiteFrame_top_left"></div>
+		<div id="leftFrameHandle" class="whiteFrame_top_middle" style="color:grey;text-align: center;line-height: 20px ;font-size: 8pt;">Toolbox</div>
+		<div class="whiteFrame_top_right"></div>
 	</div>
 
-	<div id="whiteFrame_center_container">
+	<div class="whiteFrame_center_container">
 
 		<!-- Left white frame -->
-		<div id="whiteFrame_center_left"></div>
+		<div class="whiteFrame_center_left"></div>
 
 		<!-- Content white frame -->
-		<div id="whiteFrame_center_middle">	  	
+		<div class="whiteFrame_center_middle">
+		  <div id="leftFrame_content"></div>
 		</div>
 
 		<!-- Right white frame -->
-		<div id="whiteFrame_center_right"></div>
+		<div class="whiteFrame_center_right"></div>
 
 	</div>
 
 	<!-- Bottom white frame -->
-	<div id="whiteFrame_bottom_container">
-		<div id="whiteFrame_bottom_left"></div>
-		<div id="whiteFrame_bottom_center"></div>
-		<div id="whiteFrame_bottom_right"></div>
+	<div class="whiteFrame_bottom_container">
+		<div class="whiteFrame_bottom_left"></div>
+		<div class="whiteFrame_bottom_center"></div>
+		<div class="whiteFrame_bottom_right"></div>
 	</div>
 </div>
 
 
 <div id="big_images" style="margin:auto;width:700px;height:400px;overflow:hidden;border:dashed 1px yellow;"></div>
 
+<div id="rightFrame" class="whiteFrame_container" style="float:left;position:absolute;top:105px;right:5px;">
 
+	<!-- Top white frame -->
+	<div class="whiteFrame_top_container">
+		<div class="whiteFrame_top_left"></div>
+		<div id="rightFrameHandle" class="whiteFrame_top_middle" style="color:grey;text-align: center;line-height: 20px ;font-size: 8pt;">Pictures</div>
+		<div class="whiteFrame_top_right"></div>
+	</div>
+
+	<div class="whiteFrame_center_container">
+
+		<!-- Left white frame -->
+		<div class="whiteFrame_center_left"></div>
+
+		<!-- Content white frame -->
+		<div class="whiteFrame_center_middle">
+		  <div id="rightFrame_content"></div>
+		</div>
+
+		<!-- Right white frame -->
+		<div class="whiteFrame_center_right"></div>
+
+	</div>
+
+	<!-- Bottom white frame -->
+	<div class="whiteFrame_bottom_container">
+		<div class="whiteFrame_bottom_left"></div>
+		<div class="whiteFrame_bottom_center"></div>
+		<div class="whiteFrame_bottom_right"></div>
+	</div>
+</div>
 
 <!-- NOT POSITIONED DIV's -->
   
 <div style="overflow:hidden;" id="pictureContainer"></div>
-	  	
+
+<div id="projectinfo">		  <b>Project x</b><br>
+		  Omschrijving
+</div>	  	
 
 <div id="tabContent_two" >
 

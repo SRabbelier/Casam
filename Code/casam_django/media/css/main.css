@@ -58,34 +58,34 @@ img.project_image {
 
 /* White frame */
 
-#whiteFrame_container {
+div.whiteFrame_container {
   width: 837px;
   height: 542px;
 }	 
-#whiteFrame_top_container {
+div.whiteFrame_top_container {
 	 width: 837px;
 } 
-#whiteFrame_top_middle {
+div.whiteFrame_top_middle {
   width: 801px;
 }
-#whiteFrame_center_container {
+div.whiteFrame_center_container {
   width: 837px;
   height: 506px;
 }
-#whiteFrame_center_left {
+div.whiteFrame_center_left {
   height: 506px;
 }
-#whiteFrame_center_middle {
+div.whiteFrame_center_middle {
   width: 827px;
   height: 506px;
 }
-#whiteFrame_center_right {
+div.whiteFrame_center_right {
   height: 506px;
 }
-#whiteFrame_bottom_container {
+div.whiteFrame_bottom_container {
   width: 837px;
 }
-#whiteFrame_bottom_center {
+div.whiteFrame_bottom_center {
   width: 801px;
 }
 
