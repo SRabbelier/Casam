@@ -27,6 +27,9 @@ class Handler(object):
     self.POST = request.POST
     self.FILES = request.FILES
     self.user = request.user
+    self.path = request.path
+    self.BASE_PATH = settings.BASE_PATH
+    self.DATA_DIR = settings.DATADIR
 
     self.form = self.getForm()
 
@@ -67,8 +70,8 @@ class Handler(object):
     """
 
     context = {
-        'BASE_PATH': settings.BASE_PATH,
-        'DATA_DIR': settings.DATADIR,
+        'BASE_PATH': self.BASE_PATH,
+        'DATA_DIR': self.DATA_DIR,
         'USER': self.user,
         'form': self.form,
         }
