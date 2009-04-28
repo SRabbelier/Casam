@@ -1,5 +1,10 @@
+<div class="annotation" style="vertical-align: baseline;">
+  <!-- div class="annotation_id">{{ annotation.id }}</div -->
+  <img src="{{ BASE_PATH }}media/img/ann_pdf.jpg" style="display:inline;" />
+  <div class="annotation_name" style="vertical-align: top;display:inline;">{{ annotation.name }}</div>
+</div>
+
 <div class="annotation">
-  <div class="annotation_id">{{ annotation.id }}</div>
-  <div class="annotation_name">{{ annotation.name }}</div>
-  <div class="annotation_url">{{ annotation.url|urlize }}</div>
+  <img src="{{ BASE_PATH }}media/img/ann_link.jpg" style="display:inline;" />
+  <div class="annotation_url" style="vertical-align: top;display:inline;">{{ annotation.url|urlize }}</div>
 </div>

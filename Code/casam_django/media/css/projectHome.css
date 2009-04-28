@@ -28,7 +28,7 @@
 
 #whiteFrame_container {
   width: 230px;
-  height: 436px;
+  height: 636px;
 }	 
 #whiteFrame_top_container {
 	 width: 230px;
@@ -38,17 +38,17 @@
 }
 #whiteFrame_center_container {
   width: 230px;
-  height: 400px;
+  height: 600px;
 }
 #whiteFrame_center_left {
-  height: 400px;
+  height: 600px;
 }
 #whiteFrame_center_middle {
   width: 220px;
-  height: 400px;
+  height: 600px;
 }
 #whiteFrame_center_right {
-  height: 400px;
+  height: 600px;
 }
 #whiteFrame_bottom_container {
   width: 230px;
