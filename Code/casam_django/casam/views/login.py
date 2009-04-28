@@ -3,7 +3,7 @@ from django import http
 from django.template import loader
 
 from casam.views import handler
-from casam.logic import users as user_logic
+from casam.logic import login as login_logic
 
 
 class LoginForm(forms.Form):
@@ -13,7 +13,8 @@ class LoginForm(forms.Form):
 
 
 class Login(handler.Handler):
-  """Handler to handle Login requests"""
+  """Handler to handle Login requests
+  """
 
   def authenticated(self):
     return True
@@ -25,11 +26,25 @@ class Login(handler.Handler):
     return LoginForm()
   
   def post(self):
-    #return user_logic.handle_login(self.cleaned_data['username'], self.cleaned_data['password'])
-    return user_logic.handle_login(self.request)
+    rusername = self.cleaned_data['username']
+    rpassword = self.cleaned_data['password']
+
+    login_logic.handle_login(rusername, rpassword, self.request)
+
+    return http.HttpResponseRedirect(self.BASE_PATH)
 
   def get(self):
     context = self.getContext()
     content = loader.render_to_string('main/login.html', dictionary=context)
+
     return http.HttpResponse(content)
 
+
+class Logout(handler.Handler):
+  """Handler to handle Logout requests
+  """
+
+  def get(self):
+    login_logic.handle_logout(self.request)
+
+    return http.HttpResponseRedirect(self.BASE_PATH)

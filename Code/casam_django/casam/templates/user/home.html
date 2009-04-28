@@ -9,21 +9,13 @@
 </p>
 
 {% for user in users %}
-  {{user.username}}<br>
-  <form enctype="multipart/form-data" method="post" action="./{{user.id}}">
-  <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-  <input id="id_id" type="hidden" name="id" value={{ user.id }} maxlength="40" readonly="readonly" />
-  <input type="submit" value="Edit" />
-  </form>
-  
-  <form enctype="multipart/form-data" method="post" action="changepass">
-  <table>
-  <tr><td><input type="submit" value="Change Pass" /></td></tr>
-  <tr><td><input id="id_id" type="hidden" name="id" value={{ user.id }} maxlength="40" readonly="readonly" /></td></tr>
-  <tr><td><input id="username_id" type="hidden" name="login" value={{ user.username }} maxlength="40" readonly="readonly" /></td></tr>
-  </table>
-  </form>
-
+  <div class="user">
+    <div class="name">Name: {{ user.first_name|default:"missing" }}<div>
+    <div class="last name">Last name: {{ user.last_name|default:"missing" }}<div>
+    <div class="username">Username: {{user.username}}<div>
+    <a href="./edit/{{ user.id }}" class="edit">edit</a>
+    <a href="./changepass/{{ user.id }}" class="change_pass">change pass</a>
+  </div>
 {% endfor %}
 
 {% endblock body %}

@@ -36,33 +36,29 @@ class UserForm(forms.Form):
 class EditForm(forms.Form):
   groups = Group.objects.all()
   types = []
-  
+
   for gr in groups:
     types.append((gr.name,gr.name))
-  
-  login = forms.CharField(max_length=10, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly'}))
+
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
   read = forms.ModelMultipleChoiceField(Project.objects.all())
   write = forms.ModelMultipleChoiceField(Project.objects.all())
 
-  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(attrs={'readonly': 'readonly'}))  
-
 
 class ChangePassForm(forms.Form):
   """TODO: Docstring"""
-  login = forms.CharField(max_length=10, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly'}))
+
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  password2 = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput(), label="Password (again)")
-  id = forms.CharField(max_length=40, widget=forms.widgets.HiddenInput(attrs={'readonly': 'readonly'}))
+  password_again = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
 
   def clean(self):
-    if self.cleaned_data['password'] == self.cleaned_data['password2']:
+    if self.cleaned_data['password'] == self.cleaned_data['password_again']:
       return self.cleaned_data
 
     del self.cleaned_data['password']
-    del self.cleaned_data['password2']
+    del self.cleaned_data['password_again']
 
     raise forms.ValidationError("The entered passwords are not the same")
 
@@ -97,41 +93,22 @@ class EditUser(handler.Handler):
   """Handler to handle the edits of a user"""
   
   def getPostForm(self):
-    context = self.getUserAuthenticationContext()
-    user = User.objects.get(id=self.POST['id'])
-    rfirst_name = user.first_name
-    rlast_name= user.last_name
-    rlogin = user.username
-    rid = user.id
-    rtype = user.groups.all().get()
-    rread = [i.id for i in user.get_profile().read.all()]
-    rwrite = [i.id for i in user.get_profile().write.all()]
-
-    initial = {
-        'firstname': rfirst_name,
-        'lastname': rlast_name,
-        'login': rlogin,
-        'id': rid,
-        'type': rtype.id,
-        'read': rread,
-        'write': rwrite,
-        }
-
-    return EditForm(initial = initial)
+    return EditForm(self.POST)
 
   def getGetForm(self):
     return EditForm()
 
   def post(self):
-    rfirst_name = self.POST['firstname']
-    rlast_name = self.POST['lastname']
-    rtype = self.POST['type']
-    rid = self.POST['id']
-    rread = self.POST.getlist('read')
-    rwrite = self.POST.getlist('write')
+    user_id = self.kwargs['user_id']
+    rfirst_name = self.cleaned_data['firstname']
+    rlast_name = self.cleaned_data['lastname']
+    rtype = self.cleaned_data['type']
+    rread = self.cleaned_data['read']
+    rwrite = self.cleaned_data['write']
 
-    return user_logic.handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite)
-  
+    user_logic.handle_edit(rfirst_name, rlast_name, rtype, user_id, rread, rwrite)
+    return http.HttpResponseRedirect('../home')
+
   def get(self):
     context = self.getContext()
     content = loader.render_to_string('user/edit.html', dictionary=context)
@@ -154,39 +131,26 @@ class Home(handler.Handler):
     return http.HttpResponse(content)
 
 
-def logout(request):
-  return user_logic.handle_logout(request)
-
-
 class PassChange(handler.Handler):
   """Handler to handle the change password requests"""
 
-  def authenticated(self):
+  def authenticated_disabled(self):
     context = self.getUserAuthenticationContext()
     user = self.user
     return context['is_beheerder']
 
-  def getPostForm(self):
-    user = User.objects.get(id=self.POST['id'])
-    rlogin = user.username
-    rid = self.POST['id']
-    initial = {
-        'login': rlogin,
-        'id': rid,
-        }
-    return ChangePassForm(initial = initial)
-
   def getGetForm(self):
     return ChangePassForm()
 
-  def post(self):
-    rlogin = self.POST['login']
-    rpass1 = self.POST['password']
-    rpass2 = self.POST['password2']
-    rid = self.POST['id']
+  def getPostForm(self):
+    return ChangePassForm(self.POST)
 
-    if user_logic.handle_pass_change(rlogin, rpass1, rpass2, rid):
-      pass
+  def post(self):
+    user_id = self.kwargs['user_id']
+    password = self.cleaned_data['password']
+
+    user_logic.handle_pass_change(user_id, password)
+    return http.HttpResponseRedirect('../home')
 
   def get(self):
     context = self.getContext()

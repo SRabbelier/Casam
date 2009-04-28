@@ -34,7 +34,7 @@ class Handler(object):
     self.form = self.getForm()
 
     if not self.authenticated():
-      return http.HttpResponseRedirect(settings.BASE_PATH)
+      return http.HttpResponseRedirect(self.BASE_PATH + 'login')
 
     if self.is_post and self.form.is_valid():
       self.cleaned_data = self.form.cleaned_data
