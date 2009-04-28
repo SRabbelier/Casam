@@ -11,6 +11,7 @@ import casam.views.project
 import casam.views.fileupload
 import casam.views.landmarks
 import casam.views.users
+import casam.views.login
 import casam.views.draw
 import casam.views.imageresizer
 import casam.views.sjorsdraw
@@ -20,14 +21,14 @@ ID_STR = r"(?P<id_str>%s)" % UUID
 IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-./_]+)"
 
 urlpatterns = patterns('',
-    (r'^$', casam.views.users.Login()),
+    (r'^$', casam.views.login.Login()),
     (r'^admin/(.*)', admin.site.root),
     (r'^annotation/show/%s$' % UUID, casam.views.annotation.ViewAnnotation()),
     (r'^annotation/new/%s$' % UUID, casam.views.annotation.NewAnnotation()),
     (r'^annotation/list/%s$' % UUID, casam.views.annotation.ListAnnotations()),
-    (r'^data/%s' % IMG_NAME, casam.views.fileupload.ViewFile()),
-    (r'^do_login', casam.views.users.Login()),
+    (r'^do_login', casam.views.login.Login()),
     (r'^draw', casam.views.draw.Main()),
+    (r'^data/%s' % IMG_NAME, casam.views.fileupload.ViewFile()),
     (r'^fileupload/%s$' % ID_STR, casam.views.fileupload.FileUpload()),
     (r'^home', casam.views.main.Home()),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
@@ -40,11 +41,9 @@ urlpatterns = patterns('',
     (r'^sjorsdraw/AddBrushStroke$', casam.views.sjorsdraw.AddBrushStroke()),
     (r'^sjorsdraw$', casam.views.sjorsdraw.sjorsDraw()),
     (r'^user/home$', casam.views.users.Home()),
-    (r'^user/new$', casam.views.users.Users()),
-    (r'^user/save$', casam.views.users.Save()),
+    (r'^user/new$', casam.views.users.CreateUser()),
     (r'^user/changepass$', casam.views.users.PassChange()),
-    (r'^user/change$', casam.views.users.Change()),
-    (r'^user/(.*)$', casam.views.users.Edit()),
+    (r'^user/edit/(.*)$', casam.views.users.EditUser()),
 )
 
 if settings.DEBUG:
