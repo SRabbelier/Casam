@@ -13,6 +13,8 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, wri
   user.last_name = rlastname
   user.is_staff = True
   user.set_password(rpass)
+  user.groups = [rtype]
+  user.save()
 
 
 def handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite):
