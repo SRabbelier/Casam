@@ -20,6 +20,8 @@
       $('whiteFrame_center_middle').insert(newTab('Possible measurements', $('tabContent_two')));
       $('whiteFrame_center_middle').insert(newTab('Done measurements', $('tabContent_tree')));
       $('whiteFrame_center_middle').insert(newTab('Transparency', $('photosContextMenu')));
+      $('whiteFrame_center_middle').insert(newTab('Papers', $('annotitionTab')));
+      
 
 		  // Add mouse listener for image
 			document.observe('mousemove', getMouseXY);
@@ -144,10 +146,11 @@
 
 {% block body %}
 
-
+<div id="annotitionTab">
 {% include 'annotation/list.html' %}
 
 <a href="../annotation/new/{{ id }}">new annotation</a>
+</div>
 
 <div id="whiteFrame_container" style="float:left;position:absolute;">
 
