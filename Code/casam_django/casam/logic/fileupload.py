@@ -31,7 +31,7 @@ def load_file(name):
   filename ='data/' + name
 
   if os.path.exists(filename) and os.path.isfile(filename):
-    mimetype = mime.guess_type(filename)
+    mimetype, _ = mime.guess_type(filename)
     picture = open(filename,'rb')
     return mimetype, picture
 
