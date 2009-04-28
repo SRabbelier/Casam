@@ -4,9 +4,11 @@ from django.contrib.auth.models import User
 
 from django_extensions.db.fields import UUIDField
 
+
 class Department(models.Model):
   id = UUIDField(primary_key=True,auto=True)
   name = models.CharField(max_length=100)
+
 
 class Project(models.Model):
   id = UUIDField(primary_key=True,auto=True)
@@ -15,6 +17,7 @@ class Project(models.Model):
   departments = models.ManyToManyField(Department,verbose_name="List of departments linked to project")
   def __unicode__(self):
     return str(self.name)
+
 
 class Patient(models.Model):
   id = UUIDField(primary_key=True,auto=True)
@@ -56,12 +59,13 @@ class Measurement(models.Model):
   x = models.CharField(max_length=4)
   y = models.CharField(max_length=4)
 
-  
+
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   user = models.ForeignKey(User, unique=True)  
   read = models.ManyToManyField('Project', related_name='ReadProject')
   write = models.ManyToManyField('Project', related_name='WriteProject')
+
 
 class Annotation(models.Model):
   id = UUIDField(primary_key=True, auto=True)

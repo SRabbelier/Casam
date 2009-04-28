@@ -29,8 +29,8 @@ class UserForm(forms.Form):
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  read = forms.ModelMultipleChoiceField(Project.objects.all())
-  write = forms.ModelMultipleChoiceField(Project.objects.all())
+  #read = forms.ModelMultipleChoiceField(Project.objects.all())
+  #write = forms.ModelMultipleChoiceField(Project.objects.all())
 
 
 class EditForm(forms.Form):
@@ -43,8 +43,8 @@ class EditForm(forms.Form):
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
-  read = forms.ModelMultipleChoiceField(Project.objects.all())
-  write = forms.ModelMultipleChoiceField(Project.objects.all())
+  #read = forms.ModelMultipleChoiceField(Project.objects.all())
+  #write = forms.ModelMultipleChoiceField(Project.objects.all())
 
 
 class ChangePassForm(forms.Form):
@@ -54,6 +54,14 @@ class ChangePassForm(forms.Form):
   password_again = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
 
   def clean(self):
+    # rely on 'required' check to kick in
+    if not self.cleaned_data.get('password'):
+      return self.cleaned_data
+
+    # rely on 'required' check to kick in
+    if not self.cleaned_data.get('password_again'):
+      return self.cleaned_data
+
     if self.cleaned_data['password'] == self.cleaned_data['password_again']:
       return self.cleaned_data
 
@@ -78,9 +86,11 @@ class CreateUser(handler.Handler):
     lastname = self.cleaned_data['lastname']
     password = self.cleaned_data['password']
     type = self.cleaned_data['type']
-    read_projs = self.cleaned_data['read']
-    write_projs = self.cleaned_data['write']
+    read_projs = [] #self.cleaned_data['read']
+    write_projs = [] #self.cleaned_data['write']
+
     user_logic.handle_add_user(login, firstname, lastname, password, type, read_projs, write_projs)
+
     return http.HttpResponseRedirect('./home')
 
   def get(self):
@@ -96,17 +106,28 @@ class EditUser(handler.Handler):
     return EditForm(self.POST)
 
   def getGetForm(self):
-    return EditForm()
+    user_id = self.kwargs['user_id']
+    user = User.objects.get(id=user_id)
+    groups = user.groups.all()
+
+    initial = {
+        'firstname': user.first_name,
+        'lastname': user.last_name,
+        'type': groups[0].id if groups else '',
+        }
+
+    return EditForm(initial=initial)
 
   def post(self):
     user_id = self.kwargs['user_id']
     rfirst_name = self.cleaned_data['firstname']
     rlast_name = self.cleaned_data['lastname']
     rtype = self.cleaned_data['type']
-    rread = self.cleaned_data['read']
-    rwrite = self.cleaned_data['write']
+    rread = [] #self.cleaned_data['read']
+    rwrite = [] #self.cleaned_data['write']
 
     user_logic.handle_edit(rfirst_name, rlast_name, rtype, user_id, rread, rwrite)
+
     return http.HttpResponseRedirect('../home')
 
   def get(self):

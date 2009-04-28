@@ -22,6 +22,7 @@ def handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite):
   user = User.objects.get(id=rid)
   user.first_name = rfirst_name
   user.last_name = rlast_name
+  user.groups = [rtype]
   user.save()
 
 
