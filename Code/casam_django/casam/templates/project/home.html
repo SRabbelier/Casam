@@ -121,7 +121,7 @@
 			    
 			    //$('pictureContainerHeader').update('Pictures('+json.length+')');
 			     
-			    $('pictureContainer').update();
+			    $('tab_pictures').update();
 			     
 			    // Create a picture container for each picture
 			    for(i=0; i < json.length; i++)
@@ -131,7 +131,7 @@
 					toolbar.setStyle("clear:both;float:right;");
 					var addLink = new Element('a',{'href':'#'});
 
-					var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/add.jpg','id':'addPictureButton'});
+					var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/add.jpg','id':'addPictureButton','class':'smallPictureButton'});
 					addLink.insert(addImage);
 					toolbar.insert(addLink);
 					Event.observe(addLink,'click',function(){
@@ -177,8 +177,8 @@
 
 		function closePopupAndReloadPictures(){
 			getProjectImages();
-			new Effect.Highlight('pictureContainer');
-			//$('pictureContainer').scrollTo($('addPictureButton'));
+			new Effect.Highlight('tab_pictures');
+			//$('tab_pictures').scrollTo($('addPictureButton'));
 			closePopup();	
 		}
   </script>
