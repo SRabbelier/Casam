@@ -26,7 +26,7 @@ function show_image(location){
   // Creating the new image
   var newimg = Element.extend(document.createElement('img'));
   newimg.setAttribute('src',location);
-  newimg.setStyle("opacity: 0.4; filter: alpha(opacity=40); width: 1000px; cursor: crosshair;");
+  newimg.setStyle("opacity: 0.4; filter: alpha(opacity=40);  cursor: crosshair;");
   newimg.observe('click', function() { LoadMMDD(""); });
   newimg.setAttribute('id','big_image'+insert);
   newimg.setAttribute('class','big_image_sibling');
