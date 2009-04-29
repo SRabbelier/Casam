@@ -75,6 +75,7 @@ img.smallPictureButton{
 
 #big_images{
 	position:relative;
+	overflow:auto;
 }
 
 .big_image_sibling{
