@@ -109,11 +109,14 @@ class EditUser(handler.Handler):
     user_id = self.kwargs['user_id']
     user = User.objects.get(id=user_id)
     groups = user.groups.all()
+    profile = user.get_profile()
 
     initial = {
         'firstname': user.first_name,
         'lastname': user.last_name,
         'type': groups[0].id if groups else '',
+        'read': [i.id for i in profile.read.all()],
+        'write': [i.id for i in profile.write.all()],
         }
 
     return EditForm(initial=initial)
