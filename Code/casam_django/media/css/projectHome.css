@@ -1,3 +1,7 @@
+.tabContent {
+	overflow: hidden;
+}
+
 .projectPictureDiv{
 	clear: both;
 }
