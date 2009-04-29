@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User, Group
 
-from casam.logic import users as user_logic
+from casam.logic import user as user_logic
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
@@ -29,8 +29,8 @@ class UserForm(forms.Form):
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  #read = forms.ModelMultipleChoiceField(Project.objects.all())
-  #write = forms.ModelMultipleChoiceField(Project.objects.all())
+  read = forms.ModelMultipleChoiceField(Project.objects.all())
+  write = forms.ModelMultipleChoiceField(Project.objects.all())
 
 
 class EditForm(forms.Form):
@@ -43,8 +43,8 @@ class EditForm(forms.Form):
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
-  #read = forms.ModelMultipleChoiceField(Project.objects.all())
-  #write = forms.ModelMultipleChoiceField(Project.objects.all())
+  read = forms.ModelMultipleChoiceField(Project.objects.all())
+  write = forms.ModelMultipleChoiceField(Project.objects.all())
 
 
 class ChangePassForm(forms.Form):
@@ -86,10 +86,10 @@ class CreateUser(handler.Handler):
     lastname = self.cleaned_data['lastname']
     password = self.cleaned_data['password']
     type = self.cleaned_data['type']
-    read_projs = [] #self.cleaned_data['read']
-    write_projs = [] #self.cleaned_data['write']
+    read_projs = self.cleaned_data['read']
+    write_projs = self.cleaned_data['write']
 
-    user_logic.handle_add_user(login, firstname, lastname, password, type, read_projs, write_projs)
+    user_logic.handle_add_user(login, firstname, lastname, password, type)
 
     return http.HttpResponseRedirect('./home')
 
@@ -123,10 +123,10 @@ class EditUser(handler.Handler):
     rfirst_name = self.cleaned_data['firstname']
     rlast_name = self.cleaned_data['lastname']
     rtype = self.cleaned_data['type']
-    rread = [] #self.cleaned_data['read']
-    rwrite = [] #self.cleaned_data['write']
+    rread = self.cleaned_data['read']
+    rwrite = self.cleaned_data['write']
 
-    user_logic.handle_edit(rfirst_name, rlast_name, rtype, user_id, rread, rwrite)
+    user_logic.handle_edit(rfirst_name, rlast_name, rtype, user_id)
 
     return http.HttpResponseRedirect('../home')
 

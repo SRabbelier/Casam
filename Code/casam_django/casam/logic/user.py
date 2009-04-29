@@ -4,7 +4,7 @@ from casam.models import Project
 from django.contrib.auth.models import User, Group
 
 
-def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, write_projs):
+def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
   """TODO: Docstring
   """
 
@@ -17,7 +17,7 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, wri
   user.save()
 
 
-def handle_edit(rfirst_name, rlast_name, rtype, rid, rread, rwrite):
+def handle_edit(rfirst_name, rlast_name, rtype, rid):
   """TODO: Docstring
   """
 

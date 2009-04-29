@@ -10,7 +10,7 @@ import casam.views.annotation
 import casam.views.project
 import casam.views.fileupload
 import casam.views.landmarks
-import casam.views.users
+import casam.views.user
 import casam.views.login
 import casam.views.draw
 import casam.views.imageresizer
@@ -40,10 +40,10 @@ urlpatterns = patterns('',
     (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
     (r'^sjorsdraw/AddBrushStroke$', casam.views.sjorsdraw.AddBrushStroke()),
     (r'^sjorsdraw$', casam.views.sjorsdraw.sjorsDraw()),
-    (r'^user/home$', casam.views.users.Home()),
-    (r'^user/new$', casam.views.users.CreateUser()),
-    (r'^user/changepass/%s$' % USER_ID, casam.views.users.PassChange()),
-    (r'^user/edit/%s$' % USER_ID, casam.views.users.EditUser()),
+    (r'^user/home$', casam.views.user.Home()),
+    (r'^user/new$', casam.views.user.CreateUser()),
+    (r'^user/changepass/%s$' % USER_ID, casam.views.user.PassChange()),
+    (r'^user/edit/%s$' % USER_ID, casam.views.user.EditUser()),
 )
 
 if settings.DEBUG:
