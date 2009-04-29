@@ -1,9 +1,20 @@
 <html>
 <head>
 <title>O HI!</title>
+	<script src="{{ BASE_PATH }}media/js/prototype.js" type="text/javascript"></script>
+	<script src="{{ BASE_PATH }}media/js/scriptaculous.js" type="text/javascript"></script>
+<script type="text/javascript">
+	//
+	document.observe('dom:loaded',function(){
+		Event.observe('addButton','click',function(){
+				parent.closePopupAndReloadPictures();
+			});
+	});
+</script>
 </head>
 <body>
-<p>je hebt het bestand succesvol geupload. Het id is: {{image.id}}</p>
-<img src="{{BASE_PATH}}{{DATA_DIR}}thumbnail/300/{{image.path}}" alt="plaatje" />
+<p>The picture was added.</p><input id='addButton' type="button" value="Add to picturebar"/>
+<img src="{{BASE_PATH}}{{DATA_DIR}}thumbnail/300/{{image.path}}"/>
+
 </body>
 </html>

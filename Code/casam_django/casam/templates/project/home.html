@@ -121,16 +121,25 @@
 			    
 			    //$('pictureContainerHeader').update('Pictures('+json.length+')');
 			     
+			    $('pictureContainer').update();
+			     
 			    // Create a picture container for each picture
 			    for(i=0; i < json.length; i++)
 						makePictureContainer(json[i]);
-
 					// Put bar in Pictures
 					var toolbar = new Element('div');
 					toolbar.setStyle("clear:both;float:right;");
-					toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
-					toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
-					toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
+					var addLink = new Element('a',{'href':'#'});
+
+					var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/add.jpg','id':'addPictureButton'});
+					addLink.insert(addImage);
+					toolbar.insert(addLink);
+					Event.observe(addLink,'click',function(){
+						popupIFrame('../fileupload/{{ id }}',350,200);
+					});
+					//toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
+					//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
+					//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
 					$('tab_pictures').insert(toolbar);
 				}
 			});
@@ -166,13 +175,18 @@
 			mainDiv.insert(rightDiv);
 		}
 
-
+		function closePopupAndReloadPictures(){
+			getProjectImages();
+			new Effect.Highlight('pictureContainer');
+			//$('pictureContainer').scrollTo($('addPictureButton'));
+			closePopup();	
+		}
   </script>
 
 {% endblock head %}
 
 {% block body %}
-
+<div id="popup"></div>
 <div id="leftFrame" class="whiteFrame_container" style="float:left;position:absolute;">
 
 	<!-- Top white frame -->
