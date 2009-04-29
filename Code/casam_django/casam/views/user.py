@@ -29,8 +29,8 @@ class UserForm(forms.Form):
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-  read = forms.ModelMultipleChoiceField(Project.objects.all())
-  write = forms.ModelMultipleChoiceField(Project.objects.all())
+  read = forms.ModelMultipleChoiceField(Project.objects.all(), required=False)
+  write = forms.ModelMultipleChoiceField(Project.objects.all(), required=False)
 
 
 class EditForm(forms.Form):
@@ -43,8 +43,8 @@ class EditForm(forms.Form):
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
   type = forms.ModelChoiceField(Group.objects.all())
-  read = forms.ModelMultipleChoiceField(Project.objects.all())
-  write = forms.ModelMultipleChoiceField(Project.objects.all())
+  read = forms.ModelMultipleChoiceField(Project.objects.all(), required=False)
+  write = forms.ModelMultipleChoiceField(Project.objects.all(), required=False)
 
 
 class ChangePassForm(forms.Form):
@@ -86,10 +86,10 @@ class CreateUser(handler.Handler):
     lastname = self.cleaned_data['lastname']
     password = self.cleaned_data['password']
     type = self.cleaned_data['type']
-    read_projs = self.cleaned_data['read']
-    write_projs = self.cleaned_data['write']
+    read_projs = self.cleaned_data.get('read', [])
+    write_projs = self.cleaned_data.get('write', [])
 
-    user_logic.handle_add_user(login, firstname, lastname, password, type)
+    user_logic.handle_add_user(login, firstname, lastname, password, type, read_projs, write_projs)
 
     return http.HttpResponseRedirect('./home')
 
@@ -123,10 +123,10 @@ class EditUser(handler.Handler):
     rfirst_name = self.cleaned_data['firstname']
     rlast_name = self.cleaned_data['lastname']
     rtype = self.cleaned_data['type']
-    rread = self.cleaned_data['read']
-    rwrite = self.cleaned_data['write']
+    read_projs = self.cleaned_data.get('read', [])
+    write_projs = self.cleaned_data.get('write', [])
 
-    user_logic.handle_edit(rfirst_name, rlast_name, rtype, user_id)
+    user_logic.handle_edit(rfirst_name, rlast_name, rtype, user_id, read_projs, write_projs)
 
     return http.HttpResponseRedirect('../home')
 

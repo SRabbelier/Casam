@@ -1,10 +1,10 @@
-from casam.models import UserProfile
-from casam.models import Project
-
 from django.contrib.auth.models import User, Group
 
+from casam.models import Project
+from casam.logic import user_profile as user_profile_logic
 
-def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
+
+def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype, read_projs, write_projs):
   """TODO: Docstring
   """
 
@@ -16,8 +16,10 @@ def handle_add_user(rlogin, rfirstname, rlastname, rpass, rtype):
   user.groups = [rtype]
   user.save()
 
+  user_profile_logic.handle_save_user_profile(user, read_projs, write_projs)
 
-def handle_edit(rfirst_name, rlast_name, rtype, rid):
+
+def handle_edit(rfirst_name, rlast_name, rtype, rid, read_projs, write_projs):
   """TODO: Docstring
   """
 
@@ -26,6 +28,8 @@ def handle_edit(rfirst_name, rlast_name, rtype, rid):
   user.last_name = rlast_name
   user.groups = [rtype]
   user.save()
+
+  user_profile_logic.handle_save_user_profile(user, read_projs, write_projs)
 
 
 def handle_pass_change(user_id, password):
