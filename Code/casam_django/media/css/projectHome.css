@@ -72,3 +72,13 @@ div.whiteFrame_bottom_center {
 img.smallPictureButton{
 	border:0px;
 }
+
+#big_images{
+	position:relative;
+}
+
+.big_image_sibling{
+	position:absolute;
+	top:0px;
+	left:0px;
+}

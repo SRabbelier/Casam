@@ -29,6 +29,7 @@ function show_image(location){
   newimg.setStyle("opacity: 0.4; filter: alpha(opacity=40); width: 1000px; cursor: crosshair;");
   newimg.observe('click', function() { LoadMMDD(""); });
   newimg.setAttribute('id','big_image'+insert);
+  newimg.setAttribute('class','big_image_sibling');
   $('big_images').appendChild(newimg);
 
   // To do: make the sliders div just like the objects of the delete button
