@@ -1,6 +1,7 @@
 from django import http
 from django import forms
 from django.conf import settings
+from django.template import loader
 
 from django.contrib.auth.models import User
 
@@ -37,7 +38,8 @@ class Handler(object):
     self.form = self.getForm()
 
     if not self.authenticated():
-      return http.HttpResponseRedirect(self.BASE_PATH + 'login')
+      content = loader.render_to_string('access_denied.html')
+      return http.HttpResponse(content)
 
     if self.is_post and self.form.is_valid():
       self.cleaned_data = self.form.cleaned_data
