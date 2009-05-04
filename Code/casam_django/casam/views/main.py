@@ -20,8 +20,7 @@ class Home(handler.Handler):
     projects = Project.objects.all()
     projects = dict([(i,[]) for i in projects])
 
-    if imgs:
-      img = imgs[0]
+    for img in imgs:
       projects[img.project] = img
 
     context['projects'] = projects
