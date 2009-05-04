@@ -15,6 +15,8 @@ class Project(models.Model):
   name = models.CharField(max_length=100)
   added = models.DateField(auto_now_add=True)
   departments = models.ManyToManyField(Department,verbose_name="List of departments linked to project")
+  description = models.CharField(max_length=200)
+
   def __unicode__(self):
     return str(self.name)
 

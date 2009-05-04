@@ -39,6 +39,7 @@ class Home(handler.Handler):
     annotations = Annotation.objects.select_related().order_by(
         'project__name').filter(project__id=id_str)
 
+    project = Project.objects.filter(id=id_str).get();
     punten = Measurement.objects.select_related().filter(project__id=id_str);
     mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
 
@@ -47,6 +48,7 @@ class Home(handler.Handler):
     context['id'] = id_str
     context['mmetings'] = mmetings
     context['punten'] = punten
+    context['project'] = project
 
     content = loader.render_to_string('project/home.html', dictionary=context)
 
@@ -71,8 +73,9 @@ class NewProject(handler.Handler):
     name = self.cleaned_data['name']
     mmeting1 = self.cleaned_data['mmeting1']
     mmeting2 = self.cleaned_data['mmeting2']
+    description = self.cleaned_data['description']
 
-    project_logic.handle_add_project(self.profile, name, mmeting1, mmeting2)
+    project_logic.handle_add_project(self.profile, name, mmeting1, mmeting2, description)
 
     return http.HttpResponseRedirect(self.BASE_PATH)
 
