@@ -28,8 +28,8 @@ class Home(handler.Handler):
   """
 
   def authenticated(self):
-    read_projects = [i.id for i in self.profile.read.all()]
-    return self.profile and self.kwargs['id_str'] in read_projects
+    proj = self.kwargs['id_str']
+    return self.profile and proj in [i.id for i in self.profile.read.all()]
 
   def get(self):
     context = self.getContext();
