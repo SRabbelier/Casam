@@ -26,10 +26,13 @@ class Handler(object):
     self.GET = request.GET
     self.POST = request.POST
     self.FILES = request.FILES
-    self.user = request.user
     self.path = request.path
     self.BASE_PATH = settings.BASE_PATH
     self.DATA_DIR = settings.DATADIR
+
+    self.user = request.user
+    self.profile = handler_logic.getProfile(self.user)
+    self.profile_type = handler_logic.getType(self.user)
 
     self.form = self.getForm()
 
@@ -55,13 +58,12 @@ class Handler(object):
     context = {}
 
     if self.user.is_authenticated():
-      profile = handler_logic.getProfile(self.user)
       context['NAME'] = self.user.first_name
-      context['TYPE'] = handler_logic.getType(self.user)
-      context['is_chirurg'] = context['TYPE'] == 'Chirurg'
-      context['is_onderzoeker'] = context['TYPE'] == 'Onderzoeker'
-      context['is_beheerder'] = context['TYPE'] == 'Beheerder'
-      context['PROFILE'] = profile
+      context['TYPE'] = self.profile_type
+      context['is_chirurg'] = self.profile_type == 'Chirurg'
+      context['is_onderzoeker'] = self.profile_type == 'Onderzoeker'
+      context['is_beheerder'] = self.profile_type == 'Beheerder'
+      context['PROFILE'] = self.profile
 
     return context
 

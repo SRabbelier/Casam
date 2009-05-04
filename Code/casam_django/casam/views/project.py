@@ -53,6 +53,9 @@ class NewProject(handler.Handler):
   """Handler for the creation of a new project.
   """
 
+  def authenticated(self):
+    return self.profile_type == 'Onderzoeker'
+
   def getGetForm(self):
     return ProjectForm()
 
@@ -65,9 +68,9 @@ class NewProject(handler.Handler):
     mmeting1 = self.cleaned_data['mmeting1']
     mmeting2 = self.cleaned_data['mmeting2']
 
-    project_logic.handle_add_project(context['PROFILE'], name, mmeting1, mmeting2)
+    project_logic.handle_add_project(self.profile, name, mmeting1, mmeting2)
 
-    return http.HttpResponseRedirect(context['BASE_PATH']+'home')
+    return http.HttpResponseRedirect(self.BASE_PATH)
 
   def get(self):
     context = self.getContext()
