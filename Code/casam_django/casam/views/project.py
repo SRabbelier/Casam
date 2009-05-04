@@ -69,7 +69,6 @@ class NewProject(handler.Handler):
     return ProjectForm(self.POST)
 
   def post(self):
-    context = self.getContext()
     name = self.cleaned_data['name']
     mmeting1 = self.cleaned_data['mmeting1']
     mmeting2 = self.cleaned_data['mmeting2']

@@ -10,7 +10,9 @@ def handle_add_project(profile, name, mmeting1, mmeting2, description):
   mm2 = ProjectMeasurementList(name=mmeting2, project=project)
   mm2.save()
   profile.read.add(project)
+  profile.write.add(project)
   profile.save()
-  
+
+
 def handle_remove_project(id):
   Project.objects.all().get(id=id).delete()

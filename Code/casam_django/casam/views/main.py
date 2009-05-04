@@ -14,7 +14,7 @@ class Home(handler.Handler):
   """
 
   def get(self):
-    context = self.getContext();
+    context = self.getContext()
 
     projects = Project.objects.all()
     projects = dict([(i,[]) for i in projects])
