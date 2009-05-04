@@ -27,6 +27,10 @@ class Home(handler.Handler):
   """Handler for the home page.
   """
 
+  def authenticated(self):
+    read_projects = [i.id for i in self.profile.read.all()]
+    return self.profile and self.kwargs['id_str'] in read_projects
+
   def get(self):
     context = self.getContext();
     id_str = self.kwargs['id_str']

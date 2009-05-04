@@ -8,12 +8,14 @@
 <a href='./new'>New User</a>
 </p>
 
-{% for user in users %}
+{% for user, profile in users %}
   <div class="user">
     <div class="name">Name: {{ user.first_name|default:"missing" }}<div>
     <div class="last name">Last name: {{ user.last_name|default:"missing" }}<div>
     <div class="username">Username: {{user.username}}<div>
     <div class="type">Type: {{ user.groups.all|first|default:"missing" }}</div>
+    <div class="read">Read: {{ profile.read.all|join:", " }}</div>
+    <div class="write">Write: {{ profile.write.all|join:", " }}</div>
     <a href="./edit/{{ user.id }}" class="edit">edit</a>
     <a href="./changepass/{{ user.id }}" class="change_pass">change pass</a>
   </div>

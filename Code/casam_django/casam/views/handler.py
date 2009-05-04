@@ -4,7 +4,7 @@ from django.conf import settings
 
 from django.contrib.auth.models import User
 
-from casam.logic import handler as handler_logic
+from casam.logic import user_profile as user_profile_logic
 
 class Handler(object):
   """Handler base class for Django requests.
@@ -31,8 +31,8 @@ class Handler(object):
     self.DATA_DIR = settings.DATADIR
 
     self.user = request.user
-    self.profile = handler_logic.getProfile(self.user)
-    self.profile_type = handler_logic.getType(self.user)
+    self.profile = user_profile_logic.getProfile(self.user)
+    self.profile_type = user_profile_logic.getType(self.user)
 
     self.form = self.getForm()
 

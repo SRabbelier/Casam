@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User, Group
 
 from casam.logic import user as user_logic
+from casam.logic import user_profile as user_profile_logic
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
@@ -147,7 +148,9 @@ class Home(handler.Handler):
     context = self.getContext()
     users = User.objects.all()
 
-    context['users'] = users
+    result = [(i, user_profile_logic.getProfile(i)) for i in users]
+
+    context['users'] = result
 
     content = loader.render_to_string('user/home.html', dictionary=context)
     return http.HttpResponse(content)
