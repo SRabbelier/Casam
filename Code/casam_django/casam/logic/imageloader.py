@@ -24,7 +24,7 @@ def simple(request,imageID):
     im.save(temporaryImage)
 
     
-  wrapper = FileWrapper(file(temporaryImage))
+  wrapper = FileWrapper(file(temporaryImage), "rb")
   response = http.HttpResponse(wrapper,content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
@@ -58,7 +58,7 @@ def byRatio(request,ratio,imageID):
     newImage.save(temporaryImage)
 
   #Put the image in the request
-  wrapper = FileWrapper(file(temporaryImage))
+  wrapper = FileWrapper(file(temporaryImage), "rb")
   response = http.HttpResponse(wrapper, content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
@@ -94,7 +94,7 @@ def byWidth(request,width,imageID):
     newImage.save(temporaryImage)
     
   #Put the image in the request
-  wrapper = FileWrapper(file(temporaryImage))
+  wrapper = FileWrapper(file(temporaryImage), "rb")
   response = http.HttpResponse(wrapper, content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
@@ -141,7 +141,7 @@ def byMaxWidthHeight(request,width,height,imageID):
     newImage.save(temporaryImage)
     
   #Put the image in the request
-  wrapper = FileWrapper(file(temporaryImage))
+  wrapper = FileWrapper(file(temporaryImage), "rb")
   response = http.HttpResponse(wrapper, content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
@@ -188,7 +188,7 @@ def byMinWidthHeight(request,width,height,imageID):
     newImage.save(temporaryImage)
     
   #Put the image in the request
-  wrapper = FileWrapper(file(temporaryImage))
+  wrapper = FileWrapper(file(temporaryImage), "rb")
   response = http.HttpResponse(wrapper, content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
@@ -226,7 +226,7 @@ def thumbnail(request,widthandheight,imageID):
     newImage.save(temporaryImage)
     
   #Put the image in the request
-  wrapper = FileWrapper(file(temporaryImage))
+  wrapper = FileWrapper(file(temporaryImage), "rb")
   response = http.HttpResponse(wrapper, content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
