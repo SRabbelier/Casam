@@ -44,7 +44,7 @@ def handle_uploaded_image(file, name, is_left, id_str):
   """
 
   location, fileNameOnly, timestamp = fileupload_logic.handle_uploaded_file(file, name)
-  handle_crop_image(file, location, timestamp)
+  #handle_crop_image(file, location, timestamp)
 
   #temporarly create a patient object
   #because we need this info

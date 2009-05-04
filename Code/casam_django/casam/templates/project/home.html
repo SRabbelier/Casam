@@ -154,7 +154,7 @@
 			var rightDiv = new Element('div');
 			    rightDiv.addClassName('pictureContainerRightDiv');
 			
-			leftDiv.insert(new Element('img',{'src': base_path+data_dir+'thumbnail/50/'+pictureJSON.fields.path}));
+			leftDiv.insert(new Element('img',{'src': base_path+'imageLoader/thumbnail/50/'+pictureJSON.pk}));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.added).addClassName('projectPictureInfo'));
 			
@@ -167,7 +167,7 @@
 			rightDiv.insert(useLink);
 			$('tab_pictures').insert(mainDiv);
 			useLink.observe('click', function(){                                          
-				 	show_image(base_path+data_dir+pictureJSON.fields.path);
+				 	show_image(base_path+'imageLoader/'+pictureJSON.pk);
 				 	return false;
 				}
 			);
