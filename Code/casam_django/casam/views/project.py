@@ -85,3 +85,8 @@ def projectImagesJSON(request,id_str):
   img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
   data = serializers.serialize("json", img)
   return http.HttpResponse(data, mimetype="application/javascript")
+
+def projectTagsJSON(request,id_str):
+  tags = Tag.objects.select_related().filter(projects__id=id_str)
+  data = serializers.serialize("json", tags)
+  return http.HttpResponse(data, mimetype="application/javascript")

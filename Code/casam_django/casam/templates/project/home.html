@@ -30,6 +30,9 @@
 			// Load images
 			getProjectImages();
 
+			// Load tags
+			getProjectTags();
+			
 			// Make draggable's for each Measurement
 			{% for mm in mmetings %}
 				new Draggable('mm{{mm.id}}', { onEnd: function() {
@@ -111,7 +114,7 @@
 	  
 		function getProjectImages()
 		{
-			var url = 'projectImagesJSON/{{id}}'
+			var url = '{{ BASE_PATH }}project/projectImagesJSON/{{id}}'
 			// notice the use of a proxy to circumvent the Same Origin Policy
 			new Ajax.Request(url, {
 			  method: 'get',
@@ -135,7 +138,7 @@
 					addLink.insert(addImage);
 					toolbar.insert(addLink);
 					Event.observe(addLink,'click',function(){
-						popupIFrame('../fileupload/{{ id }}',350,200);
+						popupIFrame('{{BASE_PATH}}fileupload/{{ id }}',350,200);
 					});
 					//toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
 					//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
@@ -145,6 +148,26 @@
 			});
 		}
 
+		function getProjectTags()
+		{
+			var url = '{{ BASE_PATH }}project/projectTagsJSON/{{id}}'
+			// notice the use of a proxy to circumvent the Same Origin Policy
+			new Ajax.Request(url, {
+			  method: 'get',
+			  onSuccess: function(transport, json) {
+				  
+			    var json = transport.responseText.evalJSON();
+			    			     
+			    $('tags').update();
+			     
+			    // Create a picture container for each picture
+			    for(i=0; i < json.length; i++)
+						$('tags').insert(new Element('p').update(json[i].fields.name));
+				}
+			});
+		}
+
+		
 		function makePictureContainer(pictureJSON)
 		{
 			var mainDiv = new Element('div');
@@ -262,9 +285,7 @@
 	<b>Tags</b>
 	<a href="{{ BASE_PATH }}tag/select/{{ id }}" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
 	<div id="tags">
-	{% for tag in project.tags.all %}
-	 {{ tag.name }} <br/>
-	{% endfor %}
+
 	</div>
 </div>
 <div id="tab_pictures" class="tabContent"></div>
