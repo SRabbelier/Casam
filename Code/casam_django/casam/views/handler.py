@@ -38,7 +38,8 @@ class Handler(object):
     self.form = self.getForm()
 
     if not self.authenticated():
-      content = loader.render_to_string('access_denied.html')
+      context = {'BASE_PATH': self.BASE_PATH}
+      content = loader.render_to_string('access_denied.html', dictionary=context)
       return http.HttpResponse(content)
 
     if self.is_post and self.form.is_valid():
