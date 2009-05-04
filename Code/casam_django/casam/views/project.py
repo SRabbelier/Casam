@@ -12,7 +12,8 @@ from casam.models import Annotation
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import ProjectMeasurementList
-from casam.models import Measurement 
+from casam.models import Measurement
+from casam.models import Tag
 from casam.views import handler
 
 

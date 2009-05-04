@@ -259,6 +259,12 @@
 <div id="tab_projectinfo" class="tabContent">
   <b>{{ project }}</b><br>
 	{{ project.description }}
+	<b>tags</b>
+	<div id="tags">
+	{% for tag in tags %}
+	 {{ tag }}
+	{% endfor %}
+	</div>
 </div>
 <div id="tab_pictures" class="tabContent"></div>
 <div id="tab_papers" class="tabContent">
