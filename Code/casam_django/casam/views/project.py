@@ -19,8 +19,6 @@ from casam.views import handler
 class ProjectForm(forms.Form):
   name = forms.CharField(max_length=50)
   description = forms.CharField(max_length=500, widget=forms.widgets.Textarea())
-  mmeting1 = forms.CharField(max_length=50)
-  mmeting2 = forms.CharField(max_length=50)
 
 
 class Home(handler.Handler):
@@ -70,11 +68,9 @@ class NewProject(handler.Handler):
 
   def post(self):
     name = self.cleaned_data['name']
-    mmeting1 = self.cleaned_data['mmeting1']
-    mmeting2 = self.cleaned_data['mmeting2']
     description = self.cleaned_data['description']
 
-    project_logic.handle_add_project(self.profile, name, mmeting1, mmeting2, description)
+    project_logic.handle_add_project(self.profile, name, description)
 
     return http.HttpResponseRedirect(self.BASE_PATH)
 

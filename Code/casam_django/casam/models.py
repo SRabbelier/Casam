@@ -5,17 +5,18 @@ from django.contrib.auth.models import User
 from django_extensions.db.fields import UUIDField
 
 
-class Department(models.Model):
+class Tag(models.Model):
   id = UUIDField(primary_key=True,auto=True)
-  name = models.CharField(max_length=100)
+  name = models.CharField(max_length=50)
+  description = models.CharField(max_length=200)
 
 
 class Project(models.Model):
   id = UUIDField(primary_key=True,auto=True)
   name = models.CharField(max_length=100)
   added = models.DateField(auto_now_add=True)
-  departments = models.ManyToManyField(Department,verbose_name="List of departments linked to project")
   description = models.CharField(max_length=200)
+  tags = models.ManyToManyField('Tag', related_name='projects')
 
   def __unicode__(self):
     return str(self.name)
