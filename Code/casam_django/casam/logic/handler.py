@@ -5,6 +5,9 @@ def getProfile(user):
   """TODO: Docstring
   """
 
+  if not user.is_authenticated():
+    return None
+
   try:
     prof = user.get_profile()
   except UserProfile.DoesNotExist:
@@ -16,6 +19,9 @@ def getProfile(user):
 def getType(user):
   """TODO: Docstring
   """
+
+  if not user.is_authenticated():
+    return ''
 
   try:
     rtype = user.groups.all().get()
