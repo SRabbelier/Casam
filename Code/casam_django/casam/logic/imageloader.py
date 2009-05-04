@@ -199,8 +199,7 @@ def thumbnail(request,widthandheight,imageID):
   
   floatWidthAndHeight = float(widthandheight)
 
-  temporaryImage = os.path.join(tempfile.gettempdir(), 
-      imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".jpg")
+  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".jpg"
 
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
@@ -227,8 +226,8 @@ def thumbnail(request,widthandheight,imageID):
     newImage.save(temporaryImage)
     
   #Put the image in the request
-  content = open(temporaryImage, 'rb')
-  response = http.HttpResponse(content, content_type='image/jpeg')
+  wrapper = FileWrapper(file(temporaryImage))
+  response = http.HttpResponse(wrapper, content_type='image/jpeg')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response
