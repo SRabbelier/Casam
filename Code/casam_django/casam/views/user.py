@@ -108,14 +108,16 @@ class EditUser(handler.Handler):
 
   def getGetForm(self):
     user_id = self.kwargs['user_id']
-    groups = self.user.groups.all()
+    user = User.objects.filter(id=user_id).get()
+    groups = user.groups.all()
+    profile = user_profile_logic.getProfile(user)
 
     initial = {
-        'firstname': self.user.first_name,
-        'lastname': self.user.last_name,
+        'firstname': user.first_name,
+        'lastname': user.last_name,
         'type': groups[0].id if groups else '',
-        'read': [i.id for i in self.profile.read.all()],
-        'write': [i.id for i in self.profile.write.all()],
+        'read': [i.id for i in profile.read.all()],
+        'write': [i.id for i in profile.write.all()],
         }
 
     return EditForm(initial=initial)
