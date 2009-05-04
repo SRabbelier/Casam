@@ -285,14 +285,14 @@
 </div>
 <div id="tab_attributes" class="tabContent">
 	<table style="width:200px">
-		<tr><th>Doorzichtbaarheid instellen</th></tr>
+		<tr><th>Set Transparancy:</th></tr>
 		<tr><td colspan="2" id="sliders"></td></tr>
-		<tr><th>Reset foto's</th></tr>
+		<tr><th>Reset Images</th></tr>
 		<tr><td id="delete_images"></td></tr>
-		<tr><th>Coordinaten</th></tr>
+		<tr><th>Coordinates</th></tr>
 		<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
 		<input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
-		<tr><th>Ajax resultaten</th></tr>
+		<tr><th>Results</th></tr>
 		<tr><td id="ajax_result"></td></tr>
 	</table>
 </div>
@@ -301,16 +301,16 @@
 <!-- POPUP -->
   
 <div id="lmdd" style="display: none; position: absolute; background-color: white; color: black; padding: 5px;">
-	<div style="background-color: #ccc;">Opslaan Meting</div>
+	<div style="background-color: #ccc;">Store Landmark</div>
 	<label for="mmx">x: </label><input type="text" style="width: 25px;" id="lmmx" name="mmx" value="" />
 	<label for="mmy">y: </label><input type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
-	<label id="labelmmmeting" for="mmmeting">Meting: </label><select id="mmmeting" name="mmmeting">
+	<label id="labelmmmeting" for="mmmeting">Landmark: </label><select id="mmmeting" name="mmmeting">
 	<option value=""></option>
 		{%for mm in mmetings%}
 			<option id="option{{mm.id}}" value="{{mm.id}}">{{mm.name}}</option>
 		{% endfor %}
 	</select><br />
-	<button onClick="saveLandMark();">Bewaar</button>
+	<button onClick="saveLandMark();">Store</button>
 </div>
 
 {% endblock body %}
