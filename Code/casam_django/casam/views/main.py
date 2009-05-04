@@ -15,13 +15,13 @@ class Home(handler.Handler):
 
   def get(self):
     context = self.getContext();
-    imgs = OriginalImage.objects.select_related().order_by('project__name')
 
     projects = Project.objects.all()
     projects = dict([(i,[]) for i in projects])
 
-    for img in imgs:
-      projects[img.project] = img
+    for project in projects:
+      imgs = OriginalImage.objects.select_related().filter(project=project)
+      projects[project] = imgs[0] if imgs else ''
 
     context['projects'] = projects
 
