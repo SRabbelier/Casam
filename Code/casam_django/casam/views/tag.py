@@ -71,8 +71,11 @@ class SelectTag(handler.Handler):
     project = Project.objects.filter(id=id_str).get()
     tag_logic.handle_select_tags(project, tags)
 
-    return http.HttpResponseRedirect(self.BASE_PATH + 'project/show/' + id_str)
+    context = self.getContext();
 
+    content = loader.render_to_string('tag/success.html', dictionary=context)
+    return http.HttpResponse(content)
+  
   def get(self):
     context = self.getContext()
     context['id'] = self.kwargs['id_str']

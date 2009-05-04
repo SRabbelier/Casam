@@ -47,6 +47,9 @@
 			Event.observe(window,'resize',function(){
 				resizeScreenElements();
 			});
+			Event.observe('editTagsLink','click',function(){
+				popupIFrame('{{ BASE_PATH }}tag/select/{{ id }}',200,150);
+			});
 		});
 
 		function resizeScreenElements()
@@ -204,6 +207,12 @@
 			//$('tab_pictures').scrollTo($('addPictureButton'));
 			closePopup();	
 		}
+
+		function closePopupAndReloadTags(){
+			getProjectTags();
+			new Effect.Highlight('tags');
+			closePopup();	
+		}
   </script>
 
 {% endblock head %}
@@ -283,7 +292,7 @@
   <b>{{ project }}</b><br>
 	<p>{{ project.description }}</p>
 	<b>Tags</b>
-	<a href="{{ BASE_PATH }}tag/select/{{ id }}" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
+	<a href="#" id='editTagsLink' style="float:right;clear:both;"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
 	<div id="tags">
 
 	</div>
