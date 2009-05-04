@@ -28,7 +28,7 @@ def getType(user):
   try:
     rtype = user.groups.all().get()
   except Group.DoesNotExist:
-    return ''
+    return 'Onderzoeker'
 
   return str(rtype)
 
