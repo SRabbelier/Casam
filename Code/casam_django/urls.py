@@ -13,7 +13,7 @@ import casam.views.landmarks
 import casam.views.user
 import casam.views.login
 import casam.views.draw
-import casam.views.imageresizer
+import casam.logic.imageloader
 import casam.views.sjorsdraw
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
@@ -36,8 +36,12 @@ urlpatterns = patterns('',
     (r'^project/new$', casam.views.project.NewProject()),
     (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
     (r'^project/%s$' % ID_STR, casam.views.project.Home()),
-    (r'^resizeImage/byRatio/(.*)/(.*)$', casam.views.imageresizer.byRatio),
-    (r'^resizeImage/byWidth/(.*)/(.*)$', casam.views.imageresizer.byWidth),
+    (r'^imageLoader/byRatio/(.*)/(.*)$', casam.logic.imageloader.byRatio),
+    (r'^imageLoader/byWidth/(.*)/(.*)$', casam.logic.imageloader.byWidth),
+    (r'^imageLoader/byMaxWidthHeight/(.*)/(.*)/(.*)$', casam.logic.imageloader.byMaxWidthHeight),
+    (r'^imageLoader/byMinWidthHeight/(.*)/(.*)/(.*)$', casam.logic.imageloader.byMinWidthHeight),
+    (r'^imageLoader/thumbnail/(.*)/(.*)$', casam.logic.imageloader.thumbnail),
+    (r'^imageLoader/(.*)$', casam.logic.imageloader.simple),
     (r'^sjorsdraw/AddBrushStroke$', casam.views.sjorsdraw.AddBrushStroke()),
     (r'^sjorsdraw$', casam.views.sjorsdraw.sjorsDraw()),
     (r'^user/home$', casam.views.user.Home()),
