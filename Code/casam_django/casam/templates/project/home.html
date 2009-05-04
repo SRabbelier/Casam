@@ -258,11 +258,12 @@
 
 <div id="tab_projectinfo" class="tabContent">
   <b>{{ project }}</b><br>
-	{{ project.description }}
-	<b>tags</b>
+	<p>{{ project.description }}</p>
+	<b>Tags</b>
+	<a href="{{ BASE_PATH }}tag/select/{{ id }}" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
 	<div id="tags">
-	{% for tag in tags %}
-	 {{ tag }}
+	{% for tag in project.tags.all %}
+	 {{ tag.name }} <br/>
 	{% endfor %}
 	</div>
 </div>

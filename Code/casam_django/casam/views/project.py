@@ -31,16 +31,16 @@ class Home(handler.Handler):
     return self.profile and proj in [i.id for i in self.profile.read.all()]
 
   def get(self):
-    context = self.getContext();
+    context = self.getContext()
     id_str = self.kwargs['id_str']
     img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
 
     annotations = Annotation.objects.select_related().order_by(
         'project__name').filter(project__id=id_str)
 
-    project = Project.objects.filter(id=id_str).get();
-    punten = Measurement.objects.select_related().filter(project__id=id_str);
-    mmetings = ProjectMeasurementList.objects.all().filter(project__id=id_str);
+    project = Project.objects.filter(id=id_str).get()
+    punten = Measurement.objects.select_related().filter(project__id=id_str)
+    mmetings = ProjectMeasurementList.objects.filter(project__id=id_str)
 
     context['annotations'] = annotations
     context['images'] = img

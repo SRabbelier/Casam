@@ -8,7 +8,9 @@ from django_extensions.db.fields import UUIDField
 class Tag(models.Model):
   id = UUIDField(primary_key=True,auto=True)
   name = models.CharField(max_length=50)
-  description = models.CharField(max_length=200)
+
+  def __unicode__(self):
+    return str(self.name)
 
 
 class Project(models.Model):

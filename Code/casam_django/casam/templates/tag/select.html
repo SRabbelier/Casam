@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Nieuw tag{% endblock title %}
+
+{% block body%}
+
+<a href="{{ BASE_PATH }}tag/new/{{ id }}" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
+
+<form enctype="multipart/form-data" method="post">
+<table>
+{{ form }}
+<tr><td><input type="submit" value="save" /></td></tr>
+</table>
+</form>
+
+{% endblock body %}

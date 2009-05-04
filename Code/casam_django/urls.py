@@ -15,6 +15,7 @@ import casam.views.login
 import casam.views.draw
 import casam.logic.imageloader
 import casam.views.sjorsdraw
+import casam.views.tag
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
@@ -35,7 +36,9 @@ urlpatterns = patterns('',
     (r'^logout', casam.views.login.Logout()),
     (r'^project/new$', casam.views.project.NewProject()),
     (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
-    (r'^project/%s$' % ID_STR, casam.views.project.Home()),
+    (r'^project/show/%s$' % ID_STR, casam.views.project.Home()),
+    (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
+    (r'^tag/select/%s$' % ID_STR, casam.views.tag.SelectTag()),
     (r'^imageLoader/byRatio/(.*)/(.*)$', casam.logic.imageloader.byRatio),
     (r'^imageLoader/byWidth/(.*)/(.*)$', casam.logic.imageloader.byWidth),
     (r'^imageLoader/byMaxWidthHeight/(.*)/(.*)/(.*)$', casam.logic.imageloader.byMaxWidthHeight),
