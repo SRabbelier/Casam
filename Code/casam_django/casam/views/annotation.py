@@ -120,6 +120,5 @@ class NewAnnotation(handler.Handler):
       url = self.BASE_PATH + location
 
     annotation_logic.handle_add_annotation(name, url, project_id)
-    context = self.getContext()
 
-    return http.HttpResponseRedirect(context['BASE_PATH']+'home') 
+    return http.HttpResponseRedirect(self.BASE_PATH)
