@@ -46,9 +46,8 @@ class FileUpload(handler.Handler):
     is_left = self.cleaned_data['is_left']
     id_str = self.kwargs['id_str']
 
-    oi = image_logic.handle_uploaded_image(file, name, is_left, id_str)
+    image_logic.handle_uploaded_image(file, name, is_left, id_str)
 
-    context['image'] =oi
     content = loader.render_to_string('main/succes.html', dictionary=context)
     return http.HttpResponse(content)
 

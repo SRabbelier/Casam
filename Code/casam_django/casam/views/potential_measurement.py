@@ -33,7 +33,9 @@ class NewPotentialMeasurement(handler.Handler):
     project = Project.objects.filter(id=id_str).get()
     potential_measurement_logic.handle_add_potential_measurement(project, name)
 
-    return http.HttpResponseRedirect(self.BASE_PATH + 'project/show/' + id_str)
+    context = self.getContext()
+    content = loader.render_to_string('potential_measurement/success.html', dictionary=context)
+    return http.HttpResponse(content)
 
   def get(self):
     context = self.getContext()

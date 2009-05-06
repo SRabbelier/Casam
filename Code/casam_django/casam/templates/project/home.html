@@ -107,6 +107,9 @@
 			Event.observe('editTagsLink','click',function(){
 				popupIFrame('{{ BASE_PATH }}tag/select/{{ id }}',350,150);
 			});
+			Event.observe('addMeasurementLink','click',function(){
+        popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
+      });
 		});
 
 		function resizeScreenElements()
@@ -212,7 +215,6 @@
 		function getProjectTags()
 		{
 			var url = '{{ BASE_PATH }}project/projectTagsJSON/{{id}}?time='+new Date().getTime();
-			// notice the use of a proxy to circumvent the Same Origin Policy
 			new Ajax.Request(url, {
 			  method: 'get',
 			  onSuccess: function(transport, json) {
@@ -227,6 +229,25 @@
 				}
 			});
 		}
+
+    function getProjectPotentialMeasurements()
+    {
+      var url = '{{ BASE_PATH }}pm/projectPotentialMeasurementsJSON/{{id}}?time='+new Date().getTime();
+      new Ajax.Request(url, {
+        method: 'get',
+        onSuccess: function(transport, json) {
+
+          var json = transport.responseText.evalJSON();
+
+          $('tags').update();
+
+          // Create a picture container for each picture
+          for(i=0; i < json.length; i++)
+            $('tags').insert(new Element('p').update(json[i].fields.name));
+        }
+      });
+
+    }
 
 		
 		function makePictureContainer(pictureJSON)
@@ -271,6 +292,13 @@
 			new Effect.Highlight('tags');
 			closePopup();	
 		}
+
+		function closePopupAndReloadPotentialMeasurements(){
+      getProjectPotentialMeasurements();
+      new Effect.Highlight('potential_measurements');
+      closePopup();
+    }
+
 		function showImage(id){
 			var newAddedImage = new AddedImage(id);
 			addedImages.push(newAddedImage);
@@ -372,7 +400,7 @@
   <a href="{{ BASE_PATH }}annotation/new/{{ id }}" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
 </div>
 <div id="tab_measurements" class="tabContent">
-  <a href="{{ BASE_PATH }}pm/new/{{ id }}" style="float:right;clear:both" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
+  <a id="addMeasurementLink" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
 
 	{%for mm in mmetings%}
 		<div><img id="mm{{mm.id}}" 
