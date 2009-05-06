@@ -1,5 +1,4 @@
 from casam.models import Project
-from casam.models import ProjectMeasurementList
 
 
 def handle_add_project(profile, name, description):

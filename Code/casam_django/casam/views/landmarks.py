@@ -12,7 +12,7 @@ from casam.models import Image
 from casam.models import Patient
 from casam.models import Project
 from casam.models import Measurement
-from casam.models import ProjectMeasurementList
+from casam.models import PotentialMeasurement
 from casam.models import OriginalImage
 from casam.views import handler
 

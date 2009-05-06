@@ -16,6 +16,7 @@ import casam.views.draw
 import casam.logic.imageloader
 import casam.views.sjorsdraw
 import casam.views.tag
+import casam.views.potential_measurement
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
@@ -38,6 +39,7 @@ urlpatterns = patterns('',
     (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
     (r'^project/projectTagsJSON/(.*)$', casam.views.project.projectTagsJSON),
     (r'^project/show/%s$' % ID_STR, casam.views.project.Home()),
+    (r'^pm/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurement()),
     (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
     (r'^tag/select/%s$' % ID_STR, casam.views.tag.SelectTag()),
     (r'^imageLoader/byRatio/(.*)/(.*)$', casam.logic.imageloader.byRatio),

@@ -11,7 +11,7 @@ from casam.logic import project as project_logic
 from casam.models import Annotation
 from casam.models import OriginalImage
 from casam.models import Project
-from casam.models import ProjectMeasurementList
+from casam.models import PotentialMeasurement
 from casam.models import Measurement
 from casam.models import Tag
 from casam.views import handler
@@ -40,7 +40,7 @@ class Home(handler.Handler):
 
     project = Project.objects.filter(id=id_str).get()
     punten = Measurement.objects.select_related().filter(project__id=id_str)
-    mmetings = ProjectMeasurementList.objects.filter(project__id=id_str)
+    mmetings = PotentialMeasurement.objects.filter(project__id=id_str)
 
     context['annotations'] = annotations
     context['images'] = img

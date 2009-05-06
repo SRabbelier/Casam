@@ -11,7 +11,7 @@ from casam.logic import user as user_logic
 from casam.logic import user_profile as user_profile_logic
 from casam.models import OriginalImage
 from casam.models import Project
-from casam.models import ProjectMeasurementList
+from casam.models import PotentialMeasurement
 from casam.models import Measurement
 from casam.views import handler
 
