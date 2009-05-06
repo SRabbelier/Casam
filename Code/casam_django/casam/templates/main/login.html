@@ -23,8 +23,13 @@
 
 {% block body %}
 
+{% if failed %}
+<div style="margin:auto;margin-top:125px;color:white;">
+The credentials you entered are not valid.
+</div>
+{% endif %}
 
-<div class="whiteFrame_container" style="margin-top:125px;">
+<div class="whiteFrame_container">
 
 	<!-- Top white frame -->
 	<div class="whiteFrame_top_container">

@@ -29,12 +29,15 @@ class Login(handler.Handler):
     rusername = self.cleaned_data['username']
     rpassword = self.cleaned_data['password']
 
-    login_logic.handle_login(rusername, rpassword, self.request)
-
-    return http.HttpResponseRedirect(self.BASE_PATH)
+    if login_logic.handle_login(rusername, rpassword, self.request):
+      return http.HttpResponseRedirect(self.BASE_PATH)
+    else:
+      return http.HttpResponseRedirect(self.path + '?status=failed')
 
   def get(self):
+    status = self.GET.get('status')
     context = self.getContext()
+    context['failed'] = status == 'failed'
     content = loader.render_to_string('main/login.html', dictionary=context)
 
     return http.HttpResponse(content)

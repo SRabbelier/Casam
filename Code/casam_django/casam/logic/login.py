@@ -8,6 +8,9 @@ def handle_login(rusername, rpassword, request):
   user = auth.authenticate(username=rusername, password=rpassword)
   if user and user.is_active:
     auth.login(request, user)
+    return True
+
+  return False
 
 
 def handle_logout(request):
