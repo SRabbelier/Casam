@@ -19,12 +19,6 @@ from casam.views import handler
 class UserForm(forms.Form):
   """TODO: Docstring """
 
-  choices = []
-  projects = Project.objects.all()
-
-  for pr in projects:
-    choices.append((pr.id,pr.name))
-
   login = forms.CharField(max_length=30)
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)
@@ -35,11 +29,6 @@ class UserForm(forms.Form):
 
 
 class EditForm(forms.Form):
-  groups = Group.objects.all()
-  types = []
-
-  for gr in groups:
-    types.append((gr.name,gr.name))
 
   firstname = forms.CharField(max_length=30)
   lastname = forms.CharField(max_length=30)

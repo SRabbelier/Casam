@@ -43,6 +43,6 @@ def handle_save_user_profile(user, read_projects, write_projects):
     profile = UserProfile(user=user)
     profile.save()
 
-  profile.read = read_projects
+  profile.read = list(set(read_projects + write_projects))
   profile.write = write_projects
   profile.save()
