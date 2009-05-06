@@ -301,11 +301,22 @@
 
 		function showImage(id){
 			var newAddedImage = new AddedImage(id);
+			var newImageArray = new Array();
+			//Delete the old image and put it up front
+			for(i = 0; i< addedImages.length; i++){
+				if(addedImages[i].id != id){
+					newImageArray.push(addedImages[i]);
+				}
+			}
+			addedImages = newImageArray
 			addedImages.push(newAddedImage);
 			reloadImages();
 		}
+		
 		function reloadImages(){
 			$('big_images').update();
+			$('sliders').update();
+			
 			addedImages.each(function(item){
 					item.addSelfToImages();
 			});
