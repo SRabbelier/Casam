@@ -15,6 +15,8 @@ import casam.views.login
 import casam.views.draw
 import casam.logic.imageloader
 import casam.views.sjorsdraw
+import casam.views.paint
+import casam.views.bitmap_dump
 import casam.views.tag
 import casam.views.potential_measurement
 
@@ -48,6 +50,8 @@ urlpatterns = patterns('',
     (r'^imageLoader/byMinWidthHeight/(.*)/(.*)/(.*)$', casam.logic.imageloader.byMinWidthHeight),
     (r'^imageLoader/thumbnail/(.*)/(.*)$', casam.logic.imageloader.thumbnail),
     (r'^imageLoader/(.*)$', casam.logic.imageloader.simple),
+    (r'^paint$', casam.views.paint.Main()),
+    (r'^bitmap_dump$', casam.views.bitmap_dump.Save()),
     (r'^sjorsdraw/AddBrushStroke$', casam.views.sjorsdraw.AddBrushStroke()),
     (r'^sjorsdraw$', casam.views.sjorsdraw.sjorsDraw()),
     (r'^user/home$', casam.views.user.Home()),

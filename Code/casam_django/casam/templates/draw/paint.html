@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+paint_over_a_jpg
+{% endblock title %}
+
+{% block body %}
+
+<!--url's used in the movie-->
+<!--text used in the movie-->
+<!-- saved from url=(0013)about:internet -->
+
+<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
+	codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"
+	width="300"
+	height="300"
+	id="paint_over_a_jpg"
+	align="middle"
+	style="margin:auto;display:block;">
+
+<param name="allowScriptAccess" value="sameDomain" />
+<param name="movie" value="{{ BASE_PATH }}media/flash/paint_over_a_jpg.swf" />
+<param name="FlashVars" value="{{ BASE_PATH }}media/flash/img_source=fish.jpg">
+<param name="quality" value="high" />
+<param name="bgcolor" value="#ffffff" />
+<embed  src="{{ BASE_PATH }}media/flash/paint_over_a_jpg.swf" 
+	FlashVars="img_source={{ BASE_PATH }}media/img/fish.jpg"
+	quality="high"
+	bgcolor="#ffffff"
+	width="300"
+	height="300"
+	name="paint_over_a_jpg"
+	align="middle"
+	allowScriptAccess="sameDomain"
+	type="application/x-shockwave-flash"
+	pluginspage="http://www.macromedia.com/go/getflashplayer" />
+</object>
+{% endblock body %}
