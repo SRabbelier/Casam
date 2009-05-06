@@ -44,7 +44,7 @@ class LandmarkSaver(handler.Handler):
     context = self.getContext()
     mm = self.cleaned_data['mm']
     id = mm;
-    mmeting = ProjectMeasurementList.objects.select_related().get(id=id);
+    mmeting = PotentialMeasurement.objects.select_related().get(id=id);
     
     #lets check if there is already one measurement for this project of this type
     try:
