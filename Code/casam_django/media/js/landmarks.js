@@ -8,7 +8,7 @@ function handleResponseSaveLandmark() {
         var response = savelm.responseText;
           $('ajax_result').innerHTML = response;
           $('lmdd').hide();
-          $('mm'+mmid).setStyle('position: absolute; left: '+savex+'px; top: '+savey+'px;');
+          $('mm'+mmid).setStyle('position: absolute; left: '+savex+'px; top: '+savey+'px; zIndex: 2');
     }
 }
 
@@ -17,8 +17,9 @@ function saveLandMark(){
   var mousex = $('lmmx').value;
   var mousey = $('lmmy').value;
   var mm = $('mmmeting').options[$('mmmeting').selectedIndex].value;
-  savex = mousex*1+$('big_image1').offsetLeft*1;
-  savey = mousey*1+$('big_image1').offsetTop*1;
+  var imageID = $('imageid').value;
+  savex = mousex*1+$('big_images').firstChild.offsetLeft*1;
+  savey = mousey*1+$('big_images').firstChild.offsetTop*1;
   mmid = mm;
   
   if(mm == "" || mousex == "" || mousey == ""){
@@ -28,19 +29,20 @@ function saveLandMark(){
    savelm.open('post', base_path + 'landmarks/save');
    savelm.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
    savelm.onreadystatechange = handleResponseSaveLandmark;
-   savelm.send('x='+escape(mousex)+'&y='+escape(mousey)+'&mm='+escape(mm));
+   savelm.send('x='+escape(mousex)+'&y='+escape(mousey)+'&mm='+escape(mm)+'&img='+escape(imageID));
   }
 }
 
-function LoadMMDD(id){
+function LoadMMDD(id,imageID){
 
   var mousex = $('MouseX').value;
-  xoffset = $('big_image1').offsetLeft*1+mousex*1+10;
+  xoffset = $('big_images').firstChild.offsetLeft*1+mousex*1+10;
   var mousey = $('MouseY').value;
-  yoffset = $('big_image1').offsetTop*1+mousey*1+10;
+  yoffset = $('big_images').firstChild.offsetTop*1+mousey*1+10;
   $('lmdd').setStyle('left: '+xoffset+'px; top: '+yoffset+'px;');
   $('lmmx').value = mousex;
   $('lmmy').value = mousey;
+  $('imageid').value = imageID;
   if(id != ""){
     $('option'+id).selected = true;
     $('mmmeting').setStyle('visibility: hidden');

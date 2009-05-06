@@ -24,6 +24,7 @@ class LandmarkForm(forms.Form):
   mm = forms.CharField() # TODO fix forms.UUIDField?
   x = forms.IntegerField(min_value=-5000, max_value=5000)
   y = forms.IntegerField(min_value=-5000, max_value=5000)
+  img = forms.CharField(widget = forms.widgets.HiddenInput())
 
 
 class LandmarkSaver(handler.Handler):
@@ -48,13 +49,15 @@ class LandmarkSaver(handler.Handler):
     
     #lets check if there is already one measurement for this project of this type
     try:
-      meting = Measurement.objects.filter(mogelijkemeting=mmeting,project=mmeting.project).get()
+      meting = Measurement.objects.filter(mogelijkemeting=mmeting).get()
     except Measurement.DoesNotExist:
       meting = None
+      
+    image = Images.objects.all().get(id=self.cleaned_data['img'])
 
     properties = dict(
         mogelijkemeting=mmeting,
-        project=mmeting.project,
+        image=image,
         x=self.cleaned_data['x'],
         y=self.cleaned_data['y'],
         )
