@@ -39,14 +39,14 @@ class Home(handler.Handler):
         'project__name').filter(project__id=id_str)
 
     project = Project.objects.filter(id=id_str).get()
-    punten = Measurement.objects.select_related().filter(project__id=id_str)
+    #punten = Measurement.objects.select_related().filter(project__id=id_str)
     mmetings = PotentialMeasurement.objects.filter(project__id=id_str)
 
     context['annotations'] = annotations
     context['images'] = img
     context['id'] = id_str
     context['mmetings'] = mmetings
-    context['punten'] = punten
+    #context['punten'] = punten
     context['project'] = project
 
     content = loader.render_to_string('project/home.html', dictionary=context)
@@ -89,4 +89,9 @@ def projectImagesJSON(request,id_str):
 def projectTagsJSON(request,id_str):
   tags = Tag.objects.select_related().filter(projects__id=id_str)
   data = serializers.serialize("json", tags)
+  return http.HttpResponse(data, mimetype="application/javascript")
+
+def projectPotentialMeasurementsJSON(request,id_str):
+  mmetings = PotentialMeasurement.objects.filter(project__id=id_str)
+  data = serializers.serialize("json", mmetings)
   return http.HttpResponse(data, mimetype="application/javascript")

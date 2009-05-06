@@ -34,7 +34,6 @@ function saveLandMark(){
 }
 
 function LoadMMDD(id,imageID){
-
   var mousex = $('MouseX').value;
   xoffset = $('big_images').firstChild.offsetLeft*1+mousex*1+10;
   var mousey = $('MouseY').value;

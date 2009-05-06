@@ -14,8 +14,9 @@
     var base_path = "{{ BASE_PATH }}";
 
 	  var AddedImage = Class.create({
-		  initialize: function(id) {
+		  initialize: function(id,name) {
 		    this.id = id;
+		    this.name = name;
 		    this.opacity = 0.5;
 		    this.imageElement = new Element('img');
 		    this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
@@ -51,11 +52,14 @@
 			  this.imageElement.setOpacity(this.opacity);
 		  },
 		  addSelfToImages:function(){
+				var parentAddedImageObject = this;
 			  this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
 				$('big_images').insert({'bottom':this.getImageElement()});
-
+				this.getImageElement().observe('click',function(){
+					LoadMMDD('',parentAddedImageObject.id);
+				});
+				
 				$('sliders').insert(this.getOpacitySliderContainer());
-				var parentAddedImageObject = this;
 			  new Control.Slider(this.opacitySliderHandle,this.opacitySliderContainer, {
 				  minimum: 0,
 				  maximum: 1,
@@ -64,6 +68,12 @@
 				  	parentAddedImageObject.setOpacityForImage(value);
 			  	}
 			  });
+
+			  var deleteButton = new Element('input',{type:'button', value:'Delete '+this.name});
+			  Element.observe(deleteButton, 'click', function(){
+				  hideImage(parentAddedImageObject.id);
+			  });
+			  $('delete_images').insert(deleteButton);
 		  }
 		  
 		});
@@ -232,7 +242,7 @@
 
     function getProjectPotentialMeasurements()
     {
-      var url = '{{ BASE_PATH }}pm/projectPotentialMeasurementsJSON/{{id}}?time='+new Date().getTime();
+      var url = '{{ BASE_PATH }}project/projectPotentialMeasurementsJSON/{{id}}?time='+new Date().getTime();
       new Ajax.Request(url, {
         method: 'get',
         onSuccess: function(transport, json) {
@@ -272,7 +282,7 @@
 			rightDiv.insert(useLink);
 			$('tab_pictures').insert(mainDiv);
 			useLink.observe('click', function(){                                          
-				 	showImage(pictureJSON.pk);
+				 	showImage(pictureJSON.pk,pictureJSON.fields.name);
 				 	return false;
 				}
 			);
@@ -299,8 +309,8 @@
       closePopup();
     }
 
-		function showImage(id){
-			var newAddedImage = new AddedImage(id);
+		function showImage(id,name){
+			var newAddedImage = new AddedImage(id,name);
 			var newImageArray = new Array();
 			//Delete the old image and put it up front
 			for(i = 0; i< addedImages.length; i++){
@@ -312,11 +322,23 @@
 			addedImages.push(newAddedImage);
 			reloadImages();
 		}
+
+		function hideImage(id){
+			var newImageArray = new Array();
+			//Delete the old image and copy the rest
+			for(i = 0; i< addedImages.length; i++){
+				if(addedImages[i].id != id){
+					newImageArray.push(addedImages[i]);
+				}
+			}
+			addedImages = newImageArray;
+			reloadImages();
+		}
 		
 		function reloadImages(){
 			$('big_images').update();
 			$('sliders').update();
-			
+			$('delete_images').update();
 			addedImages.each(function(item){
 					item.addSelfToImages();
 			});
@@ -454,7 +476,7 @@
 			<option id="option{{mm.id}}" value="{{mm.id}}">{{mm.name}}</option>
 		{% endfor %}
 	</select><br />
-  <input type="hidden" value="" id="imageid"></input> 
+  <input type="hidden" name="imageid" value="" id="imageid"></input> 
 	<button onClick="saveLandMark();">Store</button>
 </div>
 
