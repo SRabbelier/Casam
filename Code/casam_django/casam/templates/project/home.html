@@ -22,6 +22,20 @@
 		    this.imageElement.writeAttribute('id','addedImage_'+id);
 		    this.imageElement.writeAttribute('class','big_image_sibling');
 		    this.imageElement.setOpacity(this.opacity / 100);
+
+		    
+		    this.opacitySliderContainer = new Element('div');
+				//HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
+		    this.opacitySliderContainer.setWidth(200);
+		    this.opacitySliderContainer.writeAttribute('id','opacitySliderContainer_'+this.id);
+		    this.opacitySliderContainer.writeAttribute('class','slider');
+		    
+		    this.opacitySliderHandle = new Element('div');
+		    this.opacitySliderHandle.writeAttribute('id','opacitySliderHandle_'+this.id);
+		    this.opacitySliderHandle.writeAttribute('class','handle');
+		    
+		    this.opacitySliderContainer.insert(this.opacitySliderHandle);
+		    
 		  },
 	  	getAppropriateSizeURL: function(){
 			  	return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
@@ -29,9 +43,27 @@
 		  getImageElement: function(){
 			  return this.imageElement;
 		  },
+		  getOpacitySliderContainer: function(){
+				return this.opacitySliderContainer;
+		  },
+		  setOpacityForImage: function(opacityValue){
+				this.opacity = opacityValue;
+			  this.imageElement.setOpacity(this.opacity);
+		  },
 		  addSelfToImages:function(){
 			  this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
 				$('big_images').insert({'bottom':this.getImageElement()});
+
+				$('sliders').insert(this.getOpacitySliderContainer());
+				var parentAddedImageObject = this;
+			  new Control.Slider(this.opacitySliderHandle,this.opacitySliderContainer, {
+				  minimum: 0,
+				  maximum: 100,
+				  sliderValue: 50,
+					onSlide: function(value){
+				  	parentAddedImageObject.setOpacityForImage(value);
+			  	}
+			  });
 		  }
 		  
 		});
@@ -67,8 +99,7 @@
 				});
 			{% endfor %}
 			new Draggable('lmdd');
-			new Draggable('leftFrame', { handle: 'leftFrameHandle' });
-			new Draggable('rightFrame', { handle: 'rightFrameHandle' });
+
 			resizeScreenElements();
 			Event.observe(window,'resize',function(){
 				resizeScreenElements();

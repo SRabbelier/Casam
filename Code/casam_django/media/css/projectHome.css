@@ -87,3 +87,7 @@ img.smallPictureButton{
 #tags p{
 	margin:0px;
 }
+
+  div.slider { width:200px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
+  div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
+
