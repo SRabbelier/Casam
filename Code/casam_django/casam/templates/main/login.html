@@ -8,8 +8,7 @@
 	<script language="javascript">
 
   function load() {
-    new Draggable('whiteFrame_container', { handle: 'whiteFrame_top_middle'});
-	  if (document.forms.length > 0)
+    if (document.forms.length > 0)
 	    document.forms[0].elements[0].select();
   }
 
@@ -23,11 +22,13 @@
 
 {% block body %}
 
+
+<div style="width:300px;margin:auto;overflow: visible;margin-top:125px;color:white;height:30px;">
 {% if failed %}
-<div style="margin:auto;margin-top:125px;color:white;">
 The credentials you entered are not valid.
-</div>
 {% endif %}
+</div>
+
 
 <div class="whiteFrame_container">
 
