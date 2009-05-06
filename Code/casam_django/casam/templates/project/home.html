@@ -83,7 +83,7 @@
       $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
 
 		  // Add mouse listener for image
-      document.observe('mousemove', getMouseXY);
+      Event.observe('big_images','mousemove', getMouseXY);
 
 			// Load images
 			getProjectImages();
