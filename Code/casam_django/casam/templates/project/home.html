@@ -12,6 +12,32 @@
   <script src="{{ BASE_PATH }}media/js/casamcustom.js" type="text/javascript"></script>
   <script type="text/javascript">
     var base_path = "{{ BASE_PATH }}";
+
+	  var AddedImage = Class.create({
+		  initialize: function(id) {
+		    this.id = id;
+		    this.opacity = 50;
+		    this.imageElement = new Element('img');
+		    this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
+		    this.imageElement.writeAttribute('id','addedImage_'+id);
+		    this.imageElement.writeAttribute('class','big_image_sibling');
+		    this.imageElement.setOpacity(this.opacity / 100);
+		  },
+	  	getAppropriateSizeURL: function(){
+			  	return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
+		  },
+		  getImageElement: function(){
+			  return this.imageElement;
+		  },
+		  addSelfToImages:function(){
+			  this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
+				$('big_images').insert({'bottom':this.getImageElement()});
+		  }
+		  
+		});
+
+		var addedImages = new Array();
+		
     var total_images = 0;
 
 	  document.observe("dom:loaded", function()
@@ -62,6 +88,7 @@
 			remainingHeightWhiteFrame = remainingHeight - 36; 
 			$('leftFrame').setHeight(remainingHeightWhiteFrame);
 			$('rightFrame').setHeight(remainingHeightWhiteFrame);
+			reloadImages();
 				
 		}
 
@@ -193,7 +220,7 @@
 			rightDiv.insert(useLink);
 			$('tab_pictures').insert(mainDiv);
 			useLink.observe('click', function(){                                          
-				 	show_image(base_path+'imageLoader/'+pictureJSON.pk);
+				 	showImage(pictureJSON.pk);
 				 	return false;
 				}
 			);
@@ -212,6 +239,17 @@
 			getProjectTags();
 			new Effect.Highlight('tags');
 			closePopup();	
+		}
+		function showImage(id){
+			var newAddedImage = new AddedImage(id);
+			addedImages.push(newAddedImage);
+			reloadImages();
+		}
+		function reloadImages(){
+			$('big_images').update();
+			addedImages.each(function(item){
+					item.addSelfToImages();
+			});
 		}
   </script>
 
@@ -252,6 +290,8 @@
 </div>
 
 
+<div id="big_images" style="margin:auto;width:700px;height:400px;border:dashed 1px yellow;"></div>
+
 <div id="rightFrame" class="whiteFrame_container" style="float:left;position:absolute;top:105px;right:5px;">
 
 	<!-- Top white frame -->
@@ -283,10 +323,6 @@
 		<div class="whiteFrame_bottom_right"></div>
 	</div>
 </div>
-
-
-<div id="big_images" style="margin:auto;width:700px;height:400px;border:dashed 1px yellow;"></div>
-
 
 <!-- TABS -->
 
