@@ -16,12 +16,12 @@
 	  var AddedImage = Class.create({
 		  initialize: function(id) {
 		    this.id = id;
-		    this.opacity = 50;
+		    this.opacity = 0.5;
 		    this.imageElement = new Element('img');
 		    this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
 		    this.imageElement.writeAttribute('id','addedImage_'+id);
 		    this.imageElement.writeAttribute('class','big_image_sibling');
-		    this.imageElement.setOpacity(this.opacity / 100);
+		    this.imageElement.setOpacity(this.opacity);
 
 		    
 		    this.opacitySliderContainer = new Element('div');
@@ -58,8 +58,8 @@
 				var parentAddedImageObject = this;
 			  new Control.Slider(this.opacitySliderHandle,this.opacitySliderContainer, {
 				  minimum: 0,
-				  maximum: 100,
-				  sliderValue: 50,
+				  maximum: 1,
+				  sliderValue: parentAddedImageObject.opacity,
 					onSlide: function(value){
 				  	parentAddedImageObject.setOpacityForImage(value);
 			  	}
