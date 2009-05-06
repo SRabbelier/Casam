@@ -6,15 +6,11 @@
 <script type="text/javascript">
 	//
 	document.observe('dom:loaded',function(){
-		Event.observe('addButton','click',function(){
 				parent.closePopupAndReloadPictures();
-			});
 	});
 </script>
 </head>
 <body>
-<p>The picture was added.</p><input id='addButton' type="button" value="Add to picturebar"/>
-<img src="{{BASE_PATH}}imageLoader/thumbnail/300/{{image.id}}"/>
 
 </body>
 </html>
