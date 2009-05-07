@@ -91,3 +91,10 @@ img.smallPictureButton{
   div.slider { width:200px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
   div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
 
+img.mmPointer{
+	position:absolute;
+	z-index:2;	
+}
+div.mmText{
+	margin-left:10px;
+}

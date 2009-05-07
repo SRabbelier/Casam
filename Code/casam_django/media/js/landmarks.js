@@ -17,7 +17,7 @@ function saveLandMark(){
   var mousex = $('lmmx').value;
   var mousey = $('lmmy').value;
   var mm = $('mmmeting').options[$('mmmeting').selectedIndex].value;
-  var imageID = $('imageid').value;
+  //var imageID = $('imageid').value;
   savex = mousex*1+$('big_images').firstChild.offsetLeft*1;
   savey = mousey*1+$('big_images').firstChild.offsetTop*1;
   mmid = mm;

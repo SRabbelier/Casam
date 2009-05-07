@@ -100,14 +100,13 @@
 
 			// Load tags
 			getProjectTags();
+
+			// Load potential measurements
+			getProjectPotentialMeasurements();
+			 
 			
 			// Make draggable's for each Measurement
-			{% for mm in mmetings %}
-				new Draggable('mm{{mm.id}}', { onEnd: function() {
-						if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD('{{mm.id}}') 
-					}
-				});
-			{% endfor %}
+
 			new Draggable('lmdd');
 
 			resizeScreenElements();
@@ -249,12 +248,33 @@
 
           var json = transport.responseText.evalJSON();
 
-          $('tags').update();
+          $('possiblemeasurements').update();
 
           // Create a picture container for each picture
-          for(i=0; i < json.length; i++)
-            $('tags').insert(new Element('p').update(json[i].fields.name));
+          for(i=0; i < json.length; i++){
+            var pmmContainerDiv = new Element('div');
+            var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_red.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
+            //pmmContainerIMG.setStyle({position:'absolute'});
+           	pmmContainerDiv.insert(pmmPointerIMG);
+						var json = json;
+           	new Draggable(pmmPointerIMG, { onEnd: function() {
+							if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk) 
+							}
+						});
+           	
+          	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
+          	pmmContainerDiv.insert(pmmTextDiv);
+            $('possiblemeasurements').insert(pmmContainerDiv);
+          }
         }
+
+      /*
+		<div><img id="mm{{mm.id}}" 
+		style="cursor: pointer; z-index: 2; position: absolute" 
+		src="{{BASE_PATH}}media/img/pin_red.gif" alt="pin" 
+		onMouseOver="showLandmarkTooltip('{{mm.id}}');" 
+	  onMouseOut="hideLandmarkTooltip('{{mm.id}}');" />
+<div style="margin-left: 10px;">{{mm.name}}</div></div>*/
       });
 
     }
@@ -305,7 +325,7 @@
 
 		function closePopupAndReloadPotentialMeasurements(){
       getProjectPotentialMeasurements();
-      new Effect.Highlight('potential_measurements');
+      new Effect.Highlight('tab_measurements');
       closePopup();
     }
 
@@ -434,15 +454,9 @@
 </div>
 <div id="tab_measurements" class="tabContent">
   <a id="addMeasurementLink" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
+	<div id="possiblemeasurements">
 
-	{%for mm in mmetings%}
-		<div><img id="mm{{mm.id}}" 
-							style="cursor: pointer; z-index: 2; position: absolute" 
-							src="{{BASE_PATH}}media/img/pin_red.gif" alt="pin" 
-							onMouseOver="showLandmarkTooltip('{{mm.id}}');" 
-						  onMouseOut="hideLandmarkTooltip('{{mm.id}}');" />
-    <div style="margin-left: 10px;">{{mm.name}}</div></div>
-	{% endfor %}
+	</div>
 
 	{%for pt in punten %}
 		<div>({{pt.x}},{{pt.y}}) in {{pt.mogelijkemeting.name}}</div>
