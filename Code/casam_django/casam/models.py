@@ -59,7 +59,7 @@ class PotentialMeasurement(models.Model):
 
 class Measurement(models.Model):
   id = UUIDField(primary_key=True,auto=True)
-  image = models.ForeignKey('OriginalImage')
+  project = models.ForeignKey('Project')
   mogelijkemeting = models.ForeignKey('PotentialMeasurement')
   x = models.CharField(max_length=4)
   y = models.CharField(max_length=4)
