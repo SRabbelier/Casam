@@ -8,7 +8,7 @@ function handleResponseSaveLandmark() {
         var response = savelm.responseText;
           $('ajax_result').innerHTML = response;
           $('lmdd').hide();
-          $('mm'+mmid).setStyle('position: absolute; left: '+savex+'px; top: '+savey+'px;');
+          $('mm'+mmid).setStyle('position: absolute; left: '+savex+'px; top: '+savey+'px; zIndex: 2');
     }
 }
 
@@ -17,8 +17,9 @@ function saveLandMark(){
   var mousex = $('lmmx').value;
   var mousey = $('lmmy').value;
   var mm = $('mmmeting').options[$('mmmeting').selectedIndex].value;
-  savex = mousex*1+$('big_image1').offsetLeft*1;
-  savey = mousey*1+$('big_image1').offsetTop*1;
+  var imageID = $('imageid').value;
+  savex = mousex*1+$('big_images').firstChild.offsetLeft*1;
+  savey = mousey*1+$('big_images').firstChild.offsetTop*1;
   mmid = mm;
   
   if(mm == "" || mousex == "" || mousey == ""){
@@ -34,9 +35,9 @@ function saveLandMark(){
 
 function LoadMMDD(id){
   var mousex = $('MouseX').value;
-  xoffset = $('big_image1').offsetLeft*1+mousex*1+10;
+  xoffset = $('big_images').firstChild.offsetLeft*1+mousex*1+10;
   var mousey = $('MouseY').value;
-  yoffset = $('big_image1').offsetTop*1+mousey*1+10;
+  yoffset = $('big_images').firstChild.offsetTop*1+mousey*1+10;
   $('lmdd').setStyle('left: '+xoffset+'px; top: '+yoffset+'px;');
   $('lmmx').value = mousex;
   $('lmmy').value = mousey;
