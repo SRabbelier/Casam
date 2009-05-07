@@ -56,7 +56,7 @@
 			  this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
 				$('big_images').insert({'bottom':this.getImageElement()});
 				this.getImageElement().observe('click',function(){
-					LoadMMDD('',parentAddedImageObject.id);
+          LoadMMDD('',parentAddedImageObject.id);
 				});
 				
 				$('sliders').insert(this.getOpacitySliderContainer());
@@ -258,7 +258,7 @@
            	pmmContainerDiv.insert(pmmPointerIMG);
 						var json = json;
            	new Draggable(pmmPointerIMG, { onEnd: function() {
-							if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk) 
+							if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[addedImages.length-1].id) 
 							}
 						});
            	
@@ -490,6 +490,7 @@
 			<option id="option{{mm.id}}" value="{{mm.id}}">{{mm.name}}</option>
 		{% endfor %}
 	</select><br />
+  <input type="hidden" id="imgid" value=""></input>
 	<button onClick="saveLandMark();">Store</button>
 </div>
 

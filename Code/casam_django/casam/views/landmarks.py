@@ -24,6 +24,7 @@ class LandmarkForm(forms.Form):
   mm = forms.CharField() # TODO fix forms.UUIDField?
   x = forms.IntegerField(min_value=-5000, max_value=5000)
   y = forms.IntegerField(min_value=-5000, max_value=5000)
+  imgid = forms.CharField(widget = forms.widgets.HiddenInput())
 
 
 class LandmarkSaver(handler.Handler):
@@ -44,17 +45,18 @@ class LandmarkSaver(handler.Handler):
     context = self.getContext()
     mm = self.cleaned_data['mm']
     id = mm;
+    img = OriginalImage.objects.filter(id=self.cleaned_data['imgid']).get()
     mmeting = PotentialMeasurement.objects.select_related().get(id=id);
-    
-    #lets check if there is already one measurement for this project of this type
+      
+    #lets check if there is already one measurement for this image of this type
     try:
-      meting = Measurement.objects.filter(mogelijkemeting=mmeting,project=mmeting.project).get()
+      meting = Measurement.objects.filter(mogelijkemeting=mmeting, image=img).get()
     except Measurement.DoesNotExist:
       meting = None
 
     properties = dict(
         mogelijkemeting=mmeting,
-        project=mmeting.project,
+        image=img,
         x=self.cleaned_data['x'],
         y=self.cleaned_data['y'],
         )
@@ -67,6 +69,7 @@ class LandmarkSaver(handler.Handler):
     context['x'] = punt.x
     context['y'] = punt.y
     context['mm'] = mmeting.name
+    context['name'] = img.name
     content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
 
     return http.HttpResponse(content)

@@ -6,7 +6,7 @@ from django_extensions.db.fields import UUIDField
 
 
 class Tag(models.Model):
-  id = UUIDField(primary_key=True,auto=True)
+  id = UUIDField(primary_key=True, auto=True)
   name = models.CharField(max_length=50)
 
   def __unicode__(self):
@@ -14,7 +14,7 @@ class Tag(models.Model):
 
 
 class Project(models.Model):
-  id = UUIDField(primary_key=True,auto=True)
+  id = UUIDField(primary_key=True, auto=True)
   name = models.CharField(max_length=100)
   added = models.DateField(auto_now_add=True)
   description = models.CharField(max_length=200)
@@ -25,13 +25,13 @@ class Project(models.Model):
 
 
 class Patient(models.Model):
-  id = UUIDField(primary_key=True,auto=True)
+  id = UUIDField(primary_key=True, auto=True)
   corpse_id = models.IntegerField()
   sex = models.BooleanField()
 
 
 class Image(models.Model):
-  id = UUIDField(primary_key=True,auto=True)
+  id = UUIDField(primary_key=True, auto=True)
   project = models.ForeignKey('Project')
   path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)
@@ -52,14 +52,14 @@ class WarpedImage(Image):
 
 
 class PotentialMeasurement(models.Model):
-  id = UUIDField(primary_key=True,auto=True)
+  id = UUIDField(primary_key=True, auto=True)
   project = models.ForeignKey('Project')
   name = models.CharField(max_length=30)
 
 
 class Measurement(models.Model):
-  id = UUIDField(primary_key=True,auto=True)
-  project = models.ForeignKey('Project')
+  id = UUIDField(primary_key=True, auto=True)
+  image = models.ForeignKey('OriginalImage')
   mogelijkemeting = models.ForeignKey('PotentialMeasurement')
   x = models.CharField(max_length=4)
   y = models.CharField(max_length=4)
