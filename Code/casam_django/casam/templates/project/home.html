@@ -39,7 +39,7 @@
 		    
 		  },
 	  	getAppropriateSizeURL: function(){
-			  	return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
+			  return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
 		  },
 		  getImageElement: function(){
 			  return this.imageElement;
@@ -74,6 +74,8 @@
 				  hideImage(parentAddedImageObject.id);
 			  });
 			  $('delete_images').insert(deleteButton);
+        
+        getImageMeasurements(this.name, parentAddedImageObject.id)
 		  }
 		  
 		});
@@ -120,6 +122,32 @@
         popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
       });
 		});
+
+    function getImageMeasurements(imgname, imgid){
+        
+      var url = '{{ BASE_PATH }}project/projectImageCurrentMeasurementsJSON/'+imgid+'?time='+new Date().getTime();
+      new Ajax.Request(url, {
+        method: 'get',
+        onSuccess: function(transport, json) {
+          var json = transport.responseText.evalJSON();
+          var mainDiv = new Element('div');
+          mainDiv.addClassName('projectPictureDiv');
+          
+          var nameDiv = new Element('div');
+          nameDiv.addClassName('projectImageNameDiv')
+          nameDiv.update(imgname);
+          $('currentmeasurements').insert(nameDiv);          
+
+          for(i=0; i < json.length-1; i=i+2){
+            var measurementDiv = new Element('div');
+            measurementDiv.addClassName('projectImageMeasurementDiv');
+            measurementDiv.update(json[i+1].fields.x+', '+json[i+1].fields.y+' voor '+json[i].fields.name);
+            mainDiv.insert(measurementDiv);
+          }  
+          $('currentmeasurements').insert(mainDiv);  
+        }  
+      });                                      
+    }
 
 		function resizeScreenElements()
 		{
@@ -263,7 +291,7 @@
 						});
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
-            
+            //style must be declared here, else prototype cannot handle it
             var pmmTooltipDiv = new Element('div',{'style':'display:none; position: absolute; z-index: 5;'}).update(json[i].fields.name);
             pmmContainerDiv.insert(pmmTooltipDiv);
             
@@ -273,18 +301,6 @@
             pmmPointerIMG.observe('mouseout', hideLandmarkTooltip)
           }
         }
-
-      /*
-		<div><img id="mm{{mm.id}}" 
-		style="cursor: pointer; z-index: 2; position: absolute" 
-		src="{{BASE_PATH}}media/img/pin_red.gif" alt="pin" 
-		onMouseOver="showLandmarkTooltip('{{mm.id}}');" 
-	  onMouseOut="hideLandmarkTooltip('{{mm.id}}');" />
-    <div style="margin-left: 10px;">{{mm.name}}</div></div>
-    
-      {%for mm in mmetings%} 
-      <div id="tooltip{{mm.id}}" style="display:none;position: absolute; z-index: 5;">{{mm.name}}</div> 
-      {% endfor %} */ 
       });
     }
 
@@ -365,9 +381,11 @@
 		}
 		
 		function reloadImages(){
-			$('big_images').update();
+			//.update() clears the contents of the elements
+      $('big_images').update();
 			$('sliders').update();
 			$('delete_images').update();
+      $('currentmeasurements').update();
 			addedImages.each(function(item){
 					item.addSelfToImages();
 			});
@@ -463,14 +481,13 @@
 </div>
 <div id="tab_measurements" class="tabContent">
   <a id="addMeasurementLink" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
-	<div id="possiblemeasurements">
+  <div id="possiblemeasurements">
 
 	</div>
+  <div id="currentmeasurements">
+  
+  </div>
 
-	{%for pt in punten %}
-		<div>({{pt.x}},{{pt.y}}) in {{pt.mogelijkemeting.name}}</div>
-	{% endfor %}
-	
 </div>
 <div id="tab_attributes" class="tabContent">
 	<table style="width:200px">

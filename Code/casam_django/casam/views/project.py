@@ -95,3 +95,11 @@ def projectPotentialMeasurementsJSON(request,id_str):
   mmetings = PotentialMeasurement.objects.filter(project__id=id_str)
   data = serializers.serialize("json", mmetings)
   return http.HttpResponse(data, mimetype="application/javascript")
+
+def projectImageCurrentMeasurementsJSON(request, id_str):
+  measurements = list(Measurement.objects.select_related().filter(image__id=id_str))
+  mm = list()
+  for m in measurements:
+    mm = mm + [m.mogelijkemeting] + [m]
+  data = serializers.serialize("json", mm)
+  return http.HttpResponse(data, mimetype="application/javascript")
