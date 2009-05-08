@@ -24,7 +24,7 @@ function saveLandMark(){
   mmid = mm;
   
   if(mm == "" || mousex == "" || mousey == ""){
-    alert("you suck!");
+    alert("Please select a landmark!");
   }
   else{
    savelm.open('post', base_path + 'landmarks/save');
