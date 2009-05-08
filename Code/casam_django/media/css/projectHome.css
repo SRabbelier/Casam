@@ -98,9 +98,3 @@ img.mmPointer{
 div.mmText{
 	margin-left:10px;
 }
-
-div.mmTooltip{
-	display:none;
-	position: absolute; 
-	z-index: 5;
-}
