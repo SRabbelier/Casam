@@ -254,17 +254,23 @@
           for(i=0; i < json.length; i++){
             var pmmContainerDiv = new Element('div');
             var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_red.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
-            //pmmContainerIMG.setStyle({position:'absolute'});
            	pmmContainerDiv.insert(pmmPointerIMG);
 						var json = json;
+            
            	new Draggable(pmmPointerIMG, { onEnd: function() {
-							if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[addedImages.length-1].id) 
+						  if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[addedImages.length-1].id) 
 							}
 						});
-           	
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
+            
+            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: absolute; z-index: 5;'}).update(json[i].fields.name);
+            pmmContainerDiv.insert(pmmTooltipDiv);
+            
             $('possiblemeasurements').insert(pmmContainerDiv);
+            
+            pmmPointerIMG.observe('mouseover', showLandmarkTooltip);
+            pmmPointerIMG.observe('mouseout', hideLandmarkTooltip)
           }
         }
 
@@ -274,9 +280,12 @@
 		src="{{BASE_PATH}}media/img/pin_red.gif" alt="pin" 
 		onMouseOver="showLandmarkTooltip('{{mm.id}}');" 
 	  onMouseOut="hideLandmarkTooltip('{{mm.id}}');" />
-<div style="margin-left: 10px;">{{mm.name}}</div></div>*/
+    <div style="margin-left: 10px;">{{mm.name}}</div></div>
+    
+      {%for mm in mmetings%} 
+      <div id="tooltip{{mm.id}}" style="display:none;position: absolute; z-index: 5;">{{mm.name}}</div> 
+      {% endfor %} */ 
       });
-
     }
 
 		

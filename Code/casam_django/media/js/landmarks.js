@@ -59,15 +59,17 @@ function LoadMMDD(id, imgID){
   $('lmdd').show();
 }
 
-function showLandmarkTooltip(id){
+function showLandmarkTooltip(e){
   if($('MouseX').value != "" && $('MouseY').value != ""){
-    xoffset = $('mm'+id).offsetLeft*1+12;
-    yoffset = $('mm'+id).offsetTop*1-5;
-    $('tooltip'+id).setStyle('left: '+xoffset+'px; top: '+yoffset+'px;');
-    $('tooltip'+id).show();
+    xoffset = e.currentTarget.offsetLeft*1+12;
+    yoffset = e.currentTarget.offsetTop*1-5;
+    var tooltip = e.currentTarget.parentNode.lastChild
+    tooltip.setStyle('left: '+xoffset+'px; top: '+yoffset+'px;');
+    tooltip.show();
   }                     
 }
-function hideLandmarkTooltip(id){
-  $('tooltip'+id).hide();
+function hideLandmarkTooltip(e){
+  var tooltip = e.currentTarget.parentNode.lastChild
+  tooltip.hide();
 }
 
