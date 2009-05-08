@@ -38,10 +38,6 @@ urlpatterns = patterns('',
     (r'^login', casam.views.login.Login()),
     (r'^logout', casam.views.login.Logout()),
     (r'^project/new$', casam.views.project.NewProject()),
-    (r'^project/projectImagesJSON/(.*)$', casam.views.project.projectImagesJSON),
-    (r'^project/projectTagsJSON/(.*)$', casam.views.project.projectTagsJSON),
-    (r'^project/projectPotentialMeasurementsJSON/(.*)$', casam.views.project.projectPotentialMeasurementsJSON),
-    (r'^project/projectImageCurrentMeasurementsJSON/(.*)$', casam.views.project.projectImageCurrentMeasurementsJSON),
     (r'^project/show/%s$' % ID_STR, casam.views.project.Home()),
     (r'^pm/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurement()),
     (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
@@ -60,6 +56,12 @@ urlpatterns = patterns('',
     (r'^user/new$', casam.views.user.CreateUser()),
     (r'^user/changepass/%s$' % USER_ID, casam.views.user.PassChange()),
     (r'^user/edit/%s$' % USER_ID, casam.views.user.EditUser()),
+    (r'^JSON/projects/(.*)$', casam.views.main.projectsJSON()),    
+    (r'^JSON/projectImages/(.*)$', casam.views.project.projectImagesJSON),
+    (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
+    (r'^JSON/projectPotentialMeasurements/(.*)$', casam.views.project.projectPotentialMeasurementsJSON),
+    (r'^JSON/projectImageCurrentMeasurements/(.*)$', casam.views.project.projectImageCurrentMeasurementsJSON),
+    
 )
 
 if settings.DEBUG:

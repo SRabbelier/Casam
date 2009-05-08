@@ -126,7 +126,7 @@
 
     function getImageMeasurements(imgname, imgid){
         
-      var url = '{{ BASE_PATH }}project/projectImageCurrentMeasurementsJSON/'+imgid+'?time='+new Date().getTime();
+      var url = '{{ BASE_PATH }}JSON/projectImageCurrentMeasurements/'+imgid+'?time='+new Date().getTime();
       new Ajax.Request(url, {
         method: 'get',
         onSuccess: function(transport, json) {
@@ -216,7 +216,7 @@
 	  
 		function getProjectImages()
 		{
-			var url = '{{ BASE_PATH }}project/projectImagesJSON/{{id}}?time='+new Date().getTime();
+			var url = '{{ BASE_PATH }}JSON/projectImages/{{id}}?time='+new Date().getTime();
 			// notice the use of a proxy to circumvent the Same Origin Policy
 			new Ajax.Request(url, {
 			  method: 'get',
@@ -252,7 +252,7 @@
 
 		function getProjectTags()
 		{
-			var url = '{{ BASE_PATH }}project/projectTagsJSON/{{id}}?time='+new Date().getTime();
+			var url = '{{ BASE_PATH }}JSON/projectTags/{{id}}?time='+new Date().getTime();
 			new Ajax.Request(url, {
 			  method: 'get',
 			  onSuccess: function(transport, json) {
@@ -270,7 +270,7 @@
 
     function getProjectPotentialMeasurements()
     {
-      var url = '{{ BASE_PATH }}project/projectPotentialMeasurementsJSON/{{id}}?time='+new Date().getTime();
+      var url = '{{ BASE_PATH }}JSON/projectPotentialMeasurements/{{id}}?time='+new Date().getTime();
       new Ajax.Request(url, {
         method: 'get',
         onSuccess: function(transport, json) {

@@ -48,6 +48,7 @@ div.main_project_container {
 	margin:5px;
 	background-position: bottom right;
 	background-image:url('../img/project_background.jpg');
+	position:relative;
 }
 
 img.project_image {
@@ -145,4 +146,27 @@ div.whiteFrame_bottom_center {
 	float:right;
 	clear:right;
 }
+.main_project_deletebutton{
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	width:16px;
+	height:16px;
+}
 
+.image_button{
+	border:0px;
+}
+
+.project_image{
+	width:100px;
+	height:100px;
+	border:0px;
+	float:left;
+}
+
+.main_project_imagelink{
+	float:left;
+	border:0px;
+	text-decoration:none;	
+}
