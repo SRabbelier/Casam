@@ -92,6 +92,7 @@
       $('leftFrame_content').insert(newTab('Papers', $('tab_papers'), false));
       
       $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), false));
+      $('rightFrame_content').insert(newTab('Current measurements', $('tab_current_measurements'), false));
       $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
 
 		  // Add mouse listener for image
@@ -347,6 +348,13 @@
 			new Effect.Highlight('tags');
 			closePopup();	
 		}
+    
+    function closePopupAndReloadCurrentMeasurements(){
+      $('currentmeasurements').update();
+      img = addedImages[addedImages.length-1]
+      getImageMeasurements(img.name, img.id);
+      new Effect.Highlight('tab_current_measurements');
+    }                                                      
 
 		function closePopupAndReloadPotentialMeasurements(){
       getProjectPotentialMeasurements();
@@ -484,6 +492,8 @@
   <div id="possiblemeasurements">
 
 	</div>
+</div>
+<div id="tab_current_measurements" class="tabContent">
   <div id="currentmeasurements">
   
   </div>

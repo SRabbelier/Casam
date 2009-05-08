@@ -6,7 +6,8 @@ var mmid;
 function handleResponseSaveLandmark() {
     if(savelm.readyState == 4){
         var response = savelm.responseText;
-          $('ajax_result').innerHTML = response;
+          $('ajax_result').update(response);
+          closePopupAndReloadCurrentMeasurements();
           $('lmdd').hide();
           $('mm'+mmid).setStyle('position: absolute; left: '+savex+'px; top: '+savey+'px; zIndex: 2');
     }

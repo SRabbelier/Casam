@@ -70,6 +70,7 @@ class LandmarkSaver(handler.Handler):
     context['y'] = punt.y
     context['mm'] = mmeting.name
     context['name'] = img.name
+    context['id'] = img.id
     content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
 
     return http.HttpResponse(content)
