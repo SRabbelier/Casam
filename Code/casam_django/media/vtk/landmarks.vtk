@@ -1,0 +1,6 @@
+# vtk DataFile Version 3.0
+A testfile to try PCA on some non-existing hardcoded landmarks
+ASCII
+DATASET POLYDATA
+
+
