@@ -11,11 +11,13 @@
 			  onSuccess: function(transport, imagesJSON) {
 			    var imagesJSON = transport.responseText.evalJSON();
 			    if(imagesJSON.length > 0){
-				 		var imageElement = new Element('img',{'class':'project_image','src':'{{BASE_PATH}}imageLoader/thumbnail/100/'+imagesJSON[0].pk});
+				 		var imageElement = new Element('img',{'src':'{{BASE_PATH}}imageLoader/thumbnail/100/'+imagesJSON[0].pk});
 				 		imageContainer.update(imageElement);
+				 		imageElement.addClassName('project_image');
 			    }else{
-						var noImageElement = new Element('img',{'class':'project_image','src':'{{BASE_PATH}}media/img/newproject.png'});
+						var noImageElement = new Element('img',{'src':'{{BASE_PATH}}media/img/newproject.png'});
 						imageContainer.update(noImageElement);
+				 		imageElement.addClassName('project_image');
 			    }
 			}
 		});	
@@ -35,7 +37,8 @@
 		    var json = transport.responseText.evalJSON();
 				//$('whiteFrame_projects_container').update();
 		    for(i = 0; i<json.length;i++){
-					var projectDiv = new Element('div',{'class':'main_project_container'});
+					var projectDiv = new Element('div');
+					projectDiv.addClassName('main_project_container');
 
 					var imageLink = new Element('a',{'href':'{{ BASE_PATH }}project/show/'+json[i].pk,'class':'main_project_imagelink'});
 					projectDiv.insert(imageLink);
