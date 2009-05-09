@@ -40,26 +40,32 @@
 					var projectDiv = new Element('div');
 					projectDiv.addClassName('main_project_container');
 
-					var imageLink = new Element('a',{'href':'{{ BASE_PATH }}project/show/'+json[i].pk,'class':'main_project_imagelink'});
+					var imageLink = new Element('a',{'href':'{{ BASE_PATH }}project/show/'+json[i].pk});
 					projectDiv.insert(imageLink);
+					imageLink.addClassName('main_project_imagelink');
 
 					makeImageLoaderForProject(json[i].pk,imageLink);
 					
 					
-					var nameDiv = new Element('div',{'class':'main_project_title'});
+					var nameDiv = new Element('div');
 					projectDiv.insert(nameDiv);
+					nameDiv.addClassName('main_project_title');
 					var nameLink = new Element('a',{'href':'{{ BASE_PATH }}project/show/'+json[i].pk}).update(json[i].fields.name);
 					nameDiv.insert(nameLink);
 
-					var descriptionDiv = new Element('div',{'class':'main_project_description'});
+					var descriptionDiv = new Element('div');
 					projectDiv.insert(descriptionDiv);
+					descriptionDiv.addClassName('main_project_description');
 					var descriptionLink = new Element('a',{'href':'{{ BASE_PATH }}project/show/'+json[i].pk}).update(json[i].fields.description);
 					descriptionDiv.insert(descriptionLink);
 
-					var deleteDiv = new Element('div',{'class':'main_project_deletebutton'});
+					var deleteDiv = new Element('div');
 					projectDiv.insert(deleteDiv);
+					deleteDiv.addClassName('main_project_deletebutton');
 					var deleteLink = new Element('a',{'href':'#'});
-					deleteLink.update(new Element('img',{'src':'{{BASE_PATH}}media/img/delete.png','class':'image_button'}));
+					var deleteImage = new Element('img',{'src':'{{BASE_PATH}}media/img/delete.png'});
+					deleteLink.update(deleteImage);
+					deleteImage.addClassName('image_button');
 					
 					deleteDiv.insert(deleteLink);
 					makeDeleteProjectAction(json[i].pk,json[i].fields.name,projectDiv,deleteLink);
