@@ -4,6 +4,26 @@
 
 {% block head %}	 
 	<script type="text/javascript">
+	var imageSwitchCounter = -1;
+	function switchPictures(){
+		var currentProjectDivs = $('whiteFrame_projects_container').select('div.main_project_container'); 		
+		for(i = 0; i<currentProjectDivs.length;i++){
+			var currentProjectDiv = currentProjectDivs[i];
+			var currentProjectImages = currentProjectDiv.select('img.project_image');
+			oldImage = imageSwitchCounter % currentProjectImages.length;
+			newImage = (imageSwitchCounter + 1) % currentProjectImages.length;
+			if(oldImage != newImage){
+				Effect.Appear(currentProjectImages[newImage]);
+				Effect.Fade(currentProjectImages[oldImage]);
+			}
+			
+			
+		}
+		
+		imageSwitchCounter++;
+		setTimeout("switchPictures()", 5000);
+	}
+	
 	function makeImageLoaderForProject(projectID,imageContainer){
 		var imageRequestURL = '{{ BASE_PATH }}JSON/projectImages/'+projectID+'?time='+new Date().getTime();
 		new Ajax.Request(imageRequestURL, {
@@ -11,9 +31,13 @@
 			  onSuccess: function(transport, imagesJSON) {
 			    var imagesJSON = transport.responseText.evalJSON();
 			    if(imagesJSON.length > 0){
-				 		var imageElement = new Element('img',{'src':'{{BASE_PATH}}imageLoader/thumbnail/100/'+imagesJSON[0].pk});
-				 		imageContainer.update(imageElement);
-				 		imageElement.addClassName('project_image');
+				    
+				 		for(i = 0; i< imagesJSON.length; i++){
+					 		var imageElement = new Element('img',{'src':'{{BASE_PATH}}imageLoader/thumbnail/100/'+imagesJSON[i].pk});
+				 			imageContainer.insert(imageElement);
+				 			if(i != 0)imageElement.hide();
+					 		imageElement.addClassName('project_image');
+				 		}
 			    }else{
 						var noImageElement = new Element('img',{'src':'{{BASE_PATH}}media/img/newproject.png'});
 						imageContainer.update(noImageElement);
@@ -84,7 +108,7 @@
 				//Now you can hide the spinner again... (also not threadsafe)
 				$('spinner').hide();
 			}
-
+			
 		});
 	    //Add the "Add new project div"
 	    {% if is_onderzoeker %}	
@@ -136,6 +160,10 @@
 		  		tagFormSubmit.observe('click',function(){
 		  			getProjects(tagFormTags.getValue().toJSON());
 			  	});
+
+				//initiate pictureswitching
+				imageSwitchCounter = -1;
+				switchPictures();
 				}
 		);
 	</script>

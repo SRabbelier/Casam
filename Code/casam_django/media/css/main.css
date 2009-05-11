@@ -54,7 +54,6 @@ div.main_project_container {
 img.project_image {
 	width:100px;
 	height:100px;
-	float:left;
 }
 
 /* White frame */
@@ -163,12 +162,19 @@ div.whiteFrame_bottom_center {
 	height:100px;
 	border:0px;
 	float:left;
+	position:absolute;
+	left:0px;
+	top:0px;
 }
 
 .main_project_imagelink{
 	float:left;
 	border:0px;
-	text-decoration:none;	
+	text-decoration:none;
+	position:relative;
+	width:100px;
+	height:100px;
+	margin-right:5px;	
 }
 
 #whiteFrame_tagSelection_container
@@ -180,3 +186,4 @@ div.whiteFrame_bottom_center {
 	float:right;
 	padding-right:10px;	
 }
+
