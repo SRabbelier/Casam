@@ -308,7 +308,7 @@
 		
 		function makePictureContainer(pictureJSON)
 		{
-			var mainDiv = new Element('div', {"id":"mainDiv"+pictureJSON.pk});
+			var mainDiv = new Element('div', {"id":"mainDiv_"+pictureJSON.pk});
 			     mainDiv.addClassName('projectPictureDiv');
 			var leftDiv = new Element('div', {"id":"leftDiv"+pictureJSON.pk});
 					 leftDiv.addClassName('pictureContainerLeftDiv');
@@ -382,7 +382,8 @@
 		function hideImage(id){
 		  //clear the data of this image
       $('bottomDiv'+id).update();
-			
+			$('mainDiv_'+id).setStyle('border: none;');
+      			
       var newImageArray = new Array();
 			//Delete the old image and copy the rest
 			for(i = 0; i< addedImages.length; i++){
@@ -399,11 +400,14 @@
       $('big_images').update();
 			addedImages.each(function(item){
 				$('bottomDiv'+item.id).update();
-				$('mainDiv'+item.id).setStyle('border: none;');
+				$('mainDiv_'+item.id).setStyle('border: none;');
         item.addSelfToImages();
 			});
 			
-			$('mainDiv'+addedImages[addedImages.length-1].id).setStyle('border: 1px dashed red;');
+			if (addedImages.length > 0){
+        $('mainDiv_'+addedImages[addedImages.length-1].id).setStyle('border: 1px dashed red;');        
+      }
+      Sortable.create("tab_pictures", {tag: 'div', only: 'projectPictureDiv'});			
 		}
   </script>
 
