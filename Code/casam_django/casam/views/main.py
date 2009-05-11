@@ -75,3 +75,14 @@ class projectsJSON(handler.Handler):
       projects = projects.filter(tags__id__in=tags).distinct()
     data = serializers.serialize("json", projects)
     return http.HttpResponse(data, mimetype="application/javascript")
+  
+class deleteProjects(handler.Handler):
+  def getPostForm(self):
+    return SelectTagForm(self.POST)
+  
+  def get(self):
+    #print self.cleaned_data['tags']
+    projectIDs = self.GET.getlist('projectID')
+    for projectID in projectIDs:
+      Project.objects.all().get(id = projectID).delete()
+    return http.HttpResponse("success")

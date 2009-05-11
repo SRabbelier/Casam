@@ -56,12 +56,17 @@ urlpatterns = patterns('',
     (r'^user/new$', casam.views.user.CreateUser()),
     (r'^user/changepass/%s$' % USER_ID, casam.views.user.PassChange()),
     (r'^user/edit/%s$' % USER_ID, casam.views.user.EditUser()),
+    
+    #JSON object loaders
     (r'^JSON/projects/(.*)$', casam.views.main.projectsJSON()),    
     (r'^JSON/projectImages/(.*)$', casam.views.project.projectImagesJSON),
+    (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
     (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
     (r'^JSON/projectPotentialMeasurements/(.*)$', casam.views.project.projectPotentialMeasurementsJSON),
     (r'^JSON/projectImageCurrentMeasurements/(.*)$', casam.views.project.projectImageCurrentMeasurementsJSON),
     
+    #AJaX Actions
+    (r'^AJaX/deleteProjects/$', casam.views.main.deleteProjects()),
 )
 
 if settings.DEBUG:

@@ -95,7 +95,14 @@
 		Element.observe(deleteButton,'click',function(){
 			var sureToDelete= confirm("Do you really want to delete project "+projectName+"?");
 			if(sureToDelete){
-				Effect.Fade(projectDiv);
+				var url = '{{ BASE_PATH }}AJaX/deleteProjects/?time='+new Date().getTime();
+				new Ajax.Request(url, {
+					  method: 'get',
+					  parameters: {'projectID': projectID},
+					  onSuccess: function(transport, json) {
+						  Effect.Fade(projectDiv);
+					  }
+				});
 			}
 		});
 	}
