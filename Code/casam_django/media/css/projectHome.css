@@ -91,7 +91,7 @@ img.smallPictureButton{
 	margin:0px;
 }
 
-  div.slider { float: left; width:180px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
+  div.slider { float: left; width:170px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
   div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
 
 img.mmPointer{

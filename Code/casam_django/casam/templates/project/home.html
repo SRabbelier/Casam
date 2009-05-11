@@ -27,7 +27,7 @@
 		    
 		    this.opacitySliderContainer = new Element('div');
 				//HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
-		    this.opacitySliderContainer.setWidth(180);
+		    this.opacitySliderContainer.setWidth(170);
 		    this.opacitySliderContainer.writeAttribute('id','opacitySliderContainer_'+this.id);
 		    this.opacitySliderContainer.writeAttribute('class','slider');
 		    
@@ -287,7 +287,7 @@
 						var json = json;
             
            	new Draggable(pmmPointerIMG, { onEnd: function() {
-						  if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[addedImages.length-1].id) 
+						  if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[0].id) 
 							}
 						});
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
@@ -354,7 +354,7 @@
     
     function closePopupAndReloadCurrentMeasurements(){
       //$('currentmeasurements').update();
-      img = addedImages[addedImages.length-1]
+      img = addedImages[0]
       getImageMeasurements(img.id);
       new Effect.Highlight('bottomDiv'+img.id);
     }                                                      
@@ -369,13 +369,26 @@
 			var newAddedImage = new AddedImage(id,name);
 			var newImageArray = new Array();
 			//Delete the old image and put it up front
-			for(i = 0; i< addedImages.length; i++){
+			for(i = 0; i < addedImages.length; i++){
 				if(addedImages[i].id != id){
 					newImageArray.push(addedImages[i]);
 				}
 			}
 			addedImages = newImageArray
-			addedImages.push(newAddedImage);
+			addedImages.splice(0,0,newAddedImage);
+			
+			
+			id_array = Sortable.sequence("tab_pictures");
+			var temp = "";
+			for(var i = 0; i < id_array.length; i++){
+        if(id_array[i] == id){
+          temp = id_array[i];
+          id_array.splice(i,1);
+          break;
+        }
+      }
+      id_array.splice(0,0,temp);
+			Sortable.setSequence("tab_pictures",id_array);
 			reloadImages();
 		}
 
@@ -398,17 +411,32 @@
 		function reloadImages(){
 			//.update() clears the contents of the elements
       $('big_images').update();
-			addedImages.each(function(item){
-				$('bottomDiv'+item.id).update();
-				$('mainDiv_'+item.id).setStyle('border: none;');
-        item.addSelfToImages();
-			});
+			for(var i = addedImages.length-1; i >= 0; i--){
+  			$('bottomDiv'+addedImages[i].id).update();
+				$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
+        addedImages[i].addSelfToImages();
+			}
 			
 			if (addedImages.length > 0){
-        $('mainDiv_'+addedImages[addedImages.length-1].id).setStyle('border: 1px dashed red;');        
+        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
       }
-      Sortable.create("tab_pictures", {tag: 'div', only: 'projectPictureDiv'});			
+      Sortable.create("tab_pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });			
 		}
+		
+		function updateImageList(){
+      id_array = Sortable.sequence("tab_pictures");
+      new_list = new Array();
+      for(var i = 0; i < id_array.length; i++){
+        for(var j = 0; j < addedImages.length; j++){
+          if(id_array[i] == addedImages[j].id){
+            new_list.push(addedImages[j]);
+            break;
+          }
+        }
+      }
+      addedImages = new_list;
+      reloadImages();
+    }
   </script>
 
 {% endblock head %}
