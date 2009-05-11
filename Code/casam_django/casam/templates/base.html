@@ -27,21 +27,20 @@
 		<b>Currently logged in:</b><br />
 		{{ NAME }} (<a href="{{ BASE_PATH }}logout">not you?</a>)<br />
 		
-		
 		<div style="float:left;font-size: 8pt;color:white;">Automatic <a href="{{ BASE_PATH }}logout">logout</a> in 
 		<script type="text/javascript">
-
-var currentTime = new Date()
-var minutes = currentTime.getMinutes()
-if (minutes < 10){
-minutes = "0" + minutes
-}
-document.write(minutes + " min")
-
+		  var currentTime = new Date()
+		  var minutes = currentTime.getMinutes()
+		  if (minutes < 10){
+				minutes = "0" + minutes
+			}	
+		  document.write(minutes + " min")
 		</script>
 		</div>
 	</div>
-	<a href="{{BASE_PATH}}"><img border="0" src="{{ BASE_PATH }}media/img/dock_home.jpg" style="width:24px;height:24px;float:left;" /></a>
+</div>
+<div style="background-color:black;float:right;width:30px;margin-top:-100px">
+<a href="{{BASE_PATH}}"><img border="0" src="{{ BASE_PATH }}media/img/dock_home.jpg" style="width:24px;height:24px;" /></a>
 </div>
 
 {% endblock user_dock %}

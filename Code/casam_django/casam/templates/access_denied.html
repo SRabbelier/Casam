@@ -2,8 +2,13 @@
 
 {% block title %}Access denied{% endblock title %}
 
-{% block body %}
+{% block user_dock %}
 
+{% endblock user_dock %}
+
+{% block body %}
+<div style="width:300px;margin:auto;overflow: visible;margin-top:125px;color:white;height:30px;">
 Please <a href="{{ BASE_PATH }}login">login</a> to view this page. 
+</div>
 
 {% endblock body %}
