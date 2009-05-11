@@ -5,7 +5,7 @@ body {
 }
 
 div {
-	overflow:hidden;
+	/*overflow:hidden;*/
 	font-family:verdana;
 	font-size:10pt;
 	color:black;
@@ -169,4 +169,14 @@ div.whiteFrame_bottom_center {
 	float:left;
 	border:0px;
 	text-decoration:none;	
+}
+
+#whiteFrame_tagSelection_container
+{
+	float:left;
+}
+
+#projectMainSpinnerContainer{
+	float:right;
+	padding-right:10px;	
 }

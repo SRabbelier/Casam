@@ -25,13 +25,16 @@
 	
 	function getProjects(tags)
 	{
+		//Show the spinner, not really threadsafe or anything but good enough
+		$('spinner').show();
+		
 		//Clear the current projects
 		$('whiteFrame_projects_container').update();
 		
 		var url = '{{ BASE_PATH }}JSON/projects/?time='+new Date().getTime();
 		//Make a proper string out of the tags
 		tags = tags.evalJSON();
-		
+
 		new Ajax.Request(url, {
 		  method: 'get',
 		  parameters: {'tags': tags},
@@ -75,22 +78,11 @@
 					projectDiv.hide();
 					$('whiteFrame_projects_container').insert({'top':projectDiv});
 					new Effect.Appear(projectDiv);
-					/*<div class="main_project_container">
-					<a href="{{ BASE_PATH }}project/show/{{ project.id }}">
-					{% if image %}
-						<img src="{{BASE_PATH}}imageLoader/thumbnail/100/{{ image.id }}" 
-							   class="project_image" border="0" />
-					{% else %}
-					  <img src="{{BASE_PATH}}media/img/newproject.png"
-                 class="project_image" border="0" />
- 					{% endif %}
-					</a>
-					<div class="main_project_title"><a href="{{ BASE_PATH }}project/show/{{ project.id }}">{{ project.name }}</a></div>
-					<div class="main_project_description"><a href="{{ BASE_PATH }}project/show/{{ project.id }}">{{ project.description }}</a></div>
-					<div class="main_project_deletebutton"><a href="#"><img src="{{BASE_PATH}}media/img/delete.png" class="" border="0" /></a></div>
-					</div>*/
-		    }
 
+					
+		    }
+				//Now you can hide the spinner again... (also not threadsafe)
+				$('spinner').hide();
 			}
 
 		});
@@ -111,12 +103,21 @@
 		Element.observe(deleteButton,'click',function(){
 			var sureToDelete= confirm("Do you really want to delete project "+projectName+"?");
 			if(sureToDelete){
+				//Show the spinner, not really threadsafe or anything but good enough
+				$('spinner').show();
 				var url = '{{ BASE_PATH }}AJaX/deleteProjects/?time='+new Date().getTime();
 				new Ajax.Request(url, {
 					  method: 'get',
 					  parameters: {'projectID': projectID},
 					  onSuccess: function(transport, json) {
 						  Effect.Fade(projectDiv);
+							//Now you can hide the spinner again... (also not threadsafe)
+							$('spinner').hide();
+					  },
+					  onFailure:function(){
+						  alert('Something went wrong while deleting project '+projectName);
+							//Now you can hide the spinner again... (also not threadsafe)
+							$('spinner').hide();
 					  }
 				});
 			}
@@ -165,10 +166,13 @@
 			<!-- Top buttons -->
 			<div id="whiteFrame_searchIcon"></div>
 			<div id="whiteFrame_tagSelection_container">
-			<form enctype="multipart/form-data" method="post">
+			<form enctype="multipart/form-data" onsubmit="return false;" method="post">
 				{{ tag_form }}
 				<tr><td><input type="submit" value="filter" /></td></tr>
 			</form>
+			</div>
+			<div id="projectMainSpinnerContainer">
+				<img style="display:none" id="spinner" src="{{ BASE_PATH }}media/img/spinner_small_whitebg.gif"/>
 			</div>
 
 			<!-- Projects -->
