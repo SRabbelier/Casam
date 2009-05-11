@@ -17,7 +17,7 @@
 			    }else{
 						var noImageElement = new Element('img',{'src':'{{BASE_PATH}}media/img/newproject.png'});
 						imageContainer.update(noImageElement);
-				 		imageElement.addClassName('project_image');
+				 		noImageElement.addClassName('project_image');
 			    }
 			}
 		});	
@@ -25,6 +25,9 @@
 	
 	function getProjects(tags)
 	{
+		//Clear the current projects
+		$('whiteFrame_projects_container').update();
+		
 		var url = '{{ BASE_PATH }}JSON/projects/?time='+new Date().getTime();
 		//Make a proper string out of the tags
 		tags = tags.evalJSON();
@@ -87,8 +90,21 @@
 					<div class="main_project_deletebutton"><a href="#"><img src="{{BASE_PATH}}media/img/delete.png" class="" border="0" /></a></div>
 					</div>*/
 		    }
+
 			}
+
 		});
+	    //Add the "Add new project div"
+	    {% if is_onderzoeker %}	
+				/*<a href="{{ BASE_PATH }}project/new"><div class="main_project_empty_container"></div></a>*/
+				var newProjectLink = new Element('a',{'href':'{{ BASE_PATH }}project/new'});
+				var newProjectDiv = new Element('div');
+				newProjectDiv.addClassName('main_project_empty_container');
+				newProjectLink.update(newProjectDiv);
+				newProjectLink.hide();
+				$('whiteFrame_projects_container').insert({'top':newProjectLink});
+				Effect.Appear(newProjectLink);
+			{% endif %}		
 	}
 
 	function makeDeleteProjectAction(projectID, projectName,projectDiv,deleteButton){
@@ -108,6 +124,17 @@
 	}
 	  document.observe("dom:loaded", function(){
 		  		getProjects("{{tags|escapejs}}");
+
+		  		//Change the functionality of the tag-form to not reload te page
+		  		var tagForm = $('whiteFrame_tagSelection_container').select('form')[0];
+					//Hack to disable standard form submit functionality
+		  		tagForm.writeAttribute('onsubmit','return false;');
+
+		  		var tagFormSubmit = $('whiteFrame_tagSelection_container').select('input[type="submit"]')[0];
+		  		var tagFormTags = $('whiteFrame_tagSelection_container').select('select')[0];
+		  		tagFormSubmit.observe('click',function(){
+		  			getProjects(tagFormTags.getValue().toJSON());
+			  	});
 				}
 		);
 	</script>
@@ -146,12 +173,6 @@
 
 			<!-- Projects -->
 			<div id="whiteFrame_projects_container">
-
-
-			
-      {% if is_onderzoeker %}	
-				<a href="{{ BASE_PATH }}project/new"><div class="main_project_empty_container"></div></a>
-      {% endif %}
 
 
 			</div>
