@@ -135,11 +135,16 @@
           mainDiv.addClassName('projectPictureDiv');
           
           
+          resetMeasurementPins();
+          var viewportOffset = $('big_images').viewportOffset();
           
           for(i=0; i < json.length-1; i=i+2){
             var measurementDiv = new Element('div');
             measurementDiv.addClassName('projectImageMeasurementDiv');
             measurementDiv.update(json[i+1].fields.x+', '+json[i+1].fields.y+' voor '+json[i].fields.name);
+            var posx = viewportOffset.left*1+json[i+1].fields.x*1;
+            var posy = viewportOffset.top*1+json[i+1].fields.y*1;
+            $('mm'+json[i].pk).setStyle('position: fixed; left: '+posx+'px;top: '+posy+'px;');
             mainDiv.insert(measurementDiv);
           }  
           if ($('bottomDiv'+imgid).childElements().length == 3)
@@ -150,6 +155,11 @@
       });                                      
     }
 
+    function resetMeasurementPins(){
+      for(var i = 0; i < $('possiblemeasurements').childElements().length; i++)
+        $('possiblemeasurements').childElements()[i].childElements()[0].setStyle('position: static;');
+    }
+    
 		function resizeScreenElements()
 		{
 			var remainingWidth = document.viewport.getWidth() - 500;
@@ -286,10 +296,6 @@
            	pmmContainerDiv.insert(pmmPointerIMG);
 						var json = json;
             
-           	new Draggable(pmmPointerIMG, { onEnd: function() {
-						  if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[0].id) 
-							}
-						});
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
             //style must be declared here, else prototype cannot handle it
@@ -297,6 +303,11 @@
             pmmContainerDiv.insert(pmmTooltipDiv);
             
             $('possiblemeasurements').insert(pmmContainerDiv);
+            
+            new Draggable('mm'+json[i].pk, { onEnd: function() {
+						  if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[0].id) 
+							}
+						});
             
             pmmPointerIMG.observe('mouseover', showLandmarkTooltip);
             pmmPointerIMG.observe('mouseout', hideLandmarkTooltip)
@@ -534,10 +545,6 @@
 </div>
 <div id="tab_attributes" class="tabContent">
 	<table style="width:200px">
-		<tr><th>Set Transparancy:</th></tr>
-		<tr><td colspan="2" id="sliders"></td></tr>
-		<tr><th>Reset Images</th></tr>
-		<tr><td id="delete_images"></td></tr>
 		<tr><th>Coordinates</th></tr>
 		<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
 		<input type="text" id="MouseY" value="0" size="4"> Y</td></tr>

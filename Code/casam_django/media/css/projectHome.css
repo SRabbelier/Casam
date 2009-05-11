@@ -95,11 +95,10 @@ img.smallPictureButton{
   div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
 
 img.mmPointer{
-	position:absolute;
-	z-index:2;	
+  float: left;
 }
 div.mmText{
-	margin-left:10px;
+	margin-left:12px;
 }
 
 .imageDeleteButton {
