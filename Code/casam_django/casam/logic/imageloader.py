@@ -21,6 +21,7 @@ def simple(request,imageID):
     imageRecord = OriginalImage.objects.all().get(id = imageID)
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
+    im = im.convert("RGB")
     im.save(temporaryImage)
 
     
@@ -44,7 +45,8 @@ def byRatio(request,ratio,imageID):
     
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
-    
+    im = im.convert("RGB")
+
     #safeguard for not killing the server
     if floatRatio>=150:
       floatRatio = float(150)
@@ -79,7 +81,8 @@ def byWidth(request,width,imageID):
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
-  
+    im = im.convert("RGB")
+
     
     #safeguard for not killing the server
     if floatWidth>=im.size[0]:
@@ -115,6 +118,7 @@ def byMaxWidthHeight(request,width,height,imageID):
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
+    im = im.convert("RGB")
   
     fullImageWidth = im.size[0]
     fullImageHeight = im.size[1]
@@ -162,6 +166,7 @@ def byMinWidthHeight(request,width,height,imageID):
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
+    im = im.convert("RGB")  
   
     fullImageWidth = im.size[0]
     fullImageHeight = im.size[1]
@@ -207,7 +212,8 @@ def thumbnail(request,widthandheight,imageID):
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     fullImage = Image.open(location)
-    
+    fullImage = fullImage.convert("RGB")
+
     fullImageWidth = fullImage.size[0]
     fullImageHeight = fullImage.size[1]
     squareSize = min(fullImageWidth, fullImageHeight)
