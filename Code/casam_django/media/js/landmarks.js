@@ -36,7 +36,6 @@ function saveLandMark(){
 
 function LoadMMDD(id, imgID){
   var viewportOffset = $('big_images').viewportOffset();                       
-
   var mousex = $('MouseX').value;
   var mousey = $('MouseY').value;
   var xoffset = mousex*1+viewportOffset.left+10;
@@ -61,16 +60,18 @@ function LoadMMDD(id, imgID){
 }
 
 function showLandmarkTooltip(e){
+  obj=(!e.target?e.srcElement:e.target);
   if($('MouseX').value != "" && $('MouseY').value != ""){
-    xoffset = e.currentTarget.offsetLeft*1+12;
-    yoffset = e.currentTarget.offsetTop*1-5;
-    var tooltip = e.currentTarget.parentNode.lastChild
+    xoffset = obj.offsetLeft*1+12;
+    yoffset = obj.offsetTop*1-5;
+    var tooltip = obj.parentNode.lastChild
     tooltip.setStyle('left: '+xoffset+'px; top: '+yoffset+'px;');
     tooltip.show();
   }                     
 }
 function hideLandmarkTooltip(e){
-  var tooltip = e.currentTarget.parentNode.lastChild
+  obj=(!e.target?e.srcElement:e.target);
+  var tooltip = obj.parentNode.lastChild;
   tooltip.hide();
 }
 

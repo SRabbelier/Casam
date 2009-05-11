@@ -299,13 +299,13 @@
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
             //style must be declared here, else prototype cannot handle it
-            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: fixed; z-index: 5;'}).update(json[i].fields.name);
+            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: absolute; z-index: 5;'}).update(json[i].fields.name);
             pmmContainerDiv.insert(pmmTooltipDiv);
             
             $('possiblemeasurements').insert(pmmContainerDiv);
-            
-            new Draggable('mm'+json[i].pk, { onEnd: function() {
-						  if($('MouseX').value != "" && $('MouseY').value != "") LoadMMDD(json[i].pk, addedImages[0].id) 
+
+            new Draggable('mm'+json[i].pk, { onEnd: function(element,event) {
+						  if($('MouseX').value != '' && $('MouseY').value != '') { LoadMMDD(event.target.id.slice(2), addedImages[0].id) } 
 							}
 						});
             
