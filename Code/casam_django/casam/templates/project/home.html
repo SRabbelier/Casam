@@ -337,12 +337,17 @@
 			else
 			 rightDiv.insert(new Element('span').update('Right').addClassName('projectPictureInfo'));
 			
-      var useLink = new Element('a',{'href':'#'}).update('Use');
+      var useLink = new Element('a',{'href':'#'}).update('Use ');
 			rightDiv.insert(useLink);
+			var paintoverLink = new Element('a',{'href':'#'}).update(' Paintover');
+			rightDiv.insert(paintoverLink);
 			$('tab_pictures').insert(mainDiv);
-			useLink.observe('click', function(){                                          
+			useLink.observe('click', function(){
 				 	showImage(pictureJSON.pk,pictureJSON.fields.name);
-				 	return false;
+				}
+			);
+			paintoverLink.observe('click', function(){
+					loadEditScreen(pictureJSON.pk,pictureJSON.fields.name);
 				}
 			);
 			mainDiv.insert(leftDiv);
@@ -401,6 +406,33 @@
       id_array.splice(0,0,temp);
 			Sortable.setSequence("tab_pictures",id_array);
 			reloadImages();
+		}
+
+		function loadEditScreen(id,name){
+			img_url = '{{BASE_PATH}}imageLoader/'+id;
+			mov_width = ($('big_images').getWidth()-5);
+			mov_heigth = ($('big_images').getHeight()-5);
+				
+			movie_object = new Element('object');
+			movie_object.writeAttribute('classid', "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
+			movie_object.writeAttribute('codebase',"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0");
+			movie_object.writeAttribute('width', mov_width);
+			movie_object.writeAttribute('height', mov_heigth);
+
+			movie_embed = new Element('embed');
+			movie_embed.writeAttribute('src',"{{ BASE_PATH }}media/flash/paint.swf");
+			movie_embed.writeAttribute('quality',"high");
+			movie_embed.writeAttribute('bgcolor',"#000000");
+			movie_embed.writeAttribute('width', mov_width);
+			movie_embed.writeAttribute('height', mov_heigth);
+			movie_embed.writeAttribute('allowScriptAccess',"sameDomain");
+			movie_embed.writeAttribute('type',"application/x-shockwave-flash");
+			movie_embed.writeAttribute('pluginspage',"http://www.macromedia.com/go/getflashplayer");
+			movie_embed.writeAttribute('flashvars',"img_source="+img_url);
+
+			movie_object.insert(movie_embed);
+			$('big_images').update();
+			$('big_images').insert(movie_object);
 		}
 
 		function hideImage(id){
