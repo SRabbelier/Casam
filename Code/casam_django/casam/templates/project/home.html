@@ -27,7 +27,7 @@
 		    
 		    this.opacitySliderContainer = new Element('div');
 				//HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
-		    this.opacitySliderContainer.setWidth(200);
+		    this.opacitySliderContainer.setWidth(180);
 		    this.opacitySliderContainer.writeAttribute('id','opacitySliderContainer_'+this.id);
 		    this.opacitySliderContainer.writeAttribute('class','slider');
 		    
@@ -59,7 +59,7 @@
           LoadMMDD('',parentAddedImageObject.id);
 				});
 				
-				$('sliders').insert(this.getOpacitySliderContainer());
+				$('bottomDiv'+parentAddedImageObject.id).insert(this.getOpacitySliderContainer());
 			  new Control.Slider(this.opacitySliderHandle,this.opacitySliderContainer, {
 				  minimum: 0,
 				  maximum: 1,
@@ -69,13 +69,14 @@
 			  	}
 			  });
 
-			  var deleteButton = new Element('input',{type:'button', value:'Delete '+this.name});
+			  var deleteButton = new Element('img',{'src':'{{BASE_PATH}}media/img/delete.png'});
+			  deleteButton.addClassName('imageDeleteButton');
 			  Element.observe(deleteButton, 'click', function(){
 				  hideImage(parentAddedImageObject.id);
 			  });
-			  $('delete_images').insert(deleteButton);
+			  $('bottomDiv'+parentAddedImageObject.id).insert(deleteButton);
         
-        getImageMeasurements(this.name, parentAddedImageObject.id)
+        getImageMeasurements(parentAddedImageObject.id)
 		  }
 		  
 		});
@@ -92,7 +93,6 @@
       $('leftFrame_content').insert(newTab('Papers', $('tab_papers'), false));
       
       $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), false));
-      $('rightFrame_content').insert(newTab('Current measurements', $('tab_current_measurements'), false));
       $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
 
 		  // Add mouse listener for image
@@ -124,7 +124,7 @@
       });
 		});
 
-    function getImageMeasurements(imgname, imgid){
+    function getImageMeasurements(imgid){
         
       var url = '{{ BASE_PATH }}JSON/projectImageCurrentMeasurements/'+imgid+'?time='+new Date().getTime();
       new Ajax.Request(url, {
@@ -134,18 +134,18 @@
           var mainDiv = new Element('div');
           mainDiv.addClassName('projectPictureDiv');
           
-          var nameDiv = new Element('div');
-          nameDiv.addClassName('projectImageNameDiv')
-          nameDiv.update(imgname);
-          $('currentmeasurements').insert(nameDiv);          
-
+          
+          
           for(i=0; i < json.length-1; i=i+2){
             var measurementDiv = new Element('div');
             measurementDiv.addClassName('projectImageMeasurementDiv');
             measurementDiv.update(json[i+1].fields.x+', '+json[i+1].fields.y+' voor '+json[i].fields.name);
             mainDiv.insert(measurementDiv);
           }  
-          $('currentmeasurements').insert(mainDiv);  
+          if ($('bottomDiv'+imgid).childElements().length == 3)
+            $('bottomDiv'+imgid).childElements()[2].innerHTML = mainDiv.innerHTML;
+          else
+            $('bottomDiv'+imgid).insert(mainDiv);  
         }  
       });                                      
     }
@@ -293,7 +293,7 @@
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
             //style must be declared here, else prototype cannot handle it
-            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: absolute; z-index: 5;'}).update(json[i].fields.name);
+            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: fixed; z-index: 5;'}).update(json[i].fields.name);
             pmmContainerDiv.insert(pmmTooltipDiv);
             
             $('possiblemeasurements').insert(pmmContainerDiv);
@@ -308,12 +308,14 @@
 		
 		function makePictureContainer(pictureJSON)
 		{
-			var mainDiv = new Element('div');
+			var mainDiv = new Element('div', {"id":"mainDiv"+pictureJSON.pk});
 			     mainDiv.addClassName('projectPictureDiv');
-			var leftDiv = new Element('div');
+			var leftDiv = new Element('div', {"id":"leftDiv"+pictureJSON.pk});
 					 leftDiv.addClassName('pictureContainerLeftDiv');
-			var rightDiv = new Element('div');
+			var rightDiv = new Element('div', {"id":"rightDiv"+pictureJSON.pk});
 			    rightDiv.addClassName('pictureContainerRightDiv');
+			var bottomDiv = new Element('div', {"id":"bottomDiv"+pictureJSON.pk});
+			    bottomDiv.addClassName('pictureContainerBottomDiv');
 			
 			leftDiv.insert(new Element('img',{'src': base_path+'imageLoader/thumbnail/50/'+pictureJSON.pk}));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
@@ -324,7 +326,7 @@
 			else
 			 rightDiv.insert(new Element('span').update('Right').addClassName('projectPictureInfo'));
 			
-			var useLink = new Element('a',{'href':'#'}).update('Use');
+      var useLink = new Element('a',{'href':'#'}).update('Use');
 			rightDiv.insert(useLink);
 			$('tab_pictures').insert(mainDiv);
 			useLink.observe('click', function(){                                          
@@ -334,6 +336,7 @@
 			);
 			mainDiv.insert(leftDiv);
 			mainDiv.insert(rightDiv);
+			mainDiv.insert(bottomDiv);
 		}
 
 		function closePopupAndReloadPictures(){
@@ -350,10 +353,10 @@
 		}
     
     function closePopupAndReloadCurrentMeasurements(){
-      $('currentmeasurements').update();
+      //$('currentmeasurements').update();
       img = addedImages[addedImages.length-1]
-      getImageMeasurements(img.name, img.id);
-      new Effect.Highlight('tab_current_measurements');
+      getImageMeasurements(img.id);
+      new Effect.Highlight('bottomDiv'+img.id);
     }                                                      
 
 		function closePopupAndReloadPotentialMeasurements(){
@@ -377,7 +380,10 @@
 		}
 
 		function hideImage(id){
-			var newImageArray = new Array();
+		  //clear the data of this image
+      $('bottomDiv'+id).update();
+			
+      var newImageArray = new Array();
 			//Delete the old image and copy the rest
 			for(i = 0; i< addedImages.length; i++){
 				if(addedImages[i].id != id){
@@ -391,12 +397,13 @@
 		function reloadImages(){
 			//.update() clears the contents of the elements
       $('big_images').update();
-			$('sliders').update();
-			$('delete_images').update();
-      $('currentmeasurements').update();
 			addedImages.each(function(item){
-					item.addSelfToImages();
+				$('bottomDiv'+item.id).update();
+				$('mainDiv'+item.id).setStyle('border: none;');
+        item.addSelfToImages();
 			});
+			
+			$('mainDiv'+addedImages[addedImages.length-1].id).setStyle('border: 1px dashed red;');
 		}
   </script>
 
@@ -493,12 +500,6 @@
 
 	</div>
 </div>
-<div id="tab_current_measurements" class="tabContent">
-  <div id="currentmeasurements">
-  
-  </div>
-
-</div>
 <div id="tab_attributes" class="tabContent">
 	<table style="width:200px">
 		<tr><th>Set Transparancy:</th></tr>
@@ -516,7 +517,7 @@
 
 <!-- POPUP -->
   
-<div id="lmdd" style="display: none; position: absolute; background-color: white; color: black; padding: 5px;">
+<div id="lmdd" style="display: none; position: fixed; background-color: white; color: black; padding: 5px;">
 	<div style="background-color: #ccc;">Store Landmark</div>
 	<label for="mmx">x: </label><input type="text" style="width: 25px;" id="lmmx" name="mmx" value="" />
 	<label for="mmy">y: </label><input type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
@@ -526,7 +527,7 @@
 			<option id="option{{mm.id}}" value="{{mm.id}}">{{mm.name}}</option>
 		{% endfor %}
 	</select><br />
-  <input type="hidden" id="imgid" value=""></input>
+  <input type="hidden" id="imgid" value="" />
 	<button onClick="saveLandMark();">Store</button>
 </div>
 

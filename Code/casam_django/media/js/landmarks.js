@@ -9,18 +9,18 @@ function handleResponseSaveLandmark() {
           $('ajax_result').update(response);
           closePopupAndReloadCurrentMeasurements();
           $('lmdd').hide();
-          $('mm'+mmid).setStyle('position: absolute; left: '+savex+'px; top: '+savey+'px; zIndex: 2');
+          $('mm'+mmid).setStyle('position: fixed; left: '+savex+'px; top: '+savey+'px;');
     }
 }
 
 function saveLandMark(){
-
+  var viewportOffset = $('big_images').viewportOffset();
   var mousex = $('lmmx').value;
   var mousey = $('lmmy').value;
   var mm = $('mmmeting').options[$('mmmeting').selectedIndex].value;
   var imageID = $('imgid').value;
-  savex = mousex*1+$('big_images').firstChild.offsetLeft*1;
-  savey = mousey*1+$('big_images').firstChild.offsetTop*1;
+  savex = mousex*1+viewportOffset.left*1;
+  savey = mousey*1+viewportOffset.top*1;
   mmid = mm;
   
   if(mm == "" || mousex == "" || mousey == ""){
