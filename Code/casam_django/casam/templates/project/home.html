@@ -101,6 +101,9 @@
         this.pinDiv.hide();
         $('mm'+this.potid).show();
       },
+      hide:function(){
+        this.pinDiv.hide();
+      },
       changeColor:function(color){
         this.pinDiv.childElements()[0].src = "{{BASE_PATH}}media/img/pin_"+color+".gif";
       },
@@ -230,7 +233,7 @@
               if(this.checked == true)
                 thismeasurement.place();      
               else
-                thismeasurement.restore();
+                thismeasurement.hide();
             });
             textspan = new Element('span');
             textspan.update(json[i].fields.name+' ('+json[i+1].fields.x+', '+json[i+1].fields.y+')')
@@ -280,7 +283,7 @@
 		{
 			Effect.toggle(tab, 'blind', { duration: 0.5 });
 		}
-	  
+      
 		function newTab(tab_title, content, open)
 		{
 			var tabContainer = new Element('div');
@@ -558,6 +561,8 @@
 				}
 			}
 			addedImages = newImageArray;
+      if (addedImages == "")
+        getProjectPotentialMeasurements();
 			reloadImages();
 		}
 		
