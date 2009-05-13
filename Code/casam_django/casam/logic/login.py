@@ -11,7 +11,10 @@ def handle_login(rusername, rpassword, rexpiration, request):
     expiration = int(rexpiration)
     #Don't ask but it must be a timedelta object...
     #request.session.set_expiry(expiration)
-    request.session.set_expiry(datetime.timedelta(0,expiration))
+    if expiration > 0:
+      request.session.set_expiry(datetime.timedelta(0,expiration))
+    else:
+      request.session.set_expiry(0)
     return True
 
   return False

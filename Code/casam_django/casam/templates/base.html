@@ -11,20 +11,29 @@
 	<script src="{{ BASE_PATH }}media/js/prototype.js" type="text/javascript"></script>
 	<script src="{{ BASE_PATH }}media/js/scriptaculous.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		var secondsToExpiration = 0{{expiration_in_seconds}};
 		document.observe("dom:loaded",function(){
+			var secondsToExpiration = parseInt('{{expiration_in_seconds}}');
 			//User is logged in
 			if(secondsToExpiration>0)decreaseTimeToExpiration(secondsToExpiration);
 		});
 
 		function decreaseTimeToExpiration(currentSeconds){
-			setTimeout('decreaseTimeToExpiration('+(currentSeconds-1)+')',1000);
-			if(currentSeconds > 60){
+			if(currentSeconds<=86400 && currentSeconds >0){
+				setTimeout('decreaseTimeToExpiration('+(currentSeconds-1)+')',1000);
+			}
+			//86400 seconds is 1 day, which is almost like infinity to me
+			if(currentSeconds > 86400){
+				$('automaticLogout').update('No automatic <a href="{{ BASE_PATH }}logout">logout</a>');
+			}else if(currentSeconds > 60){
 				$('timeToExpiration').update(Math.round(currentSeconds / 60) + ' min');
 			}else if(currentSeconds > 0){
 				$('timeToExpiration').update(currentSeconds + ' sec');
 			}else{
-				$('loginWidget').update('Not logged in anymore, please login to continue working');
+				Effect.Fade('loginWidget',{afterFinish:function(){
+						$('loginWidget').update('Not logged in anymore, please <a href="{{ BASE_PATH }}login">login</a> to continue working');
+						Effect.Appear('loginWidget');
+					}});
+	
 			}
 		}
 	</script>
@@ -44,7 +53,7 @@
 	<div id="loginWidget" style="float:left;color:white;width:200px;height:55px;font-size: 8pt;margin-top:4px;margin-left:5px;">
 		<b>Currently logged in:</b><br />
 		{{ NAME }} (<a href="{{ BASE_PATH }}logout">not you?</a>)<br />
-		<div style="float:left;font-size: 8pt;color:white;">Automatic <a href="{{ BASE_PATH }}logout">logout</a> in approx. <p id="timeToExpiration"></p>
+		<div id="automaticLogout" style="float:left;font-size: 8pt;color:white;">Automatic <a href="{{ BASE_PATH }}logout">logout</a> in approx. <p id="timeToExpiration"></p>
 
 		</div>
 	</div>
