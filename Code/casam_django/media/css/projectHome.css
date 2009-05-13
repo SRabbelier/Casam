@@ -4,6 +4,7 @@
 
 .projectPictureDiv{
 	clear: both;
+  overflow: hidden;
 }
 
 .projectPictureInfo{
@@ -17,7 +18,7 @@
 
 .pictureContainerRightDiv {
 	float: left;
-	margin: 3px;
+	margin-top: 3px;
 	width: 120px;
 }
 .pictureContainerBottomDiv {
@@ -114,4 +115,8 @@ div.mmText{
 .imageDeleteButton {
   float: right;
   margin-top: 7px;
+}
+
+.imgSubTabMeasurements{
+  padding-top: 23px;
 }

@@ -128,10 +128,10 @@
       // Add tabs in whiteFrame
       $('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true));
       $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
-      $('leftFrame_content').insert(newTab('Papers', $('tab_papers'), false));
       
       $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
       $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
+      $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
       $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
 
 		  // Add mouse listener for image
@@ -173,6 +173,9 @@
           var mainDiv = new Element('div');
           mainDiv.addClassName('projectPictureDiv');
           
+          //add Div for tab
+          var tempDiv = new Element('div');
+          tempDiv.insert(mainDiv);
           
           var viewportOffset = $('big_images').viewportOffset();
           
@@ -249,8 +252,11 @@
           
           if ($('bottomDiv'+imgid).childElements().length == 3)
             $('bottomDiv'+imgid).childElements()[2].innerHTML = mainDiv.innerHTML;
-          else
-            $('bottomDiv'+imgid).insert(mainDiv);  
+          else{
+            var tab_measurements = newTab('Measurements', mainDiv, true);
+            tab_measurements.addClassName('imgSubTabMeasurements');
+            $('bottomDiv'+imgid).insert(tab_measurements);
+          }  
         }  
       });                                      
     }
@@ -306,7 +312,7 @@
 		  tabHeader.insert(foldUpImage);
 		  tabHeader.insert(foldDownImage);
 			tabHeader.innerHTML += "<b>"+tab_title+"</b>";
-
+      
 			tabLine.style.height = "2px";
 			tabLine.style.backgroundImage = "url('{{ BASE_PATH }}media/img/bar_middle.jpg')";
 			tabLine.style.backgroundRepeat = "repeat-x";
