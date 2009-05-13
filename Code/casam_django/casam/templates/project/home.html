@@ -401,20 +401,13 @@
             
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
-            //style must be declared here, else prototype cannot handle it
-            var pmmTooltipDiv = new Element('div').update(json[i].fields.name);
-            pmmTooltipDiv.setStyle('display:none; position: fixed; z-index: 1000;');
-            pmmContainerDiv.insert(pmmTooltipDiv);
             
             $('possiblemeasurements').insert(pmmContainerDiv);
 
             new Draggable('mm'+json[i].pk, { onEnd: function(element,event) {
-						  if($('MouseX').value != '' && $('MouseY').value != '') { LoadMMDD(event.target.id.slice(2), addedImages[0].id) } 
+						    LoadMMDD(event.target.id.slice(2), addedImages[0].id) 
 							}
 						});
-            
-            pmmPointerIMG.observe('mouseover', showLandmarkTooltip);
-            pmmPointerIMG.observe('mouseout', hideLandmarkTooltip);
           }
         }
       });

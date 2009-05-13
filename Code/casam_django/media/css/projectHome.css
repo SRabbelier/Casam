@@ -97,6 +97,7 @@ img.smallPictureButton{
 
 img.mmPointer{
   float: left;
+  position: absolute;
 }
 
 .pintooltip{
