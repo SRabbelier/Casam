@@ -2,6 +2,7 @@ from django import http
 from django import forms
 from django.conf import settings
 from django.template import loader
+import datetime
 
 from django.contrib.auth.models import User
 
@@ -67,7 +68,7 @@ class Handler(object):
       context['is_onderzoeker'] = self.profile_type == 'Onderzoeker'
       context['is_beheerder'] = self.profile_type == 'Beheerder'
       context['PROFILE'] = self.profile
-
+      context['expiration_in_seconds'] = self.request.session.get_expiry_age()
     return context
 
   def getContext(self):

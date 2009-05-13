@@ -49,3 +49,8 @@ div.whiteFrame_bottom_container {
 div.whiteFrame_bottom_center {
 	width: 274px;						/* x - 26 */
 }
+
+#id_expiration{
+	float:left;
+	margin-top:8px;
+}

@@ -10,3 +10,7 @@ body {
 a{
 	text-decoration:none;
 }
+
+#timeToExpiration{
+	display:inline;
+}

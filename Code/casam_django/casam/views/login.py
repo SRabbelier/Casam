@@ -10,7 +10,7 @@ class LoginForm(forms.Form):
   """TODO: Docstring """
   username = forms.CharField(max_length=30)
   password = forms.CharField(max_length=10, widget=forms.widgets.PasswordInput())
-
+  expiration = forms.ChoiceField([(60,'1 min'),(120,'2 min'),(600, '10 min'), (1800, '30 min'),(7200,'2 hr'),(0,'infinite')])
 
 class Login(handler.Handler):
   """Handler to handle Login requests
@@ -28,8 +28,9 @@ class Login(handler.Handler):
   def post(self):
     rusername = self.cleaned_data['username']
     rpassword = self.cleaned_data['password']
+    rexpiration = self.cleaned_data['expiration']
 
-    if login_logic.handle_login(rusername, rpassword, self.request):
+    if login_logic.handle_login(rusername, rpassword, rexpiration, self.request):
       return http.HttpResponseRedirect(self.BASE_PATH)
     else:
       return http.HttpResponseRedirect(self.path + '?status=failed')

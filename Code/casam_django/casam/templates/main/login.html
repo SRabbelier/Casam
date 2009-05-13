@@ -50,18 +50,17 @@ The credentials you entered are not valid.
 			<div style="background-image:url('{{ BASE_PATH }}media/img/user.jpg');height:48px;width:48px;float:left;background-repeat: no-repeat;"></div>
 			
 			<form enctype="multipart/form-data" method="post" style="margin:auto;display:block;">
-			{{ form }}
-			<input type="submit" value="Login" />
-			</form>
+				<div>
+					<label for="id_username">Username:</label>
+					{{ form.username }}
+					<label for="id_password">Password:</label>
+					{{ form.password }}
+				</div>
 			
 			<div style="background-image:url('{{ BASE_PATH }}media/img/clock.jpg');height:32px;width:32px;float:left;"></div>
-			<select style="float:left;margin-top:8px;">
-				<option>10 min</option>
-				<option>30 min</option>
-				<option>2 hr</option>
-				<option>Infinite</option>
-			</select>
-			
+				{{form.expiration}}
+			<input type="submit" value="Login" />
+			</form>
 		</div>
 
 		<!-- Right white frame -->
