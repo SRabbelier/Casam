@@ -84,7 +84,36 @@
 		var addedImages = new Array();
 		
     var total_images = 0;
-
+    
+    
+    var Measurement = Class.create({
+		  initialize: function(id, name,imageid,pin) {
+		    this.id = id;
+        this.name = name;
+        this.imageid = imageid;
+        this.pin = pin;
+        this.left = 0;
+        this.top = 0;
+		  },
+      setPlace:function(x,y){
+        this.left = x;
+        this.top = y;
+      },
+      place:function(){
+        this.pin.setStyle('position: absolute; left: '+this.left+'px;top: '+this.top+'px;');
+        this.pin.show();
+      },
+      restore:function(){
+        this.pin.hide();
+      },
+      changeColor:function(color){
+        this.pin.src = "{{BASE_PATH}}media/img/pin_"+color+".gif";
+      }
+      
+      });
+		  
+		var measurements = new Array();
+		
 	  document.observe("dom:loaded", function()
 		{
       // Add tabs in whiteFrame
@@ -92,7 +121,7 @@
       $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
       $('leftFrame_content').insert(newTab('Papers', $('tab_papers'), false));
       
-      $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), false));
+      $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
       $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
 
 		  // Add mouse listener for image
@@ -125,7 +154,7 @@
 		});
 
     function getImageMeasurements(imgid){
-        
+    
       var url = '{{ BASE_PATH }}JSON/projectImageCurrentMeasurements/'+imgid+'?time='+new Date().getTime();
       new Ajax.Request(url, {
         method: 'get',
@@ -135,18 +164,61 @@
           mainDiv.addClassName('projectPictureDiv');
           
           
-          resetMeasurementPins();
           var viewportOffset = $('big_images').viewportOffset();
           
+          for(var i=0; i < measurements.length; i++){
+            if(measurements[i].imageid == imgid){
+              measurements[i].restore();
+              measurements.splice(i,1);
+              //splice shifts the index of the array 1 to the left, so compensate
+              i = i-1;
+            }
+          }
+          
           for(i=0; i < json.length-1; i=i+2){
+            var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif','class':'mmPointer'});
+            pin.setStyle('display: none;');
+            $('big_images').insert(pin);
+            var measurement = new Measurement(json[i+1].pk,json[i].fields.name,imgid,pin);
             var measurementDiv = new Element('div');
             measurementDiv.addClassName('projectImageMeasurementDiv');
-            measurementDiv.update(json[i+1].fields.x+', '+json[i+1].fields.y+' voor '+json[i].fields.name);
-            var posx = viewportOffset.left*1+json[i+1].fields.x*1;
-            var posy = viewportOffset.top*1+json[i+1].fields.y*1;
-            $('mm'+json[i].pk).setStyle('position: fixed; left: '+posx+'px;top: '+posy+'px;');
+            checkbox = new Element('input', {'type': 'checkbox','name':json[i+1].pk});
+            //when called insert, IE defaults his checkboxes to the default value (which is false).
+            //so set the default to true
+            checkbox.defaultChecked = true;
+            checkbox.observe('click', function(){
+              var thismeasurement = '';
+              for(var i=0; i < measurements.length; i++){
+                if (measurements[i].id == this.name){
+                  thismeasurement = measurements[i];
+                  break;                  
+                }
+              }
+              if(this.checked == true){
+                thismeasurement.place();          
+              }
+              else{
+                thismeasurement.restore();
+              }
+            });
+            textspan = new Element('span');
+            textspan.update(json[i].fields.name+' ('+json[i+1].fields.x+', '+json[i+1].fields.y+')')
+            measurementDiv.insert(checkbox);
+            measurementDiv.insert(textspan);
+            
+            //load the measurements the first time
+            measurement.setPlace(json[i+1].fields.x,json[i+1].fields.y);
+            measurement.place();
+            
+            if(addedImages[0].id == imgid)
+              measurement.changeColor('red');
+            else
+              measurement.changeColor('green');
+              
+            measurements.push(measurement);
             mainDiv.insert(measurementDiv);
-          }  
+          }
+          
           if ($('bottomDiv'+imgid).childElements().length == 3)
             $('bottomDiv'+imgid).childElements()[2].innerHTML = mainDiv.innerHTML;
           else
@@ -155,11 +227,7 @@
       });                                      
     }
 
-    function resetMeasurementPins(){
-      for(var i = 0; i < $('possiblemeasurements').childElements().length; i++)
-        $('possiblemeasurements').childElements()[i].childElements()[0].setStyle('position: static;');
-    }
-    
+       
 		function resizeScreenElements()
 		{
 			var remainingWidth = document.viewport.getWidth() - 500;
@@ -292,7 +360,7 @@
           // Create a picture container for each picture
           for(i=0; i < json.length; i++){
             var pmmContainerDiv = new Element('div');
-            var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_red.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
+            var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
            	pmmContainerDiv.insert(pmmPointerIMG);
 						var json = json;
             

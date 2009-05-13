@@ -9,7 +9,6 @@ function handleResponseSaveLandmark() {
           $('ajax_result').update(response);
           closePopupAndReloadCurrentMeasurements();
           $('lmdd').hide();
-          $('mm'+mmid).setStyle('position: fixed; left: '+savex+'px; top: '+savey+'px;');
     }
 }
 
