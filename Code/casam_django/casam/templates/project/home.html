@@ -125,6 +125,46 @@
 						        });
     }
 		var measurements = new Array();
+    
+    var Check = Class.create({
+      initialize: function(type, name, checkbox){
+        //type: s is for measurements, u is for pictures
+        this.type = type;
+      
+        if (this.type = 's')
+          this.defaultValue = true;
+        else
+          this.defaultValue = false;
+       
+        this.id = name;
+        this.box = checkbox;
+        this.newValue = '';
+      },
+      update: function(newValue){
+        this.newValue = newValue;
+      },
+      setDefault: function(){
+        this.box.defaultChecked = this.defaultValue;             
+      },
+      watch: function(){
+        this.box.observe('click', function(){
+          var thismeasurement = '';
+          for(var i=0; i < measurements.length; i++){
+            if (measurements[i].id == this.name){
+              thismeasurement = measurements[i];
+              break;                  
+            }
+          }
+          if(this.checked == true)
+            //TODO: SET NEW VALUE TO TRUE
+            thismeasurement.place();      
+          else
+            //TODO: SET NEW VALUE TO FALSE
+            thismeasurement.hide();
+        });
+      }
+    });
+    var checkboxes = new Array();
 			
 	  document.observe("dom:loaded", function()
 		{
@@ -218,23 +258,18 @@
             var measurement = new Measurement(json[i+1].pk,json[i].pk,json[i].fields.name,imgid,pinDiv);
             var measurementDiv = new Element('div');
             measurementDiv.addClassName('projectImageMeasurementDiv');
+            
             checkbox = new Element('input', {'type': 'checkbox','name':json[i+1].pk, 'id': 'show'+json[i+1].pk});
+
+            var check = new Check('s', json[i+1].pk, checkbox);
+
             //when called insert, IE defaults his checkboxes to the default value (which is false).
             //so set the default to true
-            checkbox.defaultChecked = true;
-            checkbox.observe('click', function(){
-              var thismeasurement = '';
-              for(var i=0; i < measurements.length; i++){
-                if (measurements[i].id == this.name){
-                  thismeasurement = measurements[i];
-                  break;                  
-                }
-              }
-              if(this.checked == true)
-                thismeasurement.place();      
-              else
-                thismeasurement.hide();
-            });
+            check.setDefault();
+            check.watch();
+
+            checkboxes.push(check);
+
             textspan = new Element('span');
             textspan.update(json[i].fields.name+' ('+json[i+1].fields.x+', '+json[i+1].fields.y+')')
             measurementDiv.insert(checkbox);
