@@ -62,7 +62,10 @@ class Handler(object):
     context = {}
 
     if self.user.is_authenticated():
-      context['NAME'] = self.user.first_name
+      context['name'] = self.user.first_name
+      #if there is no friendly first name, use the user name
+      if context['name']=='':
+        context['name'] = self.user
       context['TYPE'] = self.profile_type
       context['is_chirurg'] = self.profile_type == 'Chirurg'
       context['is_onderzoeker'] = self.profile_type == 'Onderzoeker'
