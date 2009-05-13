@@ -131,6 +131,7 @@
       $('leftFrame_content').insert(newTab('Papers', $('tab_papers'), false));
       
       $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
+      $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
       $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
 
 		  // Add mouse listener for image
@@ -661,11 +662,6 @@
 <div id="tab_projectinfo" class="tabContent">
   <b>{{ project }}</b><br>
 	<p>{{ project.description }}</p>
-	<b>Tags</b>
-	<a href="#" id='editTagsLink' style="float:right;clear:both;"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
-	<div id="tags">
-
-	</div>
 </div>
 <div id="tab_pictures" class="tabContent"></div>
 <div id="tab_papers" class="tabContent">
@@ -677,6 +673,12 @@
   <div id="possiblemeasurements">
 
 	</div>
+</div>
+<div id="tab_tags" class="tabContent">
+  <a href="#" id='editTagsLink' style="float:right;clear:both;"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
+  <div id="tags">
+
+  </div>
 </div>
 <div id="tab_attributes" class="tabContent">
 	<table style="width:200px">
