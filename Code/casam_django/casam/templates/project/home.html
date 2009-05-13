@@ -87,31 +87,46 @@
     
     
     var Measurement = Class.create({
-		  initialize: function(id, name,imageid,pin) {
+		  initialize: function(id,potid,name,imageid,pin) {
 		    this.id = id;
+		    this.potid = potid;
         this.name = name;
         this.imageid = imageid;
-        this.pin = pin;
+        this.pinDiv = pin;
         this.left = 0;
         this.top = 0;
+        this.drag = null;
 		  },
       setPlace:function(x,y){
         this.left = x;
         this.top = y;
       },
       place:function(){
-        this.pin.setStyle('position: absolute; left: '+this.left+'px;top: '+this.top+'px;');
-        this.pin.show();
+        this.pinDiv.setStyle('position: absolute; left: '+this.left+'px;top: '+this.top+'px;');
+        this.pinDiv.show();
       },
       restore:function(){
-        this.pin.hide();
+        this.pinDiv.hide();
       },
       changeColor:function(color){
-        this.pin.src = "{{BASE_PATH}}media/img/pin_"+color+".gif";
+        this.pinDiv.childElements()[0].src = "{{BASE_PATH}}media/img/pin_"+color+".gif";
+      },
+      setActive:function(){
+        this.changeColor('red');
+        this.drag = makeDraggable(this.pinDiv,this.potid,this.imageid);
+      },
+      nonActive:function(){
+        this.changeColor('green');
+        if(this.drag != null)
+          this.drag.destroy();
       }
-      
       });
-		  
+		function makeDraggable(pinDiv,potid,imageid){
+      return new Draggable(pinDiv, { onDrag: function(element,event) { pinDiv.childElements()[1].hide(); }, onEnd: function() {
+                        LoadMMDD(potid,imageid); 
+							         }
+						        });
+    }
 		var measurements = new Array();
 		
 	  document.observe("dom:loaded", function()
@@ -175,11 +190,31 @@
             }
           }
           
+          var imgname = '';
+          for(var j = 0; j < addedImages.length; j++){
+            if(addedImages[j].id == imgid){
+              imgname = addedImages[j].name;
+              break;
+            }
+          }
           for(i=0; i < json.length-1; i=i+2){
-            var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif','class':'mmPointer'});
-            pin.setStyle('display: none;');
-            $('big_images').insert(pin);
-            var measurement = new Measurement(json[i+1].pk,json[i].fields.name,imgid,pin);
+            
+            var pinDiv = new Element('div');
+            pinDiv.setStyle('display: none;');
+            
+            var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif'});
+            var pintooltip = new Element('div').update(json[i].fields.name+'<br />'+imgname+'<br />'+json[i+1].fields.x+', '+json[i+1].fields.y);
+            pintooltip.addClassName('pintooltip');
+            pintooltip.setStyle('display: none;');
+
+            pin.observe('mouseover', showLandmarkTooltip);
+            pin.observe('mouseout', hideLandmarkTooltip);
+            
+            pinDiv.insert(pin);
+            pinDiv.insert(pintooltip);
+            $('big_images').insert(pinDiv);
+            
+            var measurement = new Measurement(json[i+1].pk,json[i].pk,json[i].fields.name,imgid,pinDiv);
             var measurementDiv = new Element('div');
             measurementDiv.addClassName('projectImageMeasurementDiv');
             checkbox = new Element('input', {'type': 'checkbox','name':json[i+1].pk});
@@ -211,9 +246,9 @@
             measurement.place();
             
             if(addedImages[0].id == imgid)
-              measurement.changeColor('red');
+              measurement.setActive();
             else
-              measurement.changeColor('green');
+              measurement.nonActive();
               
             measurements.push(measurement);
             mainDiv.insert(measurementDiv);
@@ -367,7 +402,8 @@
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
             //style must be declared here, else prototype cannot handle it
-            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: fixed; z-index: 1000;'}).update(json[i].fields.name);
+            var pmmTooltipDiv = new Element('div').update(json[i].fields.name);
+            pmmTooltipDiv.setStyle('display:none; position: fixed; z-index: 1000;');
             pmmContainerDiv.insert(pmmTooltipDiv);
             
             $('possiblemeasurements').insert(pmmContainerDiv);
@@ -378,7 +414,7 @@
 						});
             
             pmmPointerIMG.observe('mouseover', showLandmarkTooltip);
-            pmmPointerIMG.observe('mouseout', hideLandmarkTooltip)
+            pmmPointerIMG.observe('mouseout', hideLandmarkTooltip);
           }
         }
       });

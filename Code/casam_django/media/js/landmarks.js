@@ -46,10 +46,12 @@ function LoadMMDD(id, imgID){
   $('lmmx').value = mousex;
   $('lmmy').value = mousey;
   $('imgid').value = imageID;
+  
   if(id != ""){
     $('option'+id).selected = true;
-    $('mmmeting').setStyle('visibility: hidden');
-    $('labelmmmeting').setStyle('visibility: hidden');
+    $('mmmeting').setStyle('visibility: visible');
+    $('mmmeting').disabled = 'disabled';
+    $('labelmmmeting').setStyle('visibility: visible');
   }
   else{
     $('mmmeting').setStyle('visibility: visible');
