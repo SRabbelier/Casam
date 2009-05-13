@@ -50,11 +50,12 @@ function LoadMMDD(id, imgID){
   if(id != ""){
     $('option'+id).selected = true;
     $('mmmeting').setStyle('visibility: visible');
-    $('mmmeting').disabled = 'disabled';
+    $('mmmeting').disabled = true;
     $('labelmmmeting').setStyle('visibility: visible');
   }
   else{
     $('mmmeting').setStyle('visibility: visible');
+    $('mmmeting').disabled = false;
     $('labelmmmeting').setStyle('visibility: visible');
   }
   $('lmdd').show();
