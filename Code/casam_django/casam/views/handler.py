@@ -109,7 +109,7 @@ class Handler(object):
     """Default implementation, returns the get form.
     """
 
-    return self.getGetForm()
+    return forms.Form(self.POST)
 
   def get(self):
     """No sane default get implementation, return error message.

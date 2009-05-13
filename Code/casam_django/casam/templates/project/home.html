@@ -531,7 +531,7 @@
 			movie_embed.writeAttribute('allowScriptAccess',"sameDomain");
 			movie_embed.writeAttribute('type',"application/x-shockwave-flash");
 			movie_embed.writeAttribute('pluginspage',"http://www.macromedia.com/go/getflashplayer");
-			movie_embed.writeAttribute('flashvars',"img_source="+img_url);
+			movie_embed.writeAttribute('flashvars',"img_source="+img_url+"&server_url={{ BASE_PATH }}bitmap_dump");
 
 			movie_object.insert(movie_embed);
 			$('big_images').update();
