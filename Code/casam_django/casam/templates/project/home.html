@@ -68,14 +68,6 @@
 				  	parentAddedImageObject.setOpacityForImage(value);
 			  	}
 			  });
-
-			  var deleteButton = new Element('img',{'src':'{{BASE_PATH}}media/img/delete.png'});
-			  deleteButton.addClassName('imageDeleteButton');
-			  Element.observe(deleteButton, 'click', function(){
-				  hideImage(parentAddedImageObject.id);
-			  });
-			  $('bottomDiv'+parentAddedImageObject.id).insert(deleteButton);
-        
         getImageMeasurements(parentAddedImageObject.id)
 		  }
 		  
@@ -107,6 +99,7 @@
       },
       restore:function(){
         this.pinDiv.hide();
+        $('mm'+this.potid).show();
       },
       changeColor:function(color){
         this.pinDiv.childElements()[0].src = "{{BASE_PATH}}media/img/pin_"+color+".gif";
@@ -114,6 +107,7 @@
       setActive:function(){
         this.changeColor('red');
         this.drag = makeDraggable(this.pinDiv,this.potid,this.imageid);
+        $('mm'+this.potid).hide();
       },
       nonActive:function(){
         this.changeColor('green');
@@ -128,7 +122,7 @@
 						        });
     }
 		var measurements = new Array();
-		
+			
 	  document.observe("dom:loaded", function()
 		{
       // Add tabs in whiteFrame
@@ -169,7 +163,7 @@
 		});
 
     function getImageMeasurements(imgid){
-    
+    //TODO: reset the potential measurement pins
       var url = '{{ BASE_PATH }}JSON/projectImageCurrentMeasurements/'+imgid+'?time='+new Date().getTime();
       new Ajax.Request(url, {
         method: 'get',
@@ -217,7 +211,7 @@
             var measurement = new Measurement(json[i+1].pk,json[i].pk,json[i].fields.name,imgid,pinDiv);
             var measurementDiv = new Element('div');
             measurementDiv.addClassName('projectImageMeasurementDiv');
-            checkbox = new Element('input', {'type': 'checkbox','name':json[i+1].pk});
+            checkbox = new Element('input', {'type': 'checkbox','name':json[i+1].pk, 'id': 'show'+json[i+1].pk});
             //when called insert, IE defaults his checkboxes to the default value (which is false).
             //so set the default to true
             checkbox.defaultChecked = true;
@@ -229,12 +223,10 @@
                   break;                  
                 }
               }
-              if(this.checked == true){
-                thismeasurement.place();          
-              }
-              else{
+              if(this.checked == true)
+                thismeasurement.place();      
+              else
                 thismeasurement.restore();
-              }
             });
             textspan = new Element('span');
             textspan.update(json[i].fields.name+' ('+json[i+1].fields.x+', '+json[i+1].fields.y+')')
@@ -425,6 +417,18 @@
 			var bottomDiv = new Element('div', {"id":"bottomDiv"+pictureJSON.pk});
 			    bottomDiv.addClassName('pictureContainerBottomDiv');
 			
+			var useCheck = new Element('input',{'type':'checkbox', 'id': 'use'+pictureJSON.pk});    
+      useCheck.observe('click', function(){
+				 	if(useCheck.checked == true)
+            showImage(pictureJSON.pk,pictureJSON.fields.name);
+          else
+            hideImage(pictureJSON.pk);
+				}
+			);
+			
+			leftDiv.insert(useCheck);
+			
+			
 			leftDiv.insert(new Element('img',{'src': base_path+'imageLoader/thumbnail/50/'+pictureJSON.pk}));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.added).addClassName('projectPictureInfo'));
@@ -434,20 +438,22 @@
 			else
 			 rightDiv.insert(new Element('span').update('Right').addClassName('projectPictureInfo'));
 			
-      var useLink = new Element('a',{'href':'#'}).update('Use ');
-			rightDiv.insert(useLink);
 			var paintoverLink = new Element('a',{'href':'#'}).update(' Paintover');
 			rightDiv.insert(paintoverLink);
 			$('tab_pictures').insert(mainDiv);
-			useLink.observe('click', function(){
-				 	showImage(pictureJSON.pk,pictureJSON.fields.name);
-				}
-			);
+			
 			paintoverLink.observe('click', function(){
 					loadEditScreen(pictureJSON.pk,pictureJSON.fields.name);
 				}
 			);
 			mainDiv.insert(leftDiv);
+		  //ugly IE fix for setting the checkboxes
+      for(var i = 0; i < addedImages.length; i++){
+        if(addedImages[i].id == pictureJSON.pk){
+          Element.writeAttribute(useCheck,'checked', true); 
+          break;
+        }
+      }
 			mainDiv.insert(rightDiv);
 			mainDiv.insert(bottomDiv);
 		}

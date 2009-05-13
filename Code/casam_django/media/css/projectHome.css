@@ -18,11 +18,11 @@
 .pictureContainerRightDiv {
 	float: left;
 	margin: 3px;
-	width:135px;
+	width: 120px;
 }
 .pictureContainerBottomDiv {
 	clear: both;
-	margin: 3px;
+	margin-left: 25px;
 }
 
 /* White frame */
@@ -92,7 +92,7 @@ img.smallPictureButton{
 	margin:0px;
 }
 
-  div.slider { float: left; width:170px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
+  div.slider { float: left; width:170px; margin: 5px 0 5px 4px; background-color:#ccc; height:10px; position: relative; }
   div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
 
 img.mmPointer{
