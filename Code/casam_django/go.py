@@ -10,7 +10,7 @@ def log_exception(*args, **kwds):
   logging.exception('Exception in request:')
 
 
-def main():
+def setupPath():
   HERE = os.path.abspath(__file__)
   HERE = os.path.join(os.path.dirname(HERE), '..')
   HERE = os.path.normpath(HERE)
@@ -24,15 +24,9 @@ def main():
 
 
   sys.path = VTKlib + PIL + WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
-  
 
-  print sys.path
-  if len(sys.argv) == 1:
-    sys.argv += ['runserver']
 
-  import manage
-  manage.main()
-
+def setupDatabase():
   from django.contrib.auth.models import Group
   try:
     gr1 = Group.objects.get(name='Beheerder')
@@ -44,6 +38,8 @@ def main():
     gr3 = Group(name='Onderzoeker')
     gr3.save()
 
+
+def setupDjango():
   from django.conf import settings
   settings.DEBUG = True
 
@@ -51,6 +47,19 @@ def main():
 
   # Log all exceptions detected by Django.
   django.core.signals.got_request_exception.connect(log_exception)
+
+
+def main():
+  setupPath()
+  setupDjango()
+  setupDatabase()
+
+  print sys.path
+  if len(sys.argv) == 1:
+    sys.argv += ['runserver']    
+    
+  import manage
+  manage.main()
 
 
 if __name__ == '__main__':
