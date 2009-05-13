@@ -299,7 +299,7 @@
           	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
           	pmmContainerDiv.insert(pmmTextDiv);
             //style must be declared here, else prototype cannot handle it
-            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: absolute; z-index: 5;'}).update(json[i].fields.name);
+            var pmmTooltipDiv = new Element('div',{'style':'display:none; position: fixed; z-index: 1000;'}).update(json[i].fields.name);
             pmmContainerDiv.insert(pmmTooltipDiv);
             
             $('possiblemeasurements').insert(pmmContainerDiv);
@@ -588,7 +588,7 @@
 
 <!-- POPUP -->
   
-<div id="lmdd" style="display: none; position: fixed; background-color: white; color: black; padding: 5px;">
+<div id="lmdd" style="display: none; position: absolute; background-color: white; color: black; padding: 5px;">
 	<div style="background-color: #ccc;">Store Landmark</div>
 	<label for="mmx">x: </label><input type="text" style="width: 25px;" id="lmmx" name="mmx" value="" />
 	<label for="mmy">y: </label><input type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
