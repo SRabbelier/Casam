@@ -22,6 +22,10 @@ function getProjectImages()
 			addIMG.addClassName('addIMG');
 			addContainer.insert(addIMG);
 
+			addIMG.observe('click',function(){
+				location.href='{{BASE_PATH}}fileupload/{{id}}';
+			});
+			
 			addOverlay = new Element('div');
 			addOverlay.addClassName('addOverlay');
 			addContainer.insert(addOverlay);
