@@ -14,6 +14,7 @@
 	top:76px;
 	left:76px;
 	position:absolute;
+	z-index:1;
 }
 .deleteIMG{
 	display:block;
