@@ -15,7 +15,9 @@ from casam.models import Measurement
 from casam.models import PotentialMeasurement
 from casam.models import OriginalImage
 from casam.views import handler
+from django.conf import settings
 
+import Image
 
 class LandmarkForm(forms.Form):
   """TODO: dosctring
@@ -25,6 +27,8 @@ class LandmarkForm(forms.Form):
   x = forms.IntegerField(min_value=-5000, max_value=5000)
   y = forms.IntegerField(min_value=-5000, max_value=5000)
   imgid = forms.CharField(widget = forms.widgets.HiddenInput())
+  imagewidth = forms.CharField(widget = forms.widgets.HiddenInput())
+  imageheight = forms.CharField(widget = forms.widgets.HiddenInput())
 
 
 class LandmarkSaver(handler.Handler):
@@ -54,11 +58,20 @@ class LandmarkSaver(handler.Handler):
     except Measurement.DoesNotExist:
       meting = None
 
+    location = "./" + settings.DATADIR + "%s" % (img.path)
+    im = Image.open(location)
+    piecex = float(self.cleaned_data['imagewidth']) / im.size[0]
+    piecey = float(self.cleaned_data['imageheight']) / im.size[1]
+    
+    
+
     properties = dict(
         mogelijkemeting=mmeting,
         image=img,
-        x=self.cleaned_data['x'],
-        y=self.cleaned_data['y'],
+        x=int(float(self.cleaned_data['x'])/piecex),
+        y=int(float(self.cleaned_data['y'])/piecey),
+        imagewidth=im.size[0],
+        imageheight=im.size[1]
         )
     
     punt = Measurement(**properties)
@@ -71,6 +84,8 @@ class LandmarkSaver(handler.Handler):
     context['mm'] = mmeting.name
     context['name'] = img.name
     context['id'] = img.id
+    context['piecex'] = piecex
+    context['piecey'] = piecey
     content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
 
     return http.HttpResponse(content)

@@ -29,7 +29,7 @@ function saveLandMark(){
    savelm.open('post', base_path + 'landmarks/save');
    savelm.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
    savelm.onreadystatechange = handleResponseSaveLandmark;
-   savelm.send('x='+escape(mousex)+'&y='+escape(mousey)+'&mm='+escape(mm)+'&imgid='+escape(imageID));
+   savelm.send('x='+escape(mousex)+'&y='+escape(mousey)+'&mm='+escape(mm)+'&imgid='+escape(imageID)+'&imagewidth='+$('addedImage_'+imageID).width+'&imageheight='+$('addedImage_'+imageID).height);
   }
 }
 
@@ -46,7 +46,6 @@ function LoadMMDD(id, imgID){
   $('lmmx').value = mousex;
   $('lmmy').value = mousey;
   $('imgid').value = imageID;
-  
   if(id != ""){
     $('option'+id).selected = true;
     $('mmmeting').setStyle('visibility: visible');

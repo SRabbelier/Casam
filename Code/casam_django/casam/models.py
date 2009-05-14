@@ -63,6 +63,8 @@ class Measurement(models.Model):
   mogelijkemeting = models.ForeignKey('PotentialMeasurement')
   x = models.CharField(max_length=4)
   y = models.CharField(max_length=4)
+  imagewidth = models.CharField(max_length=4)
+  imageheight = models.CharField(max_length=4)
 
 
 class UserProfile(models.Model):
