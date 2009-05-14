@@ -1,4 +1,5 @@
 from PIL import Image
+import time
 
 def handle_bitmap_stream(dump):
   
@@ -13,9 +14,7 @@ def handle_bitmap_stream(dump):
   tail = dump[start_data+1:]
   width = int(coords[:coords.find("x")])
   height = int(coords[coords.find("x")+1:])
-  
-  print dump
-  
+    
   # Make decode bit-stream
   stream = "" 
  
@@ -37,16 +36,16 @@ def handle_bitmap_stream(dump):
       stream += chr(255)
       i -= 1
       
-  print stream
-
+  print "got dump"
+  holdit = time.time()
 
   im = Image.fromstring("L",(width,height), stream, "raw", "L")
 
-  print "hold it"
-  
-  im.save("test.bmp");
+  im.save("test.gif",transparency=0);
 
   print "image has been saved!"
+  print "it took:" + (time.time() - holdit) + "seconds"
+
 
 #  brushStroke = self.cleaned_data['brushStroke']
 #  fileName = self.cleaned_data['fileName']
