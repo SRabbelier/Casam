@@ -218,17 +218,18 @@
         //type: p is for positioning landmarks, r is for repositioning landmarks
         this.type = type;       
         this.potid = lmid;
-        this.lmname = lmname;
-        this.measurementid = '';        
+        this.lmname = lmname; 
+        this.metingid = '';   
         this.oldx = '';
         this.oldy = '';
         this.newx = '';
         this.newy = '';
         this.saved = false;
         this.changeDiv = '';
+        this.imageid = addedImages[0].id;
       },
       reposition: function(mid, x, y){
-        this.measurementid = mid;
+        this.metingid = mid;
         this.oldx = this.posx;
         this.oldy = this.posy;
         this.posx = x;
@@ -238,10 +239,19 @@
         this.posx = x;
         this.posy = y;                       
       },
-      save: function(){
+      forceSave: function(){
         this.saved = true;
         this.changeDiv.removeClassName('unsavedChangeDiv');   
-        this.changeDiv.addClassName('savedChangeDiv');            
+        this.changeDiv.addClassName('savedChangeDiv');                    
+      },
+      save: function(){
+        this.forceSave();
+        mid = this.metingid;
+        changes.each(function(item){
+          if (item.metingid == mid){
+            item.forceSave();                                  
+          }
+        }); 
       },
       add: function(){
         this.changeDiv = new Element('div');
@@ -254,6 +264,11 @@
         else
           this.changeDiv.update('Landmark '+this.lmname+' has been placed at ('+this.posx+','+this.posy+')');              
         $('ajax_result').insert(this.changeDiv);
+      },
+      undo: function(){
+        $('ajax_result').childElements()[$('ajax_result').childElements().length-1].remove();
+        undoLastLandmarkChange(this.oldx, this.oldy, this.potid, this.imageid, this.metingid);
+        changes.pop();
       }                                                                 
     });               
     var changes = new Array();            
@@ -296,7 +311,15 @@
 			Event.observe('addMeasurementLink','click',function(){
         popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
       });
+      Event.observe('undoLink','click',function(){
+        undoLastChange();
+      });
 		});
+    
+    function undoLastChange(){
+      var c = changes[changes.length-1];
+      c.undo();
+    }
 
     function getImageMeasurements(imgid){
     //TODO: reset the potential measurement pins
@@ -380,8 +403,9 @@
             mainDiv.insert(measurementDiv);
           }
           
-          if ($('bottomDiv'+imgid).childElements().length == 3)
+          if ($('bottomDiv'+imgid).childElements().length == 3){
             $('bottomDiv'+imgid).childElements()[2].innerHTML = mainDiv.innerHTML;
+          }
           else{
             var tab_measurements = newTab('Measurements', mainDiv, true);
             tab_measurements.addClassName('imgSubTabMeasurements');
@@ -614,11 +638,29 @@
 		}
     
     function closePopupAndReloadCurrentMeasurements(){
-      //$('currentmeasurements').update();
       img = addedImages[0]
       getImageMeasurements(img.id);
       new Effect.Highlight('bottomDiv'+img.id);
-    }                                                      
+    }  
+    
+    function reloadUndoneChange(metingid,posx,posy){
+      var pin = ''
+      for(var i = 0; i < measurements.length; i++){
+        if (measurements[i].id == metingid){
+          pin = measurements[i];
+          break;
+        }
+      }
+      if (pin != ''){
+        pin.calcpieces();
+        pin.setPlace(posx/pin.piecex,posy/pin.piecey);
+        pin.place();
+      }
+    }  
+    
+    function reloadUndonePlace(){
+      alert('NEEDS SOME WORK');
+    }                                                  
 
 		function closePopupAndReloadPotentialMeasurements(){
       getProjectPotentialMeasurements();
@@ -830,6 +872,11 @@
 		<input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
 		<tr><th>Changes</th></tr>
 		<tr><td id="ajax_result"></td></tr>
+    <tr><td>
+        <a href="#" id="undoLink">
+        <img src="{{ BASE_PATH }}media/img/undo.jpg" alt="Undo last change" border="0" />
+        </a>
+    </td></tr>
 	</table>
 </div>
 

@@ -2,15 +2,23 @@ var savelm = createRequestObject();
 
 var savex;
 var savey;
-function handleResponseSaveLandmark() {
-    if(savelm.readyState == 4){
-      var response = savelm.responseText;
-        closePopupAndReloadCurrentMeasurements();
-        var c = changes.pop();
-        c.save();
-        changes.push(c);
-        $('lmdd').hide();
-    }
+
+function undoLastLandmarkChange(x, y, potid, imgid, mid){
+  new Ajax.Request(base_path + 'landmarks/save',{
+  	method:'post',
+  	parameters:{x:escape(x),
+  							y:escape(y),
+  							mm:escape(potid),
+  							imgid:escape(imgid),
+  							imagewidth:$('addedImage_'+imgid).width,
+  							imageheight:$('addedImage_'+imgid).height},
+  	onSuccess:function(){
+  		if (mid == '')
+  			reloadUndonePlace();
+  		else
+  			reloadUndoneChange(mid,x,y);
+  	}
+  });
 }
 
 function saveLandMark(){
@@ -49,10 +57,22 @@ function saveLandMark(){
     alert("Please select a landmark!");
   }
   else{
-   savelm.open('post', base_path + 'landmarks/save');
-   savelm.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-   savelm.onreadystatechange = handleResponseSaveLandmark;
-   savelm.send('x='+escape(mousex)+'&y='+escape(mousey)+'&mm='+escape(mm)+'&imgid='+escape(imageID)+'&imagewidth='+$('addedImage_'+imageID).width+'&imageheight='+$('addedImage_'+imageID).height);
+	  new Ajax.Request(base_path + 'landmarks/save',{
+	  	method:'post',
+	  	parameters:{x:escape(mousex),
+	  							y:escape(mousey),
+	  							mm:escape(mm),
+	  							imgid:escape(imageID),
+	  							imagewidth:$('addedImage_'+imageID).width,
+	  							imageheight:$('addedImage_'+imageID).height},
+	  	onSuccess:function(){
+	  		closePopupAndReloadCurrentMeasurements();
+      	var c = changes.pop();
+      	c.save();
+      	changes.push(c);
+      	$('lmdd').hide();
+	  	}
+	  });   
   }
 }
 

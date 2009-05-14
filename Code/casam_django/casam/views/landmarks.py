@@ -88,4 +88,4 @@ class LandmarkSaver(handler.Handler):
 #    context['piecey'] = piecey
 #    content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
 
-    return http.HttpResponse()
+    return http.HttpResponse('success')
