@@ -49,7 +49,7 @@ function getProjectImages()
 				var containerOverlay = new Element('div');
 				containerOverlay.addClassName('containerOverlay');
 				imageContainer.insert(containerOverlay);
-				makeDeleteButtonEffect(containerOverlay,deleteIMG);
+				makeDeleteButtonEffect(imageContainer,deleteIMG);
 				makeDeleteFunction(containerOverlay,json[i].pk,json[i].fields.name,imageContainer);
 				$('images').insert(imageContainer);
 				
