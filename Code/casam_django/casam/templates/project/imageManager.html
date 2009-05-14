@@ -59,18 +59,7 @@ function getProjectImages()
 
 	});
 	function makeDeleteFunction(clickableElement,id,imageName,containerToDelete){
-		clickableElement.observe('click',function(){
-			if(confirm('Do you want to delete image '+imageName)){
-				var url = '{{ BASE_PATH }}AJaX/deleteImages/?time='+new Date().getTime();
-				new Ajax.Request(url, {
-					  method: 'get',
-					  parameters: {'imageID': id},
-					  onSuccess: function(transport, json) {
-						  Effect.Fade(containerToDelete);
-					  },
-					  onFailure:function(){
-						  alert('Something went wrong while deleting image '+imageName);
-					  }
+		clickableElement.observe('click',
 				});
 			}
 		});
