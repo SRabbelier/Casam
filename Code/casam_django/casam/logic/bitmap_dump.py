@@ -1,13 +1,16 @@
 from PIL import Image
+from django.conf import settings
+from casam.models import Bitmap
 import time
 
-def handle_bitmap_stream(dump):
+
+def handle_bitmap_stream(dump,image_id,original_image):
   
   if dump.find("_scanline:") != 0:
     print "wrong dump"
     return
   
-  
+  holdit = time.time()
   
   start_data = dump.find("#")
   coords = dump[10:start_data]
@@ -36,15 +39,23 @@ def handle_bitmap_stream(dump):
       stream += chr(255)
       i -= 1
       
-  print "got dump"
-  holdit = time.time()
-
   im = Image.fromstring("L",(width,height), stream, "raw", "L")
 
-  im.save("test.gif",transparency=0);
+  image_name = image_id +"_"+str(holdit)+".gif"
+  im.save(settings.DATADIR+image_name,transparency=0);
+  
+  # Create associated measurement
+  properties = dict(
+    image = original_image,
+    imagewidth = int(width),
+    imageheight = int(height),
+    path = image_name
+  )  
+  
+  db_bitmap = Bitmap(**properties)
+  db_bitmap.save()
 
-  print "image has been saved!"
-  print "it took:" + (time.time() - holdit) + "seconds"
+  return image_name
 
 
 #  brushStroke = self.cleaned_data['brushStroke']

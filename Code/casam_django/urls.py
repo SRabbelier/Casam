@@ -12,10 +12,7 @@ import casam.views.fileupload
 import casam.views.landmarks
 import casam.views.user
 import casam.views.login
-import casam.views.draw
 import casam.logic.imageloader
-import casam.views.sjorsdraw
-import casam.views.paint
 import casam.views.bitmap_dump
 import casam.views.tag
 import casam.views.potential_measurement
@@ -31,7 +28,6 @@ urlpatterns = patterns('',
     (r'^annotation/show/%s$' % UUID, casam.views.annotation.ViewAnnotation()),
     (r'^annotation/new/%s$' % UUID, casam.views.annotation.NewAnnotation()),
     (r'^annotation/list/%s$' % UUID, casam.views.annotation.ListAnnotations()),
-    (r'^draw', casam.views.draw.Main()),
     (r'^data/%s' % IMG_NAME, casam.views.fileupload.ViewFile()),
     (r'^fileupload/%s$' % ID_STR, casam.views.fileupload.FileUpload()),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),

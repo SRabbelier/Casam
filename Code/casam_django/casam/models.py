@@ -1,7 +1,5 @@
 from django.db import models
-
 from django.contrib.auth.models import User
-
 from django_extensions.db.fields import UUIDField
 
 
@@ -65,14 +63,21 @@ class Measurement(models.Model):
   y = models.CharField(max_length=4)
   imagewidth = models.CharField(max_length=4)
   imageheight = models.CharField(max_length=4)
-
+  
+class Bitmap(models.Model):
+  id = UUIDField(primary_key=True, auto=True)
+  image = models.ForeignKey('OriginalImage')
+  imagewidth = models.CharField(max_length=4)
+  imageheight = models.CharField(max_length=4)
+  path = models.CharField(max_length=200)
+  added = models.DateField(auto_now_add=True)
+  last_modified = models.DateField(auto_now=True)
 
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   user = models.ForeignKey(User, unique=True)  
   read = models.ManyToManyField('Project', related_name='ReadProject')
   write = models.ManyToManyField('Project', related_name='WriteProject')
-
 
 class Annotation(models.Model):
   id = UUIDField(primary_key=True, auto=True)

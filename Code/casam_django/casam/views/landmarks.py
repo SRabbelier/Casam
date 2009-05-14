@@ -63,16 +63,14 @@ class LandmarkSaver(handler.Handler):
     piecex = float(self.cleaned_data['imagewidth']) / im.size[0]
     piecey = float(self.cleaned_data['imageheight']) / im.size[1]
     
-    
-
     properties = dict(
-        mogelijkemeting=mmeting,
-        image=img,
-        x=int(float(self.cleaned_data['x'])/piecex),
-        y=int(float(self.cleaned_data['y'])/piecey),
-        imagewidth=im.size[0],
-        imageheight=im.size[1]
-        )
+      mogelijkemeting=mmeting,
+      image=img,
+      x=int(float(self.cleaned_data['x'])/piecex),
+      y=int(float(self.cleaned_data['y'])/piecey),
+      imagewidth=im.size[0],
+      imageheight=im.size[1]
+    )
     
     punt = Measurement(**properties)
     if meting:
