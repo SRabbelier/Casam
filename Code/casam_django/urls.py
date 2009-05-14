@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     (r'^login', casam.views.login.Login()),
     (r'^logout', casam.views.login.Logout()),
     (r'^project/new$', casam.views.project.NewProject()),
+    (r'^project/imageManager/%s$' % ID_STR, casam.views.project.ImageManager()),
     (r'^project/show/%s$' % ID_STR, casam.views.project.Home()),
     (r'^pm/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurement()),
     (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
@@ -64,6 +65,7 @@ urlpatterns = patterns('',
     
     #AJaX Actions
     (r'^AJaX/deleteProjects/$', casam.views.main.deleteProjects()),
+    (r'^AJaX/deleteImages/$', casam.views.main.deleteImages()),
 )
 
 if settings.DEBUG:

@@ -1,0 +1,103 @@
+{% extends 'popup.html' %}
+
+{% block title %}Picture management{% endblock title %}
+{% block head%}
+<link rel="stylesheet" href="{{ BASE_PATH }}media/css/imageManager.css">
+
+<script type="text/javascript">
+function getProjectImages()
+{
+	var url = '{{ BASE_PATH }}JSON/projectImages/{{id}}?time='+new Date().getTime();
+	// notice the use of a proxy to circumvent the Same Origin Policy
+	new Ajax.Request(url, {
+	  method: 'get',
+	  onSuccess: function(transport, json) {
+		  
+	    var json = transport.responseText.evalJSON();
+
+			addContainer = new Element('div');
+			addContainer.addClassName('imageContainer');
+			addContainer.addClassName('addContainer');
+			addIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/add_48.png'});
+			addIMG.addClassName('addIMG');
+			addContainer.insert(addIMG);
+
+			addOverlay = new Element('div');
+			addOverlay.addClassName('addOverlay');
+			addContainer.insert(addOverlay);
+			addOverlay.observe('click',function(){
+				location.href='{{BASE_PATH}}fileupload/{{id}}';
+			});
+			
+			$('images').insert(addContainer);
+	    
+			for(i = 0; i<json.length; i++){
+				var imageContainer = new Element('div');
+				imageContainer.setStyle({backgroundImage:'url({{BASE_PATH}}imageLoader/thumbnail/200/'+json[i].pk+')'});
+				imageContainer.addClassName('imageContainer');
+				var deleteIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/delete_48.png'});
+				deleteIMG.addClassName('deleteIMG');
+				imageContainer.insert(deleteIMG);
+
+				var informationContainer = new Element('div');
+				informationContainer.addClassName('informationContainer');
+				informationContainer.insert(json[i].fields.name);
+				informationContainer.insert(new Element('br'));
+				informationContainer.insert(json[i].fields.added);
+				imageContainer.insert(informationContainer);
+				
+				var containerOverlay = new Element('div');
+				containerOverlay.addClassName('containerOverlay');
+				imageContainer.insert(containerOverlay);
+				makeDeleteButtonEffect(containerOverlay,deleteIMG);
+				makeDeleteFunction(containerOverlay,json[i].pk,json[i].fields.name,imageContainer);
+				$('images').insert(imageContainer);
+				
+			}
+			
+		}
+
+	});
+	function makeDeleteFunction(clickableElement,id,imageName,containerToDelete){
+		clickableElement.observe('click',function(){
+			if(confirm('Do you want to delete image '+imageName)){
+				var url = '{{ BASE_PATH }}AJaX/deleteImages/?time='+new Date().getTime();
+				new Ajax.Request(url, {
+					  method: 'get',
+					  parameters: {'imageID': id},
+					  onSuccess: function(transport, json) {
+						  Effect.Fade(containerToDelete);
+					  },
+					  onFailure:function(){
+						  alert('Something went wrong while deleting image '+imageName);
+					  }
+				});
+			}
+		});
+	}
+	function makeDeleteButtonEffect(hoverElement,image){
+		image.hide();
+		hoverElement.observe('mouseover',function(){
+			Effect.Appear(image,{'queue':'end','duration':0.2});
+		});
+		hoverElement.observe('mouseout',function(){
+			Effect.Fade(image,{'queue':'end','duration':0.2});
+		});
+	}
+}
+
+	document.observe('dom:loaded',function(){
+			getProjectImages();
+			var closeButton = new Element('input',{'type':'button','value':'Close image manager'});
+			$('closeContainer').insert(closeButton);
+			closeButton.observe('click',function(){
+				parent.closePopupAndReloadPictures();
+			});
+		});
+</script>
+{%endblock head%}
+{% block body %}
+	<div><h1>Image manager</h1></div>
+	<div id="images"></div>
+	<div id="closeContainer"></div>
+{% endblock body %}

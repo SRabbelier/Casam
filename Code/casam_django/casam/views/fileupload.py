@@ -47,12 +47,15 @@ class FileUpload(handler.Handler):
     id_str = self.kwargs['id_str']
 
     image_logic.handle_uploaded_image(file, name, is_left, id_str)
-
+    context['id'] = id_str
     content = loader.render_to_string('main/succes.html', dictionary=context)
     return http.HttpResponse(content)
 
   def get(self):
     context = self.getContext()
+    id_str = self.kwargs['id_str']
+    context['id'] = id_str
+
     content = loader.render_to_string('main/fileupload.html', dictionary=context)
     return http.HttpResponse(content)
 

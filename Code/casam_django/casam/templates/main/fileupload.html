@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Leuk geprobeerd</title>
+{% extends 'popup.html' %}
+
+{% block title %}Picture management{% endblock title %}
+{% block head%}
+
 <style type="text/css">
 form ul {
 	list-style-type: none;
@@ -14,14 +14,13 @@ form ul li {
 	display: inline;
 }
 </style>
-</head>
-<body>
+{%endblock head%}
+{% block body %}
 <form enctype="multipart/form-data" method="post">
 <table>
 {{ form }}
 <tr><td><input type="submit" value="upload" /></td></tr>
 </table>
-
+<a href="{{BASE_PATH}}project/imageManager/{{id}}">Back to image manager</a>
 </form>
-</body>
-</html>
+{%endblock body%}

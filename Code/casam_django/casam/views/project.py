@@ -33,19 +33,15 @@ class Home(handler.Handler):
   def get(self):
     context = self.getContext()
     id_str = self.kwargs['id_str']
-    img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
 
     annotations = Annotation.objects.select_related().order_by(
         'project__name').filter(project__id=id_str)
 
     project = Project.objects.filter(id=id_str).get()
     #punten = Measurement.objects.select_related().filter(project__id=id_str)
-    mmetings = PotentialMeasurement.objects.filter(project__id=id_str)
 
     context['annotations'] = annotations
-    context['images'] = img
     context['id'] = id_str
-    context['mmetings'] = mmetings
     #context['punten'] = punten
     context['project'] = project
 
@@ -79,6 +75,32 @@ class NewProject(handler.Handler):
     context = self.getContext()
     content = loader.render_to_string('project/new.html', dictionary=context)
     return http.HttpResponse(content)
+
+
+class ImageManager(handler.Handler):
+  """Handler for the home page.
+  """
+
+  def authenticated(self):
+    proj = self.kwargs['id_str']
+    return self.profile and proj in [i.id for i in self.profile.read.all()]
+
+  def get(self):
+    context = self.getContext()
+    id_str = self.kwargs['id_str']
+    img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
+
+    project = Project.objects.filter(id=id_str).get()
+    #punten = Measurement.objects.select_related().filter(project__id=id_str)
+
+    context['images'] = img
+    context['id'] = id_str
+
+
+    content = loader.render_to_string('project/imageManager.html', dictionary=context)
+
+    return http.HttpResponse(content)
+
 
 
 def projectImagesJSON(request,id_str):

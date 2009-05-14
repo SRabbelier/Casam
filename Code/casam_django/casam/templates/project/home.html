@@ -478,11 +478,11 @@
 					toolbar.setStyle("clear:both;float:right;");
 					var addLink = new Element('a',{'href':'#'});
 
-					var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/add.jpg','id':'addPictureButton','class':'smallPictureButton'});
+					var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
 					addLink.insert(addImage);
 					toolbar.insert(addLink);
 					Event.observe(addLink,'click',function(){
-						popupIFrame('{{BASE_PATH}}fileupload/{{ id }}',350,200);
+						popupIFrame('{{BASE_PATH}}project/imageManager/{{ id }}',670,400);
 					});
 					//toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
 					//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";

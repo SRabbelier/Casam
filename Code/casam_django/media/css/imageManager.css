@@ -1,0 +1,39 @@
+.imageContainer{
+	width:200px;
+	height:200px;
+	float:left;
+	margin:5px;
+	cursor:pointer;
+	position:relative;
+}
+.addContainer{
+	background-color:grey;
+}
+.addIMG{
+	display:block;
+	top:76px;
+	left:76px;
+	position:absolute;
+}
+.deleteIMG{
+	display:block;
+	top:76px;
+	left:76px;
+	position:absolute;
+}
+.containerOverlay, .addOverlay{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:200px;
+	height:200px;
+}
+
+#closeContainer{
+	clear:both;	
+}
+
+.informationContainer{
+	width:200px;
+	background-color:white;
+}

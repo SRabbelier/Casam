@@ -86,3 +86,14 @@ class deleteProjects(handler.Handler):
     for projectID in projectIDs:
       Project.objects.all().get(id = projectID).delete()
     return http.HttpResponse("success")
+  
+class deleteImages(handler.Handler):
+  def getPostForm(self):
+    return SelectTagForm(self.POST)
+  
+  def get(self):
+    #print self.cleaned_data['tags']
+    imageIDs = self.GET.getlist('imageID')
+    for imageID in imageIDs:
+      OriginalImage.objects.all().get(id = imageID).delete()
+    return http.HttpResponse("success")
