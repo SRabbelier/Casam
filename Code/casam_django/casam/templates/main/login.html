@@ -7,12 +7,9 @@
 	<link rel="stylesheet" href="{{ BASE_PATH }}media/css/login.css">
 	<script language="javascript">
 
-  function load() {
-    if (document.forms.length > 0)
-	    document.forms[0].elements[0].select();
-  }
-
-  document.observe("dom:loaded", load);
+  document.observe("dom:loaded", function(){
+		$('id_username').focus();
+  });
 
   </script>
 {% endblock head %}
