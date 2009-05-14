@@ -105,27 +105,31 @@
         this.left = 0;
         this.top = 0;
         
+        this.piecex = 0;
+        this.piecey = 0;
+        
         this.drag = null;
 		  },
       setPlace:function(x,y){
-        piecex = $('addedImage_'+this.imageid).width / this.originalWidth;
-        piecey = $('addedImage_'+this.imageid).height / this.originalHeight;
+        this.calcpieces();
         this.x = x;
         this.y = y;
-        this.left = x*piecex;
-        this.top = y*piecey;
+        this.left = x*this.piecex;
+        this.top = y*this.piecey;
       },
       place:function(){
         this.pinDiv.setStyle('position: absolute; left: '+this.left+'px;top: '+this.top+'px;');
         this.pinDiv.show();
       },
       replace:function(){
-      
-        piecex = $('addedImage_'+this.imageid).width / this.originalWidth;
-        piecey = $('addedImage_'+this.imageid).height / this.originalHeight;
-        this.left = this.x * piecex;
-        this.top = this.y * piecey;
+        this.calcpieces();
+        this.left = this.x * this.piecex;
+        this.top = this.y * this.piecey;
         this.place();
+      },
+      calcpieces:function(){
+        this.piecex = $('addedImage_'+this.imageid).width / this.originalWidth;
+        this.piecey = $('addedImage_'+this.imageid).height / this.originalHeight;                    
       },
       restore:function(){
         this.pinDiv.hide();
@@ -139,7 +143,7 @@
       },
       setActive:function(){
         this.changeColor('red');
-        this.drag = makeDraggable(this.pinDiv,this.potid,this.imageid);
+        this.drag = makeDraggable(this,this.pinDiv,this.potid,this.imageid);
         $('mm'+this.potid).hide();
       },
       nonActive:function(){
@@ -148,11 +152,24 @@
           this.drag.destroy();
       }
       });
-		function makeDraggable(pinDiv,potid,imageid){
-      return new Draggable(pinDiv, { onDrag: function(element,event) { pinDiv.childElements()[1].hide(); }, onEnd: function() {
-                        LoadMMDD(potid,imageid); 
-							         }
-						        });
+		function makeDraggable(measurement,pinDiv,potid,imageid){
+      return new Draggable(pinDiv, { 
+        onStart: function(){
+          var c = new Change('r', potid, measurement.name);
+          c.position(Math.round(measurement.left), Math.round(measurement.top));
+          changes.push(c);                
+        },
+        onDrag: function(element,event){ 
+          pinDiv.childElements()[1].hide();
+        }, 
+        onEnd: function() {
+          LoadMMDD(potid,imageid); 
+          var c = changes.pop();
+          c.reposition(measurement.id, $('lmmx').value, $('lmmy').value);
+          c.add();
+          changes.push(c);
+				}
+			});
     }
 		var measurements = new Array();
     
@@ -195,6 +212,51 @@
       }
     });
     var checkboxes = new Array();
+    
+    var Change = Class.create({
+      initialize: function(type, lmid, lmname){
+        //type: p is for positioning landmarks, r is for repositioning landmarks
+        this.type = type;       
+        this.potid = lmid;
+        this.lmname = lmname;
+        this.measurementid = '';        
+        this.oldx = '';
+        this.oldy = '';
+        this.newx = '';
+        this.newy = '';
+        this.saved = false;
+        this.changeDiv = '';
+      },
+      reposition: function(mid, x, y){
+        this.measurementid = mid;
+        this.oldx = this.posx;
+        this.oldy = this.posy;
+        this.posx = x;
+        this.posy = y;
+      },
+      position: function(x, y){
+        this.posx = x;
+        this.posy = y;                       
+      },
+      save: function(){
+        this.saved = true;
+        this.changeDiv.removeClassName('unsavedChangeDiv');   
+        this.changeDiv.addClassName('savedChangeDiv');            
+      },
+      add: function(){
+        this.changeDiv = new Element('div');
+        if (this.saved)
+          this.changeDiv.addClassName('savedChangeDiv');
+        else
+          this.changeDiv.addClassName('unsavedChangeDiv');
+        if (this.type == 'r')
+          this.changeDiv.update('Landmark '+this.lmname+' has moved from ('+this.oldx+','+this.oldy+') to ('+this.posx+','+this.posy+')');
+        else
+          this.changeDiv.update('Landmark '+this.lmname+' has been placed at ('+this.posx+','+this.posy+')');              
+        $('ajax_result').insert(this.changeDiv);
+      }                                                                 
+    });               
+    var changes = new Array();            
 			
 	  document.observe("dom:loaded", function()
 		{
@@ -205,7 +267,7 @@
       $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
       $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
       $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
-      $('rightFrame_content').insert(newTab('Transparency', $('tab_attributes'), false));
+      $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
 
 		  // Add mouse listener for image
       Event.observe('big_images','mousemove', getMouseXY);
@@ -471,8 +533,13 @@
             
             $('possiblemeasurements').insert(pmmContainerDiv);
 
-            new Draggable('mm'+json[i].pk, { onEnd: function(element,event) {
-						    LoadMMDD(event.target.id.slice(2), addedImages[0].id) 
+            new Draggable('mm'+json[i].pk, { 
+              onEnd: function(element,event) {
+						    LoadMMDD(event.target.id.slice(2), addedImages[0].id);
+                var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
+                c.position($('lmmx').value, $('lmmy').value);
+                c.add();
+                changes.push(c);
 							}
 						});
           }
@@ -761,7 +828,7 @@
 		<tr><th>Coordinates</th></tr>
 		<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
 		<input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
-		<tr><th>Results</th></tr>
+		<tr><th>Changes</th></tr>
 		<tr><td id="ajax_result"></td></tr>
 	</table>
 </div>

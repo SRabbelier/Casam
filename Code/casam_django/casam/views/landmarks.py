@@ -79,13 +79,13 @@ class LandmarkSaver(handler.Handler):
       punt.id = meting.id;
     punt.save();
 
-    context['x'] = punt.x
-    context['y'] = punt.y
-    context['mm'] = mmeting.name
-    context['name'] = img.name
-    context['id'] = img.id
-    context['piecex'] = piecex
-    context['piecey'] = piecey
-    content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
+#    context['x'] = punt.x
+#    context['y'] = punt.y
+#    context['mm'] = mmeting.name
+#    context['name'] = img.name
+#    context['id'] = img.id
+#    context['piecex'] = piecex
+#    context['piecey'] = piecey
+#    content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
 
-    return http.HttpResponse(content)
+    return http.HttpResponse()

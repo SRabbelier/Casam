@@ -120,3 +120,11 @@ div.mmText{
 .imgSubTabMeasurements{
   padding-top: 23px;
 }
+
+div.unsavedChangeDiv{
+  background-color: #ff8;								  
+}								  
+
+div.savedChangeDiv{
+  background-color: none;									
+}									

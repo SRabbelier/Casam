@@ -2,13 +2,14 @@ var savelm = createRequestObject();
 
 var savex;
 var savey;
-var mmid;
 function handleResponseSaveLandmark() {
     if(savelm.readyState == 4){
-        var response = savelm.responseText;
-          $('ajax_result').update(response);
-          closePopupAndReloadCurrentMeasurements();
-          $('lmdd').hide();
+      var response = savelm.responseText;
+        closePopupAndReloadCurrentMeasurements();
+        var c = changes.pop();
+        c.save();
+        changes.push(c);
+        $('lmdd').hide();
     }
 }
 
@@ -20,7 +21,29 @@ function saveLandMark(){
   var imageID = $('imgid').value;
   savex = mousex*1+viewportOffset.left*1;
   savey = mousey*1+viewportOffset.top*1;
-  mmid = mm;
+  
+  if (!$('mmmeting').disabled){ 
+  	found = false;
+  	measurement = null;
+  	for(var i = 0; i < measurements.length; i++){
+  		if(measurements[i].potid == mm && measurements[i].imageid == imageID){
+  			found = true;
+  			measurement = measurements[i];
+  			break;
+  		}
+  	};
+  	if(found){
+	  	var c = new Change('r', mm, $('mmmeting').options[$('mmmeting').selectedIndex].text);
+			c.position(Math.round(measurement.left), Math.round(measurement.top));
+			c.reposition(measurement.id, mousex, mousey);
+  	}
+  	else{
+  		var c = new Change('p', mm, $('mmmeting').options[$('mmmeting').selectedIndex].text);
+  		c.position(mousex, mousey);
+  	}
+	 	c.add();
+		changes.push(c);
+  }
   
   if(mm == "" || mousex == "" || mousey == ""){
     alert("Please select a landmark!");
