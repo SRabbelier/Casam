@@ -573,22 +573,29 @@
     
     function createPotentialMeasurement(potid,potname){
       var pmmContainerDiv = new Element('div', {'id':'potmeas_'+potid});
-      var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+potid),'class':'mmPointer'});
+      var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+potid)});
+      pmmPointerIMG.addClassName('mmPointer');
       pmmContainerDiv.insert(pmmPointerIMG);
       var json = json;
       
       var pmmTextDiv = new Element('div',{'class':'mmText'}).update(potname);
       pmmContainerDiv.insert(pmmTextDiv);
       
+      var pmmDeleteIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/delete.gif', 'id':('mmDel'+potid)});
+      pmmDeleteIMG.addClassName('pmmDelete');
+      //pmmContainerDiv.insert(pmmDeleteIMG);
+      
       $('possiblemeasurements').insert(pmmContainerDiv);
 
-      new Draggable('mm'+potid, { 
+      new Draggable('mm'+potid, {
         onEnd: function(element,event) {
-          LoadMMDD(event.target.id.slice(2), addedImages[0].id);
-          var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
-          c.position($('lmmx').value, $('lmmy').value);
-          c.add();
-          changes.push(c);
+          if (addedImages[0] != null){
+            LoadMMDD(event.target.id.slice(2), addedImages[0].id);
+            var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
+            c.position($('lmmx').value, $('lmmy').value);
+            c.add();
+            changes.push(c);
+          }
         }
       });                                          
     }

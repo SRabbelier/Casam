@@ -101,6 +101,11 @@ img.mmPointer{
   position: absolute;
 }
 
+img.pmmDelete{
+	float: right;
+	margin-right: 10px;
+}
+
 .pintooltip{
   padding: 5px;
   background-color: #eee; 
