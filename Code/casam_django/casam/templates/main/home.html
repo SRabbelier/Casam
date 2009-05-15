@@ -150,6 +150,7 @@
 		});
 	}
 	  document.observe("dom:loaded", function(){
+		  checkAuthenticationAndExecute(function(){
 		  		getProjects("{{tags|escapejs}}");
 
 		  		//Change the functionality of the tag-form to not reload te page
@@ -166,7 +167,8 @@
 				//initiate pictureswitching
 				imageSwitchCounter = -1;
 				switchPictures();
-				}
+				});
+	  }
 		);
 	</script>
 	 <link rel="stylesheet" href="{{ BASE_PATH }}media/css/whiteFrame.css">

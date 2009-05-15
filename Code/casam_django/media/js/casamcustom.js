@@ -6,9 +6,8 @@ function checkAuthenticationAndExecute(customFunction,possibleFailureMessage){
 		},
 		onFailure:function(transport){
 			if(!possibleFailureMessage)possibleFailureMessage="You are not logged in, click OK to login";
-			if(confirm(possibleFailureMessage)){
-				location.href='../../'
-			}
+			alert(possibleFailureMessage);
+			location.href='../../';
 		}
 	});
 	

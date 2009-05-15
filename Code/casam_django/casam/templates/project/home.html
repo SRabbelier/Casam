@@ -274,45 +274,48 @@
 			
 	  document.observe("dom:loaded", function()
 		{
-      // Add tabs in whiteFrame
-      $('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true));
-      $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
-      
-      $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
-      $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
-      $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
-      $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
-
-		  // Add mouse listener for image
-      Event.observe('big_images','mousemove', getMouseXY);
-
-			// Load images
-			getProjectImages();
-
-			// Load tags
-			getProjectTags();
-
-			// Load potential measurements
-			getProjectPotentialMeasurements();
-			 
-			
-			// Make draggable's for each Measurement
-
-			new Draggable('lmdd');
-
-			resizeScreenElements();
-			Event.observe(window,'resize',function(){
+		  checkAuthenticationAndExecute(function(){
+				
+	      // Add tabs in whiteFrame
+	      $('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true));
+	      $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
+	      
+	      $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
+	      $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
+	      $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
+	      $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
+	
+			  // Add mouse listener for image
+	      Event.observe('big_images','mousemove', getMouseXY);
+	
+				// Load images
+				getProjectImages();
+	
+				// Load tags
+				getProjectTags();
+	
+				// Load potential measurements
+				getProjectPotentialMeasurements();
+				 
+				
+				// Make draggable's for each Measurement
+	
+				new Draggable('lmdd');
+	
 				resizeScreenElements();
-			});
-			Event.observe('editTagsLink','click',function(){
-				popupIFrame('{{ BASE_PATH }}tag/select/{{ id }}',350,150);
-			});
-			Event.observe('addMeasurementLink','click',function(){
-        popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
-      });
-      Event.observe('undoLink','click',function(){
-        undoLastChange();
-      });
+				Event.observe(window,'resize',function(){
+					resizeScreenElements();
+				});
+				Event.observe('editTagsLink','click',function(){
+					popupIFrame('{{ BASE_PATH }}tag/select/{{ id }}',350,150);
+				});
+				Event.observe('addMeasurementLink','click',function(){
+	        popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
+	      });
+	      Event.observe('undoLink','click',function(){
+	        undoLastChange();
+	      });
+		  });
 		});
     
     function undoLastChange(){
@@ -423,15 +426,19 @@
        
 		function resizeScreenElements()
 		{
-			var remainingWidth = document.viewport.getWidth() - 500;
-			$('big_images').setWidth(remainingWidth);
+			checkAuthenticationAndExecute(function(){
+						
+				var remainingWidth = document.viewport.getWidth() - 500;
+				$('big_images').setWidth(remainingWidth);
+	
+				var remainingHeight = document.viewport.getHeight() - 150;
+				$('big_images').setHeight(remainingHeight);
+				remainingHeightWhiteFrame = remainingHeight - 36; 
+				$('leftFrame').setHeight(remainingHeightWhiteFrame);
+				$('rightFrame').setHeight(remainingHeightWhiteFrame);
+				reloadImages();
 
-			var remainingHeight = document.viewport.getHeight() - 150;
-			$('big_images').setHeight(remainingHeight);
-			remainingHeightWhiteFrame = remainingHeight - 36; 
-			$('leftFrame').setHeight(remainingHeightWhiteFrame);
-			$('rightFrame').setHeight(remainingHeightWhiteFrame);
-			reloadImages();
+			});
 			
 		}
 
@@ -487,93 +494,102 @@
 	  
 		function getProjectImages()
 		{
-			var url = '{{ BASE_PATH }}JSON/projectImages/{{id}}?time='+new Date().getTime();
-			// notice the use of a proxy to circumvent the Same Origin Policy
-			new Ajax.Request(url, {
-			  method: 'get',
-			  onSuccess: function(transport, json) {
-				  
-			    var json = transport.responseText.evalJSON();
-			    
-			    //$('pictureContainerHeader').update('Pictures('+json.length+')');
-			     
-			    $('tab_pictures').update();
-			     
-			    // Create a picture container for each picture
-			    for(i=0; i < json.length; i++)
-						makePictureContainer(json[i]);
-					// Put bar in Pictures
-					var toolbar = new Element('div');
-					toolbar.setStyle("clear:both;float:right;");
-					var addLink = new Element('a',{'href':'#'});
-
-					var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
-					addLink.insert(addImage);
-					toolbar.insert(addLink);
-					Event.observe(addLink,'click',function(){
-						popupIFrame('{{BASE_PATH}}project/imageManager/{{ id }}',670,400);
-					});
-					//toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
-					//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
-					//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
-					$('tab_pictures').insert(toolbar);
-				}
+			checkAuthenticationAndExecute(function(){
+						
+				var url = '{{ BASE_PATH }}JSON/projectImages/{{id}}?time='+new Date().getTime();
+				// notice the use of a proxy to circumvent the Same Origin Policy
+				new Ajax.Request(url, {
+				  method: 'get',
+				  onSuccess: function(transport, json) {
+					  
+				    var json = transport.responseText.evalJSON();
+				    
+				    //$('pictureContainerHeader').update('Pictures('+json.length+')');
+				     
+				    $('tab_pictures').update();
+				     
+				    // Create a picture container for each picture
+				    for(i=0; i < json.length; i++)
+							makePictureContainer(json[i]);
+						// Put bar in Pictures
+						var toolbar = new Element('div');
+						toolbar.setStyle("clear:both;float:right;");
+						var addLink = new Element('a',{'href':'#'});
+	
+						var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
+						addLink.insert(addImage);
+						toolbar.insert(addLink);
+						Event.observe(addLink,'click',function(){
+							popupIFrame('{{BASE_PATH}}project/imageManager/{{ id }}',670,400);
+						});
+						//toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
+						//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
+						//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
+						$('tab_pictures').insert(toolbar);
+					}
+				});
 			});
 		}
 
 		function getProjectTags()
 		{
-			var url = '{{ BASE_PATH }}JSON/projectTags/{{id}}?time='+new Date().getTime();
-			new Ajax.Request(url, {
-			  method: 'get',
-			  onSuccess: function(transport, json) {
-				  
-			    var json = transport.responseText.evalJSON();
-			    			     
-			    $('tags').update();
-			     
-			    // Create a picture container for each picture
-			    for(i=0; i < json.length; i++)
-						$('tags').insert(new Element('p').update(json[i].fields.name));
-				}
+			checkAuthenticationAndExecute(function(){
+					
+				var url = '{{ BASE_PATH }}JSON/projectTags/{{id}}?time='+new Date().getTime();
+				new Ajax.Request(url, {
+				  method: 'get',
+				  onSuccess: function(transport, json) {
+					  
+				    var json = transport.responseText.evalJSON();
+				    			     
+				    $('tags').update();
+				     
+				    // Create a picture container for each picture
+				    for(i=0; i < json.length; i++)
+							$('tags').insert(new Element('p').update(json[i].fields.name));
+					}
+				});
 			});
 		}
 
     function getProjectPotentialMeasurements()
     {
-      var url = '{{ BASE_PATH }}JSON/projectPotentialMeasurements/{{id}}?time='+new Date().getTime();
-      new Ajax.Request(url, {
-        method: 'get',
-        onSuccess: function(transport, json) {
-
-          var json = transport.responseText.evalJSON();
-
-          $('possiblemeasurements').update();
-
-          // Create a picture container for each picture
-          for(i=0; i < json.length; i++){
-            var pmmContainerDiv = new Element('div');
-            var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
-           	pmmContainerDiv.insert(pmmPointerIMG);
-						var json = json;
-            
-          	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
-          	pmmContainerDiv.insert(pmmTextDiv);
-            
-            $('possiblemeasurements').insert(pmmContainerDiv);
-
-            new Draggable('mm'+json[i].pk, { 
-              onEnd: function(element,event) {
-						    LoadMMDD(event.target.id.slice(2), addedImages[0].id);
-                var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
-                c.position($('lmmx').value, $('lmmy').value);
-                c.add();
-                changes.push(c);
-							}
-						});
-          }
-        }
-      });
+		  checkAuthenticationAndExecute(function(){
+		      
+	      var url = '{{ BASE_PATH }}JSON/projectPotentialMeasurements/{{id}}?time='+new Date().getTime();
+	      new Ajax.Request(url, {
+	        method: 'get',
+	        onSuccess: function(transport, json) {
+	
+	          var json = transport.responseText.evalJSON();
+	
+	          $('possiblemeasurements').update();
+	
+	          // Create a picture container for each picture
+	          for(i=0; i < json.length; i++){
+	            var pmmContainerDiv = new Element('div');
+	            var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
+	           	pmmContainerDiv.insert(pmmPointerIMG);
+							var json = json;
+	            
+	          	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
+	          	pmmContainerDiv.insert(pmmTextDiv);
+	            
+	            $('possiblemeasurements').insert(pmmContainerDiv);
+	
+	            new Draggable('mm'+json[i].pk, { 
+	              onEnd: function(element,event) {
+							    LoadMMDD(event.target.id.slice(2), addedImages[0].id);
+	                var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
+	                c.position($('lmmx').value, $('lmmy').value);
+	                c.add();
+	                changes.push(c);
+								}
+							});
+	          }
+	        }
+	      });
+		  });
     }
 
 		
@@ -707,57 +723,63 @@
     }
 
 		function showImage(id,name){
-			var newAddedImage = new AddedImage(id,name);
-			var newImageArray = new Array();
-			//Delete the old image and put it up front
-			for(i = 0; i < addedImages.length; i++){
-				if(addedImages[i].id != id){
-					newImageArray.push(addedImages[i]);
+			checkAuthenticationAndExecute(function(){
+						
+				var newAddedImage = new AddedImage(id,name);
+				var newImageArray = new Array();
+				//Delete the old image and put it up front
+				for(i = 0; i < addedImages.length; i++){
+					if(addedImages[i].id != id){
+						newImageArray.push(addedImages[i]);
+					}
 				}
-			}
-			addedImages = newImageArray
-			addedImages.splice(0,0,newAddedImage);
-			
-			
-			id_array = Sortable.sequence("tab_pictures");
-			var temp = "";
-			for(var i = 0; i < id_array.length; i++){
-        if(id_array[i] == id){
-          temp = id_array[i];
-          id_array.splice(i,1);
-          break;
-        }
-      }
-      id_array.splice(0,0,temp);
-			Sortable.setSequence("tab_pictures",id_array);
-			reloadImages();
+				addedImages = newImageArray
+				addedImages.splice(0,0,newAddedImage);
+				
+				
+				id_array = Sortable.sequence("tab_pictures");
+				var temp = "";
+				for(var i = 0; i < id_array.length; i++){
+	        if(id_array[i] == id){
+	          temp = id_array[i];
+	          id_array.splice(i,1);
+	          break;
+	        }
+	      }
+	      id_array.splice(0,0,temp);
+				Sortable.setSequence("tab_pictures",id_array);
+				reloadImages();
+			});
 		}
 
 		function loadEditScreen(id,name){
-			img_url = '{{BASE_PATH}}imageLoader/'+id;
-			mov_width = ($('big_images').getWidth()-5);
-			mov_heigth = ($('big_images').getHeight()-5);
-				
-			movie_object = new Element('object');
-			movie_object.writeAttribute('classid', "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
-			movie_object.writeAttribute('codebase',"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0");
-			movie_object.writeAttribute('width', mov_width);
-			movie_object.writeAttribute('height', mov_heigth);
-
-			movie_embed = new Element('embed');
-			movie_embed.writeAttribute('src',"{{ BASE_PATH }}media/flash/paint.swf");
-			movie_embed.writeAttribute('quality',"high");
-			movie_embed.writeAttribute('bgcolor',"#000000");
-			movie_embed.writeAttribute('width', mov_width);
-			movie_embed.writeAttribute('height', mov_heigth);
-			movie_embed.writeAttribute('allowScriptAccess',"sameDomain");
-			movie_embed.writeAttribute('type',"application/x-shockwave-flash");
-			movie_embed.writeAttribute('pluginspage',"http://www.macromedia.com/go/getflashplayer");
-			movie_embed.writeAttribute('flashvars',"img_source="+img_url+"&server_url={{ BASE_PATH }}bitmap_dump&img_id="+id);
-
-			movie_object.insert(movie_embed);
-			$('big_images').update();
-			$('big_images').insert(movie_object);
+			checkAuthenticationAndExecute(function(){
+						
+				img_url = '{{BASE_PATH}}imageLoader/'+id;
+				mov_width = ($('big_images').getWidth()-5);
+				mov_heigth = ($('big_images').getHeight()-5);
+					
+				movie_object = new Element('object');
+				movie_object.writeAttribute('classid', "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
+				movie_object.writeAttribute('codebase',"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0");
+				movie_object.writeAttribute('width', mov_width);
+				movie_object.writeAttribute('height', mov_heigth);
+	
+				movie_embed = new Element('embed');
+				movie_embed.writeAttribute('src',"{{ BASE_PATH }}media/flash/paint.swf");
+				movie_embed.writeAttribute('quality',"high");
+				movie_embed.writeAttribute('bgcolor',"#000000");
+				movie_embed.writeAttribute('width', mov_width);
+				movie_embed.writeAttribute('height', mov_heigth);
+				movie_embed.writeAttribute('allowScriptAccess',"sameDomain");
+				movie_embed.writeAttribute('type',"application/x-shockwave-flash");
+				movie_embed.writeAttribute('pluginspage',"http://www.macromedia.com/go/getflashplayer");
+				movie_embed.writeAttribute('flashvars',"img_source="+img_url+"&server_url={{ BASE_PATH }}bitmap_dump&img_id="+id);
+	
+				movie_object.insert(movie_embed);
+				$('big_images').update();
+				$('big_images').insert(movie_object);
+			});
 		}
 
 		function closePaintOver(file_name) {
@@ -765,6 +787,8 @@
 		}
 
 		function hideImage(id){
+			checkAuthenticationAndExecute(function(){
+					
 		  //clear the data of this image
       $('bottomDiv'+id).update();
 			$('mainDiv_'+id).setStyle('border: none;');
@@ -780,36 +804,44 @@
       if (addedImages == "")
         getProjectPotentialMeasurements();
 			reloadImages();
+			});
 		}
 		
 		function reloadImages(){
-			//.update() clears the contents of the elements
-      $('big_images').update();
-			for(var i = addedImages.length-1; i >= 0; i--){
-  			$('bottomDiv'+addedImages[i].id).update();
-				$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
-        addedImages[i].addSelfToImages();
-			}
-			
-			if (addedImages.length > 0){
-        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
-      }
-      Sortable.create("tab_pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });			
+			checkAuthenticationAndExecute(function(){
+					
+				//.update() clears the contents of the elements
+	      $('big_images').update();
+				for(var i = addedImages.length-1; i >= 0; i--){
+	  			$('bottomDiv'+addedImages[i].id).update();
+					$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
+	        addedImages[i].addSelfToImages();
+				}
+				
+				if (addedImages.length > 0){
+	        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
+	      }
+	      Sortable.create("tab_pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });			
+			});
 		}
 		
 		function updateImageList(){
-      id_array = Sortable.sequence("tab_pictures");
-      new_list = new Array();
-      for(var i = 0; i < id_array.length; i++){
-        for(var j = 0; j < addedImages.length; j++){
-          if(id_array[i] == addedImages[j].id){
-            new_list.push(addedImages[j]);
-            break;
-          }
-        }
-      }
-      addedImages = new_list;
-      reloadImages();
+			checkAuthenticationAndExecute(function(){
+					
+	      id_array = Sortable.sequence("tab_pictures");
+	      new_list = new Array();
+	      for(var i = 0; i < id_array.length; i++){
+	        for(var j = 0; j < addedImages.length; j++){
+	          if(id_array[i] == addedImages[j].id){
+	            new_list.push(addedImages[j]);
+	            break;
+	          }
+	        }
+	      }
+	      addedImages = new_list;
+	      reloadImages();
+
+			});
     }
 
   </script>
