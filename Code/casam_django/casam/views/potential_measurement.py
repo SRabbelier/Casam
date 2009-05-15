@@ -1,6 +1,7 @@
 from django import forms
 from django import http
 from django.template import loader
+from django.core import serializers
 
 from casam.models import Project
 from casam.models import PotentialMeasurement
@@ -31,9 +32,13 @@ class NewPotentialMeasurement(handler.Handler):
 
     id_str = self.kwargs['id_str']
     project = Project.objects.filter(id=id_str).get()
-    potential_measurement_logic.handle_add_potential_measurement(project, name)
-
+    potmeas = potential_measurement_logic.handle_add_potential_measurement(project, name)
+    
     context = self.getContext()
+    if potmeas == None:
+      context['potmeas'] = ''
+    else:
+      context['potmeas'] = serializers.serialize("json",[potmeas])
     content = loader.render_to_string('potential_measurement/success.html', dictionary=context)
     return http.HttpResponse(content)
 

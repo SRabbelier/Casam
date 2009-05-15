@@ -564,29 +564,33 @@
 	
 	          // Create a picture container for each picture
 	          for(i=0; i < json.length; i++){
-	            var pmmContainerDiv = new Element('div');
-	            var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+json[i].pk),'class':'mmPointer'});
-	           	pmmContainerDiv.insert(pmmPointerIMG);
-							var json = json;
-	            
-	          	var pmmTextDiv = new Element('div',{'class':'mmText'}).update(json[i].fields.name);
-	          	pmmContainerDiv.insert(pmmTextDiv);
-	            
-	            $('possiblemeasurements').insert(pmmContainerDiv);
-	
-	            new Draggable('mm'+json[i].pk, { 
-	              onEnd: function(element,event) {
-							    LoadMMDD(event.target.id.slice(2), addedImages[0].id);
-	                var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
-	                c.position($('lmmx').value, $('lmmy').value);
-	                c.add();
-	                changes.push(c);
-								}
-							});
+	            createPotentialMeasurement(json[i].pk, json[i].fields.name)
 	          }
 	        }
 	      });
 		  });
+    }
+    
+    function createPotentialMeasurement(potid,potname){
+      var pmmContainerDiv = new Element('div', {'id':'potmeas_'+potid});
+      var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+potid),'class':'mmPointer'});
+      pmmContainerDiv.insert(pmmPointerIMG);
+      var json = json;
+      
+      var pmmTextDiv = new Element('div',{'class':'mmText'}).update(potname);
+      pmmContainerDiv.insert(pmmTextDiv);
+      
+      $('possiblemeasurements').insert(pmmContainerDiv);
+
+      new Draggable('mm'+potid, { 
+        onEnd: function(element,event) {
+          LoadMMDD(event.target.id.slice(2), addedImages[0].id);
+          var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
+          c.position($('lmmx').value, $('lmmy').value);
+          c.add();
+          changes.push(c);
+        }
+      });                                          
     }
 
 		
@@ -654,11 +658,16 @@
 			closePopup();	
 		}
     
-    function closePopupAndReloadCurrentMeasurements(){
-      img = addedImages[0]
-      getImageMeasurements(img.id);
-      new Effect.Highlight('bottomDiv'+img.id);
-    }  
+		function closePopupAndReloadPotentialMeasurements(meas){
+      if (meas == '')
+        closePopup();
+      else{
+        measObject = meas.evalJSON()[0];
+        createPotentialMeasurement(measObject.pk, measObject.fields.name);
+        new Effect.Highlight('potmeas_'+measObject.pk);
+        closePopup();
+      }
+    }
     
     function reloadUndoneChange(metingid,posx,posy){
       var pin = ''
@@ -711,13 +720,7 @@
           alert('Something went wrong while restoring measurement');
         }
       });
-    }                                                  
-
-		function closePopupAndReloadPotentialMeasurements(){
-      getProjectPotentialMeasurements();
-      new Effect.Highlight('tab_measurements');
-      closePopup();
-    }
+    }          
 
 		function showImage(id,name){
 			checkAuthenticationAndExecute(function(){
