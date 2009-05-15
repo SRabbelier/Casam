@@ -125,6 +125,8 @@
 
 	function makeDeleteProjectAction(projectID, projectName,projectDiv,deleteButton){
 		Element.observe(deleteButton,'click',function(){
+			checkAuthenticationAndExecute(function(){
+				
 			var sureToDelete= confirm("Do you really want to delete project "+projectName+"?");
 			if(sureToDelete){
 				//Show the spinner, not really threadsafe or anything but good enough
@@ -144,7 +146,7 @@
 							$('spinner').hide();
 					  }
 				});
-			}
+			}});
 		});
 	}
 	  document.observe("dom:loaded", function(){

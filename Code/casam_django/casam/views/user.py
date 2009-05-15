@@ -172,3 +172,13 @@ class PassChange(handler.Handler):
     context = self.getContext()
     content = loader.render_to_string('user/change.html', dictionary=context)
     return http.HttpResponse(content)
+
+def userAuthenticatedJSON(request):
+  if request.user.is_authenticated():
+    data = "yes"
+    response =  http.HttpResponse(data, mimetype="application/javascript")
+    return response
+  else:
+    data = "no"
+    response =  http.HttpResponseForbidden(data, mimetype="application/javascript")
+    return response

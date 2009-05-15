@@ -1,3 +1,20 @@
+function checkAuthenticationAndExecute(customFunction,possibleFailureMessage){
+	new Ajax.Request('../../JSON/userAuthenticated/?time='+new Date().getTime(),{
+		method: 'get',
+		onSuccess:function(transport){
+			customFunction();
+		},
+		onFailure:function(transport){
+			if(!possibleFailureMessage)possibleFailureMessage="You are not logged in, click OK to login";
+			if(confirm(possibleFailureMessage)){
+				location.href='../../'
+			}
+		}
+	});
+	
+
+}
+
 Element.addMethods({
         setWidth: function(element, width) {
                 element = $(element);
@@ -16,19 +33,21 @@ Element.addMethods({
         }});
 
 function popupIFrame(url,width,height){
-	if(!width)width=500;
-	if(!height)height=300;
-	
-	var iF = new Element('iframe', {'src':url});
-	$('popup').update(iF);
-	
-	$('popup').setWidth(width);
-	$('popup').setHeight(height);
-	$('popup').setStyle({
-		zIndex:9999,
-		top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
-		left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
-		});
+	checkAuthenticationAndExecute(function(){
+		if(!width)width=500;
+		if(!height)height=300;
+		
+		var iF = new Element('iframe', {'src':url});
+		$('popup').update(iF);
+		
+		$('popup').setWidth(width);
+		$('popup').setHeight(height);
+		$('popup').setStyle({
+			zIndex:9999,
+			top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
+			left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
+			});
+	});
 	
 }
 
@@ -42,4 +61,6 @@ function closePopup(){
 		});
 
 }
+
+
 
