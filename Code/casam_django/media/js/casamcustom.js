@@ -1,5 +1,5 @@
 function checkAuthenticationAndExecute(customFunction,possibleFailureMessage){
-	new Ajax.Request('../../JSON/userAuthenticated/?time='+new Date().getTime(),{
+	new Ajax.Request(base_path+'JSON/userAuthenticated/?time='+new Date().getTime(),{
 		method: 'get',
 		onSuccess:function(transport){
 			customFunction();
@@ -7,7 +7,7 @@ function checkAuthenticationAndExecute(customFunction,possibleFailureMessage){
 		onFailure:function(transport){
 			if(!possibleFailureMessage)possibleFailureMessage="You are not logged in, click OK to login";
 			alert(possibleFailureMessage);
-			location.href='../../';
+			location.href=base_path;
 		}
 	});
 	
