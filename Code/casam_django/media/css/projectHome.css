@@ -128,3 +128,6 @@ div.unsavedChangeDiv{
 div.savedChangeDiv{
   background-color: none;									
 }									
+#pictures{
+	position:relative;
+}
