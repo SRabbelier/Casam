@@ -97,7 +97,7 @@ function saveLandMark(){
     	  	var json = transport.responseText.evalJSON();
     	  	//json[i] = meting
     	  	//json[i+1] = image
-    	  	createMeasurement(c.name, json[1].fields.name, mousex, mousey, json[0].pk, mm, 
+    	  	createMeasurement(c.lmname, json[1].fields.name, mousex, mousey, json[0].pk, mm, 
     	  										json[1].pk, json[0].fields.imagewidth, json[0].fields.imageheight);
     	  	for(var i = 0; i < measurements.length; i++){
 	    	  	if (measurements[i].potid == mm && measurements[i].imageid == imageID){
