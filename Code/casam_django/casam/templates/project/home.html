@@ -353,57 +353,13 @@
             }
           }
           for(i=0; i < json.length-1; i=i+2){
-            
-            var pinDiv = new Element('div');
-            pinDiv.setStyle('display: none;');
-            
-            var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif'});
-            var pintooltip = new Element('div').update(json[i].fields.name+'<br />'+imgname+'<br />'+json[i+1].fields.x+', '+json[i+1].fields.y);
-            pintooltip.addClassName('pintooltip');
-            pintooltip.setStyle('display: none;');
-
-            pin.observe('mouseover', showLandmarkTooltip);
-            pin.observe('mouseout', hideLandmarkTooltip);
-            
-            pinDiv.insert(pin);
-            pinDiv.insert(pintooltip);
-            $('big_images').insert(pinDiv);
-            
-            var measurement = new Measurement(json[i+1].pk,json[i].pk,json[i].fields.name,imgid,pinDiv,json[i+1].fields.imagewidth,json[i+1].fields.imageheight);
-            var measurementDiv = new Element('div');
-            measurementDiv.addClassName('projectImageMeasurementDiv');
-            
-            checkbox = new Element('input', {'type': 'checkbox','name':json[i+1].pk, 'id': 'show'+json[i+1].pk});
-
-            var check = new Check('s', json[i+1].pk, checkbox);
-
-            //when called insert, IE defaults his checkboxes to the default value (which is false).
-            //so set the default to true
-            check.setDefault();
-            check.watch();
-
-            checkboxes.push(check);
-
-            textspan = new Element('span');
-            textspan.update(json[i].fields.name+' ('+json[i+1].fields.x+', '+json[i+1].fields.y+')')
-            measurementDiv.insert(checkbox);
-            measurementDiv.insert(textspan);
-            
-            //load the measurements the first time
-            measurement.setPlace(json[i+1].fields.x,json[i+1].fields.y);
-            measurement.place();
-            
-            if(addedImages[0].id == imgid)
-              measurement.setActive();
-            else
-              measurement.nonActive();
-              
-            measurements.push(measurement);
-            mainDiv.insert(measurementDiv);
+            mainDiv.insert(createMeasurement(json[i].fields.name,imgname,json[i+1].fields.x,
+                           json[i+1].fields.y,json[i+1].pk,json[i].pk,imgid,
+                           json[i+1].fields.imagewidth,json[i+1].fields.imageheight));                                 
           }
           
-          if ($('bottomDiv'+imgid).childElements().length == 3){
-            $('bottomDiv'+imgid).childElements()[2].innerHTML = mainDiv.innerHTML;
+          if ($('bottomDiv'+imgid).childElements().length == 2){
+            $('bottomDiv'+imgid).childElements()[1].childElements()[2].innerHTML = mainDiv.innerHTML;
           }
           else{
             var tab_measurements = newTab('Measurements', mainDiv, true);
@@ -412,6 +368,56 @@
           }  
         }  
       });                                      
+    }
+    
+    function createMeasurement(name, imgname, x, y, measid, potid, imgid, imgwidth, imgheight){
+            
+      var pinDiv = new Element('div');
+      pinDiv.setStyle('display: none;');
+      
+      var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif'});
+      var pintooltip = new Element('div').update(name+'<br />'+imgname+'<br />'+x+', '+y);
+      pintooltip.addClassName('pintooltip');
+      pintooltip.setStyle('display: none;');
+
+      pin.observe('mouseover', showLandmarkTooltip);
+      pin.observe('mouseout', hideLandmarkTooltip);
+      
+      pinDiv.insert(pin);
+      pinDiv.insert(pintooltip);
+      $('big_images').insert(pinDiv);
+      
+      var measurement = new Measurement(measid,potid,name,imgid,pinDiv,imgwidth,imgheight);
+      var measurementDiv = new Element('div');
+      measurementDiv.addClassName('projectImageMeasurementDiv');
+      
+      checkbox = new Element('input', {'type': 'checkbox','name':measid, 'id': 'show'+measid});
+
+      var check = new Check('s', measid, checkbox);
+
+      //when called insert, IE defaults his checkboxes to the default value (which is false).
+      //so set the default to true
+      check.setDefault();
+      check.watch();
+
+      checkboxes.push(check);
+
+      textspan = new Element('span');
+      textspan.update(name+' ('+x+', '+y+')')
+      measurementDiv.insert(checkbox);
+      measurementDiv.insert(textspan);
+      
+      //load the measurements the first time
+      measurement.setPlace(x,y);
+      measurement.place();
+      
+      if(addedImages[0].id == imgid)
+        measurement.setActive();
+      else
+        measurement.nonActive();
+        
+      measurements.push(measurement);
+      return measurementDiv                                 
     }
 
        
@@ -593,7 +599,6 @@
 			
 			leftDiv.insert(useCheck);
 			
-			
 			leftDiv.insert(new Element('img',{'src': base_path+'imageLoader/thumbnail/50/'+pictureJSON.pk}));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
 			rightDiv.insert(new Element('span').update(pictureJSON.fields.added).addClassName('projectPictureInfo'));
@@ -650,15 +655,49 @@
           break;
         }
       }
-      if (pin != ''){
-        pin.calcpieces();
-        pin.setPlace(posx/pin.piecex,posy/pin.piecey);
-        pin.place();
+      pin.calcpieces();
+      pin.setPlace(posx/pin.piecex,posy/pin.piecey);
+      pin.place();
+      var currentMeasurements = $('bottomDiv'+pin.imageid).childElements()[1].childElements()[2].childElements();
+      for(var i = 0; i < currentMeasurements.length; i++){
+        if (currentMeasurements[i].childElements()[0].name == pin.id){
+          currentMeasurements[i].childElements()[1].update(pin.name+' ('+Math.round(pin.x)+','+Math.round(pin.y)+')');                                                           
+          break;                                                              
+        }                                                    
       }
     }  
     
-    function reloadUndonePlace(){
-      alert('NEEDS SOME WORK');
+    function reloadUndonePlace(potid, imageID){
+      var url = '{{ BASE_PATH }}AJaX/deleteMeasurement/?time='+new Date().getTime();
+      new Ajax.Request(url, {
+        method: 'get',
+        parameters: {'potentialMeasurementID': potid,
+                     'imageID': imageID},
+        onSuccess: function(transport, json) {
+          var pin = ''
+          for(var i = 0; i < measurements.length; i++){
+            if ((measurements[i].potid == potid) && (measurements[i].imageid = imageID)){
+              pin = measurements[i];
+              measurements.splice(i,1);
+              break;
+            }
+          }
+          pin.restore();
+          measurementDescriptionOffset = $('mm'+potid).up().down("div[class='mmText']").positionedOffset();
+          $('mm'+potid).setStyle({'left':(measurementDescriptionOffset[0]-12)+'px','top':(measurementDescriptionOffset[1])+'px'});
+          
+          var currentMeasurements = $('bottomDiv'+imageID).childElements()[1].childElements()[2].childElements();
+          for(var i = 0; i < currentMeasurements.length; i++){
+            if (currentMeasurements[i].childElements()[0].name == pin.id){
+              currentMeasurements[i].remove();                                                           
+              break;                                                              
+            }                                                    
+          }
+        },
+        onFailure:function(){
+          alert('Something went wrong while restoring measurement');
+        }
+      });
     }                                                  
 
 		function closePopupAndReloadPotentialMeasurements(){

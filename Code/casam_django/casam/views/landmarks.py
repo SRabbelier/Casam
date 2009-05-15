@@ -6,6 +6,7 @@ import os
 from django import http
 from django.template import loader
 from django import forms
+from django.core import serializers
 
 from casam.django_tools import fields
 from casam.models import Image
@@ -40,10 +41,9 @@ class LandmarkSaver(handler.Handler):
 
   def getPostForm(self):
     return LandmarkForm(self.POST)
-
+  
   def get(self):
-    # TODO: implement this?
-    return http.HttpResponse("GTFO")
+    return 
 
   def post(self):
     context = self.getContext()
@@ -77,13 +77,5 @@ class LandmarkSaver(handler.Handler):
       punt.id = meting.id;
     punt.save();
 
-#    context['x'] = punt.x
-#    context['y'] = punt.y
-#    context['mm'] = mmeting.name
-#    context['name'] = img.name
-#    context['id'] = img.id
-#    context['piecex'] = piecex
-#    context['piecey'] = piecey
-#    content = loader.render_to_string('landmarks/landmark_save.html', dictionary=context)
-
-    return http.HttpResponse('success')
+    data = serializers.serialize("json", [punt]+[punt.image])
+    return http.HttpResponse(data, mimetype="application/javascript")

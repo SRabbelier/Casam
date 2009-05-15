@@ -4,21 +4,22 @@ var savex;
 var savey;
 
 function undoLastLandmarkChange(x, y, potid, imgid, mid){
-  new Ajax.Request(base_path + 'landmarks/save',{
-  	method:'post',
-  	parameters:{x:escape(x),
-  							y:escape(y),
-  							mm:escape(potid),
-  							imgid:escape(imgid),
-  							imagewidth:$('addedImage_'+imgid).width,
-  							imageheight:$('addedImage_'+imgid).height},
-  	onSuccess:function(){
-  		if (mid == '')
-  			reloadUndonePlace();
-  		else
+  if (mid == '')
+  	reloadUndonePlace(potid,imgid);
+  else{
+	  new Ajax.Request(base_path + 'landmarks/save',{
+  		method:'post',
+  		parameters:{x:escape(x),
+  								y:escape(y),
+  								mm:escape(potid),
+  								imgid:escape(imgid),
+  								imagewidth:$('addedImage_'+imgid).width,
+  								imageheight:$('addedImage_'+imgid).height},
+  		onSuccess:function(){
   			reloadUndoneChange(mid,x,y);
-  	}
-  });
+	  	}
+  	});
+  }
 }
 
 function saveLandMark(){
@@ -30,9 +31,11 @@ function saveLandMark(){
   savex = mousex*1+viewportOffset.left*1;
   savey = mousey*1+viewportOffset.top*1;
   
+  var c = '';
+  var measurement = null;
+  
   if (!$('mmmeting').disabled){ 
-  	found = false;
-  	measurement = null;
+  	var found = false;
   	for(var i = 0; i < measurements.length; i++){
   		if(measurements[i].potid == mm && measurements[i].imageid == imageID){
   			found = true;
@@ -41,12 +44,12 @@ function saveLandMark(){
   		}
   	};
   	if(found){
-	  	var c = new Change('r', mm, $('mmmeting').options[$('mmmeting').selectedIndex].text);
+	  	c = new Change('r', mm, $('mmmeting').options[$('mmmeting').selectedIndex].text);
 			c.position(Math.round(measurement.left), Math.round(measurement.top));
 			c.reposition(measurement.id, mousex, mousey);
   	}
   	else{
-  		var c = new Change('p', mm, $('mmmeting').options[$('mmmeting').selectedIndex].text);
+  		c = new Change('p', mm, $('mmmeting').options[$('mmmeting').selectedIndex].text);
   		c.position(mousex, mousey);
   	}
 	 	c.add();
@@ -65,11 +68,48 @@ function saveLandMark(){
 	  							imgid:escape(imageID),
 	  							imagewidth:$('addedImage_'+imageID).width,
 	  							imageheight:$('addedImage_'+imageID).height},
-	  	onSuccess:function(){
-	  		closePopupAndReloadCurrentMeasurements();
-      	var c = changes.pop();
+	  	onSuccess:function(transport,json){
+      	c = changes.pop();
       	c.save();
       	changes.push(c);
+      	var found = false;
+    	  for(var i = 0; i < measurements.length; i++){
+    	  	if (measurements[i].potid == mm && measurements[i].imageid == imageID){
+    	  		var found = true;
+    	  		measurement = measurements[i];
+    	  		break;
+    	  	}
+    	  }
+    	  if (found){
+	    	  measurement.calcpieces();
+	    	  measurement.setPlace(mousex/measurement.piecex,mousey/measurement.piecey);
+	    	  measurement.place();
+	        var currentMeasurements = $('bottomDiv'+measurement.imageid).childElements()[1].childElements()[2].childElements();
+		      for(var i = 0; i < currentMeasurements.length; i++){
+		        if (currentMeasurements[i].childElements()[0].name == measurement.id){
+		          currentMeasurements[i].childElements()[1].update(measurement.name+' ('+Math.round(measurement.x)+','+Math.round(measurement.y)+')');
+		          new Effect.Highlight(currentMeasurements[i]);                                                           
+		          break;                                                              
+		        }                                                    
+		      }
+    	  }
+    	  else{
+    	  	var json = transport.responseText.evalJSON();
+    	  	//json[i] = meting
+    	  	//json[i+1] = image
+    	  	createMeasurement(c.name, json[1].fields.name, mousex, mousey, json[0].pk, mm, 
+    	  										json[1].pk, json[0].fields.imagewidth, json[0].fields.imageheight);
+    	  	for(var i = 0; i < measurements.length; i++){
+	    	  	if (measurements[i].potid == mm && measurements[i].imageid == imageID){
+	    	  		measurement = measurements[i];
+	    	  		break;
+	    	  	}
+	    	  }									
+    	  	measurement.calcpieces();
+	    	  measurement.setPlace(mousex/measurement.piecex,mousey/measurement.piecey);
+	    	  measurement.place();
+    	  }
+      	  
       	$('lmdd').hide();
 	  	}
 	  });   

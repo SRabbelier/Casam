@@ -63,6 +63,7 @@ urlpatterns = patterns('',
     #AJaX Actions
     (r'^AJaX/deleteProjects/$', casam.views.main.deleteProjects()),
     (r'^AJaX/deleteImages/$', casam.views.main.deleteImages()),
+    (r'^AJaX/deleteMeasurement/$', casam.views.main.deleteMeasurement()),
 )
 
 if settings.DEBUG:

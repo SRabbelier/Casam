@@ -10,11 +10,11 @@ from django.template import loader
 from django.utils import simplejson
 from django.core import serializers
 
-
-
 from casam.models import Project
 from casam.models import OriginalImage
 from casam.models import Tag
+from casam.models import PotentialMeasurement
+from casam.models import Measurement
 from casam.views import handler
 from casam.views import tag as tag_view
 
@@ -97,3 +97,17 @@ class deleteImages(handler.Handler):
     for imageID in imageIDs:
       OriginalImage.objects.all().get(id = imageID).delete()
     return http.HttpResponse("success")
+  
+class deleteMeasurement(handler.Handler):
+  def get(self):
+    potid = self.GET.getlist('potentialMeasurementID')
+    imageID = self.GET.getlist('imageID')
+    image = OriginalImage.objects.all().get(id = imageID[0])
+    potmeas = PotentialMeasurement.objects.all().get(id = potid[0])
+    Measurement.objects.all().filter(image = image, mogelijkemeting = potmeas).get().delete()
+    
+    return http.HttpResponse("succes")
+
+  def getPostForm(self):
+    return SelectTagForm(self.POST)
+    
