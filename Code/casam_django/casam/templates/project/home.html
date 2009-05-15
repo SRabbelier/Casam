@@ -507,7 +507,7 @@
 				    //$('pictureContainerHeader').update('Pictures('+json.length+')');
 				     
 				    $('tab_pictures').update();
-				     
+				    $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
 				    // Create a picture container for each picture
 				    for(i=0; i < json.length; i++)
 							makePictureContainer(json[i]);
@@ -522,9 +522,6 @@
 						Event.observe(addLink,'click',function(){
 							popupIFrame('{{BASE_PATH}}project/imageManager/{{ id }}',670,400);
 						});
-						//toolbar.innerHTML =  "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/add.jpg\" /></a>";
-						//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/delete.jpg\" /></a>";
-						//toolbar.innerHTML += "<a href=\"../fileupload/{{ id }}\"><img border=\"0\" src=\"{{ BASE_PATH }}media/img/camera.jpg\" /></a>";
 						$('tab_pictures').insert(toolbar);
 					}
 				});
@@ -626,7 +623,7 @@
 			
 			var paintoverLink = new Element('a',{'href':'#'}).update(' Paintover');
 			rightDiv.insert(paintoverLink);
-			$('tab_pictures').insert(mainDiv);
+			$('pictures').insert(mainDiv);
 			
 			paintoverLink.observe('click', function(){
 					loadEditScreen(pictureJSON.pk,pictureJSON.fields.name);
@@ -646,7 +643,7 @@
 
 		function closePopupAndReloadPictures(){
 			getProjectImages();
-			new Effect.Highlight('tab_pictures');
+			new Effect.Highlight('pictures');
 			//$('tab_pictures').scrollTo($('addPictureButton'));
 			closePopup();	
 		}
@@ -737,7 +734,7 @@
 				addedImages.splice(0,0,newAddedImage);
 				
 				
-				id_array = Sortable.sequence("tab_pictures");
+				id_array = Sortable.sequence("pictures");
 				var temp = "";
 				for(var i = 0; i < id_array.length; i++){
 	        if(id_array[i] == id){
@@ -747,7 +744,7 @@
 	        }
 	      }
 	      id_array.splice(0,0,temp);
-				Sortable.setSequence("tab_pictures",id_array);
+				Sortable.setSequence("pictures",id_array);
 				reloadImages();
 			});
 		}
@@ -806,12 +803,14 @@
 			reloadImages();
 			});
 		}
+
 		
 		function reloadImages(){
 			checkAuthenticationAndExecute(function(){
 					
 				//.update() clears the contents of the elements
 	      $('big_images').update();
+	      
 				for(var i = addedImages.length-1; i >= 0; i--){
 	  			$('bottomDiv'+addedImages[i].id).update();
 					$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
@@ -821,14 +820,14 @@
 				if (addedImages.length > 0){
 	        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
 	      }
-	      Sortable.create("tab_pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });			
+	      Sortable.create("pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });			
 			});
 		}
 		
 		function updateImageList(){
 			checkAuthenticationAndExecute(function(){
 					
-	      id_array = Sortable.sequence("tab_pictures");
+	      id_array = Sortable.sequence("pictures");
 	      new_list = new Array();
 	      for(var i = 0; i < id_array.length; i++){
 	        for(var j = 0; j < addedImages.length; j++){
