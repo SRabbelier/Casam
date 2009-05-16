@@ -14,16 +14,18 @@ def main():
   HERE = os.path.abspath(__file__)
   HERE = os.path.join(os.path.dirname(HERE), '..')
   HERE = os.path.normpath(HERE)
-  
+
   WERKZEUG = [os.path.join(HERE, 'werkzeug')]
   DJANGO_EXTENSIONS = [os.path.join(HERE, 'django_extensions')]
   DJANGO = [os.path.join(HERE, 'django')]
   CASAM = [os.path.join(HERE, 'casam_django', 'casam')]
   PIL = [os.path.join(HERE, 'PIL')]
-  VTKlib = [os.path.join(HERE, 'VTK', 'lib', 'site-packages')]
+  if os.name == 'posix':
+    VTK = [os.path.join(HERE, 'VTK-linux', 'lib', 'python2.5', 'site-packages')]
+  else:
+    VTK = [os.path.join(HERE, 'VTK', 'lib', 'site-packages')]
   
-  sys.path = VTKlib + PIL + WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
-  
+  sys.path = VTK + PIL + WERKZEUG + DJANGO_EXTENSIONS + DJANGO + CASAM + sys.path
 
   print sys.path
   if len(sys.argv) == 1:
