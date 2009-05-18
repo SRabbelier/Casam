@@ -31,11 +31,14 @@
     var potentialMeasurements = $('potentialMeasurements').childElements();
     potentialMeasurements.each(function(item){
       item.childElements()[0].remove();
+      label = new Element('label', {'for': 'dp'+item.id.slice(8)});
+      label.update(item.childElements()[0].innerHTML);
+      item.childElements()[0].remove();
       checkbox = new Element('input', {'type': 'checkbox',
                                        'name':item.id.slice(8), 
                                        'id': 'dp'+item.id.slice(8)
                                        });
-      checkbox.setStyle({'float':'right'});
+      item.insert(label);
       item.insert(checkbox);                                          
     });
   }
