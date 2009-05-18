@@ -54,7 +54,7 @@
           var measurements = parent.measurements;
           for(var j = 0; j < measurements.length; j++){
             if (measurements[j].potid == containerDiv.id.slice(8)){
-              measurements[j].delete();
+              measurements[j].erase();
               parent.measurements.splice(j,1);
               j = j - 1;
             }                                             
@@ -75,7 +75,7 @@
           for(var i = 0; i < changes.length; i++){
             alert(i+'--'+changes.length);
             if (changes[i].potid == containerDiv.id.slice(8)){
-              changes[i].delete();
+              changes[i].erase();
               parent.changes.splice(i,1);
               i = i - 1;
             }

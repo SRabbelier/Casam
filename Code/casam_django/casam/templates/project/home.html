@@ -153,11 +153,11 @@
         if(this.drag != null)
           this.drag.destroy();
       },
-      delete:function(){
+      erase:function(){
         this.nonActive(); //to destroy draggable
         this.pinDiv.remove(); //remove the whole pin
       }
-      });
+    });
 		function makeDraggable(measurement,pinDiv,potid,imageid){
       return new Draggable(pinDiv, { 
         onStart: function(){
@@ -276,7 +276,7 @@
         undoLastLandmarkChange(this.oldx, this.oldy, this.potid, this.imageid, this.metingid);
         changes.pop();
       },
-      delete: function(){
+      erase: function(){
         this.changeDiv.remove();                   
       }                                                                 
     });               
@@ -601,7 +601,7 @@
       $('possiblemeasurements').insert(pmmContainerDiv);
       
       var option = new Element('option', {'id':'option'+potid,
-                                          'value':potname
+                                          'value':potid
                                           });
       option.update(potname);                                          
       $('mmmeting').add(option,null)
