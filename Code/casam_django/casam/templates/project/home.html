@@ -152,6 +152,10 @@
         this.changeColor('green');
         if(this.drag != null)
           this.drag.destroy();
+      },
+      delete:function(){
+        this.nonActive(); //to destroy draggable
+        this.pinDiv.remove(); //remove the whole pin
       }
       });
 		function makeDraggable(measurement,pinDiv,potid,imageid){
@@ -177,7 +181,7 @@
     
     var Check = Class.create({
       initialize: function(type, name, checkbox){
-        //type: s is for measurements, u is for pictures
+        //type: s (show) is for measurements, u (use) is for pictures
         this.type = type;
       
         if (this.type = 's')
@@ -271,6 +275,9 @@
         $('ajax_result').childElements()[$('ajax_result').childElements().length-1].remove();
         undoLastLandmarkChange(this.oldx, this.oldy, this.potid, this.imageid, this.metingid);
         changes.pop();
+      },
+      delete: function(){
+        this.changeDiv.remove();                   
       }                                                                 
     });               
     var changes = new Array();            
@@ -312,7 +319,7 @@
 				Event.observe('editTagsLink','click',function(){
 					popupIFrame('{{ BASE_PATH }}tag/select/{{ id }}',350,150);
 				});
-				Event.observe('addMeasurementLink','click',function(){
+				Event.observe('editMeasurementLink','click',function(){
 	        popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
 	      });
 	      Event.observe('undoLink','click',function(){
@@ -396,7 +403,7 @@
       $('big_images').insert(pinDiv);
       
       var measurement = new Measurement(measid,potid,name,imgid,pinDiv,imgwidth,imgheight);
-      var measurementDiv = new Element('div');
+      var measurementDiv = new Element('div', {'id': 'potidMeasDiv_'+potid});
       measurementDiv.addClassName('projectImageMeasurementDiv');
       
       checkbox = new Element('input', {'type': 'checkbox','name':measid, 'id': 'show'+measid});
@@ -410,7 +417,7 @@
 
       checkboxes.push(check);
 
-      textspan = new Element('span');
+      textspan = new Element('span', {'id': 'span_'+potid});
       textspan.update(name+' ('+x+', '+y+')')
       measurementDiv.insert(checkbox);
       measurementDiv.insert(textspan);
@@ -578,6 +585,7 @@
     
     function createPotentialMeasurement(potid,potname){
       var pmmContainerDiv = new Element('div', {'id':'potmeas_'+potid});
+      pmmContainerDiv.addClassName('potMeasDiv');
       var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+potid)});
       pmmPointerIMG.addClassName('mmPointer');
       pmmContainerDiv.insert(pmmPointerIMG);
@@ -943,7 +951,7 @@
   <a href="{{ BASE_PATH }}annotation/new/{{ id }}" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
 </div>
 <div id="tab_measurements" class="tabContent">
-  <a id="addMeasurementLink" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
+  <a id="editMeasurementLink" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
   <div id="possiblemeasurements">
 
 	</div>

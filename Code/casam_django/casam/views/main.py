@@ -110,4 +110,15 @@ class deleteMeasurement(handler.Handler):
 
   def getPostForm(self):
     return SelectTagForm(self.POST)
+  
+class deletePotentialMeasurement(handler.Handler):
+  def get(self):
+    potid = self.GET.getlist('potID')
+    potmeas = PotentialMeasurement.objects.all().get(id = potid[0])
+    Measurement.objects.all().filter(mogelijkemeting = potmeas).delete()
+    PotentialMeasurement.objects.all().get(id = potid[0]).delete()
+    
+    return http.HttpResponse("success")
+  def getPostForm(self):
+    return SelectTagForm(self.POST)
     

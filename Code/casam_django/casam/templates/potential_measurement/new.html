@@ -1,5 +1,93 @@
+{% extends 'popup.html' %}
 
 {% block title %}Nieuw potential measurement{% endblock title %}
+
+{% block head %}
+<script type="text/javascript">
+  document.observe('dom:loaded',function(){                                          
+    getProjectPotentialMeasurements();
+    Element.observe('undoLink','click',function(){
+      var potentialMeasurements = $('potentialMeasurements').childElements();
+      var deletePMs = new Array();
+      for(var i = 0; i < potentialMeasurements.length; i++){
+        if (potentialMeasurements[i].childElements()[1].checked == true)
+          deletePMs.push(potentialMeasurements[i]);                                                              
+      }
+      if (deletePMs.size() > 0){
+        deletePMs.each(function(item){
+          deleteMeasurement(item);
+        });                     
+      }                             
+    });
+    var closeButton = new Element('input',{'type':'button','value':'Close image manager'});
+    $('closeContainer').insert(closeButton);
+    closeButton.observe('click',function(){
+      parent.closePopupAndReloadPotentialMeasurements('');
+    });
+  });
+  
+  function getProjectPotentialMeasurements(){
+    $('potentialMeasurements').innerHTML = parent.$('possiblemeasurements').innerHTML;
+    var potentialMeasurements = $('potentialMeasurements').childElements();
+    potentialMeasurements.each(function(item){
+      item.childElements()[0].remove();
+      checkbox = new Element('input', {'type': 'checkbox',
+                                       'name':item.id.slice(8), 
+                                       'id': 'dp'+item.id.slice(8)
+                                       });
+      checkbox.setStyle({'float':'right'});
+      item.insert(checkbox);                                          
+    });
+  }
+  
+  function deleteMeasurement(containerDiv){
+    var url = '{{ BASE_PATH }}AJaX/deletePotentialMeasurement/?time='+new Date().getTime();
+    new Ajax.Request(url, {
+        method: 'get',
+        parameters: {'potID': containerDiv.id.slice(8)},
+        onSuccess: function(transport, json) {
+          containerDiv.remove();
+          //DELETE CURRENT MEASUREMENTS
+          var measurements = parent.measurements;
+          for(var j = 0; j < measurements.length; j++){
+            if (measurements[j].potid == containerDiv.id.slice(8)){
+              measurements[j].delete();
+              parent.measurements.splice(j,1);
+              j = j - 1;
+            }                                             
+          }
+          //DELETE POTENTIAL MEASUREMENTS
+          var parentPotentialMeasurements = parent.$('possiblemeasurements').childElements();
+          for(var i = 0; i < parentPotentialMeasurements.length; i++){
+            if (parentPotentialMeasurements[i].id.slice(8) == containerDiv.id.slice(8))
+              Effect.Fade(parentPotentialMeasurements[i]);                                                            
+          }
+          //REMOVE TEXT OF CURRENT MEASUREMENTS
+          var currentMeasurementText = Element.select(parent.$('pictures'),'div[id=potidMeasDiv_'+containerDiv.id.slice(8)+']');
+          for(var j = 0; j < currentMeasurementText.length; j++){
+            currentMeasurementText[j].remove();              
+          }
+          //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
+          var changes = parent.changes;
+          for(var i = 0; i < changes.length; i++){
+            alert(i+'--'+changes.length);
+            if (changes[i].potid == containerDiv.id.slice(8)){
+              changes[i].delete();
+              parent.changes.splice(i,1);
+              i = i - 1;
+            }
+          }
+          //CLOSE POPUP
+          parent.closePopupAndReloadPotentialMeasurements('')
+        },
+        onFailure:function(){
+          alert('Something went wrong while deleting potential measurement '+containerDiv.childElements().innerHTML);
+        }
+    });                             
+  }
+  
+</script>
+{% endblock head %}
 
 {% block body%}
 
@@ -9,5 +97,11 @@
 <tr><td><input type="submit" value="save" /></td></tr>
 </table>
 </form>
-
+<div id='deleteDiv'>
+  <div id='potentialMeasurements'>
+  </div>
+  <a href='#' id='undoLink'>Delete selected</a>
+</div>
+<div id='closeContainer'>
+</div>
 {% endblock body %}
