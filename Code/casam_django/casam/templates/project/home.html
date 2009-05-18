@@ -317,6 +317,7 @@
 	      $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
 	      $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
 	      $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
+	      $('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true));
 	
 			  // Add mouse listener for image
 	      Event.observe('big_images','mousemove', getMouseXY);
@@ -1057,6 +1058,12 @@
         </a>
     </td></tr>
 	</table>
+</div>
+<div id="tab_zoom" class="tabContent">
+	<div id="zoomContent">
+		<img id="zoomImage" src="" />
+		<img src="{{BASE_PATH}}media/img/hud.gif" id="crosshair"/>
+	</div>
 </div>
 
 

@@ -153,3 +153,26 @@ div.savedChangeDiv{
 	display:block;
 	width:150px;
 }
+
+#zoomContent{
+	background-color:blue;
+	width:180px;
+	height:180px;
+	margin:0px auto;
+	margin-top:5px;
+	position:relative;
+	overflow:hidden;
+}
+
+#zoomImage{
+	top:0px;
+	left:0px;
+	position:absolute;
+}
+
+#crosshair{
+	z-index:1;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
