@@ -148,3 +148,8 @@ div.savedChangeDiv{
 	margin:-4px;	
 	position:absolute;
 }
+
+.pintooltip{
+	display:block;
+	width:150px;
+}
