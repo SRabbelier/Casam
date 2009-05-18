@@ -80,6 +80,8 @@
               i = i - 1;
             }
           }
+          //TODO: REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
+          parent.$('option'+containerDiv.id.slice(8)).remove();
           //CLOSE POPUP
           parent.closePopupAndReloadPotentialMeasurements('')
         },

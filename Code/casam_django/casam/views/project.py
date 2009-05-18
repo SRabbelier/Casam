@@ -39,13 +39,11 @@ class Home(handler.Handler):
 
     project = Project.objects.filter(id=id_str).get()
     #punten = Measurement.objects.select_related().filter(project__id=id_str)
-    mmetings = PotentialMeasurement.objects.filter(project__id=id_str)
 
     context['annotations'] = annotations
     context['id'] = id_str
     #context['punten'] = punten
     context['project'] = project
-    context['mmetings'] = mmetings
 
     content = loader.render_to_string('project/home.html', dictionary=context)
 

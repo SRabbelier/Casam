@@ -599,6 +599,12 @@
       //pmmContainerDiv.insert(pmmDeleteIMG);
       
       $('possiblemeasurements').insert(pmmContainerDiv);
+      
+      var option = new Element('option', {'id':'option'+potid,
+                                          'value':potname
+                                          });
+      option.update(potname);                                          
+      $('mmmeting').add(option,null)
 
       new Draggable('mm'+potid, {
         onEnd: function(element,event) {
@@ -985,10 +991,6 @@
 	<label for="mmx">x: </label><input type="text" style="width: 25px;" id="lmmx" name="mmx" value="" />
 	<label for="mmy">y: </label><input type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
 	<label id="labelmmmeting" for="mmmeting">Landmark: </label><select id="mmmeting" name="mmmeting">
-	<option value=""></option>
-		{%for mm in mmetings%}
-			<option id="option{{mm.id}}" value="{{mm.id}}">{{mm.name}}</option>
-		{% endfor %}
 	</select><br />
   <input type="hidden" id="imgid" value="" />
 	<button onClick="saveLandMark();">Store</button>
