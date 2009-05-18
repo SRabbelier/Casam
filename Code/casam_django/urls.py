@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
     (r'^JSON/projectPotentialMeasurements/(.*)$', casam.views.project.projectPotentialMeasurementsJSON),
     (r'^JSON/projectImageCurrentMeasurements/(.*)$', casam.views.project.projectImageCurrentMeasurementsJSON),
+    (r'^JSON/projectImageBitmaps/(.*)$', casam.views.project.projectImageBitmapsJSON),
     (r'^JSON/userAuthenticated/$', casam.views.user.userAuthenticatedJSON),
     
     #AJaX Actions

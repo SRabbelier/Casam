@@ -73,7 +73,6 @@
           //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
           var changes = parent.changes;
           for(var i = 0; i < changes.length; i++){
-            alert(i+'--'+changes.length);
             if (changes[i].potid == containerDiv.id.slice(8)){
               changes[i].erase();
               parent.changes.splice(i,1);

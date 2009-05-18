@@ -14,6 +14,7 @@ from casam.models import Project
 from casam.models import PotentialMeasurement
 from casam.models import Measurement
 from casam.models import Tag
+from casam.models import Bitmap
 from casam.views import handler
 
 
@@ -123,4 +124,9 @@ def projectImageCurrentMeasurementsJSON(request, id_str):
   for m in measurements:
     mm = mm + [m.mogelijkemeting] + [m]
   data = serializers.serialize("json", mm)
+  return http.HttpResponse(data, mimetype="application/javascript")
+
+def projectImageBitmapsJSON(request, id_str):
+  bitmaps = Bitmap.objects.filter(image__id=id_str)
+  data = serializers.serialize("json", bitmaps)
   return http.HttpResponse(data, mimetype="application/javascript")
