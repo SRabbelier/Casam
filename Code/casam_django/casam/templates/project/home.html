@@ -117,7 +117,10 @@
         this.top = y*this.piecey;
       },
       place:function(){
-        this.pinDiv.setStyle('position: absolute; left: '+this.left+'px;top: '+this.top+'px;');
+        this.pinDiv.setStyle(
+            {position: 'absolute',
+             left: ''+(Math.round(this.left))+'px',
+             top: ''+(Math.round(this.top))+'px'});
         this.pinDiv.show();
       },
       replace:function(){
@@ -376,12 +379,14 @@
     function createMeasurement(name, imgname, x, y, measid, potid, imgid, imgwidth, imgheight){
             
       var pinDiv = new Element('div');
-      pinDiv.setStyle('display: none;');
+      pinDiv.addClassName('pinDiv');
+      pinDiv.hide();
       
       var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif'});
+      pin.addClassName('pinImage');
       var pintooltip = new Element('div').update(name+'<br />'+imgname+'<br />'+x+', '+y);
       pintooltip.addClassName('pintooltip');
-      pintooltip.setStyle('display: none;');
+      pintooltip.hide();
 
       pin.observe('mouseover', showLandmarkTooltip);
       pin.observe('mouseout', hideLandmarkTooltip);

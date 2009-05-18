@@ -66,8 +66,8 @@ class LandmarkSaver(handler.Handler):
     properties = dict(
       mogelijkemeting=mmeting,
       image=img,
-      x=int(float(self.cleaned_data['x'])/piecex),
-      y=int(float(self.cleaned_data['y'])/piecey),
+      x=int(round(float(self.cleaned_data['x'])/piecex)),
+      y=int(round(float(self.cleaned_data['y'])/piecey)),
       imagewidth=im.size[0],
       imageheight=im.size[1]
     )
