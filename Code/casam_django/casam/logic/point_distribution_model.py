@@ -100,6 +100,7 @@ class PointDistributionModel(object):
     size = len(self.vertexGrids)
 
     self.filterGPA.SetNumberOfInputs(size)
+    self.filterGPA.GetLandmarkTransform().SetModeToRigidBody()
 
     for id, grid in enumerate(self.vertexGrids):
       self.filterGPA.SetInput(id, grid)
@@ -125,13 +126,46 @@ class PointDistributionModel(object):
     for id, grid in enumerate(self.alignedGrids):    
       self.filterPCA.SetInput(id, grid)
 
-    self.filterGPA.Update()
+    self.filterPCA.Update()
 
     for id in range(size):
       grid = self.filterPCA.GetOutput(id)
       self.analyzedGrids.append(grid)
+      
+    #Get the eigenvalues
+    evals = self.filterPCA.GetEvals()
+    
+    #And the eigenvectors
+    numEigenVectors = 5
+    evecArrays = []
+    for vecId in range(min(numEigenVectors, self.filterPCA.GetNumberOfOutputPorts())):
+        out = self.filterPCA.GetOutput(vecId)
+        evecs = vtk.vtkFloatArray()
+        evecs.SetNumberOfComponents(3)
+        evecs.SetName("evecs%d" % vecId)
+        # Each point is in fact a vector eval * evec
+        for pointId in range(out.GetNumberOfPoints()):
+            vec = out.GetPoint(pointId)
+            evecs.InsertNextTuple3(vec[0], vec[1], vec[2])
+        evecArrays.append(evecs)
 
+        eigenvector = evecArrays[vecId]
+        print "E-vector ", vecId, "E-value: ", evals.GetValue(vecId), "X: ", eigenvector.GetValue(0), "Y: ", eigenvector.GetValue(1), "Z: ", eigenvector.GetValue(2)
+    
+    print "To explain 90% of variation, we need: ", self.filterPCA.GetModesRequiredFor(0.9), " eigenvectors"
+    
+    #Now let's get mean ^^
+    b = vtk.vtkFloatArray()
+    b.SetNumberOfComponents(0)
+    b.SetNumberOfTuples(0)
+    mean = vtk.vtkUnstructuredGrid()
+    #for grids in enumerate(self.alignedGrids):
+      
+    
+    
     logging.info("done")
+    
+    
 
   def render(self):
     """
@@ -163,12 +197,28 @@ def main():
       (3.5, 1, 0), 
       (2.3, 2, 0),
       ])
+  
+  pdm.addPointSet([
+    (1.2, 0, 0), 
+    (3.1, 1, 0), 
+    (2.3, 2.5, 0),
+    ])
+  
+  pdm.addPointSet([
+  (1.6, 0, 0), 
+  (3.3, 1, 0), 
+  (2.0, 1.9, 0),
+  ])
+    
+    
+  
+    
 
   pdm.procrustes()
   pdm.pca()
   pdm.addActors(pdm.vertexGrids, 0)
   pdm.addActors(pdm.alignedGrids, 2)
-  pdm.addActors(pdm.analyzedGrids, 4)
+  #pdm.addActors(pdm.analyzedGrids, 4)
   pdm.render()
 
 if __name__ == '__main__':
