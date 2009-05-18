@@ -53,6 +53,7 @@
 		  },
 		  addSelfToImages:function(){
 				var parentAddedImageObject = this;
+				this.imageElement.writeAttribute('src','');
 			  this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
 			  this.imageElement.observe('load',function(){
           //resize the measurements
