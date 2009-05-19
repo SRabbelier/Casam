@@ -11,18 +11,28 @@ from casam.models import Bitmap
 from PIL import Image
 from StringIO import StringIO
 
-def simple(request,imageID):
+def simple(request,**kwargs):
+  img_type = kwargs.get('img_type')
+  imageID = kwargs.get('uuid')
   DATADIR = settings.DATADIR
     
-
-  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_simple" +".jpg"
+  if img_type == 'original':
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_simple" +".jpg"
+  else:
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_simple" +".gif"
 
   #though the file already exists on the server, save it in temp to make sure it is jpeg
   if not os.path.exists(temporaryImage):
-    try:
-      imageRecord = OriginalImage.objects.all().get(id = imageID)
-    except OriginalImage.DoesNotExist:
-      imageRecord = Bitmap.objects.all().get(id = imageID)
+    if img_type == 'original':
+      try:
+        imageRecord = OriginalImage.objects.all().get(id = imageID)
+      except OriginalImage.DoesNotExist:
+        print 'Image could not be found'
+    else:
+      try:
+        imageRecord = Bitmap.objects.all().get(id = imageID)
+      except Bitmap.DoesNotExist:
+        print 'Bitmap could not be found'
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
     im = im.convert("RGB")
@@ -30,25 +40,40 @@ def simple(request,imageID):
 
     
   wrapper = FileWrapper(file(temporaryImage, "rb"))
-  response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  if img_type == 'original':
+    response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  else:
+    response = http.HttpResponse(wrapper,content_type='image/gif')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response
 
-def byRatio(request,ratio,imageID):
+def byRatio(request, **kwargs):
+  img_type = kwargs.get('img_type')
+  imageID = kwargs.get('uuid')
+  ratio = kwargs.get('img_ratio')
   DATADIR = settings.DATADIR
   
   floatRatio = float(ratio)
 
-  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byRatio_" + str(floatRatio) +".jpg"
+  if img_type == 'original':
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byRatio_" + str(floatRatio) +".jpg"
+  else:
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byRatio_" + str(floatRatio) +".gif"
   
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
 
-    try:
-      imageRecord = OriginalImage.objects.all().get(id = imageID)
-    except OriginalImage.DoesNotExist:
-      imageRecord = Bitmap.objects.all().get(id = imageID)
+    if img_type == 'original':
+      try:
+        imageRecord = OriginalImage.objects.all().get(id = imageID)
+      except OriginalImage.DoesNotExist:
+        print 'Image could not be found'
+    else:
+      try:
+        imageRecord = Bitmap.objects.all().get(id = imageID)
+      except Bitmap.DoesNotExist:
+        print 'Bitmap could not be found'
     
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
@@ -68,26 +93,41 @@ def byRatio(request,ratio,imageID):
 
   #Put the image in the request
   wrapper = FileWrapper(file(temporaryImage, "rb"))
-  response = http.HttpResponse(wrapper, content_type='image/jpeg')
+  if img_type == 'original':
+    response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  else:
+    response = http.HttpResponse(wrapper,content_type='image/gif')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response
 
 
-def byWidth(request,width,imageID):
+def byWidth(request, **kwargs):
+  width = kwargs.get('img_width')
+  imageID = kwargs.get('uuid')
+  img_type = kwargs.get('img_type')
   DATADIR = settings.DATADIR
   
   floatWidth = float(width)
 
-  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byWidth_" + str(floatWidth) +".jpg"
+  if img_type == 'original':
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byWidth_" + str(floatWidth) +".jpg"
+  else:
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byWidth_" + str(floatWidth) +".gif"
 
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
     
-    try:
-      imageRecord = OriginalImage.objects.all().get(id = imageID)
-    except OriginalImage.DoesNotExist:
-      imageRecord = Bitmap.objects.all().get(id = imageID)
+    if img_type == 'original':
+      try:
+        imageRecord = OriginalImage.objects.all().get(id = imageID)
+      except OriginalImage.DoesNotExist:
+        print 'Image could not be found'
+    else:
+      try:
+        imageRecord = Bitmap.objects.all().get(id = imageID)
+      except Bitmap.DoesNotExist:
+        print 'Bitmap could not be found'
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
@@ -108,30 +148,46 @@ def byWidth(request,width,imageID):
     
   #Put the image in the request
   wrapper = FileWrapper(file(temporaryImage, "rb"))
-  response = http.HttpResponse(wrapper, content_type='image/jpeg')
+  if img_type == 'original':
+    response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  else:
+    response = http.HttpResponse(wrapper,content_type='image/gif')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response
 
-def byMaxWidthHeight(request,width,height,imageID):
+def byMaxWidthHeight(request, **kwargs):
+  width = kwargs.get('img_width')
+  height = kwargs.get('img_height')
+  imageID = kwargs.get('uuid')
+  img_type = kwargs.get('img_type')
   DATADIR = settings.DATADIR
   
   floatWidth = float(width)
   floatHeight = float(height)
 
-  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMaxWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".jpg"
+  if img_type == 'original':
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMaxWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".jpg"
+  else:
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMaxWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".gif"
 
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
     
-    try:
-      imageRecord = OriginalImage.objects.all().get(id = imageID)
-    except OriginalImage.DoesNotExist:
-      imageRecord = Bitmap.objects.all().get(id = imageID)
+    if img_type == 'original':
+      try:
+        imageRecord = OriginalImage.objects.all().get(id = imageID)
+      except OriginalImage.DoesNotExist:
+        print 'Image could not be found'
+    else:
+      try:
+        imageRecord = Bitmap.objects.all().get(id = imageID)
+      except Bitmap.DoesNotExist:
+        print 'Bitmap could not be found'
     
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
-    im = im.convert("RGB")
+    im = im.convert("RGBA")
   
     fullImageWidth = im.size[0]
     fullImageHeight = im.size[1]
@@ -155,30 +211,49 @@ def byMaxWidthHeight(request,width,height,imageID):
     newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
   
     #Save the image and put it in the request
-    newImage.save(temporaryImage)
+    if img_type == 'bitmap':
+      newImage.save(temporaryImage,transparency=0)
+    else:
+      newImage.save(temporaryImage)
     
   #Put the image in the request
   wrapper = FileWrapper(file(temporaryImage, "rb"))
-  response = http.HttpResponse(wrapper, content_type='image/jpeg')
+  if img_type == 'original':
+    response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  else:
+    response = http.HttpResponse(wrapper,content_type='image/gif')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response
 
-def byMinWidthHeight(request,width,height,imageID):
+def byMinWidthHeight(request, **kwargs):
+  width = kwargs.get('img_width')
+  height = kwargs.get('img_height')
+  imageID = kwargs.get('uuid')
+  img_type = kwargs.get('img_type')
   DATADIR = settings.DATADIR
   
   floatWidth = float(width)
   floatHeight = float(height)
 
-  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMinWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".jpg"
+  if img_type == 'original':
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMinWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".jpg"
+  else:
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMinWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".gif"
 
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
     
-    try:
-      imageRecord = OriginalImage.objects.all().get(id = imageID)
-    except OriginalImage.DoesNotExist:
-      imageRecord = Bitmap.objects.all().get(id = imageID)
+    if img_type == 'original':
+      try:
+        imageRecord = OriginalImage.objects.all().get(id = imageID)
+      except OriginalImage.DoesNotExist:
+        print 'Image could not be found'
+    else:
+      try:
+        imageRecord = Bitmap.objects.all().get(id = imageID)
+      except Bitmap.DoesNotExist:
+        print 'Bitmap could not be found'
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
@@ -210,24 +285,39 @@ def byMinWidthHeight(request,width,height,imageID):
     
   #Put the image in the request
   wrapper = FileWrapper(file(temporaryImage, "rb"))
-  response = http.HttpResponse(wrapper, content_type='image/jpeg')
+  if img_type == 'original':
+    response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  else:
+    response = http.HttpResponse(wrapper,content_type='image/gif')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response
 
-def thumbnail(request,widthandheight,imageID):
+def thumbnail(request, *args, **kwargs):
+  img_type = kwargs.get('img_type')
+  widthandheight = kwargs.get('img_size')
+  imageID = kwargs.get('uuid')
   DATADIR = settings.DATADIR
   
   floatWidthAndHeight = float(widthandheight)
 
-  temporaryImage = tempfile.gettempdir() + "/" + imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".jpg"
+  if img_type == 'original':
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".jpg"
+  else:
+    temporaryImage = tempfile.gettempdir() + "/" + imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".gif"
 
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
-    try:
-      imageRecord = OriginalImage.objects.all().get(id = imageID)
-    except OriginalImage.DoesNotExist:
-      imageRecord = Bitmap.objects.all().get(id = imageID)
+    if img_type == 'original':
+      try:
+        imageRecord = OriginalImage.objects.all().get(id = imageID)
+      except OriginalImage.DoesNotExist:
+        print 'Image could not be found'
+    else:
+      try:
+        imageRecord = Bitmap.objects.all().get(id = imageID)
+      except Bitmap.DoesNotExist:
+        print 'Bitmap could not be found'
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     fullImage = Image.open(location)
@@ -252,7 +342,10 @@ def thumbnail(request,widthandheight,imageID):
     
   #Put the image in the request
   wrapper = FileWrapper(file(temporaryImage, "rb"))
-  response = http.HttpResponse(wrapper, content_type='image/jpeg')
+  if img_type == 'original':
+    response = http.HttpResponse(wrapper,content_type='image/jpeg')
+  else:
+    response = http.HttpResponse(wrapper,content_type='image/gif')
   response['Content-Length'] = os.path.getsize(temporaryImage)
 
   return response

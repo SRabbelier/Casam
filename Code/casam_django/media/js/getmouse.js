@@ -11,7 +11,7 @@ function getMouseXY(e) {
   }
 
   if(addedImages[0]){
-	  $('zoomImage').setAttribute('src',base_path+'imageLoader/byRatio/150/'+addedImages[0].id);
+	  $('zoomImage').setAttribute('src',base_path+'imageLoader/byRatio/original/150/'+addedImages[0].id);
 	  $('zoomImage').show();
   }else{
 	  $('zoomImage').setAttribute('src','');

@@ -20,7 +20,12 @@ import casam.views.potential_measurement
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
 ID_STR = r"(?P<id_str>%s)" % UUID
-IMG_NAME = r"(?P<img_name>[0-9a-zA-Z-./_()]+)"
+LOL = r"(?P<img_name>[0-9a-zA-Z-./_()]+)"
+IMG_TYPE = r"(?P<img_type>original|bitmap)"
+IMG_SIZE = r"(?P<img_size>[0-9]+)"
+IMG_RATIO = r"(?P<img_ratio>(\+?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?)))"
+IMG_WIDTH = r"(?P<img_width>(\+?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?)))"
+IMG_HEIGHT = r"(?P<img_height>(\+?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?)))"
 
 urlpatterns = patterns('',
     (r'^$', casam.views.main.Home()),
@@ -28,7 +33,7 @@ urlpatterns = patterns('',
     (r'^annotation/show/%s$' % UUID, casam.views.annotation.ViewAnnotation()),
     (r'^annotation/new/%s$' % UUID, casam.views.annotation.NewAnnotation()),
     (r'^annotation/list/%s$' % UUID, casam.views.annotation.ListAnnotations()),
-    (r'^data/%s' % IMG_NAME, casam.views.fileupload.ViewFile()),
+    (r'^data/%s' % LOL, casam.views.fileupload.ViewFile()),
     (r'^fileupload/%s$' % ID_STR, casam.views.fileupload.FileUpload()),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
     (r'^login', casam.views.login.Login()),
@@ -39,12 +44,12 @@ urlpatterns = patterns('',
     (r'^pm/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurement()),
     (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
     (r'^tag/select/%s$' % ID_STR, casam.views.tag.SelectTag()),
-    (r'^imageLoader/byRatio/(.*)/(.*)$', casam.logic.imageloader.byRatio),
-    (r'^imageLoader/byWidth/(.*)/(.*)$', casam.logic.imageloader.byWidth),
-    (r'^imageLoader/byMaxWidthHeight/(.*)/(.*)/(.*)$', casam.logic.imageloader.byMaxWidthHeight),
-    (r'^imageLoader/byMinWidthHeight/(.*)/(.*)/(.*)$', casam.logic.imageloader.byMinWidthHeight),
-    (r'^imageLoader/thumbnail/(.*)/(.*)$', casam.logic.imageloader.thumbnail),
-    (r'^imageLoader/(.*)$', casam.logic.imageloader.simple),
+    (r'^imageLoader/byRatio/%s/%s/%s$' % (IMG_TYPE, IMG_RATIO, UUID), casam.logic.imageloader.byRatio),
+    (r'^imageLoader/byWidth/%s/%s/%s$' % (IMG_TYPE, IMG_WIDTH, UUID), casam.logic.imageloader.byWidth),
+    (r'^imageLoader/byMaxWidthHeight/%s/%s/%s/%s$' % (IMG_TYPE, IMG_WIDTH, IMG_HEIGHT, UUID), casam.logic.imageloader.byMaxWidthHeight),
+    (r'^imageLoader/byMinWidthHeight/%s/%s/%s/%s$' % (IMG_TYPE, IMG_WIDTH, IMG_HEIGHT, UUID), casam.logic.imageloader.byMinWidthHeight),
+    (r'^imageLoader/thumbnail/%s/%s/%s$' % (IMG_TYPE, IMG_SIZE, UUID), casam.logic.imageloader.thumbnail),
+    (r'^imageLoader/%s/%s$' % (IMG_TYPE, UUID), casam.logic.imageloader.simple),
     (r'^bitmap_dump$', casam.views.bitmap_dump.Save()),
     (r'^user/home$', casam.views.user.Home()),
     (r'^user/new$', casam.views.user.CreateUser()),
