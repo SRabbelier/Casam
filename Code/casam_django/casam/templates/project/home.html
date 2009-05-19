@@ -21,7 +21,7 @@
 		    this.imageElement = new Element('img');
 		    this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
 		    this.imageElement.writeAttribute('id','addedImage_'+id);
-		    this.imageElement.writeAttribute('class','big_image_sibling');
+		    this.imageElement.addClassName('big_image_sibling');
 		    this.imageElement.setOpacity(this.opacity);
 
 		    
@@ -29,11 +29,11 @@
 				//HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
 		    this.opacitySliderContainer.setWidth(170);
 		    this.opacitySliderContainer.writeAttribute('id','opacitySliderContainer_'+this.id);
-		    this.opacitySliderContainer.writeAttribute('class','slider');
+		    this.opacitySliderContainer.addClassName('slider');
 		    
 		    this.opacitySliderHandle = new Element('div');
 		    this.opacitySliderHandle.writeAttribute('id','opacitySliderHandle_'+this.id);
-		    this.opacitySliderHandle.writeAttribute('class','handle');
+		    this.opacitySliderHandle.addClassName('handle');
 		    
 		    this.opacitySliderContainer.insert(this.opacitySliderHandle);
 		    
@@ -234,11 +234,12 @@
         this.metingid = '';   
         this.oldx = '';
         this.oldy = '';
-        this.newx = '';
-        this.newy = '';
         this.saved = false;
         this.changeDiv = '';
         this.imageid = addedImages[0].id;
+        this.saveButton = '';
+        this.posx = '';
+        this.posy = '';
       },
       reposition: function(mid, x, y){
         this.metingid = mid;
@@ -252,6 +253,10 @@
         this.posy = y;                       
       },
       forceSave: function(){
+        if (!this.saved){
+          this.changeDiv.childElements()[1].remove();
+          this.saveButton= '';
+        }
         this.saved = true;
         this.changeDiv.removeClassName('unsavedChangeDiv');   
         this.changeDiv.addClassName('savedChangeDiv');                    
@@ -271,11 +276,21 @@
           this.changeDiv.addClassName('savedChangeDiv');
         else
           this.changeDiv.addClassName('unsavedChangeDiv');
+        var span = new Element('span');
         if (this.type == 'r')
-          this.changeDiv.update('Landmark '+this.lmname+' has moved from ('+this.oldx+','+this.oldy+') to ('+this.posx+','+this.posy+')');
+          span.update('Landmark '+this.lmname+' has moved from ('+this.oldx+','+this.oldy+') to ('+this.posx+','+this.posy+')')
         else
-          this.changeDiv.update('Landmark '+this.lmname+' has been placed at ('+this.posx+','+this.posy+')');              
+          span.update('Landmark '+this.lmname+' has been placed at ('+this.posx+','+this.posy+')');
+        this.changeDiv.insert(span);
+        if (!this.saved){
+          var saveButton = new Element('a', {'href': '#'});
+          saveButton.addClassName('saveChangeButton');
+          saveButton.update('Save this change');
+          this.saveButton = saveButton;
+          this.changeDiv.insert(saveButton);
+        }              
         $('ajax_result').insert(this.changeDiv);
+        watchSaveButton(this);
       },
       undo: function(){
         $('ajax_result').childElements()[$('ajax_result').childElements().length-1].remove();
@@ -285,7 +300,14 @@
       erase: function(){
         this.changeDiv.remove();                   
       }                                                                 
-    });               
+    });        
+    function watchSaveButton(item){
+      item.saveButton.observe('click', function(){
+        item.save();
+        
+        saveLandMark(item.posx, item.posy, item.potid, item.imageid);   
+      });                               
+    }       
     var changes = new Array();   
     
     var Bitmap = Class.create({
@@ -385,9 +407,26 @@
 
       var bitmap = new Element('img', {'src': base_path+'data/'+source,
                                        'id':'bitmap_'+bmid});
-      bitmap.addClassName('big_image_sibling');
+      bitmap.addClassName('big_image_sibling_bitmap');
       $('big_images').insert(bitmap);
       bitmap.hide();
+      
+      /*
+      bitmap.setOpacity(1);
+
+      var opacitySliderContainer = new Element('div');
+      //HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
+      opacitySliderContainer.setWidth(140);
+      opacitySliderContainer.writeAttribute('id','bitmapOpacitySliderContainer_'+bmid);
+      opacitySliderContainer.addClassName('bitmapSlider');
+      
+      var opacitySliderHandle = new Element('div');
+      opacitySliderHandle.writeAttribute('id','bitmapOpacitySliderHandle_'+bmid);
+      opacitySliderHandle.addClassName('bitmapHandle');
+      
+      opacitySliderContainer.insert(opacitySliderHandle); 
+      */
+           
       var check = new Check('b', bmid, checkbox, bitmap);
 
       //when called insert, IE defaults his checkboxes to the default value (which is false).

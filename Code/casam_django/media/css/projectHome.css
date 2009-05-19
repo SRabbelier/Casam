@@ -89,12 +89,21 @@ img.smallPictureButton{
 	left:0px;
 }
 
+.big_image_sibling_bitmap{
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+
 #tags p{
 	margin:0px;
 }
 
   div.slider { float: left; width:170px; margin: 5px 0 5px 4px; background-color:#ccc; height:10px; position: relative; }
   div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
+
+  div.bitmapSlider { float: left; width:140px; margin: 5px 0 5px 4px; background-color:#ccc; height:10px; position: relative;  }
+  div.bitmapSlider div.bitmapHandle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; } }									  												 
 
 img.mmPointer{
   float: left;
@@ -175,4 +184,8 @@ div.savedChangeDiv{
 	position:absolute;
 	top:0px;
 	left:0px;
+}
+  
+a.saveChangeButton{
+  display: block;
 }

@@ -22,12 +22,12 @@ function undoLastLandmarkChange(x, y, potid, imgid, mid){
   }
 }
 
-function saveLandMark(){
+function saveLandMark(mx,my,potid,imgid){
   var viewportOffset = $('big_images').viewportOffset();
-  var mousex = $('lmmx').value;
-  var mousey = $('lmmy').value;
-  var mm = $('mmmeting').options[$('mmmeting').selectedIndex].value;
-  var imageID = $('imgid').value;
+  var mousex = (mx == undefined) ? $('lmmx').value : mx;
+  var mousey = (my == undefined) ? $('lmmy').value : my;
+  var mm = (potid == undefined) ? $('mmmeting').options[$('mmmeting').selectedIndex].value : potid;
+  var imageID = (imgid == undefined) ? $('imgid').value : imgid;
   savex = mousex*1+viewportOffset.left*1;
   savey = mousey*1+viewportOffset.top*1;
   
