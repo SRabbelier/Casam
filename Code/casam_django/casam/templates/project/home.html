@@ -311,12 +311,17 @@
     var changes = new Array();   
     
     var Bitmap = Class.create({
-      initialize: function(bm, bmid){
+      initialize: function(bm, bmid, imageid){
         this.bitmap = bm;
-        this.id = bmid;                             
-      }                         
+        this.id = bmid;                     
+        this.imageid = imageid;        
+      },
+      getAppropriateSizeURL: function(){
+        return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
+      },                         
     });         
-			
+		var bitmaps = new Array();
+    	
 	  document.observe("dom:loaded", function()
 		{
 		  checkAuthenticationAndExecute(function(){
@@ -384,7 +389,7 @@
           tempDiv.insert(mainDiv); 
           
           for(var i = 0; i < json.length; i++){
-            mainDiv.insert(addBitmap(json[i].pk, json[i].fields.path));                                    
+            mainDiv.insert(addBitmap(json[i].pk, json[i].fields.path, imgid));                                    
           }  
           
           if ($('bottomDiv'+imgid).childElements().length == 3){
@@ -399,21 +404,26 @@
       });                              
     }
     
-    function addBitmap(bmid, source){
+    function addBitmap(bmid, source, imgid){
       var bitmapDiv = new Element('div', {'id': 'bitmapDiv_'+bmid});
       bitmapDiv.addClassName('projectImageBitmapDiv');
       
       checkbox = new Element('input', {'type': 'checkbox','name':bmid, 'id': 'showbm'+bmid});
-
-      var bitmap = new Element('img', {'src': base_path+'data/'+source,
+      
+      var bm = new Bitmap(bitmap,bmid,imgid)
+      bitmaps.push(bm);
+      
+      var bitmap = new Element('img', {'src': bm.getAppropriateSizeURL(),
                                        'id':'bitmap_'+bmid});
       bitmap.addClassName('big_image_sibling_bitmap');
       $('big_images').insert(bitmap);
       bitmap.hide();
       
-      /*
-      bitmap.setOpacity(1);
 
+      
+      
+      bitmap.setOpacity(0.5);
+      /*
       var opacitySliderContainer = new Element('div');
       //HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
       opacitySliderContainer.setWidth(140);
@@ -712,19 +722,7 @@
                                           'value':potid
                                           });
       option.update(potname);                                          
-      $('mmmeting').add(option,null)
-
-      new Draggable('mm'+potid, {
-        onEnd: function(element,event) {
-          if (addedImages[0] != null){
-            LoadMMDD(event.target.id.slice(2), addedImages[0].id);
-            var c = new Change('p', event.target.id.slice(2), event.target.parentNode.childElements()[1].innerHTML);
-            c.position($('lmmx').value, $('lmmy').value);
-            c.add();
-            changes.push(c);
-          }
-        }
-      });                                          
+      $('mmmeting').add(option,null)                                       
     }
 
 		
@@ -856,6 +854,64 @@
       });
     }          
 
+    function removeImage(id){
+      
+      $('mainDiv_'+id).remove();
+
+      //delete measurements for this image
+      for(var i = 0; i < measurements.length; i++){
+        if (measurements[i].imageid == id){
+          if(measurements[i].imageid == addedImages[0].id){
+            measurements[i].restore();                                                 
+          }                                           
+          measurements[i].pinDiv.remove();
+          measurements.splice(i, 1);
+          i = i-1;
+        }                                        
+      }
+
+      //delete changes for this image
+      for(var i = 0; i < changes.length; i++){
+        if (changes[i].imageid == id){
+          changes[i].changeDiv.remove();
+          changes.splice(i, 1);
+          i = i-1;                             
+        }                                        
+      }      
+
+      //remove bitmaps            
+      for(var i = 0; i < bitmaps.length; i++){
+        if (bitmaps[i].imageid == id){
+          $('bitmap_'+bitmaps[i].id).remove();
+          bitmaps.splice(i, 1);
+          i = i-1;                             
+        }                                        
+      }         
+      
+      //delete active image for this image
+      for(var i = 0; i < addedImages.length; i++){
+        if (addedImages[i].id == id){
+          $('addedImage_'+addedImages[i].id).remove();
+          $('zoomImage').hide();
+          addedImages.splice(i, 1);
+          //set new picture as active layer
+          if (addedImages.length > 0){
+            $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');
+            //set measurements of active layer to active
+            for(var j = 0; j < measurements.length; j++){
+              if (measurements[j].imageid == addedImages[0].id)
+                measurements[j].setActive();                                             
+            }        
+          }          
+          break;                     
+        }                       
+      }        
+    }
+    
+    function addImage(originalImage){
+      var container = makePictureContainer(originalImage.evalJSON()[0]);
+    }
+
 		function showImage(id,name){
 			checkAuthenticationAndExecute(function(){
 						
@@ -919,6 +975,7 @@
 
 		function closePaintOver(file_name) {
 			alert(file_name);
+      //close flash object
 		}
 
 		function hideImage(id){

@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.servers.basehttp import FileWrapper
 
 from casam.models import OriginalImage
+from casam.models import Bitmap
 from PIL import Image
 from StringIO import StringIO
 
@@ -18,7 +19,10 @@ def simple(request,imageID):
 
   #though the file already exists on the server, save it in temp to make sure it is jpeg
   if not os.path.exists(temporaryImage):
-    imageRecord = OriginalImage.objects.all().get(id = imageID)
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
     im = im.convert("RGB")
@@ -41,7 +45,10 @@ def byRatio(request,ratio,imageID):
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
 
-    imageRecord = OriginalImage.objects.all().get(id = imageID)
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
     
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
@@ -77,7 +84,10 @@ def byWidth(request,width,imageID):
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
     
-    imageRecord = OriginalImage.objects.all().get(id = imageID)
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
@@ -114,8 +124,11 @@ def byMaxWidthHeight(request,width,height,imageID):
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
     
-    imageRecord = OriginalImage.objects.all().get(id = imageID)
-
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
+    
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
     im = im.convert("RGB")
@@ -162,7 +175,10 @@ def byMinWidthHeight(request,width,height,imageID):
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
     
-    imageRecord = OriginalImage.objects.all().get(id = imageID)
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
@@ -208,7 +224,10 @@ def thumbnail(request,widthandheight,imageID):
 
   #image was not found in cache, create it!
   if not os.path.exists(temporaryImage):
-    imageRecord = OriginalImage.objects.all().get(id = imageID)
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
 
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     fullImage = Image.open(location)

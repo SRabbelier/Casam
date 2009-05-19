@@ -8,6 +8,7 @@ from django import forms
 from django import http
 from django.conf import settings
 from django.template import loader
+from django.core import serializers
 
 from casam.logic import image as image_logic
 from casam.logic import fileupload as fileupload_logic
@@ -46,8 +47,9 @@ class FileUpload(handler.Handler):
     is_left = self.cleaned_data['is_left']
     id_str = self.kwargs['id_str']
 
-    image_logic.handle_uploaded_image(file, name, is_left, id_str)
+    oi = image_logic.handle_uploaded_image(file, name, is_left, id_str)
     context['id'] = id_str
+    context['oi'] = serializers.serialize("json",[oi])
     content = loader.render_to_string('main/succes.html', dictionary=context)
     return http.HttpResponse(content)
 
