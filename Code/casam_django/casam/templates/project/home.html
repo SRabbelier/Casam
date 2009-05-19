@@ -890,6 +890,7 @@
 			checkAuthenticationAndExecute(function(){
 						
 				img_url = '{{BASE_PATH}}imageLoader/'+id;
+				bitmap_url = '{{BASE_PATH}}data/46967c41-408c-11de-a299-00059a3c7800_1242308363.19.gif';
 				mov_width = ($('big_images').getWidth()-5);
 				mov_heigth = ($('big_images').getHeight()-5);
 					
@@ -908,7 +909,7 @@
 				movie_embed.writeAttribute('allowScriptAccess',"sameDomain");
 				movie_embed.writeAttribute('type',"application/x-shockwave-flash");
 				movie_embed.writeAttribute('pluginspage',"http://www.macromedia.com/go/getflashplayer");
-				movie_embed.writeAttribute('flashvars',"img_source="+img_url+"&server_url={{ BASE_PATH }}bitmap_dump&img_id="+id);
+				movie_embed.writeAttribute('flashvars',"img_source="+img_url+"&server_url={{ BASE_PATH }}bitmap_dump&img_id="+id+"&img_bitmap="+bitmap_url);
 	
 				movie_object.insert(movie_embed);
 				$('big_images').update();
