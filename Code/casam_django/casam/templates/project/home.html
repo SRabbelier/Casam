@@ -206,6 +206,10 @@
       },
       watch: function(){                        
         watchBox(this);
+      },
+      repair: function(){
+        if(this.checked == true)
+          this.box.checked = true;
       }
     });
     function watchBox(item){
@@ -215,11 +219,13 @@
           if (item.type == 's')
             item.item.place();
           else if (item.type == 'b')
-            item.item.show();
+            item.item.bitmap.show();
         }      
         else{
-          if ((item.type == 's') || (item.type == 'b'))
+          if (item.type == 's')
             item.item.hide();
+          else if (item.type == 'b')
+            item.item.bitmap.hide();
         }
       });                    
     }
@@ -318,7 +324,10 @@
       },
       getAppropriateSizeURL: function(){
         return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
-      },                         
+      },
+      resize: function(){
+        this.bitmap.writeAttribute('src', this.getAppropriateSizeURL());           
+      }               
     });         
 		var bitmaps = new Array();
     	
@@ -409,20 +418,20 @@
       bitmapDiv.addClassName('projectImageBitmapDiv');
       
       checkbox = new Element('input', {'type': 'checkbox','name':bmid, 'id': 'showbm'+bmid});
+           
+      var bitmap = new Element('img', {'id':'bitmap_'+bmid});
       
       var bm = new Bitmap(bitmap,bmid,imgid)
       bitmaps.push(bm);
       
-      var bitmap = new Element('img', {'src': bm.getAppropriateSizeURL(),
-                                       'id':'bitmap_'+bmid});
+      bitmap.writeAttribute('src', bm.getAppropriateSizeURL());
       bitmap.addClassName('big_image_sibling_bitmap');
       $('big_images').insert(bitmap);
       bitmap.hide();
       
+      bitmap.setOpacity(0.5);
 
       
-      
-      bitmap.setOpacity(0.5);
       /*
       var opacitySliderContainer = new Element('div');
       //HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
@@ -437,7 +446,7 @@
       opacitySliderContainer.insert(opacitySliderHandle); 
       */
            
-      var check = new Check('b', bmid, checkbox, bitmap);
+      var check = new Check('b', bmid, checkbox, bm);
 
       //when called insert, IE defaults his checkboxes to the default value (which is false).
       //so set the default to true
@@ -1009,15 +1018,29 @@
 				for(var i = addedImages.length-1; i >= 0; i--){
 	  			$('bottomDiv'+addedImages[i].id).update();
 					$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
-	        addedImages[i].addSelfToImages();
+          addedImages[i].addSelfToImages();
 				}
 				
 				if (addedImages.length > 0){
 	        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
 	      }
-	      Sortable.create("pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });			
+	      Sortable.create("pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });
+        reloadBitmaps();	
 			});
 		}
+    
+    function reloadBitmaps(){
+      for(var i = 0; i < checkboxes.length; i++){                                         
+        if ((checkboxes[i].type =='b')){
+          $('big_images').insert(checkboxes[i].item.bitmap);                                                                   
+          checkboxes[i].item.resize();
+          checkboxes[i].item.bitmap.hide();
+          
+          if(checkboxes[i].checked)
+            checkboxes[i].item.bitmap.show();
+        }
+      }  
+    }
 		
 		function updateImageList(){
 			checkAuthenticationAndExecute(function(){
