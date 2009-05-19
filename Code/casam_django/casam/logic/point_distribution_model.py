@@ -37,6 +37,7 @@ class PointDistributionModel(object):
     self.alignedGrids = []
     self.analyzedGrids = []
     self.meanShape = []
+  
 
     self.colors = getColors(10)
 
@@ -154,8 +155,8 @@ class PointDistributionModel(object):
         eigenvector = evecArrays[vecId]
         print "E-vector ", vecId, "E-value: ", evals.GetValue(vecId), "X: ", eigenvector.GetValue(0), "Y: ", eigenvector.GetValue(1), "Z: ", eigenvector.GetValue(2)
     
-    print "To explain 90% of variation, we need: ", self.filterPCA.GetModesRequiredFor(0.9), " eigenvectors"
-    
+    print "To explain 99% of variation, we need: ", self.filterPCA.GetModesRequiredFor(0.99), " eigenvectors"
+
     #Now let's get mean ^^
     b = vtk.vtkFloatArray()
     b.SetNumberOfComponents(0)
@@ -164,8 +165,14 @@ class PointDistributionModel(object):
     mean.DeepCopy(self.alignedGrids[0])
     #Get the mean shape:
     self.filterPCA.GetParameterisedShape(b, mean)
-    self.meanShape.append(mean)
+    self.meanShape.append(mean)   
 
+    logging.info("done")
+    
+  def variations(self):
+    """
+    """
+    b = vtk.vtkFloatArray()
     #to calculate the first mode of variation extremes (-3 standard deviations and + 3)
     b.SetNumberOfComponents(1)
     b.SetNumberOfTuples(1)
@@ -182,7 +189,7 @@ class PointDistributionModel(object):
     extreme.DeepCopy(self.alignedGrids[0])
     self.filterPCA.GetParameterisedShape(b, extreme)
     self.analyzedGrids.append(extreme)
-    
+
     #now for the second mode of variation, just change the parameters like so:
     b.SetNumberOfComponents(1)
     b.SetNumberOfTuples(2)
@@ -201,15 +208,6 @@ class PointDistributionModel(object):
     self.filterPCA.GetParameterisedShape(b, extreme)
     self.analyzedGrids.append(extreme)
     
-    #merger = vtk.vtkMergeCells()
-    #merger.SetTotalNumberOfDataSets(size)
-    #merger.SetUnstructuredGrid(mean)
-
-    #for grid in enumerate(self.alignedGrids):
-      
-
-    logging.info("done")
-
   def render(self):
     """
     """
@@ -242,16 +240,16 @@ def main():
       ])
   
   pdm.addPointSet([
-    (1.2, 0, 0), 
-    (3.1, 1, 0), 
-    (2.3, 2.5, 0),
-    ])
+      (1.2, 0, 0), 
+      (3.1, 1, 0), 
+      (2.3, 2.5, 0),
+      ])
   
   pdm.addPointSet([
-  (1.6, 0, 0), 
-  (3.3, 1, 0), 
-  (2.0, 1.9, 0),
-  ])
+      (1.6, 0, 0), 
+      (3.3, 1, 0), 
+      (2.0, 1.9, 0),
+      ])
     
     
   
@@ -259,6 +257,7 @@ def main():
 
   pdm.procrustes()
   pdm.pca()
+  pdm.variations()
   pdm.addActors(pdm.vertexGrids, 0)
   pdm.addActors(pdm.alignedGrids, 2)
   pdm.addActors(pdm.analyzedGrids, 4)
