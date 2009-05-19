@@ -195,6 +195,7 @@
         this.box = checkbox;
         this.oldValue = '';
         this.item = item;
+        this.checked = this.defaultValue;
       },
       update: function(newValue){
         this.oldValue = this.checked;
@@ -203,37 +204,25 @@
       setDefault: function(){
         this.box.defaultChecked = this.defaultValue;             
       },
-      watch: function(){
-        if (this.type == 's'){
-          this.box.observe('click', function(){
-            var thismeasurement = '';
-            for(var i=0; i < measurements.length; i++){
-              if (measurements[i].id == this.name){
-                thismeasurement = measurements[i];
-                break;                  
-              }
-            }
-            if(this.checked == true){
-              this.update(true);
-              thismeasurement.place();
-            }      
-            else{
-              this.update(false);
-              thismeasurement.hide();
-            }
-          });
-        }
-        else if (this.type == 'b'){
-          this.box.observe('click', function(){
-            var thisbitmap = '';
-            if (this.checkd == true)
-              thisbitmap.show();
-            else
-              thisbitmap.hide();                                     
-          });   
-        }
+      watch: function(){                        
+        watchBox(this);
       }
     });
+    function watchBox(item){
+      item.box.observe('click', function(){
+        item.update(item.box.checked);
+        if(item.box.checked == true){
+          if (item.type == 's')
+            item.item.place();
+          else if (item.type == 'b')
+            item.item.show();
+        }      
+        else{
+          if ((item.type == 's') || (item.type == 'b'))
+            item.item.hide();
+        }
+      });                    
+    }
     var checkboxes = new Array();
     
     var Change = Class.create({
@@ -394,7 +383,9 @@
       
       checkbox = new Element('input', {'type': 'checkbox','name':bmid, 'id': 'showbm'+bmid});
 
-      var bitmap = new Element('img', {'src': source});
+      var bitmap = new Element('img', {'src': base_path+'data/'+source,
+                                       'id':'bitmap_'+bmid});
+      bitmap.addClassName('big_image_sibling');
       $('big_images').insert(bitmap);
       bitmap.hide();
       var check = new Check('b', bmid, checkbox, bitmap);
@@ -402,7 +393,6 @@
       //when called insert, IE defaults his checkboxes to the default value (which is false).
       //so set the default to true
       check.setDefault();
-      //WATCH DOES NOT WORK YET!!!
       check.watch();
 
       checkboxes.push(check);
