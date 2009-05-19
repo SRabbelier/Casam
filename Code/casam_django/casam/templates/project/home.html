@@ -581,11 +581,6 @@
 			
 		}
 
-		function toggleTab(tab)
-		{
-			Effect.toggle(tab, 'blind', { duration: 0.5 });
-		}
-      
 		function newTab(tab_title, content, open)
 		{
 			var tabContainer = new Element('div');
@@ -601,23 +596,47 @@
 			if (!open)
 				tabBody.hide();
 
+			foldUpImageLeft  = new Element('img');
+			foldUpImageLeft.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_up.gif");
+			foldUpImageLeft.setStyle("float:left;margin:2px;");
+
+			foldUpImageRight  = new Element('img');
+			foldUpImageRight.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_up.gif");
+			foldUpImageRight.setStyle("float:right;margin:2px;");
+
+			foldDownImageLeft = new Element('img');
+			foldDownImageLeft.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_down.gif");
+		  foldDownImageLeft.setStyle("float:left;margin:2px;");
+
+			foldDownImageRight = new Element('img');
+			foldDownImageRight.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_down.gif");
+		  foldDownImageRight.setStyle("float:right;margin:2px;");
+			
   	  tabHeader.style.backgroundColor = "#dddddd";
   	  tabHeader.style.cursor = "pointer";
 			tabHeader.observe('click', function(){
-				  toggleTab(tabBody);
+					Effect.toggle(tabBody, 'blind', { duration: 0.5 });
+					this.update();
+					if (tabBody.style.display!="none") {
+						this.insert(foldUpImageLeft);
+						this.insert(foldUpImageRight);
+					} else {
+						this.insert(foldDownImageLeft);
+						this.insert(foldDownImageRight);
+					}
+					this.innerHTML += "<b>"+tab_title+"</b>";
 				}
 			);
-			foldUpImage  = new Element('img');
-			foldDownImage = new Element('img');
-			foldUpImage.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_up.gif");
-			foldUpImage.setStyle("float:left;margin:2px;");
-			foldDownImage.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_down.gif");
-		  foldDownImage.setStyle("float:right;margin:2px;");
 
-		  tabHeader.insert(foldUpImage);
-		  tabHeader.insert(foldDownImage);
+			if (!open) {
+			  tabHeader.insert(foldUpImageLeft);
+			  tabHeader.insert(foldUpImageRight);
+			} else {
+				tabHeader.insert(foldDownImageLeft);
+			  tabHeader.insert(foldDownImageRight);
+			}
 			tabHeader.innerHTML += "<b>"+tab_title+"</b>";
-      
+
 			tabLine.style.height = "2px";
 			tabLine.style.backgroundImage = "url('{{ BASE_PATH }}media/img/bar_middle.jpg')";
 			tabLine.style.backgroundRepeat = "repeat-x";
