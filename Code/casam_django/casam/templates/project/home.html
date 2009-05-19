@@ -617,7 +617,7 @@
 			tabHeader.observe('click', function(){
 					Effect.toggle(tabBody, 'blind', { duration: 0.5 });
 					this.update();
-					if (tabBody.style.display!="none") {
+					if (tabBody.style.display=="none") {
 						this.insert(foldUpImageLeft);
 						this.insert(foldUpImageRight);
 					} else {
@@ -628,7 +628,7 @@
 				}
 			);
 
-			if (!open) {
+			if (open) {
 			  tabHeader.insert(foldUpImageLeft);
 			  tabHeader.insert(foldUpImageRight);
 			} else {
