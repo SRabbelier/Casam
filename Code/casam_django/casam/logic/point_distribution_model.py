@@ -36,6 +36,7 @@ class PointDistributionModel(object):
     self.vertexGrids = []
     self.alignedGrids = []
     self.analyzedGrids = []
+    self.meanShape = []
 
     self.colors = getColors(10)
 
@@ -127,10 +128,11 @@ class PointDistributionModel(object):
       self.filterPCA.SetInput(id, grid)
 
     self.filterPCA.Update()
-
-    for id in range(size):
-      grid = self.filterPCA.GetOutput(id)
-      self.analyzedGrids.append(grid)
+    
+    #do not want, for now!
+    #for id in range(size):
+    #  grid = self.filterPCA.GetOutput(id)
+    #  self.analyzedGrids.append(grid)
       
     #Get the eigenvalues
     evals = self.filterPCA.GetEvals()
@@ -159,13 +161,54 @@ class PointDistributionModel(object):
     b.SetNumberOfComponents(0)
     b.SetNumberOfTuples(0)
     mean = vtk.vtkUnstructuredGrid()
-    #for grids in enumerate(self.alignedGrids):
+    mean.DeepCopy(self.alignedGrids[0])
+    #Get the mean shape:
+    self.filterPCA.GetParameterisedShape(b, mean)
+    self.meanShape.append(mean)
+
+    #to calculate the first mode of variation extremes (-3 standard deviations and + 3)
+    b.SetNumberOfComponents(1)
+    b.SetNumberOfTuples(1)
+    b.SetTuple1(0, 3.0) 
+    extreme = vtk.vtkUnstructuredGrid()
+    extreme.DeepCopy(self.alignedGrids[0])
+    self.filterPCA.GetParameterisedShape(b, extreme)
+    self.analyzedGrids.append(extreme)
+    #rinse and repeat for b.SetTuple1(0, 3.0)
+    b.SetNumberOfComponents(1)
+    b.SetNumberOfTuples(1)
+    b.SetTuple1(0, -3.0) 
+    extreme = vtk.vtkUnstructuredGrid()
+    extreme.DeepCopy(self.alignedGrids[0])
+    self.filterPCA.GetParameterisedShape(b, extreme)
+    self.analyzedGrids.append(extreme)
+    
+    #now for the second mode of variation, just change the parameters like so:
+    b.SetNumberOfComponents(1)
+    b.SetNumberOfTuples(2)
+    b.SetTuple1(0, 0.0) #don't use the first mode of variation
+    b.SetTuple1(1, -3.0) #just the second mode :D  
+    extreme = vtk.vtkUnstructuredGrid()
+    extreme.DeepCopy(self.alignedGrids[0])
+    self.filterPCA.GetParameterisedShape(b, extreme)
+    self.analyzedGrids.append(extreme)
+    b.SetNumberOfComponents(1)
+    b.SetNumberOfTuples(2)
+    b.SetTuple1(0, 0.0) #don't use the first mode of variation
+    b.SetTuple1(1, 3.0) #just the second mode :D  
+    extreme = vtk.vtkUnstructuredGrid()
+    extreme.DeepCopy(self.alignedGrids[0])
+    self.filterPCA.GetParameterisedShape(b, extreme)
+    self.analyzedGrids.append(extreme)
+    
+    #merger = vtk.vtkMergeCells()
+    #merger.SetTotalNumberOfDataSets(size)
+    #merger.SetUnstructuredGrid(mean)
+
+    #for grid in enumerate(self.alignedGrids):
       
-    
-    
+
     logging.info("done")
-    
-    
 
   def render(self):
     """
@@ -218,7 +261,8 @@ def main():
   pdm.pca()
   pdm.addActors(pdm.vertexGrids, 0)
   pdm.addActors(pdm.alignedGrids, 2)
-  #pdm.addActors(pdm.analyzedGrids, 4)
+  pdm.addActors(pdm.analyzedGrids, 4)
+  pdm.addActors(pdm.meanShape, 6)
   pdm.render()
 
 if __name__ == '__main__':
