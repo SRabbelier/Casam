@@ -61,6 +61,15 @@
             if(item.imageid == this.id);
               item.replace(); 
           });
+          
+          //big_images need to be resized again when the images are loaded
+          //the javascript continues while this.getAppropriateSizeURL() is still
+          //finding the correct size for the image
+          var remainingWidth = document.viewport.getWidth() - 500;
+          $('big_images').setWidth(remainingWidth);
+    
+          var remainingHeight = document.viewport.getHeight() - 150;
+          $('big_images').setHeight(remainingHeight);          
         });
         $('big_images').insert({'bottom':this.getImageElement()});
         this.getImageElement().observe('click',function(){
@@ -423,13 +432,13 @@
       var bitmapDiv = new Element('div', {'id': 'bitmapDiv_'+bmid});
       bitmapDiv.addClassName('projectImageBitmapDiv');
       
-      checkbox = new Element('input', {'type': 'checkbox','name':bmid, 'id': 'showbm'+bmid});
-           
+      checkbox = new Element('input', {'type': 'checkbox','name':bmid, 'id': 'showbm'+bmid});           
       var bitmap = new Element('img', {'id':'bitmap_'+bmid});
       
       var bm = new Bitmap(bitmap,bmid,imgid)
       bitmaps.push(bm);
       
+      bitmap.writeAttribute('src', '');
       bitmap.writeAttribute('src', bm.getAppropriateSizeURL());
       bitmap.addClassName('big_image_sibling_bitmap');
       $('big_images').insert(bitmap);
@@ -1039,9 +1048,10 @@
 					
 				//.update() clears the contents of the elements
 	      $('big_images').update();
-	      
+        
 				for(var i = addedImages.length-1; i >= 0; i--){
 					$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
+
           if (full){
             $('bottomDiv'+addedImages[i].id).update();
             addedImages[i].addSelfToImages();
@@ -1054,7 +1064,7 @@
 	        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
 	      }
 	      Sortable.create("pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });
-        reloadBitmaps();	
+        reloadBitmaps();      	
 			});
 		}
     
@@ -1066,7 +1076,7 @@
           
           $('big_images').insert(checkboxes[i].item.bitmap);
           checkboxes[i].item.bitmap.hide();
-          alert(checkboxes[i].item.bitmap.getHeight());
+
           if(checkboxes[i].checked)
             checkboxes[i].item.bitmap.show();
         }
