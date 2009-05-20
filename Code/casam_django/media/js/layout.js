@@ -229,11 +229,14 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 	}
 }
 
-function loadEditScreen(id, name) {
+function loadEditScreen(id, name, bmid) {
 	checkAuthenticationAndExecute( function() {
 
-		img_url = base_path + 'imageLoader/' + id;
-		bitmap_url = base_path + 'data/46967c41-408c-11de-a299-00059a3c7800_1242308363.19.gif';
+		img_url = base_path + 'imageLoader/original/' + id;
+		if ((bmid != '') && (bmid != undefined))
+		  bitmap_url = base_path + 'imageLoader/bitmap/'+bmid;
+	  else
+	    bitmap_url = '';
 		mov_width = ($('big_images').getWidth() - 5);
 		mov_heigth = ($('big_images').getHeight() - 5);
 

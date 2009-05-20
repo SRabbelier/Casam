@@ -35,8 +35,12 @@ def simple(request,**kwargs):
         print 'Bitmap could not be found'
     location = "./" + DATADIR + "%s" % (imageRecord.path)
     im = Image.open(location)
-    im = im.convert("RGB")
-    im.save(temporaryImage)
+    im = im.convert("RGBA")
+    
+    if img_type == 'bitmap':
+      im.save(temporaryImage,transparency=0)
+    else:
+      im.save(temporaryImage)
 
     
   wrapper = FileWrapper(file(temporaryImage, "rb"))
