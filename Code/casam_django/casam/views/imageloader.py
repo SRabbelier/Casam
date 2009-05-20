@@ -93,7 +93,6 @@ class ImageHandler(handler.Handler):
     handler_type = actions[img_type]
     return handler_type()
 
-
   def getImage(self):
     """Returns the path of the image for the current request.
     """
@@ -113,9 +112,28 @@ class ImageHandler(handler.Handler):
       im = Image.open(location)
       im = im.convert("RGBA")
 
-      handler.save(im, img_path)
+      self.save(im, img_path)
 
     return img_path
+
+  def save(self, im, img_path):
+    handler = self.getHandler()
+    handler.save(im, img_path)
+
+  def response(self, img_path):
+    wrapper = FileWrapper(file(img_path, "rb"))
+    handler = self.getHandler()
+    content_type = handler.contentType()
+
+    response = http.HttpResponse(wrapper,content_type=content_type)
+    response['Content-Length'] = os.path.getsize(img_path)
+
+    return response
+
+  def get(self):
+    img_path = self.getImage()
+
+    return self.response(img_path)
 
 
 class SimpleHandler(ImageHandler):
@@ -125,72 +143,30 @@ class SimpleHandler(ImageHandler):
   def infix(self):
     return "_simple"
 
-  def get(self):
-    img_path = self.getImage()
-    handler = self.getHandler()
 
-    wrapper = FileWrapper(file(img_path, "rb"))
-    content_type = handler.contentType()
-
-    response = http.HttpResponse(wrapper,content_type=content_type)
-    response['Content-Length'] = os.path.getsize(img_path)
-  
-    return response
-
-class RatioHandler(handler.Handler):
+class RatioHandler(ImageHandler):
   """
   """
 
-  def get(self):
-    img_type = self.kwargs.get('img_type')
-    imageID = self.kwargs.get('uuid')
+  def infix(self):
+    return "_byRatio_" + self.kwargs.get('img_ratio')
+
+  def save(self, im, img_path):
     ratio = self.kwargs.get('img_ratio')
 
     floatRatio = float(ratio)
 
-    if img_type == 'original':
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byRatio_" + str(floatRatio) +".jpg"
-    else:
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byRatio_" + str(floatRatio) +".gif"
+    #safeguard for not killing the server
+    if floatRatio>=150:
+      floatRatio = float(150)
 
-    #image was not found in cache, create it!
-    if not os.path.exists(temporaryImage):
-      if img_type == 'original':
-        try:
-          imageRecord = OriginalImage.objects.all().get(id = imageID)
-        except OriginalImage.DoesNotExist:
-          print 'Image could not be found'
-      else:
-        try:
-          imageRecord = Bitmap.objects.all().get(id = imageID)
-        except Bitmap.DoesNotExist:
-          print 'Bitmap could not be found'
+    #resize the image with the correct ratio
+    imageWidth = im.size[0] * (floatRatio/100)
+    imageHeight = im.size[1] * (floatRatio/100)
 
-      location = "./" + self.DATA_DIR + "%s" % (imageRecord.path)
-      im = Image.open(location)
-      im = im.convert("RGB")
-  
-      #safeguard for not killing the server
-      if floatRatio>=150:
-        floatRatio = float(150)
+    newImage = im.resize((imageWidth,imageHeight),Image.ANTIALIAS)
 
-      #resize the image with the correct ratio
-      imageWidth = im.size[0] * (floatRatio/100)
-      imageHeight = im.size[1] * (floatRatio/100)
-
-      newImage = im.resize((imageWidth,imageHeight),Image.ANTIALIAS)
-
-      newImage.save(temporaryImage)
-
-    #Put the image in the request
-    wrapper = FileWrapper(file(temporaryImage, "rb"))
-    if img_type == 'original':
-      response = http.HttpResponse(wrapper,content_type='image/jpeg')
-    else:
-      response = http.HttpResponse(wrapper,content_type='image/gif')
-    response['Content-Length'] = os.path.getsize(temporaryImage)
-  
-    return response
+    newImage.save(img_path)
 
 
 class WidthHandler(handler.Handler):
