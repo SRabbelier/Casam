@@ -193,73 +193,42 @@ class WidthHandler(ImageHandler):
     newImage.save(img_path)
 
 
-class MaxWidthHeightHandler(handler.Handler):
-  def get(self):
+class MaxWidthHeightHandler(ImageHandler):
+  """
+  """
+
+  def infix(self):
+    return "_byMaxWidthHeight_" + self.kwargs.get('img_width') + "_" + self.kwargs.get('img_height')
+
+  def save(self, im, img_path):
     width = self.kwargs.get('img_width')
     height = self.kwargs.get('img_height')
-    imageID = self.kwargs.get('uuid')
-    img_type = self.kwargs.get('img_type')
 
     floatWidth = float(width)
     floatHeight = float(height)
 
-    if img_type == 'original':
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMaxWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".jpg"
+    fullImageWidth = im.size[0]
+    fullImageHeight = im.size[1]
+
+    #initialize the values that will be altered in the following if statement
+    resizeWidth = 0
+    resizeHeight = 0
+
+    if (floatWidth / fullImageWidth) < (floatHeight / fullImageHeight):
+      #Resize by resizing the width
+      resizeRate = floatWidth / fullImageWidth
+      resizeWidth = floatWidth
+      resizeHeight = fullImageHeight * resizeRate
     else:
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byMaxWidthHeight_" + str(floatWidth) + "_" + str(floatHeight) +".gif"
+      #Resize by resizing the height
+      resizeRate = floatHeight / fullImageHeight
+      resizeWidth = fullImageWidth * resizeRate
+      resizeHeight = floatHeight
 
-    #image was not found in cache, create it!
-    if not os.path.exists(temporaryImage):
-      if img_type == 'original':
-        try:
-          imageRecord = OriginalImage.objects.all().get(id = imageID)
-        except OriginalImage.DoesNotExist:
-          print 'Image could not be found'
-      else:
-        try:
-          imageRecord = Bitmap.objects.all().get(id = imageID)
-        except Bitmap.DoesNotExist:
-          print 'Bitmap could not be found'
+    newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
 
-      location = "./" + self.DATA_DIR + "%s" % (imageRecord.path)
-      im = Image.open(location)
-      im = im.convert("RGBA")
-
-      fullImageWidth = im.size[0]
-      fullImageHeight = im.size[1]
-
-      #initialize the values that will be altered in the following if statement
-      resizeWidth = 0
-      resizeHeight = 0
-
-      if (floatWidth / fullImageWidth) < (floatHeight / fullImageHeight):
-        #Resize by resizing the width
-        resizeRate = floatWidth / fullImageWidth
-        resizeWidth = floatWidth
-        resizeHeight = fullImageHeight * resizeRate
-      else:
-        #Resize by resizing the height
-        resizeRate = floatHeight / fullImageHeight
-        resizeWidth = fullImageWidth * resizeRate
-        resizeHeight = floatHeight
-
-      newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
-
-      #Save the image and put it in the request
-      if img_type == 'bitmap':
-        newImage.save(temporaryImage,transparency=0)
-      else:
-        newImage.save(temporaryImage)
-
-    #Put the image in the request
-    wrapper = FileWrapper(file(temporaryImage, "rb"))
-    if img_type == 'original':
-      response = http.HttpResponse(wrapper,content_type='image/jpeg')
-    else:
-      response = http.HttpResponse(wrapper,content_type='image/gif')
-    response['Content-Length'] = os.path.getsize(temporaryImage)
-
-    return response
+    handler = self.getHandler()
+    handler.save(newImage, img_path)
 
 
 class MinWidthHeightHandler(handler.Handler):
