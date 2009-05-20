@@ -58,8 +58,11 @@
         this.imageElement.observe('load',function(){
           //resize the measurements
           measurements.each(function(item){ 
-            if(item.imageid == this.id);
+            if(item.imageid == parentAddedImageObject.id){
+              if (item.pinDiv.ancestors() == '')
+                $('big_images').insert(item.pinDiv);
               item.replace(); 
+            }
           });
           
           //big_images need to be resized again when the images are loaded
