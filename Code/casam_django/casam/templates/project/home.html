@@ -1,363 +1,42 @@
-
 {% extends 'base.html' %}
-{% block title %}Overzicht projecten en foto's{% endblock title %}
+
+{% block title %}Workplace{% endblock title %}
 
 {% block head %}
-  <link href="{{ BASE_PATH }}media/css/whiteFrame.css" rel="stylesheet" type="text/css" media="screen" />
-  <link href="{{ BASE_PATH }}media/css/projectHome.css" rel="stylesheet" type="text/css" media="screen" />
-	<script src="{{ BASE_PATH }}media/js/ajax.js" type="text/javascript"></script>
-	<script src="{{ BASE_PATH }}media/js/getmouse.js" type="text/javascript"></script>
-	<script src="{{ BASE_PATH }}media/js/images.js" type="text/javascript"></script>
-	<script src="{{ BASE_PATH }}media/js/landmarks.js" type="text/javascript"></script>
-  <script src="{{ BASE_PATH }}media/js/casamcustom.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    var base_path = "{{ BASE_PATH }}";
+<link href="{{ BASE_PATH }}media/css/whiteFrame.css" rel="stylesheet"	type="text/css" media="screen" />
+<link href="{{ BASE_PATH }}media/css/projectHome.css" rel="stylesheet"type="text/css" media="screen" />
 
-	  var AddedImage = Class.create({
-		  initialize: function(id,name) {
-		    this.id = id;
-		    this.name = name;
-		    this.opacity = 0.5;
-		    this.imageElement = new Element('img');
-		    this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
-		    this.imageElement.writeAttribute('id','addedImage_'+id);
-		    this.imageElement.addClassName('big_image_sibling');
-		    this.imageElement.setOpacity(this.opacity);
+<!-- General functions -->
+<script src="{{ BASE_PATH }}media/js/casamcustom.js" type="text/javascript"></script>
+<script src="{{ BASE_PATH }}media/js/ajax.js" type="text/javascript"></script>
+<script src="{{ BASE_PATH }}media/js/getmouse.js" type="text/javascript"></script>
 
-		    
-		    this.opacitySliderContainer = new Element('div');
-				//HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
-		    this.opacitySliderContainer.setWidth(170);
-		    this.opacitySliderContainer.writeAttribute('id','opacitySliderContainer_'+this.id);
-		    this.opacitySliderContainer.addClassName('slider');
-		    
-		    this.opacitySliderHandle = new Element('div');
-		    this.opacitySliderHandle.writeAttribute('id','opacitySliderHandle_'+this.id);
-		    this.opacitySliderHandle.addClassName('handle');
-		    
-		    this.opacitySliderContainer.insert(this.opacitySliderHandle);
-		    
-		  },
-	  	getAppropriateSizeURL: function(){
-			  return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/original/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
-		  },
-		  getImageElement: function(){
-			  return this.imageElement;
-		  },
-		  getOpacitySliderContainer: function(){
-				return this.opacitySliderContainer;
-		  },
-		  setOpacityForImage: function(opacityValue){
-				this.opacity = opacityValue;
-			  this.imageElement.setOpacity(this.opacity);
-		  },
-      addSelfToBigImages: function(){
-        var parentAddedImageObject = this;
-        this.imageElement.writeAttribute('src','');
-        this.imageElement.writeAttribute('src',this.getAppropriateSizeURL());
-        this.imageElement.observe('load',function(){
-          //resize the measurements
-          measurements.each(function(item){ 
-            if(item.imageid == parentAddedImageObject.id){
-              if (item.pinDiv.ancestors() == '')
-                $('big_images').insert(item.pinDiv);
-              item.replace(); 
-            }
-          });
-          //big_images need to be resized again when the images are loaded
-          //the javascript continues while this.getAppropriateSizeURL() is still
-          //finding the correct size for the image
-          var remainingWidth = document.viewport.getWidth() - 500;
-          $('big_images').setWidth(remainingWidth);
-    
-          var remainingHeight = document.viewport.getHeight() - 150;
-          $('big_images').setHeight(remainingHeight);          
-        });
-        $('big_images').insert({'bottom':this.getImageElement()});
-        this.getImageElement().observe('click',function(){
-          LoadMMDD('',parentAddedImageObject.id);
-        });
-        
-        $('bottomDiv'+parentAddedImageObject.id).insert({top: this.getOpacitySliderContainer()});
-        new Control.Slider(this.opacitySliderHandle,this.opacitySliderContainer, {
-          minimum: 0,
-          maximum: 1,
-          sliderValue: parentAddedImageObject.opacity,
-          onSlide: function(value){
-            parentAddedImageObject.setOpacityForImage(value);
-          }
-        });                             
-      },
-      addMetaDataToSelf: function(){
-        getImageMeasurements(this.id);
-        getImageBitmaps(this.id);                                    
-      },
-		  addSelfToImages:function(){
-        this.addSelfToBigImages();
-        this.addMetaDataToSelf();        
-		  }
-		});
+<!-- Defining global variables -->
+<script type="text/javascript">
+	var base_path = "{{ BASE_PATH }}";
+	var addedImages = new Array();
+  var total_images = 0;
+	var measurements = new Array();
+	var checkboxes = new Array();
+  var changes = new Array();
+  var bitmaps = new Array();
+  var savelm = createRequestObject();
 
-		var addedImages = new Array();
-		
-    var total_images = 0;
-    
-    
-    var Measurement = Class.create({
-		  initialize: function(id,potid,name,imageid,pin,originalWidth,originalHeight) {
-		    this.id = id;
-		    this.potid = potid;
-        this.name = name;
-        
-        //info about the image
-        this.imageid = imageid;
-        this.originalWidth = originalWidth;
-        this.originalHeight = originalHeight;
-        
-        //these are the coordinates of the pin in the original image
-        this.x = 0;
-        this.y = 0;
-        
-        this.pinDiv = pin;
-        //theze are the coordinates of the pin in the scaled image
-        this.left = 0;
-        this.top = 0;
-        
-        this.piecex = 0;
-        this.piecey = 0;
-        
-        this.drag = null;
-		  },
-      setPlace:function(x,y){
-        this.calcpieces();
-        this.x = x;
-        this.y = y;
-        this.left = x*this.piecex;
-        this.top = y*this.piecey;
-      },
-      place:function(){
-        this.pinDiv.setStyle(
-            {position: 'absolute',
-             left: ''+(Math.round(this.left))+'px',
-             top: ''+(Math.round(this.top))+'px'});
-        this.pinDiv.show();
-      },
-      replace:function(){
-        this.calcpieces();
-        this.left = this.x * this.piecex;
-        this.top = this.y * this.piecey;
-        this.place();
-      },
-      calcpieces:function(){
-        this.piecex = $('addedImage_'+this.imageid).width / this.originalWidth;
-        this.piecey = $('addedImage_'+this.imageid).height / this.originalHeight;                    
-      },
-      restore:function(){
-        this.pinDiv.hide();
-        $('mm'+this.potid).show();
-      },
-      hide:function(){
-        this.pinDiv.hide();
-      },
-      changeColor:function(color){
-        this.pinDiv.childElements()[0].src = "{{BASE_PATH}}media/img/pin_"+color+".gif";
-      },
-      setActive:function(){
-        this.changeColor('red');
-        this.drag = makeDraggable(this,this.pinDiv,this.potid,this.imageid);
-        $('mm'+this.potid).hide();
-      },
-      nonActive:function(){
-        this.changeColor('green');
-        if(this.drag != null)
-          this.drag.destroy();
-      },
-      erase:function(){
-        this.nonActive(); //to destroy draggable
-        this.pinDiv.remove(); //remove the whole pin
-      }
-    });
-		function makeDraggable(measurement,pinDiv,potid,imageid){
-      return new Draggable(pinDiv, { 
-        onStart: function(){
-          var c = new Change('r', potid, measurement.name);
-          c.position(Math.round(measurement.left), Math.round(measurement.top));
-          changes.push(c);                
-        },
-        onDrag: function(element,event){ 
-          pinDiv.childElements()[1].hide();
-        }, 
-        onEnd: function() {
-          LoadMMDD(potid,imageid); 
-          var c = changes.pop();
-          c.reposition(measurement.id, $('lmmx').value, $('lmmy').value);
-          c.add();
-          changes.push(c);
-				}
-			});
-    }
-		var measurements = new Array();
-    
-    var Check = Class.create({
-      initialize: function(type, name, checkbox, item){
-        //type: s (show) is for measurements, u (use) is for pictures, b (bitmap) is for bitmaps
-        this.type = type;
-      
-        if (this.type == 's')
-          this.defaultValue = true;
-        else
-          this.defaultValue = false;
-       
-        this.id = name;
-        this.box = checkbox;
-        this.oldValue = '';
-        this.item = item;
-        this.checked = this.defaultValue;
-      },
-      update: function(newValue){
-        this.oldValue = this.checked;
-        this.checked = newValue;
-      },
-      setDefault: function(){
-        this.box.defaultChecked = this.defaultValue;             
-      },
-      watch: function(){                        
-        watchBox(this);
-      },
-      repair: function(){
-        if(this.checked == true)
-          this.box.checked = true;
-      }
-    });
-    function watchBox(item){
-      item.box.observe('click', function(){
-        item.update(item.box.checked);
-        if(item.box.checked == true){
-          if (item.type == 's')
-            item.item.place();
-          else if (item.type == 'b')
-            item.item.bitmap.show();
-        }      
-        else{
-          if (item.type == 's')
-            item.item.hide();
-          else if (item.type == 'b')
-            item.item.bitmap.hide();
-        }
-      });                    
-    }
-    var checkboxes = new Array();
-    
-    var Change = Class.create({
-      initialize: function(type, lmid, lmname){
-        //type: p is for positioning landmarks, r is for repositioning landmarks
-        this.type = type;       
-        this.potid = lmid;
-        this.lmname = lmname; 
-        this.metingid = '';   
-        this.oldx = '';
-        this.oldy = '';
-        this.saved = false;
-        this.changeDiv = '';
-        this.imageid = addedImages[0].id;
-        this.saveButton = '';
-        this.posx = '';
-        this.posy = '';
-      },
-      reposition: function(mid, x, y){
-        this.metingid = mid;
-        this.oldx = this.posx;
-        this.oldy = this.posy;
-        this.posx = x;
-        this.posy = y;
-      },
-      position: function(x, y){
-        this.posx = x;
-        this.posy = y;                       
-      },
-      forceSave: function(){
-        if (!this.saved){
-          this.changeDiv.childElements()[1].remove();
-          this.saveButton= '';
-        }
-        this.saved = true;
-        this.changeDiv.removeClassName('unsavedChangeDiv');   
-        this.changeDiv.addClassName('savedChangeDiv');                    
-      },
-      save: function(){
-        this.forceSave();
-        mid = this.metingid;
-        changes.each(function(item){
-          if (item.metingid == mid){
-            item.forceSave();                                  
-          }
-        }); 
-      },
-      add: function(){
-        this.changeDiv = new Element('div');
-        if (this.saved)
-          this.changeDiv.addClassName('savedChangeDiv');
-        else
-          this.changeDiv.addClassName('unsavedChangeDiv');
-        var span = new Element('span');
-        if (this.type == 'r')
-          span.update('Landmark '+this.lmname+' has moved from ('+this.oldx+','+this.oldy+') to ('+this.posx+','+this.posy+')')
-        else
-          span.update('Landmark '+this.lmname+' has been placed at ('+this.posx+','+this.posy+')');
-        this.changeDiv.insert(span);
-        if (!this.saved){
-          var saveButton = new Element('a', {'href': '#'});
-          saveButton.addClassName('saveChangeButton');
-          saveButton.update('Save this change');
-          this.saveButton = saveButton;
-          this.changeDiv.insert(saveButton);
-        }              
-        $('ajax_result').insert(this.changeDiv);
-        watchSaveButton(this);
-      },
-      undo: function(){
-        $('ajax_result').childElements()[$('ajax_result').childElements().length-1].remove();
-        undoLastLandmarkChange(this.oldx, this.oldy, this.potid, this.imageid, this.metingid);
-        changes.pop();
-      },
-      erase: function(){
-        this.changeDiv.remove();                   
-      }                                                                 
-    });        
-    function watchSaveButton(item){
-      item.saveButton.observe('click', function(){
-        item.save();
-        
-        saveLandMark(item.posx, item.posy, item.potid, item.imageid);   
-      });                               
-    }       
-    var changes = new Array();   
-    
-    var Bitmap = Class.create({
-      initialize: function(bm, bmid, imageid){
-        this.bitmap = bm;
-        this.id = bmid;                     
-        this.imageid = imageid;        
-      },
-      getAppropriateSizeURL: function(){
-        return ('{{BASE_PATH}}imageLoader/byMaxWidthHeight/bitmap/'+($('big_images').getWidth()-2)+'/'+($('big_images').getHeight()-2)+'/'+this.id);
-      },
-      resize: function(){
-        this.bitmap.writeAttribute('src', this.getAppropriateSizeURL());
-        this.bitmap.observe('load', function(){
-          //big_images need to be resized again when the bitmaps are loaded
-          //the javascript continues while this.getAppropriateSizeURL() is still
-          //finding the correct size for the bitmap
-          var remainingWidth = document.viewport.getWidth() - 500;
-          $('big_images').setWidth(remainingWidth);
-    
-          var remainingHeight = document.viewport.getHeight() - 150;
-          $('big_images').setHeight(remainingHeight);   
-        });
-      }               
-    });         
-		var bitmaps = new Array();
-    	
+  var savex;
+  var savey;
+</script>
+
+<!-- Building layout functuion -->
+<script src="{{ BASE_PATH }}media/js/layout.js" type="text/javascript"></script>
+
+<!-- Core object functions -->
+<script src="{{ BASE_PATH }}media/js/images.js" type="text/javascript"></script>
+<script src="{{ BASE_PATH }}media/js/measurements.js"	type="text/javascript"></script>
+<script src="{{ BASE_PATH }}media/js/undo.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+// What to do on load
 	  document.observe("dom:loaded", function()
 		{
 		  checkAuthenticationAndExecute(function(){
@@ -395,855 +74,233 @@
 					resizeScreenElements(false);
 				});
 				Event.observe('editTagsLink','click',function(){
-					popupIFrame('{{ BASE_PATH }}tag/select/{{ id }}',350,150);
+					popupIFrame(base_path+'tag/select/{{ id }}',350,150);
 				});
 				Event.observe('editMeasurementLink','click',function(){
-	        popupIFrame('{{ BASE_PATH }}pm/new/{{ id }}',350,150);
+	        popupIFrame(base_path+'pm/new/{{ id }}',350,150);
 	      });
 	      Event.observe('undoLink','click',function(){
 	        undoLastChange();
 	      });
 		  });
 		});
-    
-    function undoLastChange(){
-      var c = changes[changes.length-1];
-      c.undo();
-    }
 
-    function getImageBitmaps(imgid){
-      var url = '{{ BASE_PATH }}JSON/projectImageBitmaps/'+imgid+'?time='+new Date().getTime();
-      new Ajax.Request(url, {
-        method: 'get',
-        onSuccess: function(transport, json){
-          var json = transport.responseText.evalJSON();
-          var mainDiv = new Element('div');
-          mainDiv.addClassName('projectBitmapDiv');
-          
-          //add Div for tab
-          var tempDiv = new Element('div');
-          tempDiv.insert(mainDiv); 
-          
-          for(var i = 0; i < json.length; i++){
-            mainDiv.insert(addBitmap(json[i].pk, json[i].fields.path, imgid));                                    
-          }  
-          
-          if ($('bottomDiv'+imgid).childElements().length == 3){
-            $('bottomDiv'+imgid).childElements()[1].childElements()[3].innerHTML = mainDiv.innerHTML;
-          }
-          else{
-            var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
-            tab_bitmaps.addClassName('imgSubTabBitmaps');
-            $('bottomDiv'+imgid).insert(tab_bitmaps);
-          }                                 
-        }               
-      });                              
-    }
-    
-    function addBitmap(bmid, source, imgid){
-      var bitmapDiv = new Element('div', {'id': 'bitmapDiv_'+bmid});
-      bitmapDiv.addClassName('projectImageBitmapDiv');
-      
-      checkbox = new Element('input', {'type': 'checkbox','name':bmid, 'id': 'showbm'+bmid});           
-      var bitmap = new Element('img', {'id':'bitmap_'+bmid});
-      
-      var bm = new Bitmap(bitmap,bmid,imgid)
-      bitmaps.push(bm);
-      
-      bitmap.writeAttribute('src', '');
-      bitmap.writeAttribute('src', bm.getAppropriateSizeURL());
-      bitmap.addClassName('big_image_sibling_bitmap');
-      $('big_images').insert(bitmap);
-      bitmap.hide();
-      
-      bitmap.setOpacity(0.5);
+// Load content (for some reason this can't be put in an outside js-file)
+function getProjectImages()
+{
+	checkAuthenticationAndExecute(function(){
+				
+		var url = base_path+'JSON/projectImages/{{id}}?time='+new Date().getTime();
+		// notice the use of a proxy to circumvent the Same Origin Policy
+		new Ajax.Request(url, {
+		  method: 'get',
+		  onSuccess: function(transport, json) {
+			  
+		    var json = transport.responseText.evalJSON();
+		    
+		    //$('pictureContainerHeader').update('Pictures('+json.length+')');
+		     
+		    $('tab_pictures').update();
+		    $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
+		    // Create a picture container for each picture
+		    for(i=0; i < json.length; i++)
+					makePictureContainer(json[i]);
+				// Put bar in Pictures
+				var toolbar = new Element('div');
+				toolbar.setStyle("clear:both;float:right;");
+				var addLink = new Element('a',{'href':'#'});
 
-      
-      /*
-      var opacitySliderContainer = new Element('div');
-      //HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
-      opacitySliderContainer.setWidth(140);
-      opacitySliderContainer.writeAttribute('id','bitmapOpacitySliderContainer_'+bmid);
-      opacitySliderContainer.addClassName('bitmapSlider');
-      
-      var opacitySliderHandle = new Element('div');
-      opacitySliderHandle.writeAttribute('id','bitmapOpacitySliderHandle_'+bmid);
-      opacitySliderHandle.addClassName('bitmapHandle');
-      
-      opacitySliderContainer.insert(opacitySliderHandle); 
-      */
-           
-      var check = new Check('b', bmid, checkbox, bm);
-
-      //when called insert, IE defaults his checkboxes to the default value (which is false).
-      //so set the default to true
-      check.setDefault();
-      check.watch();
-
-      checkboxes.push(check);
-
-      textspan = new Element('span', {'id': 'spanbm_'+bmid});
-      textspan.update(bmid)
-      bitmapDiv.insert(checkbox);
-      bitmapDiv.insert(textspan);
-      
-      return bitmapDiv;                     
-    }
-    
-    function getImageMeasurements(imgid){
-      var url = '{{ BASE_PATH }}JSON/projectImageCurrentMeasurements/'+imgid+'?time='+new Date().getTime();
-      new Ajax.Request(url, {
-        method: 'get',
-        onSuccess: function(transport, json) {
-          var json = transport.responseText.evalJSON();
-          var mainDiv = new Element('div');
-          mainDiv.addClassName('projectPictureDiv');
-          
-          //add Div for tab
-          var tempDiv = new Element('div');
-          tempDiv.insert(mainDiv);
-          
-          for(var i=0; i < measurements.length; i++){
-            if(measurements[i].imageid == imgid){
-              measurements[i].restore();
-              measurements.splice(i,1);
-              //splice shifts the index of the array 1 to the left, so compensate
-              i = i-1;
-            }
-          }
-          
-          var imgname = '';
-          for(var j = 0; j < addedImages.length; j++){
-            if(addedImages[j].id == imgid){
-              imgname = addedImages[j].name;
-              break;
-            }
-          }
-          for(i=0; i < json.length-1; i=i+2){
-            mainDiv.insert(createMeasurement(json[i].fields.name,imgname,json[i+1].fields.x,
-                           json[i+1].fields.y,json[i+1].pk,json[i].pk,imgid,
-                           json[i+1].fields.imagewidth,json[i+1].fields.imageheight));                                 
-          }
-          
-          if ($('bottomDiv'+imgid).childElements().length == 2){
-            $('bottomDiv'+imgid).childElements()[1].childElements()[2].innerHTML = mainDiv.innerHTML;
-          }
-          else{
-            var tab_measurements = newTab('Measurements', mainDiv, true);
-            tab_measurements.addClassName('imgSubTabMeasurements');
-            $('bottomDiv'+imgid).insert(tab_measurements);
-          }  
-        }  
-      });                                      
-    }
-    
-    function createMeasurement(name, imgname, x, y, measid, potid, imgid, imgwidth, imgheight){
-            
-      var pinDiv = new Element('div');
-      pinDiv.addClassName('pinDiv');
-      pinDiv.hide();
-      
-      var pin = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_green.gif'});
-      pin.addClassName('pinImage');
-      var pintooltip = new Element('div').update(name+'<br />'+imgname+'<br />'+x+', '+y);
-      pintooltip.addClassName('pintooltip');
-      pintooltip.hide();
-
-      pin.observe('mouseover', showLandmarkTooltip);
-      pin.observe('mouseout', hideLandmarkTooltip);
-      
-      pinDiv.insert(pin);
-      pinDiv.insert(pintooltip);
-      $('big_images').insert(pinDiv);
-      
-      var measurement = new Measurement(measid,potid,name,imgid,pinDiv,imgwidth,imgheight);
-      var measurementDiv = new Element('div', {'id': 'potidMeasDiv_'+potid});
-      measurementDiv.addClassName('projectImageMeasurementDiv');
-      
-      checkbox = new Element('input', {'type': 'checkbox','name':measid, 'id': 'show'+measid});
-
-      var check = new Check('s', measid, checkbox, measurement);
-
-      //when called insert, IE defaults his checkboxes to the default value (which is false).
-      //so set the default to true
-      check.setDefault();
-      check.watch();
-
-      checkboxes.push(check);
-
-      textspan = new Element('span', {'id': 'span_'+potid});
-      textspan.update(name+' ('+x+', '+y+')')
-      measurementDiv.insert(checkbox);
-      measurementDiv.insert(textspan);
-      
-      //load the measurements the first time
-      measurement.setPlace(x,y);
-      measurement.place();
-      
-      if(addedImages[0].id == imgid)
-        measurement.setActive();
-      else
-        measurement.nonActive();
-        
-      measurements.push(measurement);
-      return measurementDiv                                 
-    }
-
-       
-		function resizeScreenElements(firsttime)
-		{
-			checkAuthenticationAndExecute(function(){
-						
-				var remainingWidth = document.viewport.getWidth() - 500;
-				$('big_images').setWidth(remainingWidth);
-	
-				var remainingHeight = document.viewport.getHeight() - 150;
-				$('big_images').setHeight(remainingHeight);
-        //alert(remainingHeight+'--'+($('big_images').getHeight()-2));
-				remainingHeightWhiteFrame = remainingHeight - 36; 
-				$('leftFrame').setHeight(remainingHeightWhiteFrame);
-				$('rightFrame').setHeight(remainingHeightWhiteFrame);
-				reloadImages(firsttime);
-
-			});
-			
-		}
-
-		function newTab(tab_title, content, open)
-		{
-			var tabContainer = new Element('div');
-			var tabHeader = new Element('div');
-			var tabLine = new Element('div');
-			if (Object.isElement(content)) {
-				content.parentNode.removeChild(content);
-			  tabBody = content;
-			} else {
-				var tabBody = new Element('div');
-				tabBody.id = content;
-			}
-			if (!open)
-				tabBody.hide();
-
-			foldUpImageLeft  = new Element('img');
-			foldUpImageLeft.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_up.gif");
-			foldUpImageLeft.setStyle("float:left;margin:2px;");
-
-			foldUpImageRight  = new Element('img');
-			foldUpImageRight.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_up.gif");
-			foldUpImageRight.setStyle("float:right;margin:2px;");
-
-			foldDownImageLeft = new Element('img');
-			foldDownImageLeft.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_down.gif");
-		  foldDownImageLeft.setStyle("float:left;margin:2px;");
-
-			foldDownImageRight = new Element('img');
-			foldDownImageRight.setAttribute( "src", "{{ BASE_PATH }}media/img/fold_down.gif");
-		  foldDownImageRight.setStyle("float:right;margin:2px;");
-			
-  	  tabHeader.style.backgroundColor = "#dddddd";
-  	  tabHeader.style.cursor = "pointer";
-			tabHeader.observe('click', function(){
-					Effect.toggle(tabBody, 'blind', { duration: 0.5 });
-					this.update();
-					if (tabBody.style.display=="none") {
-						this.insert(foldUpImageLeft);
-						this.insert(foldUpImageRight);
-					} else {
-						this.insert(foldDownImageLeft);
-						this.insert(foldDownImageRight);
-					}
-					this.innerHTML += "<b>"+tab_title+"</b>";
-				}
-			);
-
-			if (open) {
-			  tabHeader.insert(foldUpImageLeft);
-			  tabHeader.insert(foldUpImageRight);
-			} else {
-				tabHeader.insert(foldDownImageLeft);
-			  tabHeader.insert(foldDownImageRight);
-			}
-			tabHeader.innerHTML += "<b>"+tab_title+"</b>";
-
-			tabLine.style.height = "2px";
-			tabLine.style.backgroundImage = "url('{{ BASE_PATH }}media/img/bar_middle.jpg')";
-			tabLine.style.backgroundRepeat = "repeat-x";
-			tabLine.innerHTML = "<img src=\"{{ BASE_PATH }}media/img/bar_left.jpg\" style=\"float:left;\" />"+
-			                    "<img src=\"{{ BASE_PATH }}media/img/bar_right.jpg\" style=\"float:right;\" />";
-			
-			// Return the three div's
-			tabContainer.insert(tabHeader);
-			tabContainer.insert(tabLine);
-			tabContainer.insert(tabBody);
-			return tabContainer;
-		}
-	  
-		function getProjectImages()
-		{
-			checkAuthenticationAndExecute(function(){
-						
-				var url = '{{ BASE_PATH }}JSON/projectImages/{{id}}?time='+new Date().getTime();
-				// notice the use of a proxy to circumvent the Same Origin Policy
-				new Ajax.Request(url, {
-				  method: 'get',
-				  onSuccess: function(transport, json) {
-					  
-				    var json = transport.responseText.evalJSON();
-				    
-				    //$('pictureContainerHeader').update('Pictures('+json.length+')');
-				     
-				    $('tab_pictures').update();
-				    $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
-				    // Create a picture container for each picture
-				    for(i=0; i < json.length; i++)
-							makePictureContainer(json[i]);
-						// Put bar in Pictures
-						var toolbar = new Element('div');
-						toolbar.setStyle("clear:both;float:right;");
-						var addLink = new Element('a',{'href':'#'});
-	
-						var addImage = new Element('img',{'src':'{{ BASE_PATH }}media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
-						addLink.insert(addImage);
-						toolbar.insert(addLink);
-						Event.observe(addLink,'click',function(){
-							popupIFrame('{{BASE_PATH}}project/imageManager/{{ id }}',670,400);
-						});
-						$('tab_pictures').insert(toolbar);
-					}
+				var addImage = new Element('img',{'src':base_path+'media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
+				addLink.insert(addImage);
+				toolbar.insert(addLink);
+				Event.observe(addLink,'click',function(){
+					popupIFrame(base_path+'project/imageManager/{{ id }}',670,400);
 				});
-			});
-		}
+				$('tab_pictures').insert(toolbar);
+			}
+		});
+	});
+}
 
-		function getProjectTags()
-		{
-			checkAuthenticationAndExecute(function(){
-					
-				var url = '{{ BASE_PATH }}JSON/projectTags/{{id}}?time='+new Date().getTime();
-				new Ajax.Request(url, {
-				  method: 'get',
-				  onSuccess: function(transport, json) {
-					  
-				    var json = transport.responseText.evalJSON();
-				    			     
-				    $('tags').update();
-				     
-				    // Create a picture container for each picture
-				    for(i=0; i < json.length; i++)
-							$('tags').insert(new Element('p').update(json[i].fields.name));
-					}
-				});
-			});
-		}
+function getProjectTags()
+{
+	checkAuthenticationAndExecute(function(){
+			
+		var url = base_path+'JSON/projectTags/{{id}}?time='+new Date().getTime();
+		new Ajax.Request(url, {
+		  method: 'get',
+		  onSuccess: function(transport, json) {
+			  
+		    var json = transport.responseText.evalJSON();
+		    			     
+		    $('tags').update();
+		     
+		    // Create a picture container for each picture
+		    for(i=0; i < json.length; i++)
+					$('tags').insert(new Element('p').update(json[i].fields.name));
+			}
+		});
+	});
+}
 
-    function getProjectPotentialMeasurements()
-    {
-		  checkAuthenticationAndExecute(function(){
-		      
-	      var url = '{{ BASE_PATH }}JSON/projectPotentialMeasurements/{{id}}?time='+new Date().getTime();
-	      new Ajax.Request(url, {
-	        method: 'get',
-	        onSuccess: function(transport, json) {
-	
-	          var json = transport.responseText.evalJSON();
-	
-	          $('possiblemeasurements').update();
-	
-	          // Create a picture container for each picture
-	          for(i=0; i < json.length; i++){
-	            createPotentialMeasurement(json[i].pk, json[i].fields.name)
-	          }
-	        }
-	      });
-		  });
-    }
-    
-    function createPotentialMeasurement(potid,potname){
-      var pmmContainerDiv = new Element('div', {'id':'potmeas_'+potid});
-      pmmContainerDiv.addClassName('potMeasDiv');
-      var pmmPointerIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/pin_blue.gif','id':('mm'+potid)});
-      pmmPointerIMG.addClassName('mmPointer');
-      pmmContainerDiv.insert(pmmPointerIMG);
-      var json = json;
+function getProjectPotentialMeasurements()
+{
+  checkAuthenticationAndExecute(function(){
       
-      var pmmTextDiv = new Element('div',{'class':'mmText'}).update(potname);
-      pmmContainerDiv.insert(pmmTextDiv);
-      
-      var pmmDeleteIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/delete.gif', 'id':('mmDel'+potid)});
-      pmmDeleteIMG.addClassName('pmmDelete');
-      //pmmContainerDiv.insert(pmmDeleteIMG);
-      
-      $('possiblemeasurements').insert(pmmContainerDiv);
-      
-      var option = new Element('option', {'id':'option'+potid,
-                                          'value':potid
-                                          });
-      option.update(potname);                                          
-      $('mmmeting').add(option,null)                                       
-    }
+  var url = base_path+'JSON/projectPotentialMeasurements/{{id}}?time='+new Date().getTime();
+  new Ajax.Request(url, {
+    method: 'get',
+    onSuccess: function(transport, json) {
 
-		
-		function makePictureContainer(pictureJSON)
-		{
-			var mainDiv = new Element('div', {"id":"mainDiv_"+pictureJSON.pk});
-			     mainDiv.addClassName('projectPictureDiv');
-			var leftDiv = new Element('div', {"id":"leftDiv"+pictureJSON.pk});
-					 leftDiv.addClassName('pictureContainerLeftDiv');
-			var rightDiv = new Element('div', {"id":"rightDiv"+pictureJSON.pk});
-			    rightDiv.addClassName('pictureContainerRightDiv');
-			var bottomDiv = new Element('div', {"id":"bottomDiv"+pictureJSON.pk});
-			    bottomDiv.addClassName('pictureContainerBottomDiv');
-			
-			var useCheck = new Element('input',{'type':'checkbox', 'id': 'use'+pictureJSON.pk});    
-      useCheck.observe('click', function(){
-				 	if(useCheck.checked == true)
-            showImage(pictureJSON.pk,pictureJSON.fields.name);
-          else
-            hideImage(pictureJSON.pk);
-				}
-			);
-			
-			leftDiv.insert(useCheck);
-			
-			leftDiv.insert(new Element('img',{'src': base_path+'imageLoader/thumbnail/original/50/'+pictureJSON.pk}));
-			rightDiv.insert(new Element('span').update(pictureJSON.fields.name).addClassName('projectPictureInfo'));
-			rightDiv.insert(new Element('span').update(pictureJSON.fields.added).addClassName('projectPictureInfo'));
-			
-			if(pictureJSON.fields.isLeft)
-			  rightDiv.insert(new Element('span').update('Left').addClassName('projectPictureInfo'));
-			else
-			 rightDiv.insert(new Element('span').update('Right').addClassName('projectPictureInfo'));
-			
-			var paintoverLink = new Element('a',{'href':'#'}).update(' Paintover');
-			rightDiv.insert(paintoverLink);
-			$('pictures').insert(mainDiv);
-			
-			paintoverLink.observe('click', function(){
-					loadEditScreen(pictureJSON.pk,pictureJSON.fields.name);
-				}
-			);
-			mainDiv.insert(leftDiv);
-		  //ugly IE fix for setting the checkboxes
-      for(var i = 0; i < addedImages.length; i++){
-        if(addedImages[i].id == pictureJSON.pk){
-          Element.writeAttribute(useCheck,'checked', true); 
-          break;
-        }
-      }
-			mainDiv.insert(rightDiv);
-			mainDiv.insert(bottomDiv);
-		}
+      var json = transport.responseText.evalJSON();
 
-		function closePopupAndReloadPictures(){
-			getProjectImages();
-			new Effect.Highlight('pictures');
-			//$('tab_pictures').scrollTo($('addPictureButton'));
-			closePopup();	
-		}
+      $('possiblemeasurements').update();
 
-		function closePopupAndReloadTags(){
-			getProjectTags();
-			new Effect.Highlight('tags');
-			closePopup();	
-		}
-    
-		function closePopupAndReloadPotentialMeasurements(meas){
-      if (meas == '')
-        closePopup();
-      else{
-        measObject = meas.evalJSON()[0];
-        createPotentialMeasurement(measObject.pk, measObject.fields.name);
-        new Effect.Highlight('potmeas_'+measObject.pk);
-        closePopup();
+      // Create a picture container for each picture
+      for(i=0; i < json.length; i++){
+        createPotentialMeasurement(json[i].pk, json[i].fields.name)
       }
     }
-    
-    function reloadUndoneChange(metingid,posx,posy){
-      var pin = ''
-      for(var i = 0; i < measurements.length; i++){
-        if (measurements[i].id == metingid){
-          pin = measurements[i];
-          break;
-        }
-      }
-      pin.calcpieces();
-      pin.setPlace(posx/pin.piecex,posy/pin.piecey);
-      pin.place();
-      var currentMeasurements = $('bottomDiv'+pin.imageid).childElements()[1].childElements()[2].childElements();
-      for(var i = 0; i < currentMeasurements.length; i++){
-        if (currentMeasurements[i].childElements()[0].name == pin.id){
-          currentMeasurements[i].childElements()[1].update(pin.name+' ('+Math.round(pin.x)+','+Math.round(pin.y)+')');                                                           
-          break;                                                              
-        }                                                    
-      }
-    }  
-    
-    function reloadUndonePlace(potid, imageID){
-      var url = '{{ BASE_PATH }}AJaX/deleteMeasurement/?time='+new Date().getTime();
-      new Ajax.Request(url, {
-        method: 'get',
-        parameters: {'potentialMeasurementID': potid,
-                     'imageID': imageID},
-        onSuccess: function(transport, json) {
-          var pin = ''
-          for(var i = 0; i < measurements.length; i++){
-            if ((measurements[i].potid == potid) && (measurements[i].imageid = imageID)){
-              pin = measurements[i];
-              measurements.splice(i,1);
-              break;
-            }
-          }
-          pin.restore();
-          measurementDescriptionOffset = $('mm'+potid).up().down("div[class='mmText']").positionedOffset();
-          $('mm'+potid).setStyle({'left':(measurementDescriptionOffset[0]-12)+'px','top':(measurementDescriptionOffset[1])+'px'});
-          
-          var currentMeasurements = $('bottomDiv'+imageID).childElements()[1].childElements()[2].childElements();
-          for(var i = 0; i < currentMeasurements.length; i++){
-            if (currentMeasurements[i].childElements()[0].name == pin.id){
-              currentMeasurements[i].remove();                                                           
-              break;                                                              
-            }                                                    
-          }
-        },
-        onFailure:function(){
-          alert('Something went wrong while restoring measurement');
-        }
-      });
-    }          
-
-    function removeImage(id){
-      
-      $('mainDiv_'+id).remove();
-
-      //delete measurements for this image
-      for(var i = 0; i < measurements.length; i++){
-        if (measurements[i].imageid == id){
-          if(measurements[i].imageid == addedImages[0].id){
-            measurements[i].restore();                                                 
-          }                                           
-          measurements[i].pinDiv.remove();
-          measurements.splice(i, 1);
-          i = i-1;
-        }                                        
-      }
-
-      //delete changes for this image
-      for(var i = 0; i < changes.length; i++){
-        if (changes[i].imageid == id){
-          changes[i].changeDiv.remove();
-          changes.splice(i, 1);
-          i = i-1;                             
-        }                                        
-      }      
-
-      //remove bitmaps            
-      for(var i = 0; i < bitmaps.length; i++){
-        if (bitmaps[i].imageid == id){
-          $('bitmap_'+bitmaps[i].id).remove();
-          bitmaps.splice(i, 1);
-          i = i-1;                             
-        }                                        
-      }         
-      
-      //delete active image for this image
-      for(var i = 0; i < addedImages.length; i++){
-        if (addedImages[i].id == id){
-          $('addedImage_'+addedImages[i].id).remove();
-          $('zoomImage').hide();
-          addedImages.splice(i, 1);
-          //set new picture as active layer
-          if (addedImages.length > 0){
-            $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');
-            //set measurements of active layer to active
-            for(var j = 0; j < measurements.length; j++){
-              if (measurements[j].imageid == addedImages[0].id)
-                measurements[j].setActive();                                             
-            }        
-          }          
-          break;                     
-        }                       
-      }        
-    }
-    
-    function addImage(originalImage){
-      var container = makePictureContainer(originalImage.evalJSON()[0]);
-    }
-
-		function showImage(id,name){
-			checkAuthenticationAndExecute(function(){
-						
-				var newAddedImage = new AddedImage(id,name);
-				var newImageArray = new Array();
-				//Delete the old image and put it up front
-				for(i = 0; i < addedImages.length; i++){
-					if(addedImages[i].id != id){
-						newImageArray.push(addedImages[i]);
-					}
-				}
-				addedImages = newImageArray
-				addedImages.splice(0,0,newAddedImage);
-				
-				
-				id_array = Sortable.sequence("pictures");
-				var temp = "";
-				for(var i = 0; i < id_array.length; i++){
-	        if(id_array[i] == id){
-	          temp = id_array[i];
-	          id_array.splice(i,1);
-	          break;
-	        }
-	      }
-	      id_array.splice(0,0,temp);
-				Sortable.setSequence("pictures",id_array);
-				reloadImages(true);
-			});
-		}
-
-		function loadEditScreen(id,name){
-			checkAuthenticationAndExecute(function(){
-						
-				img_url = '{{BASE_PATH}}imageLoader/'+id;
-				bitmap_url = '{{BASE_PATH}}data/46967c41-408c-11de-a299-00059a3c7800_1242308363.19.gif';
-				mov_width = ($('big_images').getWidth()-5);
-				mov_heigth = ($('big_images').getHeight()-5);
-					
-				movie_object = new Element('object');
-				movie_object.writeAttribute('classid', "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
-				movie_object.writeAttribute('codebase',"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0");
-				movie_object.writeAttribute('width', mov_width);
-				movie_object.writeAttribute('height', mov_heigth);
-	
-				movie_embed = new Element('embed');
-				movie_embed.writeAttribute('src',"{{ BASE_PATH }}media/flash/paint.swf");
-				movie_embed.writeAttribute('quality',"high");
-				movie_embed.writeAttribute('bgcolor',"#000000");
-				movie_embed.writeAttribute('width', mov_width);
-				movie_embed.writeAttribute('height', mov_heigth);
-				movie_embed.writeAttribute('allowScriptAccess',"sameDomain");
-				movie_embed.writeAttribute('type',"application/x-shockwave-flash");
-				movie_embed.writeAttribute('pluginspage',"http://www.macromedia.com/go/getflashplayer");
-				movie_embed.writeAttribute('flashvars',"img_source="+img_url+"&server_url={{ BASE_PATH }}bitmap_dump&img_id="+id+"&img_bitmap="+bitmap_url);
-	
-				movie_object.insert(movie_embed);
-				$('big_images').update();
-				$('big_images').insert(movie_object);
-			});
-		}
-
-		function closePaintOver(file_name) {
-			alert(file_name);
-      //close flash object
-		}
-
-		function hideImage(id){
-			checkAuthenticationAndExecute(function(){
-					
-  		  //clear the data of this image
-        $('bottomDiv'+id).update();
-  			$('mainDiv_'+id).setStyle('border: none;');
-        			
-        var newImageArray = new Array();
-  			//Delete the old image and copy the rest
-  			for(i = 0; i< addedImages.length; i++){
-  				if(addedImages[i].id != id){
-  					newImageArray.push(addedImages[i]);
-  				}
-  			}
-  			addedImages = newImageArray;
-        if (addedImages == "")
-          getProjectPotentialMeasurements();
-  			reloadImages();
-			});
-		}
-
-		
-		function reloadImages(full){
-			checkAuthenticationAndExecute(function(){
-					
-				//.update() clears the contents of the elements
-	      $('big_images').update();
-        
-				for(var i = addedImages.length-1; i >= 0; i--){
-					$('mainDiv_'+addedImages[i].id).setStyle('border: none;');
-
-          if (full){
-            $('bottomDiv'+addedImages[i].id).update();
-            addedImages[i].addSelfToImages();
-          }
-          else
-            addedImages[i].addSelfToBigImages();
-				}
-				
-				if (addedImages.length > 0){
-	        $('mainDiv_'+addedImages[0].id).setStyle('border: 1px dashed red;');        
-	      }
-	      Sortable.create("pictures", {tag: 'div', only: 'projectPictureDiv', onUpdate: updateImageList });
-        reloadBitmaps();      	
-			});
-		}
-    
-    function reloadBitmaps(){
-      for(var i = 0; i < checkboxes.length; i++){                                         
-        if ((checkboxes[i].type =='b')){
-                                                                             
-          checkboxes[i].item.resize();
-          
-          $('big_images').insert(checkboxes[i].item.bitmap);
-          checkboxes[i].item.bitmap.hide();
-
-          if(checkboxes[i].checked)
-            checkboxes[i].item.bitmap.show();
-        }
-      }  
-    }
-		
-		function updateImageList(){
-			checkAuthenticationAndExecute(function(){
-					
-	      id_array = Sortable.sequence("pictures");
-	      new_list = new Array();
-	      for(var i = 0; i < id_array.length; i++){
-	        for(var j = 0; j < addedImages.length; j++){
-	          if(id_array[i] == addedImages[j].id){
-	            new_list.push(addedImages[j]);
-	            break;
-	          }
-	        }
-	      }
-	      addedImages = new_list;
-	      reloadImages();
-
-			});
-    }
+  });
+  });
+}
 
   </script>
 
-{% endblock head %}
-
-{% block body %}
+{% endblock head %} {% block body %}
 <div id="popup"></div>
-<div id="leftFrame" class="whiteFrame_container" style="float:left;position:absolute;top:105px;left:5px;">
+<div id="leftFrame" class="whiteFrame_container"
+	style="float: left; position: absolute; top: 105px; left: 5px;">
 
-	<!-- Top white frame -->
-	<div class="whiteFrame_top_container">
-		<div class="whiteFrame_top_left"></div>
-		<div id="leftFrameHandle" class="whiteFrame_top_middle" style="color:grey;text-align: center;line-height: 20px ;font-size: 8pt;">View</div>
-		<div class="whiteFrame_top_right"></div>
-	</div>
+<!-- Top white frame -->
+<div class="whiteFrame_top_container">
+<div class="whiteFrame_top_left"></div>
+<div id="leftFrameHandle" class="whiteFrame_top_middle"
+	style="color: grey; text-align: center; line-height: 20px; font-size: 8pt;">View</div>
+<div class="whiteFrame_top_right"></div>
+</div>
 
-	<div class="whiteFrame_center_container">
+<div class="whiteFrame_center_container"><!-- Left white frame -->
+<div class="whiteFrame_center_left"></div>
 
-		<!-- Left white frame -->
-		<div class="whiteFrame_center_left"></div>
+<!-- Content white frame -->
+<div class="whiteFrame_center_middle">
+<div id="leftFrame_content"></div>
+</div>
 
-		<!-- Content white frame -->
-		<div class="whiteFrame_center_middle">
-		  <div id="leftFrame_content"></div>
-		</div>
+<!-- Right white frame -->
+<div class="whiteFrame_center_right"></div>
 
-		<!-- Right white frame -->
-		<div class="whiteFrame_center_right"></div>
+</div>
 
-	</div>
-
-	<!-- Bottom white frame -->
-	<div class="whiteFrame_bottom_container">
-		<div class="whiteFrame_bottom_left"></div>
-		<div class="whiteFrame_bottom_center"></div>
-		<div class="whiteFrame_bottom_right"></div>
-	</div>
+<!-- Bottom white frame -->
+<div class="whiteFrame_bottom_container">
+<div class="whiteFrame_bottom_left"></div>
+<div class="whiteFrame_bottom_center"></div>
+<div class="whiteFrame_bottom_right"></div>
+</div>
 </div>
 
 
-<div id="big_images" style="margin:auto;width:700px;height:400px;border:dashed 1px grey;"></div>
+<div id="big_images"
+	style="margin: auto; width: 700px; height: 400px; border: dashed 1px grey;"></div>
 
-<div id="rightFrame" class="whiteFrame_container" style="float:left;position:absolute;top:105px;right:5px;">
+<div id="rightFrame" class="whiteFrame_container"
+	style="float: left; position: absolute; top: 105px; right: 5px;">
 
-	<!-- Top white frame -->
-	<div class="whiteFrame_top_container">
-		<div class="whiteFrame_top_left"></div>
-		<div id="rightFrameHandle" class="whiteFrame_top_middle" style="color:grey;text-align: center;line-height: 20px ;font-size: 8pt;">Edit</div>
-		<div class="whiteFrame_top_right"></div>
-	</div>
+<!-- Top white frame -->
+<div class="whiteFrame_top_container">
+<div class="whiteFrame_top_left"></div>
+<div id="rightFrameHandle" class="whiteFrame_top_middle"
+	style="color: grey; text-align: center; line-height: 20px; font-size: 8pt;">Edit</div>
+<div class="whiteFrame_top_right"></div>
+</div>
 
-	<div class="whiteFrame_center_container">
+<div class="whiteFrame_center_container"><!-- Left white frame -->
+<div class="whiteFrame_center_left"></div>
 
-		<!-- Left white frame -->
-		<div class="whiteFrame_center_left"></div>
+<!-- Content white frame -->
+<div class="whiteFrame_center_middle">
+<div id="rightFrame_content"></div>
+</div>
 
-		<!-- Content white frame -->
-		<div class="whiteFrame_center_middle">
-		  <div id="rightFrame_content"></div>
-		</div>
+<!-- Right white frame -->
+<div class="whiteFrame_center_right"></div>
 
-		<!-- Right white frame -->
-		<div class="whiteFrame_center_right"></div>
+</div>
 
-	</div>
-
-	<!-- Bottom white frame -->
-	<div class="whiteFrame_bottom_container">
-		<div class="whiteFrame_bottom_left"></div>
-		<div class="whiteFrame_bottom_center"></div>
-		<div class="whiteFrame_bottom_right"></div>
-	</div>
+<!-- Bottom white frame -->
+<div class="whiteFrame_bottom_container">
+<div class="whiteFrame_bottom_left"></div>
+<div class="whiteFrame_bottom_center"></div>
+<div class="whiteFrame_bottom_right"></div>
+</div>
 </div>
 
 <!-- TABS -->
 
-<div id="tab_projectinfo" class="tabContent">
-  <b>{{ project }}</b><br>
-	<p>{{ project.description }}</p>
+<div id="tab_projectinfo" class="tabContent"><b>{{ project }}</b><br>
+<p>{{ project.description }}</p>
 </div>
 <div id="tab_pictures" class="tabContent"></div>
-<div id="tab_papers" class="tabContent">
-  {% include 'annotation/list.html' %}<br>
-  <a href="{{ BASE_PATH }}annotation/new/{{ id }}" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>
+<div id="tab_papers" class="tabContent">{% include
+'annotation/list.html' %}<br>
+<a href="{{ BASE_PATH }}annotation/new/{{ id }}"
+	style="float: right; clear: both;" target="_blank"><img
+	src="{{BASE_PATH}}media/img/add.jpg" style="border: 0px;" /></a></div>
+<div id="tab_measurements" class="tabContent"><a
+	id="editMeasurementLink" style="float: right; clear: both;"
+	target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg"
+	style="border: 0px;" /></a>
+<div id="possiblemeasurements"></div>
 </div>
-<div id="tab_measurements" class="tabContent">
-  <a id="editMeasurementLink" style="float:right;clear:both;" target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
-  <div id="possiblemeasurements">
-
-	</div>
-</div>
-<div id="tab_tags" class="tabContent">
-  <a href="#" id='editTagsLink' style="float:right;clear:both;"><img src="{{BASE_PATH}}media/img/pencil.jpg" style="border:0px;" /></a>
-  <div id="tags">
-
-  </div>
+<div id="tab_tags" class="tabContent"><a href="#"
+	id='editTagsLink' style="float: right; clear: both;"><img
+	src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
+<div id="tags"></div>
 </div>
 <div id="tab_attributes" class="tabContent">
-	<table style="width:200px">
-		<tr><th>Coordinates</th></tr>
-		<tr><td><input type="text" id="MouseX" value="0" size="4"> X<br />
-		<input type="text" id="MouseY" value="0" size="4"> Y</td></tr>
-		<tr><th>Changes</th></tr>
-		<tr><td id="ajax_result"></td></tr>
-    <tr><td>
-        <a href="#" id="undoLink">
-        <img src="{{ BASE_PATH }}media/img/undo.jpg" alt="Undo last change" border="0" />
-        </a>
-    </td></tr>
-	</table>
+<table style="width: 200px">
+	<tr>
+		<th>Coordinates</th>
+	</tr>
+	<tr>
+		<td><input type="text" id="MouseX" value="0" size="4"> X<br />
+		<input type="text" id="MouseY" value="0" size="4"> Y</td>
+	</tr>
+	<tr>
+		<th>Changes</th>
+	</tr>
+	<tr>
+		<td id="ajax_result"></td>
+	</tr>
+	<tr>
+		<td><a href="#" id="undoLink"> <img
+			src="{{ BASE_PATH }}media/img/undo.jpg" alt="Undo last change"
+			border="0" /> </a></td>
+	</tr>
+</table>
 </div>
 <div id="tab_zoom" class="tabContent">
-	<div id="zoomContent">
-		<img id="zoomImage" src="" />
-		<img src="{{BASE_PATH}}media/img/hud.gif" id="crosshair"/>
-	</div>
+<div id="zoomContent"><img id="zoomImage" src="" /> <img
+	src="{{BASE_PATH}}media/img/hud.gif" id="crosshair" /></div>
 </div>
 
 
 <!-- POPUP -->
-  
-<div id="lmdd" style="display: none; position: absolute; background-color: white; color: black; padding: 5px;">
-	<div style="background-color: #ccc;">Store Landmark</div>
-	<label for="mmx">x: </label><input type="text" style="width: 25px;" id="lmmx" name="mmx" value="" />
-	<label for="mmy">y: </label><input type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
-	<label id="labelmmmeting" for="mmmeting">Landmark: </label><select id="mmmeting" name="mmmeting">
-	</select><br />
-  <input type="hidden" id="imgid" value="" />
-	<button onClick="saveLandMark();">Store</button>
-	<button onClick="$('lmdd').hide();">Cancel</button>
+
+<div id="lmdd"
+	style="display: none; position: absolute; background-color: white; color: black; padding: 5px;">
+<div style="background-color: #ccc;">Store Landmark</div>
+<label for="mmx">x: </label><input type="text" style="width: 25px;"
+	id="lmmx" name="mmx" value="" /> <label for="mmy">y: </label><input
+	type="text" style="width: 25px;" id="lmmy" name="mmy" value="" /><br />
+<label id="labelmmmeting" for="mmmeting">Landmark: </label><select
+	id="mmmeting" name="mmmeting">
+</select><br />
+<input type="hidden" id="imgid" value="" />
+<button onClick="saveLandMark();">Store</button>
+<button onClick="$('lmdd').hide();">Cancel</button>
 </div>
 
 {% endblock body %}
