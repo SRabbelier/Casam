@@ -169,60 +169,29 @@ class RatioHandler(ImageHandler):
     newImage.save(img_path)
 
 
-class WidthHandler(handler.Handler):
+class WidthHandler(ImageHandler):
   """
   """
 
-  def get(self):
+  def infix(self):
+    return "_byRatio_" + self.kwargs.get('img_width')
+
+  def save(self, im, img_path):
     width = self.kwargs.get('img_width')
-    imageID = self.kwargs.get('uuid')
-    img_type = self.kwargs.get('img_type')
-
     floatWidth = float(width)
 
-    if img_type == 'original':
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byWidth_" + str(floatWidth) +".jpg"
-    else:
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_byWidth_" + str(floatWidth) +".gif"
+    #safeguard for not killing the server
+    if floatWidth>=im.size[0]:
+      floatWidth = float(im.size[0])
 
-    #image was not found in cache, create it!
-    if not os.path.exists(temporaryImage):
-      if img_type == 'original':
-        try:
-          imageRecord = OriginalImage.objects.all().get(id = imageID)
-        except OriginalImage.DoesNotExist:
-          print 'Image could not be found'
-      else:
-        try:
-          imageRecord = Bitmap.objects.all().get(id = imageID)
-        except Bitmap.DoesNotExist:
-          print 'Bitmap could not be found'
+    #calculate the height corresponding to the given width
+    imageHeight = im.size[1] * (floatWidth/im.size[0])
 
-      location = "./" + self.DATA_DIR + "%s" % (imageRecord.path)
-      im = Image.open(location)
-      im = im.convert("RGB")
+    newImage = im.resize((floatWidth,imageHeight),Image.ANTIALIAS)
 
-      #safeguard for not killing the server
-      if floatWidth>=im.size[0]:
-        floatWidth = float(im.size[0])
+    #Save the image and put it in the request
+    newImage.save(img_path)
 
-      #calculate the height corresponding to the given width
-      imageHeight = im.size[1] * (floatWidth/im.size[0])
-
-      newImage = im.resize((floatWidth,imageHeight),Image.ANTIALIAS)
-
-      #Save the image and put it in the request
-      newImage.save(temporaryImage)
-
-    #Put the image in the request
-    wrapper = FileWrapper(file(temporaryImage, "rb"))
-    if img_type == 'original':
-      response = http.HttpResponse(wrapper,content_type='image/jpeg')
-    else:
-      response = http.HttpResponse(wrapper,content_type='image/gif')
-    response['Content-Length'] = os.path.getsize(temporaryImage)
-
-    return response
 
 class MaxWidthHeightHandler(handler.Handler):
   def get(self):
