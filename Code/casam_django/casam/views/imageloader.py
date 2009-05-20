@@ -270,59 +270,31 @@ class MinWidthHeightHandler(ImageHandler):
     handler.save(newImage, img_path)
 
 
-class ThumbnailHandler(handler.Handler):
-  def get(self):
-    img_type = self.kwargs.get('img_type')
+class ThumbnailHandler(ImageHandler):
+  """
+  """
+
+  def infix(self):
+    return "_thumbnail_" + self.kwargs.get('img_size')
+
+  def save(self, im, img_path):
     widthandheight = self.kwargs.get('img_size')
-    imageID = self.kwargs.get('uuid')
 
     floatWidthAndHeight = float(widthandheight)
 
-    if img_type == 'original':
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".jpg"
-    else:
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_thumbnail_" + str(floatWidthAndHeight) + ".gif"
+    fullImageWidth = im.size[0]
+    fullImageHeight = im.size[1]
+    squareSize = min(fullImageWidth, fullImageHeight)
 
-    #image was not found in cache, create it!
-    if not os.path.exists(temporaryImage):
-      if img_type == 'original':
-        try:
-          imageRecord = OriginalImage.objects.all().get(id = imageID)
-        except OriginalImage.DoesNotExist:
-          print 'Image could not be found'
-      else:
-        try:
-          imageRecord = Bitmap.objects.all().get(id = imageID)
-        except Bitmap.DoesNotExist:
-          print 'Bitmap could not be found'
+    c1 = (fullImageWidth - squareSize) / 2
+    c2 = (fullImageHeight - squareSize) / 2
+    c3 = (fullImageWidth - squareSize) / 2 + squareSize
+    c4 = (fullImageHeight - squareSize)/ 2 + squareSize
+    box = (c1, c2, c3, c4)
 
-      location = "./" + self.DATA_DIR + "%s" % (imageRecord.path)
-      fullImage = Image.open(location)
-      fullImage = fullImage.convert("RGB")
+    im = im.crop(box)
 
-      fullImageWidth = fullImage.size[0]
-      fullImageHeight = fullImage.size[1]
-      squareSize = min(fullImageWidth, fullImageHeight)
+    newImage = im.resize((floatWidthAndHeight,floatWidthAndHeight),Image.ANTIALIAS)
 
-      c1 = (fullImageWidth - squareSize) / 2
-      c2 = (fullImageHeight - squareSize) / 2
-      c3 = (fullImageWidth - squareSize) / 2 + squareSize
-      c4 = (fullImageHeight - squareSize)/ 2 + squareSize
-      box = (c1, c2, c3, c4)
-
-      im = fullImage.crop(box)
-
-      newImage = im.resize((floatWidthAndHeight,floatWidthAndHeight),Image.ANTIALIAS)
-
-      #Save the image and put it in the request
-      newImage.save(temporaryImage)
-
-    #Put the image in the request
-    wrapper = FileWrapper(file(temporaryImage, "rb"))
-    if img_type == 'original':
-      response = http.HttpResponse(wrapper,content_type='image/jpeg')
-    else:
-      response = http.HttpResponse(wrapper,content_type='image/gif')
-    response['Content-Length'] = os.path.getsize(temporaryImage)
-  
-    return response
+    #Save the image and put it in the request
+    newImage.save(img_path)
