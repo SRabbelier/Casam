@@ -5,7 +5,7 @@ import vtk
 
 
 def getColors(colors):
-  """
+  """Return RGB color-range
   """
 
   return [colorsys.hsv_to_rgb(x*1.0/colors, 1, 1) for x in range(colors)]
@@ -24,9 +24,10 @@ class PointDistributionModel(object):
 
     self.renderer = vtk.vtkRenderer()
     self.renderer.SetBackground(0, 0, 0)
+    #self.renderer.ResetCamera(0,600,0,400,0,0)
 
     self.renderWindow = vtk.vtkRenderWindow()
-    self.renderWindow.SetSize(300, 300)
+    self.renderWindow.SetSize(600, 400)
     self.renderWindow.AddRenderer( self.renderer )
   
     # render window interactor
@@ -36,13 +37,12 @@ class PointDistributionModel(object):
     self.vertexGrids = []
     self.alignedGrids = []
     self.analyzedGrids = []
-    self.meanShape = []
-  
+    self.meanShape = [] 
 
     self.colors = getColors(10)
 
   def addPointSet(self, data):
-    """
+    """Add a set of points to the UnstructuredGrid vertexGrid (the source of our calculations)
     """
 
     logging.info("adding point set")
@@ -73,7 +73,7 @@ class PointDistributionModel(object):
     logging.info("done")
   
   def addActors(self, grids, colorid):
-    """
+    """Add UnstructuredGrid actors to the renderer.
     """
 
     logging.info("adding actors")
@@ -94,7 +94,7 @@ class PointDistributionModel(object):
     logging.info("done")
 
   def procrustes(self):
-    """
+    """Performs Generalized Procrustes Analysis on the vertexGrids. Results are stored in alignedGrids.
     """
 
     logging.info("running procrustes")
@@ -116,7 +116,7 @@ class PointDistributionModel(object):
     logging.info("done")
   
   def pca(self):
-    """
+    """Performs Principle Component Analysis on the alignedGrids. Also calculates the mean shape.
     """
 
     logging.info("running pca")
@@ -129,12 +129,7 @@ class PointDistributionModel(object):
       self.filterPCA.SetInput(id, grid)
 
     self.filterPCA.Update()
-    
-    #do not want, for now!
-    #for id in range(size):
-    #  grid = self.filterPCA.GetOutput(id)
-    #  self.analyzedGrids.append(grid)
-      
+        
     #Get the eigenvalues
     evals = self.filterPCA.GetEvals()
     
@@ -170,55 +165,65 @@ class PointDistributionModel(object):
     logging.info("done")
     
   def variations(self):
+    """Calculate the extremes of the first two modes of variation (plus and minus 3 standard deviations)
     """
-    """
+    
     b = vtk.vtkFloatArray()
     #to calculate the first mode of variation extremes (-3 standard deviations and + 3)
     b.SetNumberOfComponents(1)
     b.SetNumberOfTuples(1)
-    b.SetTuple1(0, 3.0) 
-    extreme = vtk.vtkUnstructuredGrid()
-    extreme.DeepCopy(self.alignedGrids[0])
-    self.filterPCA.GetParameterisedShape(b, extreme)
-    self.analyzedGrids.append(extreme)
-    #rinse and repeat for b.SetTuple1(0, 3.0)
-    b.SetNumberOfComponents(1)
-    b.SetNumberOfTuples(1)
-    b.SetTuple1(0, -3.0) 
-    extreme = vtk.vtkUnstructuredGrid()
-    extreme.DeepCopy(self.alignedGrids[0])
-    self.filterPCA.GetParameterisedShape(b, extreme)
-    self.analyzedGrids.append(extreme)
-
-    #now for the second mode of variation, just change the parameters like so:
-    b.SetNumberOfComponents(1)
-    b.SetNumberOfTuples(2)
-    b.SetTuple1(0, 0.0) #don't use the first mode of variation
-    b.SetTuple1(1, -3.0) #just the second mode :D  
-    extreme = vtk.vtkUnstructuredGrid()
-    extreme.DeepCopy(self.alignedGrids[0])
-    self.filterPCA.GetParameterisedShape(b, extreme)
-    self.analyzedGrids.append(extreme)
-    b.SetNumberOfComponents(1)
-    b.SetNumberOfTuples(2)
-    b.SetTuple1(0, 0.0) #don't use the first mode of variation
-    b.SetTuple1(1, 3.0) #just the second mode :D  
-    extreme = vtk.vtkUnstructuredGrid()
-    extreme.DeepCopy(self.alignedGrids[0])
-    self.filterPCA.GetParameterisedShape(b, extreme)
-    self.analyzedGrids.append(extreme)
+    
+    tuples = (0,-3.0), (0,3.0) ,(1,-3.0), (1,3.0)
+    for tuple in tuples:
+      if tuple[0] == 1: #For the 2nd mode of variation, disable the first!
+        b.SetNumberOfTuples(2)
+        b.SetTuple1(0, 0.0)
+      b.SetTuple1(tuple[0], tuple[1]) 
+      extreme = vtk.vtkUnstructuredGrid()
+      extreme.DeepCopy(self.alignedGrids[0])
+      self.filterPCA.GetParameterisedShape(b, extreme)
+      self.analyzedGrids.append(extreme)
+      
+  
+  def visualizeMean(self):
+    """Visualize the mean shape by creating a sphere for each mean landmark point
+    """
+    
+    #Get the mean shape locations and make some shiny red spheres for each one
+    for id in range(self.meanShape[0].GetNumberOfCells()):
+      coords = self.meanShape[0].GetCell(id).GetBounds()
+      landmarkSphere = vtk.vtkSphereSource()
+      landmarkSphere.SetCenter(coords[0], coords[2], 0)
+      landmarkSphere.SetRadius(10)
+      landmarkMapper = vtk.vtkPolyDataMapper()
+      landmarkMapper.SetInputConnection(landmarkSphere.GetOutputPort())
+      landmarkActor = vtk.vtkActor()
+      landmarkActor.SetMapper(landmarkMapper)
+      landmarkActor.GetProperty().SetDiffuseColor(1,0,1)
+      landmarkActor.GetProperty().SetOpacity(0.5)
+      self.renderer.AddActor(landmarkActor)
     
   def render(self):
-    """
+    """Set up rendering and save the results to a PNG-file
     """
 
     logging.info("rendering")
     
-    self.renderWindow.Render()
-    
+    self.renderWindow.Render()    
+ 
     # initialize and start the interactor
     self.windowInteractor.Initialize()
     self.windowInteractor.Start()
+    
+    #Render the image into a png
+    renderLarge = vtk.vtkRenderLargeImage()
+    renderLarge.SetMagnification(1)
+    renderLarge.SetInput(self.renderer)
+
+    writer = vtk.vtkPNGWriter()
+    writer.SetInputConnection(renderLarge.GetOutputPort())
+    writer.SetFileName("H:/Desktop/Renderedimage.png")
+    writer.Write()
     
     logging.info("done")
 
@@ -229,31 +234,38 @@ def main():
 
   pdm.addPointSet([
       (0, 0, 0), 
-      (3, 1, 0), 
-      (2, 2, 0),
+      (100, 0, 0), 
+      (200, 0, 0),
+      (300, 0, 0),
+      (400, 0, 0),
+      (500, 0, 0),
+      ])
+  pdm.addPointSet([
+      (0, 0, 0), 
+      (100, 0, 0), 
+      (200, 0, 0),
+      (300, 10, 0),
+      (400, 0, 0),
+      (500, 0, 0),
+      ])
+  pdm.addPointSet([
+      (0, 10, 0), 
+      (100, 10, 0), 
+      (200, 10, 0),
+      (300, 10, 0),
+      (400, 10, 0),
+      (500, 10, 0),
       ])
   
   pdm.addPointSet([
-      (0.7, 0, 0), 
-      (3.5, 1, 0), 
-      (2.3, 2, 0),
+      (0, 0, 0), 
+      (100, 0, 0), 
+      (200, 0, 0),
+      (300, 0, 0),
+      (400, 0, 0),
+      (500, 10, 0),
       ])
-  
-  pdm.addPointSet([
-      (1.2, 0, 0), 
-      (3.1, 1, 0), 
-      (2.3, 2.5, 0),
-      ])
-  
-  pdm.addPointSet([
-      (1.6, 0, 0), 
-      (3.3, 1, 0), 
-      (2.0, 1.9, 0),
-      ])
-    
-    
-  
-    
+        
 
   pdm.procrustes()
   pdm.pca()
@@ -262,7 +274,10 @@ def main():
   pdm.addActors(pdm.alignedGrids, 2)
   pdm.addActors(pdm.analyzedGrids, 4)
   pdm.addActors(pdm.meanShape, 6)
+  pdm.visualizeMean()
   pdm.render()
+
+
 
 if __name__ == '__main__':
   main()
