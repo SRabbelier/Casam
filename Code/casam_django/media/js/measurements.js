@@ -214,6 +214,8 @@ var Measurement = Class.create( {
 		this.top = y * this.piecey;
 	},
 	place : function() {
+		if (this.pinDiv.ancestors() == '')
+		  $('big_images').insert(this.pinDiv);
 		this.pinDiv.setStyle( {
 			position : 'absolute',
 			left : '' + (Math.round(this.left)) + 'px',

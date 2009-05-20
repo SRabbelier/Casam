@@ -114,17 +114,29 @@ var AddedImage = Class.create( {
 		this.opacity = opacityValue;
 		this.imageElement.setOpacity(this.opacity);
 	},
+	makeNonActive: function(){
+		for(var i = 0; i < measurements.length; i++){
+			if(measurements[i].imageid == this.id)
+				measurements[i].nonActive();			
+		}
+	},
+	makeActive: function(){
+		for(var i = 0; i < measurements.length; i++){
+			if(measurements[i].imageid == this.id)
+				measurements[i].setActive();			
+		}
+	},	
 	addSelfToBigImages : function() {
 		var parentAddedImageObject = this;
 		this.imageElement.writeAttribute('src', '');
 		this.imageElement.writeAttribute('src', this.getAppropriateSizeURL());
 		this.imageElement.observe('load', function() {
 			//resize the measurements
-				measurements.each( function(item) {
-					if (item.imageid == parentAddedImageObject.id) {
-						if (item.imageid == parentAddedImageObject.id)
-							$('big_images').insert(item.pinDiv);
-						item.replace();
+				checkboxes.each(function(item) {
+					if ((item.item.imageid == parentAddedImageObject.id) && (item.box.checked == true) &&
+					    (item.type == 's')){
+						  	$('big_images').insert(item.item.pinDiv);
+						  	item.item.replace();
 					}
 				});
 				// big_images need to be resized again when the images are
@@ -370,7 +382,13 @@ function showImage(id, name) {
 		}
 		id_array.splice(0, 0, temp);
 		Sortable.setSequence("pictures", id_array);
-		reloadImages(true);
+		newAddedImage.addSelfToImages();
+		for ( var i = 1; i < addedImages.length; i++) {
+			$('mainDiv_' + addedImages[i].id).setStyle('border: none;');
+			addedImages[i].makeNonActive();
+		}
+		$('mainDiv_' + addedImages[0].id).setStyle('border: 1px dashed red;');
+		//reloadImages(true);
 	});
 }
 
@@ -391,7 +409,8 @@ function hideImage(id) {
 		addedImages = newImageArray;
 		if (addedImages == "")
 			getProjectPotentialMeasurements();
-		reloadImages();
+		//true of false?
+		reloadImages(false);
 	});
 }
 
@@ -403,6 +422,8 @@ function reloadImages(full) {
 
 		for ( var i = addedImages.length - 1; i >= 0; i--) {
 			$('mainDiv_' + addedImages[i].id).setStyle('border: none;');
+			if ( i >= 1)
+				addedImages[i].makeNonActive();
 			if (full) {
 				$('bottomDiv' + addedImages[i].id).update();
 				addedImages[i].addSelfToImages();
@@ -413,6 +434,7 @@ function reloadImages(full) {
 		if (addedImages.length > 0) {
 			$('mainDiv_' + addedImages[0].id).setStyle(
 					'border: 1px dashed red;');
+			addedImages[0].makeActive();
 		}
 		Sortable.create("pictures", {
 			tag : 'div',
@@ -451,7 +473,7 @@ function updateImageList() {
 			}
 		}
 		addedImages = new_list;
-		reloadImages();
+		reloadImages(false);
 
 	});
 }

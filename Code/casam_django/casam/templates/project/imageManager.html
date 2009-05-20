@@ -37,7 +37,7 @@ function getProjectImages()
 	    
 			for(i = 0; i<json.length; i++){
 				var imageContainer = new Element('div');
-				imageContainer.setStyle({backgroundImage:'url({{BASE_PATH}}imageLoader/thumbnail/200/'+json[i].pk+')'});
+				imageContainer.setStyle({backgroundImage:'url({{BASE_PATH}}imageLoader/thumbnail/original/200/'+json[i].pk+')'});
 				imageContainer.addClassName('imageContainer');
 				var deleteIMG = new Element('img',{'src':'{{BASE_PATH}}media/img/delete_48.png'});
 				deleteIMG.addClassName('deleteIMG');
