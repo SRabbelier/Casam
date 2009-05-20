@@ -33,7 +33,7 @@
 			    if(imagesJSON.length > 0){
 				    
 				 		for(i = 0; i< imagesJSON.length; i++){
-					 		var imageElement = new Element('img',{'src':'{{BASE_PATH}}imageLoader/thumbnail/100/'+imagesJSON[i].pk});
+					 		var imageElement = new Element('img',{'src':'{{BASE_PATH}}imageLoader/thumbnail/original/100/'+imagesJSON[i].pk});
 				 			imageContainer.insert(imageElement);
 				 			if(i != 0)imageElement.hide();
 					 		imageElement.addClassName('project_image');
