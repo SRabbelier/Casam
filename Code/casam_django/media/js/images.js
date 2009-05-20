@@ -388,7 +388,6 @@ function showImage(id, name) {
 			addedImages[i].makeNonActive();
 		}
 		$('mainDiv_' + addedImages[0].id).setStyle('border: 1px dashed red;');
-		//reloadImages(true);
 	});
 }
 
@@ -406,11 +405,40 @@ function hideImage(id) {
 				newImageArray.push(addedImages[i]);
 			}
 		}
+		
 		addedImages = newImageArray;
 		if (addedImages == "")
 			getProjectPotentialMeasurements();
+		
+		//remove bitmaps
+		for(var i = 0; i < bitmaps.length; i++){
+			if(bitmaps[i].imageid == id){
+				Element.remove($('bitmap_' + bitmaps[i].id));
+				bitmaps.splice(i, 1);
+				i = i - 1;
+			}
+		}
+		
+		//remove measurements
+		for(var i = 0; i < measurements.length; i++){
+			if(measurements[i].imageid == id){
+				Element.remove(measurements[i].pinDiv);
+				measurements.splice(i, 1);
+				i = i - 1;
+			}
+		}
+		
+		//remove checkboxes
+		for(var i = 0; i < checkboxes.length; i++){
+			if(checkboxes[i].item.imageid == id){
+				checkboxes.splice(i,1);
+				i = i - 1;
+			}
+		}
+		
+		Element.remove($('addedImage_'+id))
 		//true of false?
-		reloadImages(false);
+		//reloadImages(false);
 	});
 }
 
