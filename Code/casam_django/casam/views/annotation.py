@@ -116,9 +116,10 @@ class NewAnnotation(handler.Handler):
 
     if annotation_type == 'file':
       file = self.FILES['file']
-      location, _, _ = fileupload_logic.handle_uploaded_file(file, name)
+      location = fileupload_logic.handle_uploaded_file(file, name)
       url = self.BASE_PATH + location
 
+    # TODO : rewrite this to use UUID instead of original filename
     annotation_logic.handle_add_annotation(name, url, project_id)
 
     return http.HttpResponseRedirect(self.BASE_PATH)

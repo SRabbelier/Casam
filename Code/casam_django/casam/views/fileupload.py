@@ -44,10 +44,9 @@ class FileUpload(handler.Handler):
 
     file = self.FILES['file']
     name = self.cleaned_data['name']
-    is_left = self.cleaned_data['is_left']
     id_str = self.kwargs['id_str']
 
-    oi = image_logic.handle_uploaded_image(file, name, is_left, id_str)
+    oi = image_logic.handle_uploaded_image(file, name, id_str)
     context['id'] = id_str
     context['oi'] = serializers.serialize("json",[oi])
     content = loader.render_to_string('main/succes.html', dictionary=context)

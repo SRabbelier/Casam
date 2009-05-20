@@ -31,22 +31,23 @@ class Patient(models.Model):
 class Image(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   project = models.ForeignKey('Project')
-  path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)
   added = models.DateField(auto_now_add=True)
   last_modified = models.DateField(auto_now=True)
-  is_left = models.BooleanField()
 
   class Meta:
     abstract = True
 
 
 class OriginalImage(Image):
-  patient = models.ForeignKey('Patient')
-
-
-class WarpedImage(Image):
   pass
+
+
+class ModifiedImage(models.Model):
+  id = UUIDField(primary_key=True, auto=True)
+  originalimage = models.ForeignKey('OriginalImage')
+  hash = models.CharField(max_length=40)
+  transformation = models.TextField()
 
 
 class PotentialMeasurement(models.Model):
