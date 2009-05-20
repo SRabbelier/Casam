@@ -15,46 +15,125 @@ from casam.models import Bitmap
 from casam.views import handler
 
 
-class SimpleHandler(handler.Handler):
-  """
+class Error(Exception):
+  pass
+
+
+class ImageNotFound(Error):
+  pass
+
+
+class UnknownImageType(Error):
+  pass
+
+
+class OriginalImageHandler(object):
+  """Handler for OriginalImages.
   """
 
-  def get(self):
+  def getImageRecord(self, imageID):
+    try:
+      imageRecord = OriginalImage.objects.all().get(id = imageID)
+    except OriginalImage.DoesNotExist:
+      raise ImageNotFound('Image could not be found')
+
+    return imageRecord
+
+  def save(self, im, img_path):
+    im.save(img_path)
+
+  def suffix(self):
+    return ".jpg"
+
+  def contentType(self):
+    return "image/jpeg"
+
+
+
+class BitmapImageHandler(object):
+  """Handler for Bitmaps.
+  """
+
+  def getImageRecord(self, imageID):
+    try:
+      imageRecord = Bitmap.objects.all().get(id = imageID)
+    except Bitmap.DoesNotExist:
+      raise ImageNotFound('Bitmap could not be found')
+
+    return imageRecord
+
+  def save(self, im, img_path):
+    im.save(img_path,transparency=0)
+
+  def suffix(self):
+    return ".gif"
+
+  def contentType(self):
+    return 'image/gif'
+
+
+class ImageHandler(handler.Handler):
+  """Base class to handle Image manipulation requests.
+  """
+
+  def getHandler(self):
+    """Returns the handler for the type of the current request.
+    """
+
+    actions = {
+        'original': OriginalImageHandler,
+        'bitmap': BitmapImageHandler,
+        }
+
+    img_type = self.kwargs.get('img_type')
+
+    if img_type not in actions:
+      raise UnknownImageType("No such image type '%s'." % img_type)
+
+    handler_type = actions[img_type]
+    return handler_type()
+
+
+  def getImage(self):
+    """Returns the path of the image for the current request.
+    """
+
     img_type = self.kwargs.get('img_type')
     imageID = self.kwargs.get('uuid')
+    handler= self.getHandler()
 
-    if img_type == 'original':
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_simple" +".jpg"
-    else:
-      temporaryImage = tempfile.gettempdir() + "/" + imageID + "_simple" +".gif"
+    imageRecord = handler.getImageRecord(imageID)
+
+    img_name = imageID + self.infix() + handler.suffix()
+    img_path = os.path.join(tempfile.gettempdir(), img_name)
 
     #though the file already exists on the server, save it in temp to make sure it is jpeg
-    if not os.path.exists(temporaryImage):
-      if img_type == 'original':
-        try:
-          imageRecord = OriginalImage.objects.all().get(id = imageID)
-        except OriginalImage.DoesNotExist:
-          print 'Image could not be found'
-      else:
-        try:
-          imageRecord = Bitmap.objects.all().get(id = imageID)
-        except Bitmap.DoesNotExist:
-          print 'Bitmap could not be found'
-      location = "./" + self.DATA_DIR + "%s" % (imageRecord.path)
+    if not os.path.exists(img_path):
+      location = os.path.join(self.DATA_DIR, imageRecord.path)
       im = Image.open(location)
       im = im.convert("RGBA")
 
-      if img_type == 'bitmap':
-        im.save(temporaryImage,transparency=0)
-      else:
-        im.save(temporaryImage)
+      handler.save(im, img_path)
 
-    wrapper = FileWrapper(file(temporaryImage, "rb"))
-    if img_type == 'original':
-      response = http.HttpResponse(wrapper,content_type='image/jpeg')
-    else:
-      response = http.HttpResponse(wrapper,content_type='image/gif')
-    response['Content-Length'] = os.path.getsize(temporaryImage)
+    return img_path
+
+
+class SimpleHandler(ImageHandler):
+  """
+  """
+
+  def infix(self):
+    return "_simple"
+
+  def get(self):
+    img_path = self.getImage()
+    handler = self.getHandler()
+
+    wrapper = FileWrapper(file(img_path, "rb"))
+    content_type = handler.contentType()
+
+    response = http.HttpResponse(wrapper,content_type=content_type)
+    response['Content-Length'] = os.path.getsize(img_path)
   
     return response
 
