@@ -64,7 +64,6 @@
               item.replace(); 
             }
           });
-          
           //big_images need to be resized again when the images are loaded
           //the javascript continues while this.getAppropriateSizeURL() is still
           //finding the correct size for the image
@@ -345,6 +344,16 @@
       },
       resize: function(){
         this.bitmap.writeAttribute('src', this.getAppropriateSizeURL());
+        this.bitmap.observe('load', function(){
+          //big_images need to be resized again when the bitmaps are loaded
+          //the javascript continues while this.getAppropriateSizeURL() is still
+          //finding the correct size for the bitmap
+          var remainingWidth = document.viewport.getWidth() - 500;
+          $('big_images').setWidth(remainingWidth);
+    
+          var remainingHeight = document.viewport.getHeight() - 150;
+          $('big_images').setHeight(remainingHeight);   
+        });
       }               
     });         
 		var bitmaps = new Array();
@@ -590,6 +599,7 @@
 	
 				var remainingHeight = document.viewport.getHeight() - 150;
 				$('big_images').setHeight(remainingHeight);
+        //alert(remainingHeight+'--'+($('big_images').getHeight()-2));
 				remainingHeightWhiteFrame = remainingHeight - 36; 
 				$('leftFrame').setHeight(remainingHeightWhiteFrame);
 				$('rightFrame').setHeight(remainingHeightWhiteFrame);
