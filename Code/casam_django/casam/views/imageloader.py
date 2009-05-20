@@ -193,81 +193,55 @@ class WidthHandler(ImageHandler):
     newImage.save(img_path)
 
 
-class MaxWidthHeightHandler(ImageHandler):
+class WidthHeightHandler(ImageHandler):
   """
   """
 
+  def save(self, im, img_path):
+    width = self.kwargs.get('img_width')
+    height = self.kwargs.get('img_height')
+
+    floatWidth = float(width)
+    floatHeight = float(height)
+
+    fullImageWidth = im.size[0]
+    fullImageHeight = im.size[1]
+
+    #initialize the values that will be altered in the following if statement
+    resizeWidth = 0
+    resizeHeight = 0
+
+    if self.resizeByWidth(floatWidth, fullImageWidth, floatHeight, fullImageHeight):
+      #Resize by resizing the width
+      resizeRate = floatWidth / fullImageWidth
+      resizeWidth = floatWidth
+      resizeHeight = fullImageHeight * resizeRate
+    else:
+      #Resize by resizing the height
+      resizeRate = floatHeight / fullImageHeight
+      resizeWidth = fullImageWidth * resizeRate
+      resizeHeight = floatHeight
+
+    newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
+
+    handler = self.getHandler()
+    handler.save(newImage, img_path)
+
+
+class MaxWidthHeightHandler(WidthHeightHandler):
   def infix(self):
     return "_byMaxWidthHeight_" + self.kwargs.get('img_width') + "_" + self.kwargs.get('img_height')
 
-  def save(self, im, img_path):
-    width = self.kwargs.get('img_width')
-    height = self.kwargs.get('img_height')
-
-    floatWidth = float(width)
-    floatHeight = float(height)
-
-    fullImageWidth = im.size[0]
-    fullImageHeight = im.size[1]
-
-    #initialize the values that will be altered in the following if statement
-    resizeWidth = 0
-    resizeHeight = 0
-
-    if (floatWidth / fullImageWidth) < (floatHeight / fullImageHeight):
-      #Resize by resizing the width
-      resizeRate = floatWidth / fullImageWidth
-      resizeWidth = floatWidth
-      resizeHeight = fullImageHeight * resizeRate
-    else:
-      #Resize by resizing the height
-      resizeRate = floatHeight / fullImageHeight
-      resizeWidth = fullImageWidth * resizeRate
-      resizeHeight = floatHeight
-
-    newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
-
-    handler = self.getHandler()
-    handler.save(newImage, img_path)
+  def resizeByWidth(self, floatWidth, fullImageWidth, floatHeight, fullImageHeight):
+    return (floatWidth / fullImageWidth) < (floatHeight / fullImageHeight)
 
 
-class MinWidthHeightHandler(ImageHandler):
-  """
-  """
-
+class MinWidthHeightHandler(WidthHeightHandler):
   def infix(self):
     return "_byMinWidthHeight_" + self.kwargs.get('img_width') + "_" + self.kwargs.get('img_height')
 
-  def save(self, im, img_path):
-    width = self.kwargs.get('img_width')
-    height = self.kwargs.get('img_height')
-
-    floatWidth = float(width)
-    floatHeight = float(height)
-
-    fullImageWidth = im.size[0]
-    fullImageHeight = im.size[1]
-
-    #initialize the values that will be altered in the following if statement
-    resizeWidth = 0
-    resizeHeight = 0
-
-    if (floatWidth / fullImageWidth) > (floatHeight / fullImageHeight):
-      #Resize by resizing the width
-      resizeRate = floatWidth / fullImageWidth
-      resizeWidth = floatWidth
-      resizeHeight = fullImageHeight * resizeRate
-
-    else:
-      #Resize by resizing the height
-      resizeRate = floatHeight / fullImageHeight
-      resizeWidth = fullImageWidth * resizeRate
-      resizeHeight = floatHeight
-
-    newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
-
-    handler = self.getHandler()
-    handler.save(newImage, img_path)
+  def resizeByWidth(self, floatWidth, fullImageWidth, floatHeight, fullImageHeight):
+    return (floatWidth / fullImageWidth) > (floatHeight / fullImageHeight)
 
 
 class ThumbnailHandler(ImageHandler):
