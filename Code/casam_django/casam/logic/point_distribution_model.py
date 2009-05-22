@@ -222,7 +222,7 @@ class PointDistributionModel(object):
 
     writer = vtk.vtkPNGWriter()
     writer.SetInputConnection(renderLarge.GetOutputPort())
-    writer.SetFileName("H:/Desktop/Renderedimage.png")
+    writer.SetFileName("Renderedimage.png")
     writer.Write()
     
     logging.info("done")
