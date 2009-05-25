@@ -22,15 +22,10 @@ class Project(models.Model):
     return str(self.name)
 
 
-class Patient(models.Model):
-  id = UUIDField(primary_key=True, auto=True)
-  corpse_id = models.IntegerField()
-  sex = models.BooleanField()
-
-
 class Image(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   project = models.ForeignKey('Project')
+  path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)
   added = models.DateField(auto_now_add=True)
   last_modified = models.DateField(auto_now=True)
@@ -43,11 +38,10 @@ class OriginalImage(Image):
   pass
 
 
-class ModifiedImage(models.Model):
-  id = UUIDField(primary_key=True, auto=True)
-  originalimage = models.ForeignKey('OriginalImage')
-  hash = models.CharField(max_length=40)
-  transformation = models.TextField()
+class ModifiedImage(Image):
+  originalimage = models.ForeignKey('OriginalImage') 
+  hash = models.CharField(max_length=40) 
+  transformation = models.TextField() 
 
 
 class PotentialMeasurement(models.Model):

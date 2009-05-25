@@ -10,7 +10,6 @@ from django.core import serializers
 
 from casam.django_tools import fields
 from casam.models import Image
-from casam.models import Patient
 from casam.models import Project
 from casam.models import Measurement
 from casam.models import PotentialMeasurement
@@ -77,5 +76,5 @@ class LandmarkSaver(handler.Handler):
       punt.id = meting.id;
     punt.save();
 
-    data = serializers.serialize("json", [punt]+[punt.image])
+    data = serializers.serialize("json", [punt])
     return http.HttpResponse(data, mimetype="application/javascript")

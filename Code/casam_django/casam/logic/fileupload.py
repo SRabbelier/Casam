@@ -11,27 +11,30 @@ def handle_uploaded_file(file, name):
 
   DATADIR = settings.DATADIR
 
-  location = os.path.join(DATADIR, name)
+  filename = file.name.replace(' ', '_')
+
+  #location = DATADIR + "%d-%s" % (timestamp, filename)
+  location = os.path.join(DATADIR, filename)
   destination = open(location, 'wb+') #wb+ is write binary
+
 
   for chunk in file.chunks():
       destination.write(chunk)
 
   destination.close()
-
-  return location
+  
+  return location, filename
 
 
 def load_file(name):
   mime = mimetypes.MimeTypes()
+  filename ='data/' + name
 
-  DATADIR = settings.DATADIR
-
-  location = os.path.join(DATADIR, name)
-
-  if os.path.exists(location) and os.path.isfile(location):
-    mimetype, _ = mime.guess_type(location)
-    file = open(location,'rb')
-    return mimetype, file
+  if os.path.exists(filename) and os.path.isfile(filename):
+    mimetype, _ = mime.guess_type(filename)
+    picture = open(filename,'rb')
+    return mimetype, picture
 
   return None, None
+
+

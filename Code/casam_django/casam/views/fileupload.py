@@ -13,7 +13,6 @@ from django.core import serializers
 from casam.logic import image as image_logic
 from casam.logic import fileupload as fileupload_logic
 from casam.models import Image
-from casam.models import Patient
 from casam.models import Project
 from casam.models import OriginalImage
 from casam.views import handler
@@ -23,7 +22,7 @@ class UploadFileForm(forms.Form):
   """TODO: dosctring
   """
 
-  is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
+  #is_left = forms.CharField(max_length=5,widget=forms.RadioSelect(choices=((True,"Links"),(False,"Rechts"))))
 
   name = forms.CharField(max_length=50)
   file = forms.FileField()
@@ -44,8 +43,10 @@ class FileUpload(handler.Handler):
 
     file = self.FILES['file']
     name = self.cleaned_data['name']
+    #is_left = self.cleaned_data['is_left']
     id_str = self.kwargs['id_str']
 
+    #oi = image_logic.handle_uploaded_image(file, name, is_left, id_str)
     oi = image_logic.handle_uploaded_image(file, name, id_str)
     context['id'] = id_str
     context['oi'] = serializers.serialize("json",[oi])
