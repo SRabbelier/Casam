@@ -9,14 +9,13 @@ from casam.models import PDM
 
 
 class PDMTestView(handler.Handler):
-  """Handler to handle a File Upload request.
+  """Handler to test some PDM-related stuff
   """
 
   def get(self):
     context = self.getContext()
     pdmodel = pdm.makePDM()
-    #print pdmodel
-    
+
     firstProject = Project.objects.all()[0]
     
     DATADIR = settings.DATADIR

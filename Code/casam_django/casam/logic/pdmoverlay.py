@@ -43,16 +43,12 @@ class PDMOverlay(object):
       y2 = coordinate2[1]
 
       self.imageDraw.line((x1,y1,x2,y2), fill=(255,0,150))
-
-    for position in range(len(positions)):
-      coordinate1 = positions[position]
-      #coordinate2 = positions[(position*2)+1]
-      print coordinate1," first "
     
   def saveImage(self,path):
     '''
     Save the image as a transparant png to the datadir???
     ''' 
+    #TODO flip the image vertically to compensate for inverted y-coordinates in VTK
     self.image.save(path,"PNG")
     
     

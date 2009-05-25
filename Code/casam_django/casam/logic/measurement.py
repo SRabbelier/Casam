@@ -21,8 +21,6 @@ def getMeasurementsForProject(request, project_id):
     
   print result
 
-  return http.HttpResponse('YAY')
-
 
 def checkSanity(measurements):
   """
