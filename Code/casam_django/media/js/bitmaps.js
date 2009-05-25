@@ -125,10 +125,16 @@ function getImageBitmaps(imgid) {
 					var mainDiv = new Element('div');
 					mainDiv.writeAttribute('id','bitmapsList_'+imgid)
 					mainDiv.addClassName('projectBitmapDiv');
-
+					
+					var paintoverLink = new Element('a', {
+						'href' : 'javascript:loadEditScreen(\''+pictureJSON.pk+'\')'
+					}).update(' Paintover');
+					mainDiv.insert(paintoverLink);
+					
 					// Add div for tab
 					var tempDiv = new Element('div');
 					tempDiv.insert(mainDiv);
+					
 
 					for ( var i = 0; i < json.length; i++) {
 						mainDiv.insert(addBitmap(json[i].pk, imgid));

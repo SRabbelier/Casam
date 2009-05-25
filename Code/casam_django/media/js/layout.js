@@ -179,27 +179,24 @@ function makePictureContainer(pictureJSON) {
 	}));
 	rightDiv.insert(new Element('span').update(pictureJSON.fields.name)
 			.addClassName('projectPictureInfo'));
-	rightDiv.insert(new Element('span').update(pictureJSON.fields.added)
-			.addClassName('projectPictureInfo'));
+	
+	// Do not show date
+	//rightDiv.insert(new Element('span').update(pictureJSON.fields.added)
+	//		.addClassName('projectPictureInfo'));
 
-	if (pictureJSON.fields.isLeft)
-		rightDiv.insert(new Element('span').update('Left').addClassName(
-				'projectPictureInfo'));
-	else
-		rightDiv.insert(new Element('span').update('Right').addClassName(
-				'projectPictureInfo'));
+	// Do not show left or right
+	//if (pictureJSON.fields.isLeft)
+	//	rightDiv.insert(new Element('span').update('Left').addClassName(
+	//			'projectPictureInfo'));
+	//else
+	//	rightDiv.insert(new Element('span').update('Right').addClassName(
+	//			'projectPictureInfo'));
 
-	var paintoverLink = new Element('a', {
-		'href' : '#'
-	}).update(' Paintover');
-	rightDiv.insert(paintoverLink);
 	$('pictures').insert(mainDiv);
 
-	paintoverLink.observe('click', function() {
-		loadEditScreen(pictureJSON.pk); //, pictureJSON.fields.name
-	});
 	mainDiv.insert(leftDiv);
-	//ugly IE fix for setting the checkboxes
+	
+	// Ugly IE fix for setting the checkboxes
 	for ( var i = 0; i < addedImages.length; i++) {
 		if (addedImages[i].id == pictureJSON.pk) {
 			Element.writeAttribute(useCheck, 'checked', true);

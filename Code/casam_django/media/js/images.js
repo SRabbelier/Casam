@@ -9,14 +9,17 @@ var AddedImage = Class.create( {
 		this.imageElement.addClassName('big_image_sibling');
 		this.imageElement.setOpacity(this.opacity);
 
-		this.opacitySliderContainer = new Element('div');
 		// HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
-		this.opacitySliderContainer.setWidth(170);
+		this.opacitySliderContainer = new Element('div');
+		this.opacitySliderContainer.setHeight(3);
+		this.opacitySliderContainer.setWidth(120);
 		this.opacitySliderContainer.writeAttribute('id',
 				'opacitySliderContainer_' + this.id);
 		this.opacitySliderContainer.addClassName('slider');
 
 		this.opacitySliderHandle = new Element('div');
+		this.opacitySliderHandle.setHeight(9);
+		this.opacitySliderHandle.setWidth(3);
 		this.opacitySliderHandle.writeAttribute('id',
 				'opacitySliderHandle_' + this.id);
 		this.opacitySliderHandle.addClassName('handle');
@@ -119,14 +122,24 @@ function hideImage(id) {
 
 		if (addedImages[0].id == id)
 			addedImages[0].makeNonActive();
+
+
+
+
+
+
+
+
+
+
 		
 		//remove bitmaps
 		removeBitmaps(id);
 		
-		//remove measurements
+		// Remove measurements
 		removeMeasurements(id);
 		
-		//remove checkboxes
+		// Remove checkboxes
 		removeCheckboxes(id);
 		
 		//remove changes
