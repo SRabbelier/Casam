@@ -22,18 +22,6 @@ class PointDistributionModel(object):
     self.filterGPA = vtk.vtkProcrustesAlignmentFilter()
     self.filterPCA = vtk.vtkPCAAnalysisFilter()
 
-    self.renderer = vtk.vtkRenderer()
-    self.renderer.SetBackground(0, 0, 0)
-    #self.renderer.ResetCamera(0,600,0,400,0,0)
-
-    self.renderWindow = vtk.vtkRenderWindow()
-    self.renderWindow.SetSize(600, 400)
-    self.renderWindow.AddRenderer( self.renderer )
-  
-    # render window interactor
-    self.windowInteractor = vtk.vtkRenderWindowInteractor()
-    self.windowInteractor.SetRenderWindow(self.renderWindow)
-
     self.vertexGrids = []
     self.alignedGrids = []
     self.analyzedGrids = []
@@ -69,27 +57,6 @@ class PointDistributionModel(object):
   
     vertexGrid.SetPoints(vertexPoints)
     self.vertexGrids.append(vertexGrid)
-    
-    logging.info("done")
-  
-  def addActors(self, grids, colorid):
-    """Add UnstructuredGrid actors to the renderer.
-    """
-
-    logging.info("adding actors")
-
-    for id, grid in enumerate(grids):
-      #Create a mapper for our data
-      vertexMapper = vtk.vtkDataSetMapper()
-      vertexMapper.SetInput(grid)
-      
-      #Create the actor
-      vertexActor = vtk.vtkActor()
-      vertexActor.SetMapper(vertexMapper)
-      vertexActor.GetProperty().SetDiffuseColor(self.colors[colorid])
-      
-      # add the actors to the renderer
-      self.renderer.AddActor( vertexActor )
     
     logging.info("done")
 
@@ -184,50 +151,6 @@ class PointDistributionModel(object):
       self.filterPCA.GetParameterisedShape(b, extreme)
       self.analyzedGrids.append(extreme)
       
-  
-  def visualizeMean(self):
-    """Visualize the mean shape by creating a sphere for each mean landmark point
-    """
-    
-    #Get the mean shape locations and make some shiny red spheres for each one
-    for id in range(self.meanShape[0].GetNumberOfCells()):
-      coords = self.meanShape[0].GetCell(id).GetBounds()
-      landmarkSphere = vtk.vtkSphereSource()
-      landmarkSphere.SetCenter(coords[0], coords[2], 0)
-      landmarkSphere.SetRadius(10)
-      landmarkMapper = vtk.vtkPolyDataMapper()
-      landmarkMapper.SetInputConnection(landmarkSphere.GetOutputPort())
-      landmarkActor = vtk.vtkActor()
-      landmarkActor.SetMapper(landmarkMapper)
-      landmarkActor.GetProperty().SetDiffuseColor(1,0,1)
-      landmarkActor.GetProperty().SetOpacity(0.5)
-      self.renderer.AddActor(landmarkActor)
-    
-  def render(self):
-    """Set up rendering and save the results to a PNG-file
-    """
-
-    logging.info("rendering")
-    
-    self.renderWindow.Render()    
- 
-    # initialize and start the interactor
-    self.windowInteractor.Initialize()
-    self.windowInteractor.Start()
-    
-    #Render the image into a png
-    renderLarge = vtk.vtkRenderLargeImage()
-    renderLarge.SetMagnification(1)
-    renderLarge.SetInput(self.renderer)
-
-    writer = vtk.vtkPNGWriter()
-    writer.SetInputConnection(renderLarge.GetOutputPort())
-    writer.SetFileName("Renderedimage.png")
-    writer.Write()
-    
-    logging.info("done")
-
-
 def main():
   logging.basicConfig(level=logging.DEBUG)
   pdm = PointDistributionModel()
@@ -265,19 +188,10 @@ def main():
       (400, 0, 0),
       (500, 10, 0),
       ])
-        
 
   pdm.procrustes()
   pdm.pca()
   pdm.variations()
-  pdm.addActors(pdm.vertexGrids, 0)
-  pdm.addActors(pdm.alignedGrids, 2)
-  pdm.addActors(pdm.analyzedGrids, 4)
-  pdm.addActors(pdm.meanShape, 6)
-  pdm.visualizeMean()
-  pdm.render()
-
-
 
 if __name__ == '__main__':
   main()
