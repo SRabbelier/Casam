@@ -224,7 +224,7 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 	}
 }
 
-function loadEditScreen(id, bmid) {  //name,
+function loadEditScreen(id, bmid) {
 	checkAuthenticationAndExecute( function() {
 
 		img_url = base_path + 'imageLoader/original/' + id;
@@ -257,7 +257,7 @@ function loadEditScreen(id, bmid) {  //name,
 				"http://www.macromedia.com/go/getflashplayer");
 		movie_embed.writeAttribute('flashvars', "img_source=" + img_url
 				+ "&server_url=" + base_path + "bitmap_dump&img_id=" + id
-				+ "&img_bitmap=" + bitmap_url);
+				+ "&img_bitmap=" + bitmap_url + "&img_previous_id=" + bmid);
 
 		movie_object.insert(movie_embed);
 		$('big_images').update();

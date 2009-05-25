@@ -4,7 +4,7 @@ from casam.models import Bitmap
 import time
 
 
-def handle_bitmap_stream(dump,image_id,original_image):
+def handle_bitmap_stream(dump,image_id,original_image,previous_id):
   
   if dump.find("_scanline:") != 0:
     print "wrong dump"
@@ -41,20 +41,30 @@ def handle_bitmap_stream(dump,image_id,original_image):
       
   im = Image.fromstring("L",(width,height), stream, "raw", "L")
 
-  image_name = image_id +"_"+str(holdit)+".gif"
-  im.save(settings.DATADIR+image_name,transparency=0);
+  if previous_id == 0:
+    
+    image_name = image_id +"_"+str(holdit)+".gif"
+    im.save(settings.DATADIR+image_name,transparency=0);
+    
+    # Create associated measurement
+    properties = dict(
+      image = original_image,
+      imagewidth = int(width),
+      imageheight = int(height),
+      path = image_name
+    )  
+    
+    db_bitmap = Bitmap(**properties)
+    db_bitmap.save()
+    return db_bitmap.pk
   
-  # Create associated measurement
-  properties = dict(
-    image = original_image,
-    imagewidth = int(width),
-    imageheight = int(height),
-    path = image_name
-  )  
-  
-  db_bitmap = Bitmap(**properties)
-  db_bitmap.save()
-  return db_bitmap.pk;
+  else:
+    
+    previous_image = Bitmap.objects.filter(id=previous_id).get()
+    image_name = previous_image.path
+    print settings.DATADIR+image_name
+    im.save(settings.DATADIR+image_name,transparency=0);
+    return previous_id
 
 #  brushStroke = self.cleaned_data['brushStroke']
 #  fileName = self.cleaned_data['fileName']

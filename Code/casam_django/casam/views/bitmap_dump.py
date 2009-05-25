@@ -7,8 +7,9 @@ from casam.models import OriginalImage
 from casam.logic.bitmap_dump import handle_bitmap_stream
 
 class BitmapForm(forms.Form):
-  dump = forms.CharField(max_length=36000000)
   image_id = forms.CharField(max_length=36)
+  previous_id = forms.CharField(max_length=36)
+  dump = forms.CharField(max_length=36000000)
   
   
 class Save(handler.Handler):
@@ -21,5 +22,6 @@ class Save(handler.Handler):
   def post(self):
     self.getContext()
     original_image = OriginalImage.objects.filter(id=self.cleaned_data['image_id']).get()
-    filename = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image)
-    return http.HttpResponse("filename="+filename)
+    previous_id = self.cleaned_data['previous_id']
+    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image,previous_id)
+    return http.HttpResponse("saved_id="+bitmap_id)

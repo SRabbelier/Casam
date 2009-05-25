@@ -115,7 +115,7 @@ function getImageBitmaps(imgid) {
 					mainDiv.addClassName('projectBitmapDiv');
 					
 					var paintoverLink = new Element('a', {
-						'href' : 'javascript:loadEditScreen(\''+json.pk+'\')'
+						'href' : 'javascript:loadEditScreen(\''+imgid+'\')'
 					}).update('Paintover');
 					mainDiv.insert(paintoverLink);
 					

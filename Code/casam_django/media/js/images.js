@@ -78,7 +78,7 @@ var AddedImage = Class.create( {
 });
 function makeImageObservers(image, full){
 	image.imageElement.observe('load', function() {
-		//resize the measurements
+		// Resize the measurements
 		if (full){
 			getImageMeasurements(image.id);
 			getImageBitmaps(image.id);

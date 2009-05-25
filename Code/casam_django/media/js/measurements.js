@@ -298,7 +298,7 @@ function getImageMeasurements(imgid) {
 				mainDiv.writeAttribute('id', 'measurementsList_'+imgid);
 				mainDiv.addClassName('projectPictureDiv');
 
-				//add Div for tab
+				// Add Div for tab
 				var tempDiv = new Element('div');
 				tempDiv.insert(mainDiv);
 
