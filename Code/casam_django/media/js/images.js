@@ -83,6 +83,7 @@ var AddedImage = Class.create( {
 		getImageBitmaps(this.id);
 	},
 	addSelfToImages : function() {
+		$('big_images').insert(this.imageElement);
 		this.addSelfToBigImages();
 		this.addMetaDataToSelf();
 	}
@@ -108,7 +109,7 @@ function showImage(id, name) {
 		var newAddedImage = new AddedImage(id, name);
 		addedImages.splice(0, 0, newAddedImage);
 		newAddedImage.addSelfToImages();
-
+		
 		checkActiveLayer();
 	});
 }

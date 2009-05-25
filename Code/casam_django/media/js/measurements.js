@@ -320,8 +320,8 @@ function getImageMeasurements(imgid) {
 	});
 }
 
-function createMeasurement(name, x, y, measid, potid, imgid, imgwidth,
-		imgheight) {
+function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
+														imgheight) {
 	
 	var imgname = '';
 	for ( var j = 0; j < addedImages.length; j++) {
@@ -389,6 +389,7 @@ function createMeasurement(name, x, y, measid, potid, imgid, imgwidth,
 	else
 		measurement.nonActive();
 
+	alert(measurement.x+', '+measurement.y)
 	measurements.push(measurement);
 	return measurementDiv
 }
