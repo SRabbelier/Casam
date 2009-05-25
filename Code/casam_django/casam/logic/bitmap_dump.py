@@ -54,9 +54,7 @@ def handle_bitmap_stream(dump,image_id,original_image):
   
   db_bitmap = Bitmap(**properties)
   db_bitmap.save()
-
-  return image_name
-
+  return db_bitmap.pk;
 
 #  brushStroke = self.cleaned_data['brushStroke']
 #  fileName = self.cleaned_data['fileName']

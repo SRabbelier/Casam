@@ -204,7 +204,7 @@ function makePictureContainer(pictureJSON) {
 	$('pictures').insert(mainDiv);
 
 	paintoverLink.observe('click', function() {
-		loadEditScreen(pictureJSON.pk, pictureJSON.fields.name);
+		loadEditScreen(pictureJSON.pk); //, pictureJSON.fields.name
 	});
 	mainDiv.insert(leftDiv);
 	//ugly IE fix for setting the checkboxes
@@ -242,7 +242,7 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 	}
 }
 
-function loadEditScreen(id, name, bmid) {
+function loadEditScreen(id, bmid) {  //name,
 	checkAuthenticationAndExecute( function() {
 
 		flashpainting = true;
@@ -288,9 +288,10 @@ function loadEditScreen(id, name, bmid) {
 	});
 }
 
-function closePaintOver(file_name) {
-	if(file_name != '') {
-		updateImageList();
+function closePaintOver(bmid) {
+	if(bmid != '') {
+		newBitmapDiv = addBitmap(bmid, addedImages[0].id);
+		$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
 	}
 	flashpainting = false;
 	reloadImages(false);

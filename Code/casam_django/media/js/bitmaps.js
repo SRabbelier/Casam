@@ -24,10 +24,11 @@ var Bitmap = Class.create( {
 	}
 });
 
-function addBitmap(bmid, source, imgid) {
+function addBitmap(bmid, imgid) {
 	var bitmapDiv = new Element('div', {
 		'id' : 'bitmapDiv_' + bmid
 	});
+	
 	bitmapDiv.addClassName('projectImageBitmapDiv');
 
 	checkbox = new Element('input', {
@@ -77,7 +78,10 @@ function addBitmap(bmid, source, imgid) {
 	textspan = new Element('span', {
 		'id' : 'spanbm_' + bmid
 	});
-	textspan.update(bmid)
+	textspan.update("landmarkname_"+bmid.substr(0,3));
+	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+bmid+'\')'});
+	editlink.insert('edit');
+	textspan.insert(editlink);
 	bitmapDiv.insert(checkbox);
 	bitmapDiv.insert(textspan);
 
@@ -85,6 +89,20 @@ function addBitmap(bmid, source, imgid) {
 }
 
 function reloadBitmaps() {
+	for ( var i = 0; i < checkboxes.length; i++) {
+		if ((checkboxes[i].type == 'b')) {
+
+			checkboxes[i].item.resize();
+
+			$('big_images').insert(checkboxes[i].item.bitmap);
+			checkboxes[i].item.bitmap.hide();
+			if (checkboxes[i].checked)
+				checkboxes[i].item.bitmap.show();
+		}
+	}
+}
+
+function reloadBitmapLists() {
 	for ( var i = 0; i < checkboxes.length; i++) {
 		if ((checkboxes[i].type == 'b')) {
 
@@ -108,15 +126,15 @@ function getImageBitmaps(imgid) {
 				onSuccess : function(transport, json) {
 					var json = transport.responseText.evalJSON();
 					var mainDiv = new Element('div');
+					mainDiv.writeAttribute('id','bitmapsList_'+imgid)
 					mainDiv.addClassName('projectBitmapDiv');
 
-					// add Div for tab
+					// Add div for tab
 					var tempDiv = new Element('div');
 					tempDiv.insert(mainDiv);
 
 					for ( var i = 0; i < json.length; i++) {
-						mainDiv.insert(addBitmap(json[i].pk,
-								json[i].fields.path, imgid));
+						mainDiv.insert(addBitmap(json[i].pk, imgid));
 					}
 
 					if ($('bottomDiv' + imgid).childElements().length == 3) {
