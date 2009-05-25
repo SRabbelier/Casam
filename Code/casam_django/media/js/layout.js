@@ -2,17 +2,30 @@ function resizeScreenElements(firsttime) {
 	checkAuthenticationAndExecute( function() {
 
 		var remainingWidth = document.viewport.getWidth() - 500;
-		$('big_images').setWidth(remainingWidth);
-
 		var remainingHeight = document.viewport.getHeight() - 150;
+		
+		// Always resize the big_images-container
+		$('big_images').setWidth(remainingWidth);
 		$('big_images').setHeight(remainingHeight);
+		
+		// If the flash paintover is loaded
+		if (flashpainting) {
+			$('flash_movie_object').setWidth(remainingWidth-5);
+			$('flash_movie_object').setHeight(remainingHeight-5);
+			$('flash_movie_embed').setWidth(remainingWidth-5);
+			$('flash_movie_embed').setHeight(remainingHeight-5);
+			
+		
+		// If we are viewing images
+		} else 
+			reloadImages(firsttime);
+		
+		// Resize the white frames
 		remainingHeightWhiteFrame = remainingHeight - 36;
 		$('leftFrame').setHeight(remainingHeightWhiteFrame);
 		$('rightFrame').setHeight(remainingHeightWhiteFrame);
-		reloadImages(firsttime);
-
+		
 	});
-
 }
 
 function newTab(tab_title, content, open) {
@@ -232,15 +245,19 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 function loadEditScreen(id, name, bmid) {
 	checkAuthenticationAndExecute( function() {
 
+		flashpainting = true;
+		
 		img_url = base_path + 'imageLoader/original/' + id;
 		if ((bmid != '') && (bmid != undefined))
-		  bitmap_url = base_path + 'imageLoader/bitmap/'+bmid;
-	  else
-	    bitmap_url = '';
+			bitmap_url = base_path + 'imageLoader/bitmap/'+bmid;
+		else 
+			bitmap_url = '';
+		
 		mov_width = ($('big_images').getWidth() - 5);
 		mov_heigth = ($('big_images').getHeight() - 5);
 
 		movie_object = new Element('object');
+		movie_object.writeAttribute('id', 'flash_movie_object');
 		movie_object.writeAttribute('classid',
 				"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
 		movie_object
@@ -251,6 +268,7 @@ function loadEditScreen(id, name, bmid) {
 		movie_object.writeAttribute('height', mov_heigth);
 
 		movie_embed = new Element('embed');
+		movie_embed.writeAttribute('id', 'flash_movie_embed');
 		movie_embed.writeAttribute('src', base_path + 'media/flash/paint.swf');
 		movie_embed.writeAttribute('quality', "high");
 		movie_embed.writeAttribute('bgcolor', "#000000");
@@ -272,5 +290,6 @@ function loadEditScreen(id, name, bmid) {
 
 function closePaintOver(file_name) {
 	alert(file_name);
-	//close flash object
+	flashpainting = false;
+	reloadImages(false);
 }
