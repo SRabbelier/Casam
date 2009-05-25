@@ -289,7 +289,9 @@ function loadEditScreen(id, name, bmid) {
 }
 
 function closePaintOver(file_name) {
-	alert(file_name);
+	if(file_name != '') {
+		updateImageList();
+	}
 	flashpainting = false;
 	reloadImages(false);
 }
