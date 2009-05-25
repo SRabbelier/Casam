@@ -169,7 +169,6 @@ function reloadImages(full) {
 
 function updateImageList() {
 	checkAuthenticationAndExecute( function() {
-		alert('hier')
 		id_array = Sortable.sequence("pictures");
 		new_list = new Array();
 		for ( var i = 0; i < id_array.length; i++) {

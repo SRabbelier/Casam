@@ -199,7 +199,6 @@ function saveLandMark(mx, my, potid, imgid) {
 									mousex, mousey, json[0].pk, mm, json[0].fields.image,
 									json[0].fields.imagewidth,
 									json[0].fields.imageheight));
-							alerT('tot hier');
 							for ( var i = 0; i < measurements.length; i++) {
 								if (measurements[i].potid == mm
 										&& measurements[i].imageid == imageID) {
@@ -207,7 +206,6 @@ function saveLandMark(mx, my, potid, imgid) {
 									break;
 								}
 							}
-							alerT('tot hier');
 							measurement.calcpieces();
 							measurement.setPlace(mousex / measurement.piecex,
 									mousey / measurement.piecey);
@@ -389,7 +387,6 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	else
 		measurement.nonActive();
 
-	alert(measurement.x+', '+measurement.y)
 	measurements.push(measurement);
 	return measurementDiv
 }
