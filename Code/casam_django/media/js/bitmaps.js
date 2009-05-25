@@ -13,14 +13,11 @@ var Bitmap = Class.create( {
 		this.bitmap.writeAttribute('src', this.getAppropriateSizeURL());
 		this.bitmap.observe('load', function() {
 			//big_images need to be resized again when the bitmaps are loaded 
-				// the javascript continues while this.getAppropriateSizeURL()
-				// is still
-				// finding the correct size for the bitmap
-				var remainingWidth = document.viewport.getWidth() - 500;
-				$('big_images').setWidth(remainingWidth);
-				var remainingHeight = document.viewport.getHeight() - 150;
-				$('big_images').setHeight(remainingHeight);
-			});
+			// the javascript continues while this.getAppropriateSizeURL()
+			// is still
+			// finding the correct size for the bitmap
+			resizeScreenElements(false);
+		});
 	}
 });
 
@@ -148,3 +145,14 @@ function getImageBitmaps(imgid) {
 				}
 			});
 }
+
+function removeBitmaps(imageID){
+	for(var i = 0; i < bitmaps.length; i++){
+		if(bitmaps[i].imageid == imageID){
+			Element.remove($('bitmap_' + bitmaps[i].id));
+			bitmaps.splice(i, 1);
+			i = i - 1;
+		}
+	}
+}
+

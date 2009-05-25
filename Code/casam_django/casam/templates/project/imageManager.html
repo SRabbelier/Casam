@@ -70,7 +70,7 @@ function getProjectImages()
 					  parameters: {'imageID': id},
 					  onSuccess: function(transport, json) {
 						  Effect.Fade(containerToDelete);
-						  parent.removeImage(id);
+						  parent.deleteImage(id);
 					  },
 					  onFailure:function(){
 						  alert('Something went wrong while deleting image '+imageName);

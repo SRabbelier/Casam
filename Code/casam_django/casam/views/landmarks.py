@@ -57,7 +57,7 @@ class LandmarkSaver(handler.Handler):
     except Measurement.DoesNotExist:
       meting = None
 
-    location = os.path.join(settings.DATADIR, img.id)
+    location = os.path.join(settings.DATADIR, img.path)
     im = Image.open(location)
     piecex = float(self.cleaned_data['imagewidth']) / im.size[0]
     piecey = float(self.cleaned_data['imageheight']) / im.size[1]

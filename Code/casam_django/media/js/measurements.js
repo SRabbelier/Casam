@@ -1,3 +1,85 @@
+var Measurement = Class.create( {
+	initialize : function(id, potid, name, imageid, pin, originalWidth,
+			originalHeight) {
+		this.id = id;
+		this.potid = potid;
+		this.name = name;
+
+		//info about the image
+		this.imageid = imageid;
+		this.originalWidth = originalWidth;
+		this.originalHeight = originalHeight;
+
+		//these are the coordinates of the pin in the original image
+		this.x = 0;
+		this.y = 0;
+
+		this.pinDiv = pin;
+		//theze are the coordinates of the pin in the scaled image
+		this.left = 0;
+		this.top = 0;
+
+		this.piecex = 0;
+		this.piecey = 0;
+
+		this.drag = null;
+	},
+	setPlace : function(x, y) {
+		this.calcpieces();
+		this.x = x;
+		this.y = y;
+		this.left = x * this.piecex;
+		this.top = y * this.piecey;
+	},
+	place : function() {
+		if (this.pinDiv.ancestors() == '')
+		  $('big_images').insert(this.pinDiv);
+		this.pinDiv.setStyle( {
+			position : 'absolute',
+			left : '' + (Math.round(this.left)) + 'px',
+			top : '' + (Math.round(this.top)) + 'px'
+		});
+		this.pinDiv.show();
+	},
+	replace : function() {
+		this.calcpieces();
+		this.left = this.x * this.piecex;
+		this.top = this.y * this.piecey;
+		this.place();
+	},
+	calcpieces : function() {
+		this.piecex = $('addedImage_' + this.imageid).width
+				/ this.originalWidth;
+		this.piecey = $('addedImage_' + this.imageid).height
+				/ this.originalHeight;
+	},
+	restore : function() {
+		this.pinDiv.hide();
+		$('mm' + this.potid).show();
+	},
+	hide : function() {
+		this.pinDiv.hide();
+	},
+	changeColor : function(color) {
+		this.pinDiv.childElements()[0].src = base_path + "media/img/pin_"
+				+ color + ".gif";
+	},
+	setActive : function() {
+		this.changeColor('red');
+		this.drag = makeDraggable(this, this.pinDiv, this.potid, this.imageid);
+		$('mm' + this.potid).hide();
+	},
+	nonActive : function() {
+		this.changeColor('green');
+		if (this.drag != null)
+			this.drag.destroy();
+	},
+	erase : function() {
+		this.nonActive(); //to destroy draggable
+	this.pinDiv.remove(); //remove the whole pin
+	}
+});
+
 function undoLastLandmarkChange(x, y, potid, imgid, mid) {
 	if (mid == '')
 		reloadUndonePlace(potid, imgid);
@@ -110,15 +192,14 @@ function saveLandMark(mx, my, potid, imgid) {
 						} else {
 							var json = transport.responseText.evalJSON();
 							//json[i] = meting
-							//json[i+1] = image
 							//getMainDiv to do mainDiv.insert
-							var mainDiv = $('bottomDiv' + json[1].pk)
+							var mainDiv = $('bottomDiv' + json[0].fields.image)
 									.childElements()[1].childElements()[2];
 							mainDiv.insert(createMeasurement(c.lmname,
-									json[1].fields.name, mousex, mousey,
-									json[0].pk, mm, json[1].pk,
+									mousex, mousey, json[0].pk, mm, json[0].fields.image,
 									json[0].fields.imagewidth,
 									json[0].fields.imageheight));
+							alerT('tot hier');
 							for ( var i = 0; i < measurements.length; i++) {
 								if (measurements[i].potid == mm
 										&& measurements[i].imageid == imageID) {
@@ -126,13 +207,17 @@ function saveLandMark(mx, my, potid, imgid) {
 									break;
 								}
 							}
+							alerT('tot hier');
 							measurement.calcpieces();
 							measurement.setPlace(mousex / measurement.piecex,
 									mousey / measurement.piecey);
 							measurement.place();
 						}
 
-						$('lmdd').hide();
+						
+					},
+					onComplete: function(){
+						$('lmdd').hide();						
 					}
 				});
 	}
@@ -180,87 +265,7 @@ function hideLandmarkTooltip(e) {
 	tooltip.hide();
 }
 
-var Measurement = Class.create( {
-	initialize : function(id, potid, name, imageid, pin, originalWidth,
-			originalHeight) {
-		this.id = id;
-		this.potid = potid;
-		this.name = name;
 
-		//info about the image
-		this.imageid = imageid;
-		this.originalWidth = originalWidth;
-		this.originalHeight = originalHeight;
-
-		//these are the coordinates of the pin in the original image
-		this.x = 0;
-		this.y = 0;
-
-		this.pinDiv = pin;
-		//theze are the coordinates of the pin in the scaled image
-		this.left = 0;
-		this.top = 0;
-
-		this.piecex = 0;
-		this.piecey = 0;
-
-		this.drag = null;
-	},
-	setPlace : function(x, y) {
-		this.calcpieces();
-		this.x = x;
-		this.y = y;
-		this.left = x * this.piecex;
-		this.top = y * this.piecey;
-	},
-	place : function() {
-		if (this.pinDiv.ancestors() == '')
-		  $('big_images').insert(this.pinDiv);
-		this.pinDiv.setStyle( {
-			position : 'absolute',
-			left : '' + (Math.round(this.left)) + 'px',
-			top : '' + (Math.round(this.top)) + 'px'
-		});
-		this.pinDiv.show();
-	},
-	replace : function() {
-		this.calcpieces();
-		this.left = this.x * this.piecex;
-		this.top = this.y * this.piecey;
-		this.place();
-	},
-	calcpieces : function() {
-		this.piecex = $('addedImage_' + this.imageid).width
-				/ this.originalWidth;
-		this.piecey = $('addedImage_' + this.imageid).height
-				/ this.originalHeight;
-	},
-	restore : function() {
-		this.pinDiv.hide();
-		$('mm' + this.potid).show();
-	},
-	hide : function() {
-		this.pinDiv.hide();
-	},
-	changeColor : function(color) {
-		this.pinDiv.childElements()[0].src = base_path + "media/img/pin_"
-				+ color + ".gif";
-	},
-	setActive : function() {
-		this.changeColor('red');
-		this.drag = makeDraggable(this, this.pinDiv, this.potid, this.imageid);
-		$('mm' + this.potid).hide();
-	},
-	nonActive : function() {
-		this.changeColor('green');
-		if (this.drag != null)
-			this.drag.destroy();
-	},
-	erase : function() {
-		this.nonActive(); //to destroy draggable
-	this.pinDiv.remove(); //remove the whole pin
-}
-});
 function makeDraggable(measurement, pinDiv, potid, imageid) {
 	return new Draggable(pinDiv, {
 		onStart : function() {
@@ -285,55 +290,46 @@ function makeDraggable(measurement, pinDiv, potid, imageid) {
 function getImageMeasurements(imgid) {
 	var url = base_path + 'JSON/projectImageCurrentMeasurements/' + imgid
 			+ '?time=' + new Date().getTime();
-	new Ajax.Request(
-			url,
-			{
-				method : 'get',
-				onSuccess : function(transport, json) {
-					var json = transport.responseText.evalJSON();
-					var mainDiv = new Element('div');
-					mainDiv.addClassName('projectPictureDiv');
+	new Ajax.Request(url, {
+			method : 'get',
+			onSuccess : function(transport, json) {
+				var json = transport.responseText.evalJSON();
+				var mainDiv = new Element('div');
+				mainDiv.addClassName('projectPictureDiv');
 
-					//add Div for tab
+				//add Div for tab
 				var tempDiv = new Element('div');
 				tempDiv.insert(mainDiv);
 
-				for ( var i = 0; i < measurements.length; i++) {
-					if (measurements[i].imageid == imgid) {
-						measurements[i].restore();
-						measurements.splice(i, 1);
-						//splice shifts the index of the array 1 to the left, so compensate
-				i = i - 1;
-			}
-		}
+				for (i = 0; i < json.length - 1; i = i + 2) {
+					mainDiv.insert(createMeasurement(json[i].fields.name, 
+							json[i + 1].fields.x, json[i + 1].fields.y, json[i + 1].pk,
+							json[i].pk, imgid, json[i + 1].fields.imagewidth,
+							json[i + 1].fields.imageheight));
+				}
 
-		var imgname = '';
-		for ( var j = 0; j < addedImages.length; j++) {
-			if (addedImages[j].id == imgid) {
-				imgname = addedImages[j].name;
-				break;
+				if ($('bottomDiv' + imgid).childElements().length == 2) {
+					alert('zou je niet moeten zien');
+					$('bottomDiv' + imgid).childElements()[1].childElements()[2].innerHTML = mainDiv.innerHTML;
+				} else {
+					var tab_measurements = newTab('Measurements', mainDiv, true);
+					tab_measurements.addClassName('imgSubTabMeasurements');
+					$('bottomDiv' + imgid).insert(tab_measurements);
+				}
 			}
-		}
-		for (i = 0; i < json.length - 1; i = i + 2) {
-			mainDiv.insert(createMeasurement(json[i].fields.name, imgname,
-					json[i + 1].fields.x, json[i + 1].fields.y, json[i + 1].pk,
-					json[i].pk, imgid, json[i + 1].fields.imagewidth,
-					json[i + 1].fields.imageheight));
-		}
-
-		if ($('bottomDiv' + imgid).childElements().length == 2) {
-			$('bottomDiv' + imgid).childElements()[1].childElements()[2].innerHTML = mainDiv.innerHTML;
-		} else {
-			var tab_measurements = newTab('Measurements', mainDiv, true);
-			tab_measurements.addClassName('imgSubTabMeasurements');
-			$('bottomDiv' + imgid).insert(tab_measurements);
-		}
-	}
-});
+	});
 }
 
-function createMeasurement(name, imgname, x, y, measid, potid, imgid, imgwidth,
+function createMeasurement(name, x, y, measid, potid, imgid, imgwidth,
 		imgheight) {
+	
+	var imgname = '';
+	for ( var j = 0; j < addedImages.length; j++) {
+		if (addedImages[j].id == imgid) {
+			imgname = addedImages[j].name;
+			break;
+		}
+	}
 
 	var pinDiv = new Element('div');
 	pinDiv.addClassName('pinDiv');
