@@ -3,13 +3,7 @@ import logging
 
 import vtk
 
-
-def getColors(colors):
-  """Return RGB color-range
-  """
-
-  return [colorsys.hsv_to_rgb(x*1.0/colors, 1, 1) for x in range(colors)]
-
+from casam.logic import pdmoverlay
 
 class PointDistributionModel(object):
   """Calculates the Point Distribution Model using an unstructured grid
@@ -18,7 +12,7 @@ class PointDistributionModel(object):
   def __init__(self):
     """
     """
-
+    
     self.filterGPA = vtk.vtkProcrustesAlignmentFilter()
     self.filterPCA = vtk.vtkPCAAnalysisFilter()
 
@@ -26,8 +20,8 @@ class PointDistributionModel(object):
     self.alignedGrids = []
     self.analyzedGrids = []
     self.meanShape = [] 
-
-    self.colors = getColors(10)
+    self.meanPositions = []
+    self.variationPositions = []
 
   def addPointSet(self, data):
     """Add a set of points to the UnstructuredGrid vertexGrid (the source of our calculations)
@@ -128,7 +122,12 @@ class PointDistributionModel(object):
     #Get the mean shape:
     self.filterPCA.GetParameterisedShape(b, mean)
     self.meanShape.append(mean)   
-
+    
+    #get the meanpositions
+    for pos in range(self.meanShape[0].GetNumberOfCells()):
+      bounds = self.meanShape[0].GetCell(pos).GetBounds()
+      self.meanPositions.append((bounds[0],bounds[2]))
+      
     logging.info("done")
     
   def variations(self):
@@ -150,48 +149,65 @@ class PointDistributionModel(object):
       extreme.DeepCopy(self.alignedGrids[0])
       self.filterPCA.GetParameterisedShape(b, extreme)
       self.analyzedGrids.append(extreme)
+    
+    #get the variationpositions
+    #for grid in range(len(self.analyzedGrids)):
+    #  for pos in range(self.analyzedGrids[grid].GetNumberOfCells()):
+    #    bounds = self.analyzedGrids[grid].GetCell(pos).GetBounds()
+    #    self.variationPositions.append((bounds[0],bounds[2]))
+        
+    for pos in range (self.analyzedGrids[0].GetNumberOfCells()):
+      for i in range(0,4):
+        bounds = self.analyzedGrids[i].GetCell(pos).GetBounds()
+        self.variationPositions.append((bounds[0],bounds[2]))
       
-def main():
+      
+      
+def makePDM():
   logging.basicConfig(level=logging.DEBUG)
+  
   pdm = PointDistributionModel()
 
   pdm.addPointSet([
-      (0, 0, 0), 
-      (100, 0, 0), 
-      (200, 0, 0),
-      (300, 0, 0),
-      (400, 0, 0),
-      (500, 0, 0),
+      (0, 200, 0), 
+      (100, 200, 0), 
+      (200, 200, 0),
+      (300, 200, 0),
+      (400, 200, 0),
+      (500, 200, 0),
       ])
   pdm.addPointSet([
-      (0, 0, 0), 
-      (100, 0, 0), 
-      (200, 0, 0),
-      (300, 10, 0),
-      (400, 0, 0),
-      (500, 0, 0),
+      (0, 200, 0), 
+      (100, 200, 0), 
+      (200, 200, 0),
+      (300, 210, 0),
+      (400, 200, 0),
+      (500, 200, 0),
       ])
   pdm.addPointSet([
-      (0, 10, 0), 
-      (100, 10, 0), 
-      (200, 10, 0),
-      (300, 10, 0),
-      (400, 10, 0),
-      (500, 10, 0),
+      (0, 210, 0), 
+      (100, 210, 0), 
+      (200, 210, 0),
+      (300, 210, 0),
+      (400, 210, 0),
+      (500, 210, 0),
       ])
   
   pdm.addPointSet([
-      (0, 0, 0), 
-      (100, 0, 0), 
-      (200, 0, 0),
-      (300, 0, 0),
-      (400, 0, 0),
-      (500, 10, 0),
+      (0, 200, 0), 
+      (100, 200, 0), 
+      (200, 200, 0),
+      (300, 200, 0),
+      (400, 200, 0),
+      (500, 210, 0),
       ])
 
   pdm.procrustes()
   pdm.pca()
   pdm.variations()
+  return pdm
+#  pdmo = pdmoverlay.PDMOverlay(size)
+#  pdmo.drawMeans(pdm.meanPositions)
+#  pdmo.drawVariations(pdm.variationPositions)
+#  pdmo.saveImage()
 
-if __name__ == '__main__':
-  main()

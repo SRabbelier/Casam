@@ -32,6 +32,9 @@ class Image(models.Model):
 
   class Meta:
     abstract = True
+    
+class PDM(Image):
+  pass
 
 
 class OriginalImage(Image):

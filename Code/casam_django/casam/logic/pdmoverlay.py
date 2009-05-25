@@ -1,5 +1,7 @@
-import Image
-import ImageDraw
+from PIL import Image
+from PIL import ImageDraw
+
+from django.conf import settings
 
 class PDMOverlay(object):
   '''
@@ -11,7 +13,6 @@ class PDMOverlay(object):
     '''
     '''
 
-    size = (600,480)
     self.image = Image.new('RGBA',size,(0,0,0,0))
     self.imageDraw = ImageDraw.Draw(self.image)
   
@@ -27,36 +28,31 @@ class PDMOverlay(object):
       ymin = coordinate[1] - ellipsoidSize
       ymax = coordinate[1] + ellipsoidSize
       self.imageDraw.ellipse((xmin,ymin,xmax,ymax), fill=(150,0,255))
-    
-    
-    
 
   def drawVariations(self, positions):
     '''
-    Get a visual representation of the variations at the given coordinates
+    Get a visual representation of the variations at the given coordinates using lines
     '''
     for position in range(len(positions)/2):
       coordinate1 = positions[position*2]
       coordinate2 = positions[(position*2)+1]
+      print coordinate1," and 2: " ,coordinate2
       x1 = coordinate1[0]
       x2 = coordinate2[0]
       y1 = coordinate1[1]
       y2 = coordinate2[1]
+
       self.imageDraw.line((x1,y1,x2,y2), fill=(255,0,150))
+
+    for position in range(len(positions)):
+      coordinate1 = positions[position]
+      #coordinate2 = positions[(position*2)+1]
+      print coordinate1," first "
+    
+  def saveImage(self,path):
+    '''
+    Save the image as a transparant png to the datadir???
+    ''' 
+    self.image.save(path,"PNG")
     
     
-  def saveImage(self):
-    self.image.save('test.png',"PNG")
-
-
-def main():
-  size = (600,480)
-  positions = [(300,50),(50,130),(400,300),(450,320)]
-  pdmo = PDMOverlay(size)
-  pdmo.drawVariations(positions)
-  pdmo.drawMeans(positions)
-  pdmo.saveImage()
-
-if __name__ == '__main__':
-  main()
-

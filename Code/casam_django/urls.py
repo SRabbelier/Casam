@@ -16,6 +16,8 @@ import casam.views.imageloader
 import casam.views.bitmap_dump
 import casam.views.tag
 import casam.views.potential_measurement
+import casam.views.pdm
+import casam.logic.measurement
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
@@ -71,6 +73,10 @@ urlpatterns = patterns('',
     (r'^AJaX/deleteImages/$', casam.views.main.deleteImages()),
     (r'^AJaX/deleteMeasurement/$', casam.views.main.deleteMeasurement()),
     (r'^AJaX/deletePotentialMeasurement/$', casam.views.main.deletePotentialMeasurement()),
+    
+    #VTK
+    (r'^vtk/noeska/PDMTest$', casam.views.pdm.PDMTestView()),
+    #(r'^vtk/noeska/(.*)$', casam.logic.measurement.getMeasurementsForProject),
 )
 
 if settings.DEBUG:
