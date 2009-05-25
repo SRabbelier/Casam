@@ -159,8 +159,6 @@ function reloadImages(full) {
 		for ( var i = 0; i < addedImages.length; i++) {
 			if ( i >= 1)
 				addedImages[i].makeNonActive();
-			if (full) 
-				$('bottomDiv' + addedImages[i].id).update();
 			addedImages[i].addSelfToImages(full);
 		}
 

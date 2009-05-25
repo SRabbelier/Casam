@@ -16,7 +16,7 @@ var Bitmap = Class.create( {
 			// the javascript continues while this.getAppropriateSizeURL()
 			// is still
 			// finding the correct size for the bitmap
-			resizeScreenElements(false);
+			resizeBigImages();
 		});
 	}
 });
@@ -86,6 +86,7 @@ function addBitmap(bmid, imgid) {
 }
 
 function reloadBitmaps() {
+	
 	for ( var i = 0; i < checkboxes.length; i++) {
 		if ((checkboxes[i].type == 'b')) {
 
