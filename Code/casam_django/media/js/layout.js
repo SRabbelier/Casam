@@ -159,6 +159,10 @@ function makePictureContainer(pictureJSON) {
 		"id" : "bottomDiv" + pictureJSON.pk
 	});
 	bottomDiv.addClassName('pictureContainerBottomDiv');
+	var sliderDiv = new Element('div', {
+		"id" : "sliderDiv" + pictureJSON.pk
+	});
+	sliderDiv.addClassName('pictureContainerSliderDiv');
 
 	var useCheck = new Element('input', {
 		'type' : 'checkbox',
@@ -178,24 +182,14 @@ function makePictureContainer(pictureJSON) {
 				+ pictureJSON.pk
 	}));
 	rightDiv.insert(new Element('span').update(pictureJSON.fields.name)
-			.addClassName('projectPictureInfo'));
-	
-	// Do not show date
-	//rightDiv.insert(new Element('span').update(pictureJSON.fields.added)
-	//		.addClassName('projectPictureInfo'));
-
-	// Do not show left or right
-	//if (pictureJSON.fields.isLeft)
-	//	rightDiv.insert(new Element('span').update('Left').addClassName(
-	//			'projectPictureInfo'));
-	//else
-	//	rightDiv.insert(new Element('span').update('Right').addClassName(
-	//			'projectPictureInfo'));
-
-	$('pictures').insert(mainDiv);
+			.addClassName('projectPictureInfo'));	
 
 	mainDiv.insert(leftDiv);
-	
+	mainDiv.insert(rightDiv);
+	mainDiv.insert(sliderDiv);
+	mainDiv.insert(bottomDiv);	
+	$('pictures').insert(mainDiv);
+
 	// Ugly IE fix for setting the checkboxes
 	for ( var i = 0; i < addedImages.length; i++) {
 		if (addedImages[i].id == pictureJSON.pk) {
@@ -203,8 +197,6 @@ function makePictureContainer(pictureJSON) {
 			break;
 		}
 	}
-	mainDiv.insert(rightDiv);
-	mainDiv.insert(bottomDiv);
 }
 
 function closePopupAndReloadPictures() {

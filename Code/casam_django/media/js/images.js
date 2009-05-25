@@ -49,29 +49,30 @@ var AddedImage = Class.create( {
 	},
 	makeActive: function(){
 		$('mainDiv_' + this.id).setStyle({border: '1px red dashed',
-																			backgroundColor: 'red'});
-		//zoom image
-		$('zoomImage').writeAttribute('src',base_path + 'imageLoader/byRatio/original/150/' + this.id);
+																			backgroundColor: '#ffdddd'});
+		// Zoom image
+		$('zoomImage').writeAttribute('src', base_path + 'imageLoader/byRatio/original/150/' + this.id);
 		$('zoomImage').show();
 																							
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id)
 				measurements[i].setActive();			
 		}
-	},	
+	},
 	addSelfToImages : function(full) {
 		
-		//we need this for the observer and the slider
+		// We need this for the observer and the slider
 		parentAddedImageObject = this;
-		//because of slow servers we need to empty the src
+		// Because of slow servers we need to empty the src
 		this.imageElement.writeAttribute('src', '');
 		this.imageElement.writeAttribute('src', this.getAppropriateSizeURL());
 		makeImageObservers(this, full);
 		
 		$('big_images').insert( { bottom : this.imageElement	});
 		
-		//create a slider
-		addSlider($('bottomDiv' + this.id),this);
+		// Create a slider
+		$('sliderDiv' + this.id).update();
+		addSlider($('sliderDiv' + this.id),this);
 	}
 });
 function makeImageObservers(image, full){
@@ -123,18 +124,8 @@ function hideImage(id) {
 
 		if (addedImages[0].id == id)
 			addedImages[0].makeNonActive();
-
-
-
-
-
-
-
-
-
-
-		
-		//remove bitmaps
+	
+		// Remove bitmaps
 		removeBitmaps(id);
 		
 		// Remove measurements
@@ -143,13 +134,13 @@ function hideImage(id) {
 		// Remove checkboxes
 		removeCheckboxes(id);
 		
-		//remove changes
+		// Remove changes
 		removeChanges(id);
 		
-		//remove image
+		// Remove image
 		removeImage(id);
 		
-		//check for new active layer
+		// Check for new active layer
 		checkActiveLayer();
 	});
 }
@@ -157,7 +148,7 @@ function hideImage(id) {
 function reloadImages(full) {
 	checkAuthenticationAndExecute( function() {
 
-		//.update() clears the contents of the elements
+		// .update() clears the contents of the elements
 		$('big_images').update();
 
 		for ( var i = addedImages.length - 1; i >= 0; i--) {
@@ -194,7 +185,7 @@ function updateImageList() {
 		}
 		addedImages = new_list;
 		
-		//reloadImages(false);
+		// reloadImages(false);
 		checkActiveLayer();
 
 	});
@@ -212,6 +203,7 @@ function removeMeasurements(imageID){
 		}
 	}
 }
+
 function resizeMeasurements(imageID){
 	for(var i = 0; i < checkboxes.length; i++) {
 		if ((checkboxes[i].item.imageid == imageID) && (checkboxes[i].box.checked == true) &&
@@ -220,9 +212,6 @@ function resizeMeasurements(imageID){
 		}
 	}
 }
-
-
-
 
 function removeCheckboxes(imageID){
 	for(var i = 0; i < checkboxes.length; i++){
@@ -256,14 +245,14 @@ function removeImage(imageID){
 }
 
 function checkActiveLayer(){
-	//$('zoomImage').hide();
+	// $('zoomImage').hide();
 	if (addedImages.length > 0) {
 		addedImages.each(function(item){
 			item.makeNonActive();
 		});
 		addedImages[0].makeActive();
 		
-		//set sequence so that active layer is always on top
+		// Set sequence so that active layer is always on top
 		id_array = Sortable.sequence("pictures");
 		var temp = "";
 		for ( var i = 0; i < id_array.length; i++) {
@@ -281,7 +270,7 @@ function checkActiveLayer(){
 	}
 }
 
-function addSlider(div,object){
+function addSlider(div, object){
 	div.insert( { top : object.opacitySliderContainer });
 	new Control.Slider(
 		object.opacitySliderHandle,

@@ -104,14 +104,15 @@ function getProjectImages()
 		     
 		    $('tab_pictures').update();
 		    $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
+		    
 		    // Create a picture container for each picture
 		    for(i=0; i < json.length; i++)
 					makePictureContainer(json[i]);
+
 				// Put bar in Pictures
 				var toolbar = new Element('div');
 				toolbar.setStyle("clear:both;float:right;");
 				var addLink = new Element('a',{'href':'#'});
-
 				var addImage = new Element('img',{'src':base_path+'media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
 				addLink.insert(addImage);
 				toolbar.insert(addLink);
@@ -119,6 +120,8 @@ function getProjectImages()
 					popupIFrame(base_path+'project/imageManager/{{ id }}',670,400);
 				});
 				$('tab_pictures').insert(toolbar);
+
+
         makePicturesSortable();
 			}
 		});

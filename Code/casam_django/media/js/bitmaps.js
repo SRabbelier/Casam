@@ -121,33 +121,28 @@ function getImageBitmaps(imgid) {
 			{
 				method : 'get',
 				onSuccess : function(transport, json) {
+				
 					var json = transport.responseText.evalJSON();
 					var mainDiv = new Element('div');
 					mainDiv.writeAttribute('id','bitmapsList_'+imgid)
 					mainDiv.addClassName('projectBitmapDiv');
 					
 					var paintoverLink = new Element('a', {
-						'href' : 'javascript:loadEditScreen(\''+pictureJSON.pk+'\')'
-					}).update(' Paintover');
+						'href' : 'javascript:loadEditScreen(\''+json.pk+'\')'
+					}).update('Paintover');
 					mainDiv.insert(paintoverLink);
 					
 					// Add div for tab
 					var tempDiv = new Element('div');
 					tempDiv.insert(mainDiv);
 					
-
 					for ( var i = 0; i < json.length; i++) {
 						mainDiv.insert(addBitmap(json[i].pk, imgid));
 					}
 
-					if ($('bottomDiv' + imgid).childElements().length == 3) {
-						$('bottomDiv' + imgid).childElements()[1]
-								.childElements()[3].innerHTML = mainDiv.innerHTML;
-					} else {
-						var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
-						tab_bitmaps.addClassName('imgSubTabBitmaps');
-						$('bottomDiv' + imgid).insert(tab_bitmaps);
-					}
+					var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
+					tab_bitmaps.addClassName('imgSubTabBitmaps');
+					$('bottomDiv' + imgid).insert(tab_bitmaps);
 				}
 			});
 }
