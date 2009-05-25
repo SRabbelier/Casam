@@ -59,38 +59,38 @@ var AddedImage = Class.create( {
 				measurements[i].setActive();			
 		}
 	},	
-	addSelfToBigImages : function() {
+	addSelfToImages : function(full) {
 		
 		//we need this for the observer and the slider
 		parentAddedImageObject = this;
 		//because of slow servers we need to empty the src
 		this.imageElement.writeAttribute('src', '');
 		this.imageElement.writeAttribute('src', this.getAppropriateSizeURL());
-		this.imageElement.observe('load', function() {
-			//resize the measurements
-			resizeMeasurements(this.id);
-			resizeBigImages();
-		});
-			
-		this.imageElement.observe('click', function() {
-			LoadMMDD('', parentAddedImageObject.id);
-		});
-
+		makeImageObservers(this, full);
+		
 		$('big_images').insert( { bottom : this.imageElement	});
 		
 		//create a slider
 		addSlider($('bottomDiv' + this.id),this);
-	},
-	addMetaDataToSelf : function() {
-		getImageMeasurements(this.id);
-		getImageBitmaps(this.id);
-	},
-	addSelfToImages : function() {
-		$('big_images').insert(this.imageElement);
-		this.addSelfToBigImages();
-		this.addMetaDataToSelf();
 	}
 });
+function makeImageObservers(image, full){
+	image.imageElement.observe('load', function() {
+		//resize the measurements
+		if (full){
+			getImageMeasurements(image.id);
+			getImageBitmaps(image.id);
+		}
+		resizeMeasurements(image.id);
+		
+		resizeBigImages();
+	});
+		
+	image.imageElement.observe('click', function() {
+		LoadMMDD('', image.id);
+	});	
+	
+}
 
 function deleteImage(id) {
 
@@ -108,10 +108,11 @@ function addImage(originalImage) {
 
 function showImage(id, name) {
 	checkAuthenticationAndExecute( function() {
-
+		
 		var newAddedImage = new AddedImage(id, name);
+		$('big_images').insert(this.imageElement);
 		addedImages.splice(0, 0, newAddedImage);
-		newAddedImage.addSelfToImages();
+		newAddedImage.addSelfToImages(true);
 		
 		checkActiveLayer();
 	});
@@ -163,11 +164,9 @@ function reloadImages(full) {
 			$('mainDiv_' + addedImages[i].id).setStyle('border: none;');
 			if ( i >= 1)
 				addedImages[i].makeNonActive();
-			if (full) {
+			if (full) 
 				$('bottomDiv' + addedImages[i].id).update();
-				addedImages[i].addSelfToImages();
-			} else
-				addedImages[i].addSelfToBigImages();
+			addedImages[i].addSelfToImages(full);
 		}
 
 		if (addedImages.length > 0) {
@@ -182,6 +181,7 @@ function reloadImages(full) {
 
 function updateImageList() {
 	checkAuthenticationAndExecute( function() {
+		alert('hier')
 		id_array = Sortable.sequence("pictures");
 		new_list = new Array();
 		for ( var i = 0; i < id_array.length; i++) {
