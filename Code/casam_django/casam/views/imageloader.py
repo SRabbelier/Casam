@@ -13,7 +13,7 @@ from PIL import Image
 from casam.logic import modified_image as modified_image_logic
 from casam.models import OriginalImage
 from casam.models import Bitmap
-from casam.models import ModifiedImage
+#from casam.models import ModifiedImage
 from casam.views import handler
 
 
@@ -105,15 +105,16 @@ class ImageHandler(handler.Handler):
 
     imageRecord = handler.getImageRecord(imageID)
 
-    transformation = self.infix()
-    modim = modified_image_logic.getModifiedImage(imageRecord, transformation)
+    #transformation = self.infix()
+    #modim = modified_image_logic.getModifiedImage(imageRecord, transformation)
 
-    img_name = modim.id + handler.suffix()
+    #img_name = modim.id + handler.suffix()
+    img_name = imageID + self.infix() + handler.suffix() 
     img_path = os.path.join(tempfile.gettempdir(), img_name)
 
     #though the file already exists on the server, save it in temp to make sure it is jpeg
     if not os.path.exists(img_path):
-      location = os.path.join(self.DATA_DIR, imageRecord.id)
+      location = os.path.join(self.DATA_DIR, imageRecord.path)
       im = Image.open(location)
       im = im.convert("RGBA")
 
