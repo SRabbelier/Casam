@@ -4,10 +4,6 @@ var AddedImage = Class.create( {
 		this.name = name;
 		this.opacity = 0.5;
 		this.imageElement = new Element('img');
-		this.imageElement.writeAttribute('src', this.getAppropriateSizeURL());
-		this.imageElement.writeAttribute('id', 'addedImage_' + id);
-		this.imageElement.addClassName('big_image_sibling');
-		this.imageElement.setOpacity(this.opacity);
 
 		// HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
 		this.opacitySliderContainer = new Element('div');
@@ -59,13 +55,19 @@ var AddedImage = Class.create( {
 				measurements[i].setActive();			
 		}
 	},
-	addSelfToImages : function(full) {
+	addSelfToImages: function(full) {
 		
 		// We need this for the observer and the slider
 		parentAddedImageObject = this;
-		// Because of slow servers we need to empty the src
-		this.imageElement.writeAttribute('src', '');
+		this.imageElement.stopObserving();
+		//because of slow servers we need to empty the src
+		this.imageElement = new Element('img');
+		this.imageElement.writeAttribute('id', 'addedImage_' + this.id);
+		this.imageElement.addClassName('big_image_sibling');
+		this.imageElement.setOpacity(this.opacity);
+		
 		this.imageElement.writeAttribute('src', this.getAppropriateSizeURL());
+		console.log('1 keer')
 		makeImageObservers(this, full);
 		
 		$('big_images').insert( { bottom : this.imageElement	});
@@ -76,15 +78,18 @@ var AddedImage = Class.create( {
 	}
 });
 function makeImageObservers(image, full){
+	console.log('huh?!?!?!?!')
 	image.imageElement.observe('load', function() {
 		//resize the measurements
+		console.log(image.imageElement.src)
 		if (full){
 			getImageMeasurements(image.id);
+			console.log('huh')
 			getImageBitmaps(image.id);
 		}
 		resizeMeasurements(image.id);
 		
-		resizeBigImages();
+		//resizeBigImages();
 	});
 		
 	image.imageElement.observe('click', function() {
@@ -109,12 +114,12 @@ function addImage(originalImage) {
 
 function showImage(id, name) {
 	checkAuthenticationAndExecute( function() {
-		
+
 		var newAddedImage = new AddedImage(id, name);
 		$('big_images').insert(this.imageElement);
 		addedImages.splice(0, 0, newAddedImage);
 		newAddedImage.addSelfToImages(true);
-		
+
 		checkActiveLayer();
 	});
 }
@@ -124,15 +129,15 @@ function hideImage(id) {
 
 		if (addedImages[0].id == id)
 			addedImages[0].makeNonActive();
-	
-		// Remove bitmaps
+
+		// Remove checkboxes
+		removeCheckboxes(id);		
+		
+		//remove bitmaps
 		removeBitmaps(id);
 		
 		// Remove measurements
 		removeMeasurements(id);
-		
-		// Remove checkboxes
-		removeCheckboxes(id);
 		
 		// Remove changes
 		removeChanges(id);
@@ -151,8 +156,7 @@ function reloadImages(full) {
 		// .update() clears the contents of the elements
 		$('big_images').update();
 
-		for ( var i = addedImages.length - 1; i >= 0; i--) {
-			$('mainDiv_' + addedImages[i].id).setStyle('border: none;');
+		for ( var i = 0; i < addedImages.length; i++) {
 			if ( i >= 1)
 				addedImages[i].makeNonActive();
 			if (full) 
@@ -161,8 +165,6 @@ function reloadImages(full) {
 		}
 
 		if (addedImages.length > 0) {
-			$('mainDiv_' + addedImages[0].id).setStyle(
-					'border: 1px dashed red;');
 			addedImages[0].makeActive();
 		}
 		makePicturesSortable();
@@ -172,7 +174,6 @@ function reloadImages(full) {
 
 function updateImageList() {
 	checkAuthenticationAndExecute( function() {
-		alert('hier')
 		id_array = Sortable.sequence("pictures");
 		new_list = new Array();
 		for ( var i = 0; i < id_array.length; i++) {
@@ -185,32 +186,9 @@ function updateImageList() {
 		}
 		addedImages = new_list;
 		
-		// reloadImages(false);
 		checkActiveLayer();
 
 	});
-}
-
-function removeMeasurements(imageID){
-	for ( var i = 0; i < measurements.length; i++) {
-		if (measurements[i].imageid == imageID) {
-			if (measurements[i].imageid == addedImages[0].id) {
-				measurements[i].restore();
-			}
-			measurements[i].pinDiv.remove();
-			measurements.splice(i, 1);
-			i = i - 1;
-		}
-	}
-}
-
-function resizeMeasurements(imageID){
-	for(var i = 0; i < checkboxes.length; i++) {
-		if ((checkboxes[i].item.imageid == imageID) && (checkboxes[i].box.checked == true) &&
-		    (checkboxes[i].type == 's')){
-			  	checkboxes[i].item.replace();
-		}
-	}
 }
 
 function removeCheckboxes(imageID){

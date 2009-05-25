@@ -288,7 +288,6 @@ function makeDraggable(measurement, pinDiv, potid, imageid) {
 }
 
 function getImageMeasurements(imgid) {
-	console.log("Image id:"+imgid);
 	var url = base_path + 'JSON/projectImageCurrentMeasurements/' + imgid
 			+ '?time=' + new Date().getTime();
 	new Ajax.Request(url, {
@@ -296,6 +295,7 @@ function getImageMeasurements(imgid) {
 			onSuccess : function(transport, json) {
 				var json = transport.responseText.evalJSON();
 				var mainDiv = new Element('div');
+				mainDiv.writeAttribute('id', 'measurementsList_'+imgid);
 				mainDiv.addClassName('projectPictureDiv');
 
 				//add Div for tab
@@ -435,4 +435,25 @@ function createPotentialMeasurement(potid, potname) {
 	});
 	option.update(potname);
 	$('mmmeting').add(option, null)
+}
+
+function removeMeasurements(imageID){
+	for ( var i = 0; i < measurements.length; i++) {
+		if (measurements[i].imageid == imageID) {
+			if (measurements[i].imageid == addedImages[0].id) {
+				measurements[i].restore();
+			}
+			measurements[i].pinDiv.remove();
+			measurements.splice(i, 1);
+			i = i - 1;
+		}
+	}
+}
+function resizeMeasurements(imageID){
+	for(var i = 0; i < checkboxes.length; i++) {
+		if ((checkboxes[i].item.imageid == imageID) && (checkboxes[i].box.checked == true) &&
+		    (checkboxes[i].type == 's')){
+			  	checkboxes[i].item.replace();
+		}
+	}
 }

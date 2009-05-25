@@ -99,29 +99,16 @@ function reloadBitmaps() {
 	}
 }
 
-function reloadBitmapLists() {
-	for ( var i = 0; i < checkboxes.length; i++) {
-		if ((checkboxes[i].type == 'b')) {
-
-			checkboxes[i].item.resize();
-
-			$('big_images').insert(checkboxes[i].item.bitmap);
-			checkboxes[i].item.bitmap.hide();
-			if (checkboxes[i].checked)
-				checkboxes[i].item.bitmap.show();
-		}
-	}
-}
-
 function getImageBitmaps(imgid) {
 	var url = base_path + 'JSON/projectImageBitmaps/' + imgid + '?time='
 			+ new Date().getTime();
+  console.log('begin'+bitmaps.length)			
 	new Ajax.Request(
 			url,
 			{
 				method : 'get',
 				onSuccess : function(transport, json) {
-				
+					
 					var json = transport.responseText.evalJSON();
 					var mainDiv = new Element('div');
 					mainDiv.writeAttribute('id','bitmapsList_'+imgid)
@@ -135,11 +122,12 @@ function getImageBitmaps(imgid) {
 					// Add div for tab
 					var tempDiv = new Element('div');
 					tempDiv.insert(mainDiv);
-					
 					for ( var i = 0; i < json.length; i++) {
 						mainDiv.insert(addBitmap(json[i].pk, imgid));
 					}
-
+					
+					console.log('end'+bitmaps.length)
+					
 					var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
 					tab_bitmaps.addClassName('imgSubTabBitmaps');
 					$('bottomDiv' + imgid).insert(tab_bitmaps);
