@@ -402,7 +402,7 @@ function watchSaveButton(item) {
 	});
 }
 
-function createPotentialMeasurement(potid, potname) {
+function createPotentialMeasurement(potid, pottype, potname) {
 	var pmmContainerDiv = new Element('div', {
 		'id' : 'potmeas_' + potid
 	});
@@ -417,15 +417,8 @@ function createPotentialMeasurement(potid, potname) {
 
 	var pmmTextDiv = new Element('div', {
 		'class' : 'mmText'
-	}).update(potname);
+	}).update(potname+', '+pottype);
 	pmmContainerDiv.insert(pmmTextDiv);
-
-	var pmmDeleteIMG = new Element('img', {
-		'src' : base_path + 'media/img/delete.gif',
-		'id' : ('mmDel' + potid)
-	});
-	pmmDeleteIMG.addClassName('pmmDelete');
-	//pmmContainerDiv.insert(pmmDeleteIMG);
 
 	$('possiblemeasurements').insert(pmmContainerDiv);
 

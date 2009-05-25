@@ -1,0 +1,28 @@
+{% extends 'popup.html' %}
+
+{% block title %}Nieuw potential measurement type{% endblock title %}
+
+{% block head %}
+<script type="text/javascript">
+  document.observe('dom:loaded',function(){                                          
+    var closeButton = new Element('input',{'type':'button','value':'Close measurement type manager'});
+    $('closeContainer').insert(closeButton);
+    closeButton.observe('click',function(){
+      parent.closePopupAndReloadPotentialMeasurements('');
+    });
+  });
+  
+</script>
+{% endblock head %}
+
+{% block body%}
+
+<form enctype="multipart/form-data" method="post">
+<table>
+{{ form }}
+<tr><td><input type="submit" value="save" /></td></tr>
+</table>
+</form>
+<div id='closeContainer'>
+</div>
+{% endblock body %}

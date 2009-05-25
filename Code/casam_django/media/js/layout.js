@@ -217,7 +217,8 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 		closePopup();
 	else {
 		measObject = meas.evalJSON()[0];
-		createPotentialMeasurement(measObject.pk, measObject.fields.name);
+		typeObject = meas.evalJSON()[1];
+		createPotentialMeasurement(measObject.pk, typeObject.fields.name, measObject.fields.name);
 		new Effect.Highlight('potmeas_' + measObject.pk);
 		closePopup();
 	}

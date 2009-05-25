@@ -67,7 +67,6 @@ var AddedImage = Class.create( {
 		this.imageElement.setOpacity(this.opacity);
 		
 		this.imageElement.writeAttribute('src', this.getAppropriateSizeURL());
-		console.log('1 keer')
 		makeImageObservers(this, full);
 		
 		$('big_images').insert( { bottom : this.imageElement	});
@@ -78,13 +77,10 @@ var AddedImage = Class.create( {
 	}
 });
 function makeImageObservers(image, full){
-	console.log('huh?!?!?!?!')
 	image.imageElement.observe('load', function() {
 		//resize the measurements
-		console.log(image.imageElement.src)
 		if (full){
 			getImageMeasurements(image.id);
-			console.log('huh')
 			getImageBitmaps(image.id);
 		}
 		resizeMeasurements(image.id);

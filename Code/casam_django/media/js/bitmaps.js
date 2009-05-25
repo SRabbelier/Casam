@@ -103,7 +103,6 @@ function reloadBitmaps() {
 function getImageBitmaps(imgid) {
 	var url = base_path + 'JSON/projectImageBitmaps/' + imgid + '?time='
 			+ new Date().getTime();
-  console.log('begin'+bitmaps.length)			
 	new Ajax.Request(
 			url,
 			{
@@ -126,8 +125,6 @@ function getImageBitmaps(imgid) {
 					for ( var i = 0; i < json.length; i++) {
 						mainDiv.insert(addBitmap(json[i].pk, imgid));
 					}
-					
-					console.log('end'+bitmaps.length)
 					
 					var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
 					tab_bitmaps.addClassName('imgSubTabBitmaps');
