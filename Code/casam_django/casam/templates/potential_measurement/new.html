@@ -7,7 +7,7 @@
   document.observe('dom:loaded',function(){                                          
     getProjectPotentialMeasurements();
     Element.observe('undoLink','click',function(){
-      var potentialMeasurements = $('potentialMeasurements').childElements();
+      var potentialMeasurements = $$('div.deletePotMeasDiv');
       var deletePMs = new Array();
       for(var i = 0; i < potentialMeasurements.length; i++){
         if (potentialMeasurements[i].childElements()[1].checked == true)
@@ -27,65 +27,78 @@
   });
   
   function getProjectPotentialMeasurements(){
-    $('potentialMeasurements').innerHTML = parent.$('possiblemeasurements').innerHTML;
-    var potentialMeasurements = $('potentialMeasurements').childElements();
-    potentialMeasurements.each(function(item){
-      item.childElements()[0].remove();
-      label = new Element('label', {'for': 'dp'+item.id.slice(8)});
-      label.update(item.childElements()[0].innerHTML);
-      item.childElements()[0].remove();
-      checkbox = new Element('input', {'type': 'checkbox',
-                                       'name':item.id.slice(8), 
-                                       'id': 'dp'+item.id.slice(8)
-                                       });
-      item.insert(label);
-      item.insert(checkbox);                                          
-    });
+    
+    var pottype_array = parent.$$('div.potSubTabType');
+    for(var i = 0; i < pottype_array.length; i++){
+      var potmeas_array = pottype_array[i].childElements()[2].childElements();
+      var typeDiv = new Element('div');
+      var typeName = new Element('span');
+      typeName.update(pottype_array[i].down(0).down(2).innerHTML);
+      typeDiv.insert(typeName);
+      for(var j = 0; j < potmeas_array.length; j++){
+        var measDiv = new Element('div');
+        measDiv.addClassName('deletePotMeasDiv');
+        var label = new Element('label', {'for': 'dp'+potmeas_array[j].id.slice(8)});
+        label.update(potmeas_array[j].childElements()[1].innerHTML);
+        var checkbox = new Element('input', {'type': 'checkbox',
+                                             'name':potmeas_array[j].id.slice(8), 
+                                             'id': 'dp'+potmeas_array[j].id.slice(8)
+                                             });
+        measDiv.insert(label);
+        measDiv.insert(checkbox);
+        typeDiv.insert(measDiv);
+      }
+      $('potentialMeasurements').insert(typeDiv);  
+    }
+    
+      
   }
   
   function deleteMeasurement(containerDiv){
     var url = '{{ BASE_PATH }}AJaX/deletePotentialMeasurement/?time='+new Date().getTime();
     new Ajax.Request(url, {
         method: 'get',
-        parameters: {'potID': containerDiv.id.slice(8)},
+        parameters: {'potID': containerDiv.childElements()[1].name},
         onSuccess: function(transport, json) {
           containerDiv.remove();
           //DELETE CURRENT MEASUREMENTS
           var measurements = parent.measurements;
           for(var j = 0; j < measurements.length; j++){
-            if (measurements[j].potid == containerDiv.id.slice(8)){
+            if (measurements[j].potid == containerDiv.childElements()[1].name){
               measurements[j].erase();
               parent.measurements.splice(j,1);
               j = j - 1;
             }                                             
           }
           //DELETE POTENTIAL MEASUREMENTS
-          var parentPotentialMeasurements = parent.$('possiblemeasurements').childElements();
+          var parentPotentialMeasurements = parent.$$('div.potMeasDiv');
           for(var i = 0; i < parentPotentialMeasurements.length; i++){
-            if (parentPotentialMeasurements[i].id.slice(8) == containerDiv.id.slice(8))
-              Effect.Fade(parentPotentialMeasurements[i]);                                                            
+            if (parentPotentialMeasurements[i].id.slice(8) == containerDiv.childElements()[1].name){
+              Effect.Fade(parentPotentialMeasurements[i]);
+              parentPotentialMeasurements[i].remove();
+            }                  
           }
           //REMOVE TEXT OF CURRENT MEASUREMENTS
-          var currentMeasurementText = Element.select(parent.$('pictures'),'div[id=potidMeasDiv_'+containerDiv.id.slice(8)+']');
+          var currentMeasurementText = Element.select(parent.$('pictures'),'div[id=potidMeasDiv_'+containerDiv.childElements()[1].name+']');
           for(var j = 0; j < currentMeasurementText.length; j++){
             currentMeasurementText[j].remove();              
           }
           //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
           var changes = parent.changes;
           for(var i = 0; i < changes.length; i++){
-            if (changes[i].potid == containerDiv.id.slice(8)){
+            if (changes[i].potid == containerDiv.childElements()[1].name){
               changes[i].erase();
               parent.changes.splice(i,1);
               i = i - 1;
             }
           }
           //TODO: REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
-          parent.$('option'+containerDiv.id.slice(8)).remove();
+          parent.$('option'+containerDiv.childElements()[1].name).remove();
           //CLOSE POPUP
           parent.closePopupAndReloadPotentialMeasurements('')
         },
         onFailure:function(){
-          alert('Something went wrong while deleting potential measurement '+containerDiv.childElements().innerHTML);
+          alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
         }
     });                             
   }
