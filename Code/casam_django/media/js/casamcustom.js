@@ -33,8 +33,18 @@ Element.addMethods({
 
 function popupIFrame(url,width,height){
 	checkAuthenticationAndExecute(function(){
-		if(!width)width=500;
-		if(!height)height=300;
+		if(!popupActive){
+			$('popup_overlay').hide();
+			$('popup_overlay').setWidth(document.viewport.getWidth());
+			$('popup_overlay').setHeight(document.viewport.getHeight());
+			$('popup_overlay').setStyle({
+				zIndex:9998
+			});
+			new Effect.Appear('popup_overlay',{to:0.8});
+		}
+		popupActive = true;
+		if(!width)width=300;
+		if(!height)height=200;
 		
 		var iF = new Element('iframe', {'src':url});
 		$('popup').update(iF);
@@ -46,6 +56,8 @@ function popupIFrame(url,width,height){
 			top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
 			left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
 			});
+		
+
 	});
 	
 }
@@ -67,8 +79,29 @@ function closePopup(){
 		top:'0px',
 		left:'0px'
 		});
+	new Effect.Fade('popup_overlay',{afterFinish:
+		function(){
+			$('popup_overlay').setWidth(0);
+			$('popup_overlay').setHeight(0);	
+			$('popup_overlay').setStyle({
+				zIndex:0
+			});
+			popupActive = false;
+		}
+	});
 
 }
+
+Event.observe(window,'resize',function(){
+	if(popupActive){
+		$('popup_overlay').setWidth(document.viewport.getWidth());
+		$('popup_overlay').setHeight(document.viewport.getHeight());
+		$('popup').setStyle({
+			top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
+			left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
+			});
+	}
+});
 
 
 

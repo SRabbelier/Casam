@@ -93,14 +93,20 @@ function getProjectImages()
 	}
 }
 
-	document.observe('dom:loaded',function(){
+		document.observe('dom:loaded',function(){
 			getProjectImages();
 			var closeButton = new Element('input',{'type':'button','value':'Close image manager'});
 			$('closeContainer').insert(closeButton);
 			closeButton.observe('click',function(){
 				parent.closePopup();
 			});
-		});
+			});	
+		parent.changePopupDimensions(670,400);
+		
+		//Blackout the standard popup loader which gives the wrong size
+		{% block customJSLoad %}
+
+		{% endblock customJSLoad %}
 </script>
 {%endblock head%}
 {% block body %}

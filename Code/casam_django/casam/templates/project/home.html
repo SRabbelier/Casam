@@ -99,7 +99,6 @@ document.observe("dom:loaded", function()
 {% endblock head %}
 
 {% block body %}
-<div id="popup"></div>
 <div id="leftFrame" class="whiteFrame_container"
 	style="float: left; position: absolute; top: 105px; left: 5px;">
 
@@ -176,9 +175,9 @@ document.observe("dom:loaded", function()
 <div id="tab_pictures" class="tabContent"></div>
 <div id="tab_papers" class="tabContent"></div>
 <div id="tab_measurements" class="tabContent">
-  <a id="editMeasurementLink" style="float: right; clear: both;" target="_blank" href="#">
+  <a id="editMeasurementLink" style="float: right; clear: both;" href="#">
   <img src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
-  <a id="editMeasurementTypeLink" style="float: right; clear: both;" target="_blank" href="#">
+  <a id="editMeasurementTypeLink" style="float: right; clear: both;" href="#">
   <img src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
 <div id="possiblemeasurements"></div>
 </div>
