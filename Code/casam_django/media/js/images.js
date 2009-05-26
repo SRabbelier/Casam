@@ -50,9 +50,16 @@ var AddedImage = Class.create( {
 		$('zoomImage').writeAttribute('src', base_path + 'imageLoader/byRatio/original/150/' + this.id);
 		$('zoomImage').show();
 		
+		// Add to bottom of big_images, so that it shows as the active layer
 		this.imageElement.remove();
 		$('big_images').insert( { bottom : this.imageElement	});
-																							
+		
+		// Restore potential measurement pins
+		var mm_array = $$('img.mmPointer')
+		for(var i = 0; i < mm_array.length; i++){
+			mm_array[i].show();
+		}
+																									
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id)
 				measurements[i].setActive();			
@@ -218,6 +225,7 @@ function removeImage(imageID){
 	Element.remove($('addedImage_'+imageID))
 	
 	$('bottomDiv' + imageID).update();
+	$('sliderDiv' + imageID).update();
 }
 
 function checkActiveLayer(){

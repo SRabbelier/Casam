@@ -76,7 +76,7 @@ var Measurement = Class.create( {
 	},
 	erase : function() {
 		this.nonActive(); //to destroy draggable
-	this.pinDiv.remove(); //remove the whole pin
+		this.pinDiv.remove(); //remove the whole pin
 	}
 });
 
@@ -434,12 +434,14 @@ function createPotentialMeasurement(potid, pottype, potname) {
 	pmmContainerDiv.insert(pmmTextDiv);
 
 	$('typesList'+pottype).insert(pmmContainerDiv);
+	
+	var typename = $('typesList'+pottype).up().down('b').innerHTML;
 
 	var option = new Element('option', {
 		'id' : 'option' + potid,
 		'value' : potid
 	});
-	option.update(potname);
+	option.update(potname+' ( '+typename+' )');
 	$('mmmeting').add(option, null)
 }
 
