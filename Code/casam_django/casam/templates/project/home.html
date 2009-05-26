@@ -86,9 +86,9 @@ document.observe("dom:loaded", function()
     Event.observe('editMeasurementTypeLink', 'click', function(){
 			popupIFrame(base_path+'pmt/new/{{ id }}', 350, 150);
 		});
-	    Event.observe('undoLink','click',function(){
-	    	undoLastChange();
-	    });
+    Event.observe('undoLink','click',function(){
+    	undoLastChange();
+    });
 	});
 });
 
