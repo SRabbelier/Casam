@@ -44,7 +44,7 @@ class NewPotentialMeasurement(handler.Handler):
     if potmeas == None:
       context['potmeas'] = ''
     else:
-      context['potmeas'] = serializers.serialize("json",[potmeas]+[potmeas.type])
+      context['potmeas'] = serializers.serialize("json",[potmeas])
     content = loader.render_to_string('potential_measurement/success.html', dictionary=context)
     return http.HttpResponse(content)
 
@@ -80,7 +80,7 @@ class NewPotentialMeasurementType(handler.Handler):
       context['potmeastype'] = ''
     else:
       context['potmeastype'] = serializers.serialize("json",[potmeastype])    
-    content = loader.render_to_string('potential_measurement/success.html', dictionary=context)
+    content = loader.render_to_string('potential_measurement/success_type.html', dictionary=context)
     return http.HttpResponse(content)
     
   def get(self):

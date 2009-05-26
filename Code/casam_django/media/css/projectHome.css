@@ -110,11 +110,6 @@ img.mmPointer{
   position: relative;
 }
 
-img.pmmDelete{
-	float: right;
-	margin-right: 10px;
-}
-
 .pintooltip{
   padding: 5px;
   background-color: #eee; 
@@ -132,6 +127,16 @@ div.mmText{
 }
 
 .imgSubTabMeasurements{
+}
+
+.potSubTabType{
+	margin-left: 15px;
+	margin-right: 18px;
+}
+
+.potMeasDiv{
+  display: block;
+  clear:both;
 }
 
 div.unsavedChangeDiv{

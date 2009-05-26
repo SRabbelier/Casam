@@ -402,6 +402,19 @@ function watchSaveButton(item) {
 	});
 }
 
+function createPotentialMeasurementType(typeid, typename){
+	var mainDiv = new Element('div', {'id': 'typesList'+typeid});
+	mainDiv.addClassName('projectPotentialTypeDiv');
+
+	//add temp div for tab creation	
+	var container = new Element('div');
+	container.insert(mainDiv);
+
+	var tab_potentialtypes = newTab(typename, mainDiv, true);
+	tab_potentialtypes.addClassName('potSubTabType');
+	$('possiblemeasurements').insert(tab_potentialtypes);		
+}
+
 function createPotentialMeasurement(potid, pottype, potname) {
 	var pmmContainerDiv = new Element('div', {
 		'id' : 'potmeas_' + potid
@@ -417,10 +430,10 @@ function createPotentialMeasurement(potid, pottype, potname) {
 
 	var pmmTextDiv = new Element('div', {
 		'class' : 'mmText'
-	}).update(potname+', '+pottype);
+	}).update(potname);
 	pmmContainerDiv.insert(pmmTextDiv);
 
-	$('possiblemeasurements').insert(pmmContainerDiv);
+	$('typesList'+pottype).insert(pmmContainerDiv);
 
 	var option = new Element('option', {
 		'id' : 'option' + potid,

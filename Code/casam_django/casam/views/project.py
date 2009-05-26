@@ -12,6 +12,7 @@ from casam.models import Annotation
 from casam.models import OriginalImage
 from casam.models import Project
 from casam.models import PotentialMeasurement
+from casam.models import PotentialMeasurementType
 from casam.models import Measurement
 from casam.models import Tag
 from casam.models import Bitmap
@@ -114,11 +115,9 @@ def projectTagsJSON(request,id_str):
   return http.HttpResponse(data, mimetype="application/javascript")
 
 def projectPotentialMeasurementsJSON(request,id_str):
-  mmetings = list(PotentialMeasurement.objects.select_related().filter(project__id=id_str))
-  mm = list()
-  for m in mmetings:
-    mm = mm + [m] + [m.type]
-  data = serializers.serialize("json", mm)
+  mmetings = list(PotentialMeasurement.objects.select_related().filter(project__id=id_str).order_by('type__name'))
+  mtypes = list(PotentialMeasurementType.objects.filter(project__id=id_str))
+  data = serializers.serialize("json", mtypes+mmetings)
   return http.HttpResponse(data, mimetype="application/javascript")
 
 def projectImageCurrentMeasurementsJSON(request, id_str):

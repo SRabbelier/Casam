@@ -106,6 +106,7 @@ function deleteImage(id) {
 
 function addImage(originalImage) {
 	var container = makePictureContainer(originalImage.evalJSON()[0]);
+	makePicturesSortable();
 }
 
 function showImage(id, name) {

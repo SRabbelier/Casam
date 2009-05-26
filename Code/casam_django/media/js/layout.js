@@ -217,9 +217,16 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 		closePopup();
 	else {
 		measObject = meas.evalJSON()[0];
-		typeObject = meas.evalJSON()[1];
-		createPotentialMeasurement(measObject.pk, typeObject.fields.name, measObject.fields.name);
+		createPotentialMeasurement(measObject.pk, measObject.fields.type, measObject.fields.name);
 		new Effect.Highlight('potmeas_' + measObject.pk);
+		closePopup();
+	}
+}
+
+function closePopupAndReloadPotentialMeasurementTypes(pottype){
+	if (pottype == '')
+		closePopup();
+	else{
 		closePopup();
 	}
 }
