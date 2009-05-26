@@ -44,21 +44,24 @@ var AddedImage = Class.create( {
 		$('zoomImage').hide();
 	},
 	makeActive: function(){
-		console.log('before error?');
-		console.log(this.name);
 		$('mainDiv_' + this.id).setStyle({border: '1px red dashed',
 																			backgroundColor: '#ffdddd'});
-		console.log('bla');
+
 		// Zoom image
 		$('zoomImage').writeAttribute('src', base_path + 'imageLoader/byRatio/original/150/' + this.id);
 		$('zoomImage').show();
-		console.log('bladie');
+
 		if(this.imageElement.parentNode){
 			this.imageElement.remove();
 		}
-		console.log('before insert');
 		$('big_images').insert( { bottom : this.imageElement	});
-		console.log('after insert');
+
+		// Restore potential measurement pins
+		var mm_array = $$('img.mmPointer')
+		for(var i = 0; i < mm_array.length; i++){
+			mm_array[i].show();
+		}
+
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id)
 				measurements[i].setActive();			
