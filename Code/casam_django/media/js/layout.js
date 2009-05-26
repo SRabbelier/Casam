@@ -264,7 +264,7 @@ function addMeasuermentsToPictureContainer(imgid, measurementJSON_array) {
 	var tab_measurements = newTab('Measurements', mainDiv, true);
 	tab_measurements.id = 'measurementsDiv_'+imgid;
 	tab_measurements.addClassName('imgSubTabMeasurements');
-	$('bottomDiv_' + imgid).insert(tab_measurements);	
+	$('bottomDiv_' + imgid).insert({ top: tab_measurements });	
 }
 
 function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
@@ -292,7 +292,7 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 	var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
 	tab_bitmaps.id = 'bitmapsDiv_'+imgid;
 	tab_bitmaps.addClassName('imgSubTabBitmaps');
-	$('bottomDiv_' + imgid).insert(tab_bitmaps);
+	$('bottomDiv_' + imgid).insert({ bottom: tab_bitmaps });
 }
 
 function closePopupAndReloadPictures() {
