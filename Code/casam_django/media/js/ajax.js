@@ -96,10 +96,14 @@ function getProjectPotentialMeasurements()
       var json = transport.responseText.evalJSON();
 
       $('possiblemeasurements').update();
-
       // Create a picture container for each picture
-      for(i=0; i < json.length; i=i + 2){
-        createPotentialMeasurement(json[i].pk, json[i+1].fields.name, json[i].fields.name)
+      for(i=0; i < json.length; i++){
+      	if (json[i].model == 'casam.potentialmeasurementtype'){
+      		createPotentialMeasurementType(json[i].pk, json[i].fields.name);
+      	}
+      	else{
+        	createPotentialMeasurement(json[i].pk, json[i].fields.type, json[i].fields.name)
+      	}
       }
     }
   });
