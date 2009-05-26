@@ -174,8 +174,8 @@ function saveLandMark(mx, my, potid, imgid) {
 									mousey / measurement.piecey);
 							measurement.place();
 							var currentMeasurements = $(
-									'measurementsList_' + measurement.imageid)
-									.childElements();//[1].childElements()[2].childElements();
+									'measurementsList_' + measurement.imageid).childElements();
+
 							for ( var i = 0; i < currentMeasurements.length; i++) {
 								if (currentMeasurements[i].childElements()[0].name == measurement.id) {
 									currentMeasurements[i].childElements()[1]

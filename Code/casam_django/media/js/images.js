@@ -8,7 +8,7 @@ var AddedImage = Class.create( {
 		// HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
 		this.opacitySliderContainer = new Element('div');
 		this.opacitySliderContainer.setHeight(3);
-		this.opacitySliderContainer.setWidth(120);
+		this.opacitySliderContainer.setWidth(100);
 		this.opacitySliderContainer.writeAttribute('id',
 				'opacitySliderContainer_' + this.id);
 		this.opacitySliderContainer.addClassName('slider');
@@ -256,10 +256,7 @@ function checkActiveLayer(){
 		}
 		
 		id_array.splice(0, 0, temp);
-
-
 		Sortable.setSequence("pictures", id_array);
-
 	}
 	else{
 		$('zoomImage').hide();
