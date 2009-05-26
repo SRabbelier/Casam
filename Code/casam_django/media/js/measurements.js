@@ -111,9 +111,7 @@ function saveLandMark(mx, my, potid, imgid) {
 	savex = mousex * 1 + viewportOffset.left * 1;
 	savey = mousey * 1 + viewportOffset.top * 1;
 	
-	if (potid == undefined){
-		mm.replace(/\s\(\s\w*\s\)/,"");
-	}
+	var lmname = $('mmmeting').options[$('mmmeting').selectedIndex].text.replace(/\s\(\s\w*\s\)/,"");
 
 	var c = '';
 	var measurement = null;
@@ -130,14 +128,12 @@ function saveLandMark(mx, my, potid, imgid) {
 		}
 		;
 		if (found) {
-			c = new Change('r', mm,
-					$('mmmeting').options[$('mmmeting').selectedIndex].text);
+			c = new Change('r', mm, lmname);
 			c.position(Math.round(measurement.left), Math
 					.round(measurement.top));
 			c.reposition(measurement.id, mousex, mousey);
 		} else {
-			c = new Change('p', mm,
-					$('mmmeting').options[$('mmmeting').selectedIndex].text);
+			c = new Change('p', mm, lmname);
 			c.position(mousex, mousey);
 		}
 		c.add();
