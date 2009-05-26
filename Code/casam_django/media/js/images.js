@@ -49,6 +49,9 @@ var AddedImage = Class.create( {
 		// Zoom image
 		$('zoomImage').writeAttribute('src', base_path + 'imageLoader/byRatio/original/150/' + this.id);
 		$('zoomImage').show();
+		
+		this.imageElement.remove();
+		$('big_images').insert( { bottom : this.imageElement	});
 																							
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id)
@@ -236,7 +239,7 @@ function checkActiveLayer(){
 			}
 		}
 		id_array.splice(0, 0, temp);
-		Sortable.setSequence("pictures", id_array);	
+		Sortable.setSequence("pictures", id_array);
 	}
 	else{
 		$('zoomImage').hide();
