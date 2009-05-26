@@ -2,7 +2,7 @@ var AddedImage = Class.create( {
 	initialize : function(id, name) {
 		this.id = id;
 		this.name = name;
-		this.opacity = 0.5;
+		this.opacity = 1;
 		this.imageElement = new Element('img');
 
 		// HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
@@ -81,13 +81,16 @@ var AddedImage = Class.create( {
 		$('big_images').insert( { bottom : this.imageElement	});
 		
 		// Create a slider
-		$('sliderDiv' + this.id).update();
-		addSlider($('sliderDiv' + this.id),this);
+		$('sliderDiv_' + this.id).update();
+		addSlider($('sliderDiv_' + this.id),this);
 	}
 });
+
+// Do this when the image is fully loaded
 function makeImageObservers(image, full){
 	image.imageElement.observe('load', function() {
-		// Resize the measurements
+	
+		// Resize the measurements and load them in the tabs
 		if (full){
 			getImageMeasurements(image.id);
 			getImageBitmaps(image.id);
@@ -223,7 +226,8 @@ function removeImage(imageID){
 	}
 	Element.remove($('addedImage_'+imageID))
 	
-	$('bottomDiv' + imageID).update();
+	$('sliderDiv_' + imageID).update();
+	$('bottomDiv_' + imageID).update();
 }
 
 function checkActiveLayer(){
@@ -264,6 +268,7 @@ function checkActiveLayer(){
 }
 
 function addSlider(div, object){
+	div.update();
 	div.insert( { top : object.opacitySliderContainer });
 	new Control.Slider(
 		object.opacitySliderHandle,
