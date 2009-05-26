@@ -174,7 +174,7 @@ function saveLandMark(mx, my, potid, imgid) {
 									mousey / measurement.piecey);
 							measurement.place();
 							var currentMeasurements = $(
-									'bottomDiv' + measurement.imageid)
+									'bottomDiv_' + measurement.imageid)
 									.childElements()[1].childElements()[2]
 									.childElements();
 							for ( var i = 0; i < currentMeasurements.length; i++) {
@@ -193,7 +193,7 @@ function saveLandMark(mx, my, potid, imgid) {
 							var json = transport.responseText.evalJSON();
 							//json[i] = meting
 							//getMainDiv to do mainDiv.insert
-							var mainDiv = $('bottomDiv' + json[0].fields.image)
+							var mainDiv = $('bottomDiv_' + json[0].fields.image)
 									.childElements()[1].childElements()[2];
 							mainDiv.insert(createMeasurement(c.lmname,
 									mousex, mousey, json[0].pk, mm, json[0].fields.image,

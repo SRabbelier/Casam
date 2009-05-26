@@ -14,7 +14,7 @@
 <!-- Defining global variables -->
 <script type="text/javascript">
 	var base_path = "{{ BASE_PATH }}";
-	var projectID = "{{id}}"
+	var projectID = "{{ id }}";
 	var flashpainting = false;
 	var addedImages = new Array();
   var total_images = 0;
@@ -34,158 +34,68 @@
 <!-- Core object functions -->
 <script src="{{ BASE_PATH }}media/js/images.js" type="text/javascript"></script>
 <script src="{{ BASE_PATH }}media/js/bitmaps.js" type="text/javascript"></script>
-<script src="{{ BASE_PATH }}media/js/measurements.js"	type="text/javascript"></script>
+<script src="{{ BASE_PATH }}media/js/measurements.js" type="text/javascript"></script>
 <script src="{{ BASE_PATH }}media/js/undo.js" type="text/javascript"></script>
 <script src="{{ BASE_PATH }}media/js/states.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
 // What to do on load
-	  document.observe("dom:loaded", function()
-		{
-		  checkAuthenticationAndExecute(function(){
-				  
-	      // Add tabs in whiteFrame
-	      $('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true));
-	      $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
-	      
-	      $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
-	      $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
-	      $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
-	      $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
-	      $('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true));
-	      $('rightFrame_content').insert(newTab('States', $('tab_states'), true));
-	      $('zoomImage').hide();
-	
-			  // Add mouse listener for image
-	      Event.observe('big_images','mousemove', getMouseXY);
-	
-				// Load images
-				getProjectImages();
-	
-				// Load tags
-				getProjectTags();
-	
-				// Load potential measurements
-				getProjectPotentialMeasurements();
-				 
-				
-				// Make draggable's for each Measurement
-	
-				new Draggable('lmdd');
-	
-				resizeScreenElements(true);
-				Event.observe(window,'resize',function(){
-					resizeScreenElements(false);
-				});
-				Event.observe('editTagsLink','click',function(){
-					popupIFrame(base_path+'tag/select/{{ id }}',350,150);
-				});
-				Event.observe('editMeasurementLink','click',function(){
-	        popupIFrame(base_path+'pm/new/{{ id }}',350,150);
-	      });
-	      Event.observe('editMeasurementTypeLink', 'click', function(){
-				  popupIFrame(base_path+'pmt/new/{{ id }}', 350, 150);
-				});
-	      Event.observe('undoLink','click',function(){
-	        undoLastChange();
-	      });
-		  });
-		});
-
-// Load content (for some reason this can't be put in an outside js-file)
-function getProjectImages(afterFinishFunction)
-{
-	checkAuthenticationAndExecute(function(afterFinishFunction){
-				
-		var url = base_path+'JSON/projectImages/{{id}}?time='+new Date().getTime();
-		// notice the use of a proxy to circumvent the Same Origin Policy
-		new Ajax.Request(url, {
-		  method: 'get',
-		  onSuccess: function(transport, json) {
-			  
-		    var json = transport.responseText.evalJSON();
-		    
-		    //$('pictureContainerHeader').update('Pictures('+json.length+')');
-		     
-		    $('tab_pictures').update();
-		    $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
-		    
-		    // Create a picture container for each picture
-		    for(i=0; i < json.length; i++)
-					makePictureContainer(json[i]);
-
-				// Put bar in Pictures
-				var toolbar = new Element('div');
-				toolbar.setStyle("clear:both;float:right;");
-				var addLink = new Element('a',{'href':'#'});
-				var addImage = new Element('img',{'src':base_path+'media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
-				addLink.insert(addImage);
-				toolbar.insert(addLink);
-				Event.observe(addLink,'click',function(){
-					popupIFrame(base_path+'project/imageManager/{{ id }}',670,400);
-				});
-				$('tab_pictures').insert(toolbar);
-
-
-        makePicturesSortable();
-        if(afterFinishFunction)
-            afterFinishFunction();
-			}
-		});
-	});
-}
-
-function getProjectTags()
-{
-	checkAuthenticationAndExecute(function(){
-			
-		var url = base_path+'JSON/projectTags/{{id}}?time='+new Date().getTime();
-		new Ajax.Request(url, {
-		  method: 'get',
-		  onSuccess: function(transport, json) {
-			  
-		    var json = transport.responseText.evalJSON();
-		    			     
-		    $('tags').update();
-		     
-		    // Create a picture container for each picture
-		    for(i=0; i < json.length; i++)
-					$('tags').insert(new Element('p').update(json[i].fields.name));
-			}
-		});
-	});
-}
-
-function getProjectPotentialMeasurements()
+document.observe("dom:loaded", function()
 {
   checkAuthenticationAndExecute(function(){
-      
-  var url = base_path+'JSON/projectPotentialMeasurements/{{id}}?time='+new Date().getTime();
-  new Ajax.Request(url, {
-    method: 'get',
-    onSuccess: function(transport, json) {
+		
+     // Add tabs in whiteFrame
+     $('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true));
+     $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
+     
+     $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
+     $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
+     $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
+     $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
+     $('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true));
+     $('rightFrame_content').insert(newTab('States', $('tab_states'), true));
+	 $('zoomImage').hide();
 
-      var json = transport.responseText.evalJSON();
+	  // Add mouse listener for image
+     Event.observe('big_images','mousemove', getMouseXY);
 
-      $('possiblemeasurements').update();
-      
-      for(var i = 0; i < json.length; i++){
-				if(json[i].model == 'casam.potentialmeasurementtype'){
-				  createPotentialMeasurementType(json[i].pk, json[i].fields.name);
-				}
-				else
-				  createPotentialMeasurement(json[i].pk, json[i].fields.type, json[i].fields.name);
-																			 
-			}
-    }
-  });
-  });
-}
+		// Load images
+		getProjectImages();
 
-  </script>
+		// Load tags
+		getProjectTags();
 
-{% endblock head %} {% block body %}
+		// Load potential measurements
+		getProjectPotentialMeasurements();
+		 
+		
+		// Make draggable's for each Measurement
+		new Draggable('lmdd');
+
+		resizeScreenElements(true);
+		Event.observe(window,'resize',function(){
+			resizeScreenElements(false);
+		});
+		Event.observe('editTagsLink','click',function(){
+			popupIFrame(base_path+'tag/select/{{ id }}',350,150);
+		});
+		Event.observe('editMeasurementLink','click',function(){
+	        popupIFrame(base_path+'pm/new/{{ id }}',350,150);
+	    });
+	    Event.observe('editMeasurementTypeLink', 'click', function(){
+			popupIFrame(base_path+'pmt/new/{{ id }}', 350, 150);
+		});
+	    Event.observe('undoLink','click',function(){
+	    	undoLastChange();
+	    });
+	});
+});
+
+</script>
+{% endblock head %}
+
+{% block body %}
 <div id="popup"></div>
 <div id="leftFrame" class="whiteFrame_container"
 	style="float: left; position: absolute; top: 105px; left: 5px;">
@@ -269,10 +179,9 @@ function getProjectPotentialMeasurements()
 <div id="tab_measurements" class="tabContent"><a
 	id="editMeasurementLink" style="float: right; clear: both;"
 	target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg"
-	style="border: 0px;" /></a>
-	<a id="editMeasurementTypeLink" style="float: right; clear: both;"
-	target="_blank"><img src="{{BASE_PATH}}media/img/pencil.jpg"
-	style="border: 0px;" /></a>
+	style="border: 0px;" /></a> <a id="editMeasurementTypeLink"
+	style="float: right; clear: both;" target="_blank"><img
+	src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
 <div id="possiblemeasurements"></div>
 </div>
 <div id="tab_tags" class="tabContent"><a href="#"

@@ -1,3 +1,35 @@
+var Check = Class.create( {
+	initialize : function(type, name, checkbox, item) {
+		//type: s (show) is for measurements, u (use) is for pictures, b (bitmap) is for bitmaps
+	this.type = type;
+
+	if (this.type == 's')
+		this.defaultValue = true;
+	else
+		this.defaultValue = false;
+
+	this.id = name;
+	this.box = checkbox;
+	this.oldValue = '';
+	this.item = item;
+	this.checked = this.defaultValue;
+},
+update : function(newValue) {
+	this.oldValue = this.checked;
+	this.checked = newValue;
+},
+setDefault : function() {
+	this.box.defaultChecked = this.defaultValue;
+},
+watch : function() {
+	watchBox(this);
+},
+repair : function() {
+	if (this.checked == true)
+		this.box.checked = true;
+}
+});
+
 function resizeScreenElements(firsttime) {
 	checkAuthenticationAndExecute( function() {
 		// big_images need to be resized again when the images are
@@ -25,11 +57,11 @@ function newTab(tab_title, content, open) {
 	var tabHeader = new Element('div');
 	var tabLine = new Element('div');
 	if (Object.isElement(content)) {
-		content.parentNode.removeChild(content);
+		if(content.parentNode != null)
+			content.parentNode.removeChild(content);
 		tabBody = content;
 	} else {
-		var tabBody = new Element('div');
-		tabBody.id = content;
+		var tabBody = new Element('div', {'id':content});
 	}
 	if (!open)
 		tabBody.hide();
@@ -94,37 +126,6 @@ function newTab(tab_title, content, open) {
 	return tabContainer;
 }
 
-var Check = Class.create( {
-	initialize : function(type, name, checkbox, item) {
-		//type: s (show) is for measurements, u (use) is for pictures, b (bitmap) is for bitmaps
-	this.type = type;
-
-	if (this.type == 's')
-		this.defaultValue = true;
-	else
-		this.defaultValue = false;
-
-	this.id = name;
-	this.box = checkbox;
-	this.oldValue = '';
-	this.item = item;
-	this.checked = this.defaultValue;
-},
-update : function(newValue) {
-	this.oldValue = this.checked;
-	this.checked = newValue;
-},
-setDefault : function() {
-	this.box.defaultChecked = this.defaultValue;
-},
-watch : function() {
-	watchBox(this);
-},
-repair : function() {
-	if (this.checked == true)
-		this.box.checked = true;
-}
-});
 function watchBox(item) {
 	item.box.observe('click', function() {
 		item.update(item.box.checked);
@@ -142,28 +143,63 @@ function watchBox(item) {
 	});
 }
 
+function initialisePictureTab(pictureJSON_array) {
+	
+	// Clear the general container
+	$('tab_pictures').update();
+	
+	// Generate a container for the pictures
+  $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
+  
+	// Put below it a bar with tools
+	var toolbar = new Element('div');
+	toolbar.setStyle("clear:both;float:right;");
+	var addLink = new Element('a',{'href':'#'});
+	var addImage = new Element('img',{'src':base_path+'media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
+	addLink.insert(addImage);
+	toolbar.insert(addLink);
+	Event.observe(addLink,'click',function(){
+		popupIFrame(base_path+'project/imageManager/'+projectID,670,400);
+	});
+	$('tab_pictures').insert(toolbar);
+	
+  // Create a picture container for each picture
+  for(i=0; i < pictureJSON_array.length; i++)
+		makePictureContainer(pictureJSON_array[i]);
+}
+
 function makePictureContainer(pictureJSON) {
+	// Overall container
 	var mainDiv = new Element('div', {
 		"id" : "mainDiv_" + pictureJSON.pk
 	});
 	mainDiv.addClassName('projectPictureDiv');
+	
+	// Container for picture and activation selection
 	var leftDiv = new Element('div', {
-		"id" : "leftDiv" + pictureJSON.pk
+		"id" : "leftDiv_" + pictureJSON.pk
 	});
 	leftDiv.addClassName('pictureContainerLeftDiv');
+	
+	// Container for title
 	var rightDiv = new Element('div', {
-		"id" : "rightDiv" + pictureJSON.pk
+		"id" : "rightDiv_" + pictureJSON.pk
 	});
 	rightDiv.addClassName('pictureContainerRightDiv');
-	var bottomDiv = new Element('div', {
-		"id" : "bottomDiv" + pictureJSON.pk
-	});
-	bottomDiv.addClassName('pictureContainerBottomDiv');
+
+	// Container for slider
 	var sliderDiv = new Element('div', {
-		"id" : "sliderDiv" + pictureJSON.pk
+		"id" : "sliderDiv_" + pictureJSON.pk
 	});
 	sliderDiv.addClassName('pictureContainerSliderDiv');
+	
+	// Container for tabs
+	var bottomDiv = new Element('div', {
+		"id" : "bottomDiv_" + pictureJSON.pk
+	});
+	bottomDiv.addClassName('pictureContainerBottomDiv');
 
+	// Create activation checkbox
 	var useCheck = new Element('input', {
 		'type' : 'checkbox',
 		'id' : 'use' + pictureJSON.pk
@@ -177,6 +213,7 @@ function makePictureContainer(pictureJSON) {
 
 	leftDiv.insert(useCheck);
 
+	// Insert image
 	leftDiv.insert(new Element('img', {
 		'src' : base_path + 'imageLoader/thumbnail/original/50/'
 				+ pictureJSON.pk
@@ -197,6 +234,65 @@ function makePictureContainer(pictureJSON) {
 			break;
 		}
 	}
+}
+
+function addMeasuermentsToPictureContainer(imgid, measurementJSON_array) {
+	
+	// Create overall container
+	var mainDiv = new Element('div');
+	mainDiv.writeAttribute('id', 'measurementsList_'+imgid);
+	mainDiv.addClassName('projectPictureDiv');
+
+	// Add all measurements
+	for (i = 0; i < measurementJSON_array.length - 1; i = i + 2) {
+		
+		// Create measurement
+		tempMeasurement = createMeasurement(
+				measurementJSON_array[i].fields.name, 
+				measurementJSON_array[i + 1].fields.x,
+				measurementJSON_array[i + 1].fields.y,
+				measurementJSON_array[i + 1].pk,
+				measurementJSON_array[i].pk,
+				imgid,
+				measurementJSON_array[i + 1].fields.imagewidth,
+				measurementJSON_array[i + 1].fields.imageheight);
+		
+		mainDiv.insert(tempMeasurement);
+	}
+	
+	// Add this subtab
+	var tab_measurements = newTab('Measurements', mainDiv, true);
+	tab_measurements.id = 'measurementsDiv_'+imgid;
+	tab_measurements.addClassName('imgSubTabMeasurements');
+	$('bottomDiv_' + imgid).insert(tab_measurements);	
+}
+
+function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
+	
+	// Check or it is already there
+	if ($('bitmapsDiv_'+imgid) != null)
+		return;
+	
+	// Create an overall container
+	var mainDiv = new Element('div');
+	mainDiv.writeAttribute('id','bitmapsList_'+imgid)
+	mainDiv.addClassName('projectBitmapDiv');
+	
+	// Create temporary link to paintover
+	var paintoverLink = new Element('a', {
+		'href' : 'javascript:loadEditScreen(\''+imgid+'\')'
+	}).update('Paintover');
+	mainDiv.insert(paintoverLink);
+
+	// Add all the bitmaps
+	for ( var i = 0; i < bitmapJSON_array.length; i++)
+		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid));
+	
+	// Add this subtab
+	var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
+	tab_bitmaps.id = 'bitmapsDiv_'+imgid;
+	tab_bitmaps.addClassName('imgSubTabBitmaps');
+	$('bottomDiv_' + imgid).insert(tab_bitmaps);
 }
 
 function closePopupAndReloadPictures() {
@@ -236,6 +332,9 @@ function closePopupAndReloadPotentialMeasurementTypes(pottype){
 function loadEditScreen(id, bmid) {
 	checkAuthenticationAndExecute( function() {
 
+		flashpainting = true;
+		
+		// Are we editing an existing bitmap?
 		img_url = base_path + 'imageLoader/original/' + id;
 		if ((bmid != '') && (bmid != undefined))
 		  bitmap_url = base_path + 'imageLoader/bitmap/'+bmid;
@@ -244,7 +343,9 @@ function loadEditScreen(id, bmid) {
 		mov_width = ($('big_images').getWidth() - 5);
 		mov_heigth = ($('big_images').getHeight() - 5);
 
+		// Create the html-objects
 		movie_object = new Element('object');
+		movie_object.writeAttribute('id', 'flash_movie_object'); 
 		movie_object.writeAttribute('classid',
 				"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000");
 		movie_object
@@ -255,6 +356,7 @@ function loadEditScreen(id, bmid) {
 		movie_object.writeAttribute('height', mov_heigth);
 
 		movie_embed = new Element('embed');
+		movie_embed.writeAttribute('id', 'flash_movie_embed'); 
 		movie_embed.writeAttribute('src', base_path + 'media/flash/paint.swf');
 		movie_embed.writeAttribute('quality', "high");
 		movie_embed.writeAttribute('bgcolor', "#000000");
@@ -279,5 +381,7 @@ function closePaintOver(bmid) {
 		newBitmapDiv = addBitmap(bmid, addedImages[0].id);
 		$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
 	}
-	//close flash object
-}
+	
+	flashpainting = false; 
+	reloadImages(false); 
+} 

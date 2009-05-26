@@ -38,8 +38,9 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id):
     while i > 0:
       stream += chr(255)
       i -= 1
-      
+
   im = Image.fromstring("L",(width,height), stream, "raw", "L")
+  im.convert("P")
 
   if previous_id == 0:
     
