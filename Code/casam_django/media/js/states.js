@@ -132,17 +132,15 @@ function makeStateObserver(div,stateObject){
 function setState(stateObject){
 	console.log(stateObject);
 	console.log('Revert to state: '+stateObject.name);
-	//addedImages = new Array();
-	//$('big_images').update();
+
 	for(i = 0; i<stateObject.stateData.length;i++){
-		console.log('Make active: '+stateObject.stateData[i][0]);
 		var id = stateObject.stateData[i][0];
 		var name = stateObject.stateData[i][1];
-		var newAddedImage = new AddedImage(id, name);
-		addedImages.splice(0, 0, newAddedImage);
+		showImage(id,name);
+		$('use'+id).writeAttribute('checked','checked');
 	}
-	resizeScreenElements(true);
-	checkActiveLayer();
+	/*resizeScreenElements(true);
+	checkActiveLayer();*/
 
 }
 

@@ -409,3 +409,5 @@ function closePaintOver(bmid) {
 	flashpainting = false; 
 	reloadImages(false); 
 } 
+
+

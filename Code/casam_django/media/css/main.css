@@ -2,11 +2,11 @@
 
 body {
 	background-color: black;
+	font-family:verdana;
 }
 
 div {
 	/*overflow:hidden;*/
-	font-family:verdana;
 	font-size:10pt;
 	color:black;
 }

@@ -9,7 +9,7 @@ function createRequestObject() {
 	return ro;
 }
 
-function getProjectImages(afterFinishFunction)
+function getProjectImages()
 {
 	checkAuthenticationAndExecute(function(){
 				
@@ -28,8 +28,6 @@ function getProjectImages(afterFinishFunction)
 		    // Initialise the dragging of images
         makePicturesSortable();
         
-        if(afterFinishFunction)
-          afterFinishFunction();
 			}
 		});
 	});

@@ -203,3 +203,24 @@ a.saveChangeButton{
 .stateDivDate{
 	font-style:italic;
 }
+
+.annotation_container{
+	border:1px solid black;
+	margin:5px;
+	cursor: pointer;
+	text-align:left;
+
+}
+
+.annotation_container p{
+	margin:0px;
+	padding:0px;
+}
+
+.italic{
+	font-style:italic;
+}
+
+#tab_papers{
+	text-align:right;
+}

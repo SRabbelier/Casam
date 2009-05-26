@@ -49,6 +49,15 @@ function popupIFrame(url,width,height){
 	});
 	
 }
+function changePopupDimensions(width,height){
+	$('popup').setWidth(width);
+	$('popup').setHeight(height);
+	$('popup').setStyle({
+		zIndex:9999,
+		top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
+		left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
+		});
+}
 
 function closePopup(){
 	$('popup').setWidth(0);

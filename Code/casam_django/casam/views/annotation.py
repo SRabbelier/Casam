@@ -10,6 +10,9 @@ from casam.logic import fileupload as fileupload_logic
 from casam.views import handler
 from casam.models import Annotation
 
+from django.conf import settings
+
+
 
 CHOICES = [
     ('url', 'Use an existing url'),
@@ -117,9 +120,9 @@ class NewAnnotation(handler.Handler):
     if annotation_type == 'file':
       file = self.FILES['file']
       location = fileupload_logic.handle_uploaded_file(file, name)
-      url = self.BASE_PATH + location
+      url = settings.BASE_PATH + location[0]
 
     # TODO : rewrite this to use UUID instead of original filename
     annotation_logic.handle_add_annotation(name, url, project_id)
 
-    return http.HttpResponseRedirect(self.BASE_PATH)
+    return http.HttpResponseRedirect(settings.BASE_PATH)

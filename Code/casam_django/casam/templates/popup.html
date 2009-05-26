@@ -12,6 +12,20 @@
 	<script src="{{ BASE_PATH }}media/js/scriptaculous.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		document.observe("dom:loaded",function(){
+			
+			$('popupContainer').setStyle({
+				display:'table',
+				margin:'0px',
+				padding:'0px'
+			});
+			//alert(document.viewport.getScrollOffsets());
+			//alert(document.viewport.getHeight());
+			//alert(document.viewport.getWidth());
+			//alert(document.viewport.getScrollOffsets());
+			var width = $('popupContainer').getWidth()+20;
+			var height = $('popupContainer').getHeight()+30;
+			parent.changePopupDimensions(width,height);
+			//alert(document.getWidth());
 		});
 	</script>
 	
@@ -23,9 +37,10 @@
 </head>
 
 <body>
-
+<div id="popupContainer">
 {% block body %}
 
 {% endblock body %}
+</div>
 </body>
 </html>

@@ -139,6 +139,11 @@ def projectStatesJSON(request, id_str):
   data = serializers.serialize("json", states)
   return http.HttpResponse(data, mimetype="application/javascript")
 
+def projectAnnotationsJSON(request, id_str):
+  annotations = Annotation.objects.filter(project__id=id_str)
+  data = serializers.serialize("json", annotations)
+  return http.HttpResponse(data, mimetype="application/javascript")
+
 class StateForm(forms.Form):
   name = forms.CharField(max_length=30)
   serializedState = forms.CharField()
