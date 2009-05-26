@@ -113,7 +113,7 @@ class ImageHandler(handler.Handler):
     img_path = os.path.join(tempfile.gettempdir(), img_name)
 
     #though the file already exists on the server, save it in temp to make sure it is jpeg
-    if not os.path.exists(img_path):
+    if (not os.path.exists(img_path)) or img_type=='bitmap':
       location = os.path.join(self.DATA_DIR, imageRecord.path)
       im = Image.open(location)
       im = im.convert("RGBA")
@@ -170,7 +170,11 @@ class RatioHandler(ImageHandler):
     imageWidth = im.size[0] * (floatRatio/100)
     imageHeight = im.size[1] * (floatRatio/100)
 
-    newImage = im.resize((imageWidth,imageHeight),Image.ANTIALIAS)
+    img_type = self.kwargs.get('img_type')
+    if img_type == 'bitmap':
+      newImage = im.resize((imageWidth,imageHeight),Image.NEAREST)
+    else :
+      newImage = im.resize((imageWidth,imageHeight),Image.ANTIALIAS)
 
     newImage.save(img_path)
 
@@ -193,7 +197,11 @@ class WidthHandler(ImageHandler):
     #calculate the height corresponding to the given width
     imageHeight = im.size[1] * (floatWidth/im.size[0])
 
-    newImage = im.resize((floatWidth,imageHeight),Image.ANTIALIAS)
+    img_type = self.kwargs.get('img_type')
+    if img_type == 'bitmap':
+      newImage = im.resize((floatWidth,floatHeight),Image.NEAREST)
+    else :
+      newImage = im.resize((floatWidth,floatHeight),Image.ANTIALIAS)
 
     #Save the image and put it in the request
     newImage.save(img_path)
@@ -228,7 +236,11 @@ class WidthHeightHandler(ImageHandler):
       resizeWidth = fullImageWidth * resizeRate
       resizeHeight = floatHeight
 
-    newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
+    img_type = self.kwargs.get('img_type')
+    if img_type == 'bitmap':
+      newImage = im.resize((resizeWidth,resizeHeight),Image.NEAREST)
+    else :
+      newImage = im.resize((resizeWidth,resizeHeight),Image.ANTIALIAS)
 
     handler = self.getHandler()
     handler.save(newImage, img_path)
@@ -274,7 +286,11 @@ class ThumbnailHandler(ImageHandler):
 
     im = im.crop(box)
 
-    newImage = im.resize((floatWidthAndHeight,floatWidthAndHeight),Image.ANTIALIAS)
+    img_type = self.kwargs.get('img_type')
+    if img_type == 'bitmap':
+      newImage = im.resize((floatWidthAndHeight,floatWidthAndHeight),Image.NEAREST)
+    else :
+      newImage = im.resize((floatWidthAndHeight,floatWidthAndHeight),Image.ANTIALIAS)
 
     #Save the image and put it in the request
     newImage.save(img_path)

@@ -7,7 +7,7 @@ var Bitmap = Class.create( {
 	getAppropriateSizeURL : function() {
 		return (base_path + 'imageLoader/byMaxWidthHeight/bitmap/'
 				+ ($('big_images').getWidth() - 2) + '/'
-				+ ($('big_images').getHeight() - 2) + '/' + this.id);
+				+ ($('big_images').getHeight() - 2) + '/' + this.id+'?time='+new Date().getTime());
 	},
 	resize : function() {
 		this.bitmap.writeAttribute('src', this.getAppropriateSizeURL());

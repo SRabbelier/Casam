@@ -32,13 +32,33 @@ repair : function() {
 
 function resizeScreenElements(firsttime) {
 	checkAuthenticationAndExecute( function() {
-		// big_images need to be resized again when the images are
-		// loaded
-		// the javascript continues while this.getAppropriateSizeURL()
-		// is still
-		// finding the correct size for the image
-		resizeBigImages();
-		reloadImages(firsttime);
+		
+		var remainingWidth = document.viewport.getWidth() - 500; 
+		var remainingHeight = document.viewport.getHeight() - 150; 
+             
+		// Always resize the big_images-container 
+		$('big_images').setWidth(remainingWidth); 
+		$('big_images').setHeight(remainingHeight); 
+
+		// If the flash paintover is loaded 
+		if (flashpainting) { 
+			$('flash_movie_object').setWidth(remainingWidth-5); 
+			$('flash_movie_object').setHeight(remainingHeight-5); 
+			$('flash_movie_embed').setWidth(remainingWidth-5); 
+			$('flash_movie_embed').setHeight(remainingHeight-5); 
+
+		// If we are viewing images 
+		} else {  
+			//reloadImages(firsttime); 
+		
+			// big_images need to be resized again when the images are
+			// loaded
+			// the javascript continues while this.getAppropriateSizeURL()
+			// is still
+			// finding the correct size for the image
+			resizeBigImages();
+			reloadImages(firsttime);
+		}
 	});
 }
 
@@ -47,6 +67,9 @@ function resizeBigImages(){
 	$('big_images').setWidth(remainingWidth);
 	var remainingHeight = document.viewport.getHeight() - 150;
 	$('big_images').setHeight(remainingHeight);
+	
+
+	//Resize the white frames 
 	remainingHeightWhiteFrame = remainingHeight - 36;
 	$('leftFrame').setHeight(remainingHeightWhiteFrame);
 	$('rightFrame').setHeight(remainingHeightWhiteFrame);	
@@ -337,7 +360,7 @@ function loadEditScreen(id, bmid) {
 		// Are we editing an existing bitmap?
 		img_url = base_path + 'imageLoader/original/' + id;
 		if ((bmid != '') && (bmid != undefined))
-		  bitmap_url = base_path + 'imageLoader/bitmap/'+bmid;
+		  bitmap_url = base_path + 'imageLoader/bitmap/'+bmid+'?time='+new Date().getTime();
 	  else
 	    bitmap_url = '';
 		mov_width = ($('big_images').getWidth() - 5);
@@ -377,7 +400,7 @@ function loadEditScreen(id, bmid) {
 }
 
 function closePaintOver(bmid) {
-	if(bmid != '') {
+	if(bmid != '' && $('bitmapDiv_'+bmid) == undefined) {
 		newBitmapDiv = addBitmap(bmid, addedImages[0].id);
 		$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
 	}

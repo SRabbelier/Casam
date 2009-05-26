@@ -41,9 +41,22 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id):
 
   im = Image.fromstring("L",(width,height), stream, "raw", "L")
   im.convert("P")
+  
+  palette = []
+  for i in range(256):
+    palette.extend((0, 0, 0))
 
-  if previous_id == 0:
-    
+  palette[765] = 0 # R    
+  palette[766] = 0 # G
+  palette[767] = 255 # B
+
+  assert len(palette) == 768
+  
+  im.putpalette(palette)
+
+  
+  if previous_id == '0':
+  
     image_name = image_id +"_"+str(holdit)+".gif"
     im.save(settings.DATADIR+image_name,transparency=0);
     
@@ -66,6 +79,7 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id):
     print settings.DATADIR+image_name
     im.save(settings.DATADIR+image_name,transparency=0);
     return previous_id
+
 
 #  brushStroke = self.cleaned_data['brushStroke']
 #  fileName = self.cleaned_data['fileName']
