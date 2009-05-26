@@ -10,6 +10,9 @@ class BitmapForm(forms.Form):
   image_id = forms.CharField(max_length=36)
   previous_id = forms.CharField(max_length=36)
   dump = forms.CharField(max_length=36000000)
+  r = forms.CharField(max_length=3)
+  g = forms.CharField(max_length=3)
+  b = forms.CharField(max_length=3)
   
   
 class Save(handler.Handler):
@@ -21,7 +24,10 @@ class Save(handler.Handler):
   
   def post(self):
     self.getContext()
+    r = int(self.cleaned_data['r'])
+    g = int(self.cleaned_data['g'])
+    b = int(self.cleaned_data['b'])
     original_image = OriginalImage.objects.filter(id=self.cleaned_data['image_id']).get()
     previous_id = self.cleaned_data['previous_id']
-    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image,previous_id)
+    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image,previous_id,r,g,b)
     return http.HttpResponse("saved_id="+bitmap_id)

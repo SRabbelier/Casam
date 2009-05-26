@@ -4,11 +4,16 @@ from casam.models import Bitmap
 import time
 
 
-def handle_bitmap_stream(dump,image_id,original_image,previous_id):
+def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b):
   
   if dump.find("_scanline:") != 0:
     print "wrong dump"
     return
+  
+  if not (r >= 0 and r <= 255 and g >= 0 and g <= 255 and b >= 0 and b <= 255):
+    r = 255
+    g = 0
+    b = 0
   
   holdit = time.time()
   
@@ -46,9 +51,9 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id):
   for i in range(256):
     palette.extend((0, 0, 0))
 
-  palette[765] = 0 # R    
-  palette[766] = 0 # G
-  palette[767] = 255 # B
+  palette[765] = r  
+  palette[766] = g
+  palette[767] = b
 
   assert len(palette) == 768
   
