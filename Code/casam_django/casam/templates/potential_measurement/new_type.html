@@ -10,7 +10,92 @@
     closeButton.observe('click',function(){
       parent.closePopupAndReloadPotentialMeasurements('');
     });
+    getPotentialTypes();
+    $('deleteTypesLink').observe('click', function(){
+      var checkboxes = $$('input.typeCheckbox');
+      for(var i = 0; i < checkboxes.length; i++){
+        if(checkboxes[i].checked == true)
+          removePotentialType(checkboxes[i].name);                                           
+      }
+    });
   });
+  
+  function getPotentialTypes(){
+    var type_array = parent.$$('div.potSubTabType')
+    for(var i = 0; i < type_array.length; i++){
+      var containerDiv = new Element('div', {'id': type_array[i].childElements()[2].id.slice(9)});
+      var textDiv = new Element('div');
+      textDiv.update(type_array[i].down('b').innerHTML)
+      containerDiv.insert(textDiv);
+      
+      var checkbox = new Element('input', {'type': 'checkbox',
+                                 'name':type_array[i].childElements()[2].id.slice(9), 
+                                 'id': 'dpt'+type_array[i].childElements()[2].id.slice(9)
+                                 });
+      checkbox.addClassName('typeCheckbox');
+      containerDiv.insert(checkbox);
+      $('potentialTypesDiv').insert(containerDiv);
+    }                           
+  }
+  
+  function removePotentialType(typeid){
+    var url = '{{ BASE_PATH }}AJaX/deletePotentialMeasurementType/?time='+new Date().getTime();
+    new Ajax.Request(url, {
+        method: 'get',
+        parameters: {'potTypeID': typeid},
+        onSuccess: function(transport, json) {
+          $(typeid).remove();
+          //DELETE CURRENT MEASUREMENTS
+          var measurements = parent.measurements;
+          for(var j = 0; j < measurements.length; j++){
+            if (parent.$('potmeas_'+measurements[j].potid).up().id.slice(9) == typeid){
+              measurements[j].erase();
+              parent.measurements.splice(j,1);
+              j = j - 1;
+            }                                             
+          }
+          //TODO: REMOVE TEXT OF CURRENT MEASUREMENTS
+          var parentMeasurementTexts = parent.$$('div.projectImageMeasurementDiv');
+          for(var i = 0; i < parentMeasurementTexts.length; i++){
+            if (parent.$('potmeas_'+parentMeasurementTexts[i].id.slice(13)).up().id.slice(9) == typeid){
+              parentMeasurementTexts[i].remove();                                                                                  
+            }                                                       
+          }
+
+          //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
+          var changes = parent.changes;
+          for(var i = 0; i < changes.length; i++){
+            if (parent.$('potmeas_'+changes[i].potid).up().id.slice(9) == typeid){
+              changes[i].erase();
+              parent.changes.splice(i,1);
+              i = i - 1;
+            }
+          }
+          //DELETE POTENTIAL MEASUREMENTS
+          var parentPotentialMeasurements = parent.$$('div.potMeasDiv');
+          for(var i = 0; i < parentPotentialMeasurements.length; i++){
+            if (parentPotentialMeasurements[i].up().id.slice(9) == typeid){
+              Effect.Fade(parentPotentialMeasurements[i]);
+              parentPotentialMeasurements[i].remove();
+              parent.$('option'+parentPotentialMeasurements[i].id.slice(8)).remove();
+            }                  
+          }
+          //DELETE POTENTIAL MEASUREMENTS GROUP
+          var parentPotentialMeasurementTypes = parent.$$('div.projectPotentialTypeDiv');
+          for(var i = 0; i < parentPotentialMeasurementTypes.length; i++){
+            if (parentPotentialMeasurementTypes[i].id.slice(9) == typeid){
+              Effect.Fade(parentPotentialMeasurementTypes[i].up());
+              parentPotentialMeasurementTypes[i].up().remove();                                                              
+            }                                                                
+          }          
+          //CLOSE POPUP
+          parent.closePopupAndReloadPotentialMeasurements('')
+        },
+        onFailure:function(){
+          alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
+        }
+    });                                   
+  } 
   
 </script>
 {% endblock head %}
@@ -23,6 +108,9 @@
 <tr><td><input type="submit" value="save" /></td></tr>
 </table>
 </form>
+<div id='potentialTypesDiv'>
+<a href="#" id='deleteTypesLink'>Delete selected Types</a>
+</div>
 <div id='closeContainer'>
 </div>
 {% endblock body %}

@@ -14,6 +14,7 @@ from casam.models import Project
 from casam.models import OriginalImage
 from casam.models import Tag
 from casam.models import PotentialMeasurement
+from casam.models import PotentialMeasurementType
 from casam.models import Measurement
 from casam.views import handler
 from casam.views import tag as tag_view
@@ -122,3 +123,15 @@ class deletePotentialMeasurement(handler.Handler):
   def getPostForm(self):
     return SelectTagForm(self.POST)
     
+class deletePotentialMeasurementType(handler.Handler):
+  def get(self):
+    typeid = self.GET.getlist('potTypeID')
+    potmeas = list(PotentialMeasurement.objects.all().filter(type__id = typeid[0]))
+    for potmeas in potmeas:
+      Measurement.objects.all().filter(mogelijkemeting = potmeas).delete()
+    PotentialMeasurement.objects.all().filter(type__id = typeid[0]).delete()
+    PotentialMeasurementType.objects.all().get(id = typeid[0]).delete()
+    
+    return http.HttpResponse("success")
+  def getPostForm(self):
+    return SelectTagForm(self.POST)

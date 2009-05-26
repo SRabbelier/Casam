@@ -75,6 +75,7 @@ urlpatterns = patterns('',
     (r'^AJaX/deleteImages/$', casam.views.main.deleteImages()),
     (r'^AJaX/deleteMeasurement/$', casam.views.main.deleteMeasurement()),
     (r'^AJaX/deletePotentialMeasurement/$', casam.views.main.deletePotentialMeasurement()),
+    (r'^AJaX/deletePotentialMeasurementType/$', casam.views.main.deletePotentialMeasurementType()),
     (r'^AJaX/addState/%s$' % UUID, casam.views.project.AddState()),
 
    #VTK
