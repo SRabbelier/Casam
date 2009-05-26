@@ -110,6 +110,10 @@ function saveLandMark(mx, my, potid, imgid) {
 	var imageID = (imgid == undefined) ? $('imgid').value : imgid;
 	savex = mousex * 1 + viewportOffset.left * 1;
 	savey = mousey * 1 + viewportOffset.top * 1;
+	
+	if (potid == undefined){
+		mm.replace(/\s\(\s\w*\s\)/,"");
+	}
 
 	var c = '';
 	var measurement = null;
@@ -294,6 +298,10 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 		}
 	}
 
+	var typename = $('potmeas_'+potid).up().up().down('b').innerHTML;
+	var measname = name + ' ( '+typename+' )';
+	
+
 	var pinDiv = new Element('div');
 	pinDiv.addClassName('pinDiv');
 	pinDiv.hide();
@@ -302,7 +310,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 		'src' : base_path + 'media/img/pin_green.gif'
 	});
 	pin.addClassName('pinImage');
-	var pintooltip = new Element('div').update(name + '<br />' + imgname
+	var pintooltip = new Element('div').update(measname + '<br />' + imgname
 			+ '<br />' + x + ', ' + y);
 	pintooltip.addClassName('pintooltip');
 	pintooltip.hide();
@@ -313,9 +321,12 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	pinDiv.insert(pin);
 	pinDiv.insert(pintooltip);
 	$('big_images').insert(pinDiv);
+	
+	
 
-	var measurement = new Measurement(measid, potid, name, imgid, pinDiv,
+	var measurement = new Measurement(measid, potid, measname, imgid, pinDiv,
 			imgwidth, imgheight);
+	
 	var measurementDiv = new Element('div', {
 		'id' : 'potidMeasDiv_' + potid
 	});
@@ -339,7 +350,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	textspan = new Element('span', {
 		'id' : 'span_' + potid
 	});
-	textspan.update(name + ' (' + x + ', ' + y + ')')
+	textspan.update(measname + ' (' + x + ', ' + y + ')')
 	measurementDiv.insert(checkbox);
 	measurementDiv.insert(textspan);
 
