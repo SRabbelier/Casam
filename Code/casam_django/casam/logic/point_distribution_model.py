@@ -94,25 +94,6 @@ class PointDistributionModel(object):
     #Get the eigenvalues
     evals = self.filterPCA.GetEvals()
     
-    #And the eigenvectors
-    numEigenVectors = 5
-    evecArrays = []
-    for vecId in range(min(numEigenVectors, self.filterPCA.GetNumberOfOutputPorts())):
-        out = self.filterPCA.GetOutput(vecId)
-        evecs = vtk.vtkFloatArray()
-        evecs.SetNumberOfComponents(3)
-        evecs.SetName("evecs%d" % vecId)
-        # Each point is in fact a vector eval * evec
-        for pointId in range(out.GetNumberOfPoints()):
-            vec = out.GetPoint(pointId)
-            evecs.InsertNextTuple3(vec[0], vec[1], vec[2])
-        evecArrays.append(evecs)
-
-        eigenvector = evecArrays[vecId]
-        print "E-vector ", vecId, "E-value: ", evals.GetValue(vecId), "X: ", eigenvector.GetValue(0), "Y: ", eigenvector.GetValue(1), "Z: ", eigenvector.GetValue(2)
-    
-    print "To explain 99% of variation, we need: ", self.filterPCA.GetModesRequiredFor(0.99), " eigenvectors"
-    
     #Now let's get mean ^^
     b = vtk.vtkFloatArray()
     b.SetNumberOfComponents(0)
@@ -154,50 +135,11 @@ class PointDistributionModel(object):
       for i in range(0,4):
         bounds = self.analyzedGrids[i].GetCell(pos).GetBounds()
         self.variationPositions.append((bounds[0],bounds[2]))
-
+  
 def makePDM():
-  """Create the Point Distribution Model by performing procrustes, pca and variations analysis
+  """Create the Point Distribution Model
   """
   logging.basicConfig(level=logging.DEBUG)
   
   pdm = PointDistributionModel()
-
-  pdm.addPointSet([
-      (0, 200, 0), 
-      (100, 200, 0), 
-      (200, 200, 0),
-      (300, 200, 0),
-      (400, 200, 0),
-      (500, 200, 0),
-      ])
-  pdm.addPointSet([
-      (0, 200, 0), 
-      (100, 200, 0), 
-      (200, 200, 0),
-      (300, 210, 0),
-      (400, 200, 0),
-      (500, 200, 0),
-      ])
-  pdm.addPointSet([
-      (0, 210, 0), 
-      (100, 210, 0), 
-      (200, 210, 0),
-      (300, 210, 0),
-      (400, 210, 0),
-      (500, 210, 0),
-      ])
-  
-  pdm.addPointSet([
-      (0, 200, 0), 
-      (100, 200, 0), 
-      (200, 200, 0),
-      (300, 200, 0),
-      (400, 200, 0),
-      (500, 210, 0),
-      ])
-  
-  pdm.procrustes()
-  pdm.pca()
-  pdm.variations()
   return pdm
-

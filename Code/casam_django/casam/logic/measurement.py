@@ -2,8 +2,6 @@ from casam.models import Measurement
 from casam.models import PotentialMeasurement
 from casam.models import Project
 
-from django import http
-
 
 def getMeasurementsForProject(request, project_id):
   """
