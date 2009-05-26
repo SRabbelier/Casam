@@ -174,9 +174,8 @@ function saveLandMark(mx, my, potid, imgid) {
 									mousey / measurement.piecey);
 							measurement.place();
 							var currentMeasurements = $(
-									'bottomDiv_' + measurement.imageid)
-									.childElements()[1].childElements()[2]
-									.childElements();
+									'measurementDiv_' + measurement.imageid)
+									.childElements();//[1].childElements()[2].childElements();
 							for ( var i = 0; i < currentMeasurements.length; i++) {
 								if (currentMeasurements[i].childElements()[0].name == measurement.id) {
 									currentMeasurements[i].childElements()[1]
@@ -193,13 +192,11 @@ function saveLandMark(mx, my, potid, imgid) {
 							var json = transport.responseText.evalJSON();
 							//json[i] = meting
 							//getMainDiv to do mainDiv.insert
-							var mainDiv = $('bottomDiv_' + json[0].fields.image)
-									.childElements()[1].childElements()[2];
+							var mainDiv = $('measuermentDiv_' + json[0].fields.image);
 							mainDiv.insert(createMeasurement(c.lmname,
 									mousex, mousey, json[0].pk, mm, json[0].fields.image,
 									json[0].fields.imagewidth,
 									json[0].fields.imageheight));
-							alerT('tot hier');
 							for ( var i = 0; i < measurements.length; i++) {
 								if (measurements[i].potid == mm
 										&& measurements[i].imageid == imageID) {
@@ -207,7 +204,6 @@ function saveLandMark(mx, my, potid, imgid) {
 									break;
 								}
 							}
-							alerT('tot hier');
 							measurement.calcpieces();
 							measurement.setPlace(mousex / measurement.piecex,
 									mousey / measurement.piecey);
@@ -284,41 +280,6 @@ function makeDraggable(measurement, pinDiv, potid, imageid) {
 			c.add();
 			changes.push(c);
 		}
-	});
-}
-
-function getImageMeasurements(imgid) {
-	var url = base_path + 'JSON/projectImageCurrentMeasurements/' + imgid
-			+ '?time=' + new Date().getTime();
-	new Ajax.Request(url, {
-			method : 'get',
-			asynchronous: false,
-			onSuccess : function(transport, json) {
-				var json = transport.responseText.evalJSON();
-				var mainDiv = new Element('div');
-				mainDiv.writeAttribute('id', 'measurementsList_'+imgid);
-				mainDiv.addClassName('projectPictureDiv');
-
-				// Add Div for tab
-				var tempDiv = new Element('div');
-				tempDiv.insert(mainDiv);
-
-				for (i = 0; i < json.length - 1; i = i + 2) {
-					mainDiv.insert(createMeasurement(json[i].fields.name, 
-							json[i + 1].fields.x, json[i + 1].fields.y, json[i + 1].pk,
-							json[i].pk, imgid, json[i + 1].fields.imagewidth,
-							json[i + 1].fields.imageheight));
-				}
-
-				if ($('bottomDiv' + imgid).childElements().length == 2) {
-					alert('zou je niet moeten zien');
-					$('bottomDiv' + imgid).childElements()[1].childElements()[2].innerHTML = mainDiv.innerHTML;
-				} else {
-					var tab_measurements = newTab('Measurements', mainDiv, true);
-					tab_measurements.addClassName('imgSubTabMeasurements');
-					$('bottomDiv' + imgid).insert(tab_measurements);
-				}
-			}
 	});
 }
 

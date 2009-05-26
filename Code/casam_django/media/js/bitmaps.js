@@ -100,40 +100,6 @@ function reloadBitmaps() {
 	}
 }
 
-function getImageBitmaps(imgid) {
-	var url = base_path + 'JSON/projectImageBitmaps/' + imgid + '?time='
-			+ new Date().getTime();
-	new Ajax.Request(
-			url,
-			{
-				method : 'get',
-				asynchronous: false,
-				onSuccess : function(transport, json) {
-					
-					var json = transport.responseText.evalJSON();
-					var mainDiv = new Element('div');
-					mainDiv.writeAttribute('id','bitmapsList_'+imgid)
-					mainDiv.addClassName('projectBitmapDiv');
-					
-					var paintoverLink = new Element('a', {
-						'href' : 'javascript:loadEditScreen(\''+imgid+'\')'
-					}).update('Paintover');
-					mainDiv.insert(paintoverLink);
-					
-					// Add div for tab
-					var tempDiv = new Element('div');
-					tempDiv.insert(mainDiv);
-					for ( var i = 0; i < json.length; i++) {
-						mainDiv.insert(addBitmap(json[i].pk, imgid));
-					}
-					
-					var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
-					tab_bitmaps.addClassName('imgSubTabBitmaps');
-					$('bottomDiv' + imgid).insert(tab_bitmaps);
-				}
-			});
-}
-
 function removeBitmaps(imageID){
 	for(var i = 0; i < bitmaps.length; i++){
 		if(bitmaps[i].imageid == imageID){

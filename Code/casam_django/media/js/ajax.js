@@ -50,11 +50,13 @@ function getImageBitmaps(imgid) {
 }
 
 function getImageMeasurements(imgid) {
+
 	var url = base_path + 'JSON/projectImageCurrentMeasurements/' + imgid
 			+ '?time=' + new Date().getTime();
 	new Ajax.Request(url, {
 			method : 'get',
 			onSuccess : function(transport, json) {
+		
 				var json = transport.responseText.evalJSON();
 				addMeasuermentsToPictureContainer(imgid, json);
 			}

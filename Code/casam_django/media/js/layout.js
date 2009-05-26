@@ -296,7 +296,7 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 }
 
 function closePopupAndReloadPictures() {
-	getProjectImages();
+	getProjectImages(false);
 	new Effect.Highlight('pictures');
 	//$('tab_pictures').scrollTo($('addPictureButton'));
 	closePopup();
