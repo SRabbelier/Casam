@@ -88,7 +88,7 @@ class Annotation(models.Model):
   name = models.CharField(max_length=30)
   url = models.CharField(max_length=200)
   project = models.ForeignKey('Project')
-
+  
 class PotentialMeasurementType(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   name = models.CharField(max_length=40)
@@ -96,3 +96,11 @@ class PotentialMeasurementType(models.Model):
   
   def __unicode__(self):
     return str(self.name)
+    
+class State(models.Model):
+  id = UUIDField(primary_key=True, auto=True)
+  name = models.CharField(max_length=30)
+  serializedState = models.TextField()
+  project = models.ForeignKey('Project')
+  added = models.DateField(auto_now_add=True)
+

@@ -15,6 +15,7 @@ from casam.models import PotentialMeasurement
 from casam.models import PotentialMeasurementType
 from casam.models import Measurement
 from casam.models import Tag
+from casam.models import State
 from casam.models import Bitmap
 from casam.views import handler
 
@@ -132,3 +133,35 @@ def projectImageBitmapsJSON(request, id_str):
   bitmaps = Bitmap.objects.filter(image__id=id_str)
   data = serializers.serialize("json", bitmaps)
   return http.HttpResponse(data, mimetype="application/javascript")
+
+def projectStatesJSON(request, id_str):
+  states = State.objects.filter(project__id=id_str)
+  data = serializers.serialize("json", states)
+  return http.HttpResponse(data, mimetype="application/javascript")
+
+class StateForm(forms.Form):
+  name = forms.CharField(max_length=30)
+  serializedState = forms.CharField()
+
+class AddState(handler.Handler):
+  """Handler for the creation of a new project.
+  """
+
+  def authenticated(self):
+    return self.profile_type == 'Onderzoeker'
+
+  def getPostForm(self):
+    return StateForm(self.POST)
+  
+  def post(self):
+    context = self.getContext()
+
+    projectID = self.kwargs['uuid']
+
+    name = self.cleaned_data['name']
+    serializedState = self.cleaned_data['serializedState']
+
+    project_logic.handle_add_state(self.profile, name, serializedState,projectID)
+    return http.HttpResponse('success')
+  def get(self):
+    return

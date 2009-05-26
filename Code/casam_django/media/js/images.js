@@ -44,22 +44,21 @@ var AddedImage = Class.create( {
 		$('zoomImage').hide();
 	},
 	makeActive: function(){
+		console.log('before error?');
+		console.log(this.name);
 		$('mainDiv_' + this.id).setStyle({border: '1px red dashed',
 																			backgroundColor: '#ffdddd'});
+		console.log('bla');
 		// Zoom image
 		$('zoomImage').writeAttribute('src', base_path + 'imageLoader/byRatio/original/150/' + this.id);
 		$('zoomImage').show();
-		
-		// Add to bottom of big_images, so that it shows as the active layer
-		this.imageElement.remove();
-		$('big_images').insert( { bottom : this.imageElement	});
-		
-		// Restore potential measurement pins
-		var mm_array = $$('img.mmPointer')
-		for(var i = 0; i < mm_array.length; i++){
-			mm_array[i].show();
+		console.log('bladie');
+		if(this.imageElement.parentNode){
+			this.imageElement.remove();
 		}
-																									
+		console.log('before insert');
+		$('big_images').insert( { bottom : this.imageElement	});
+		console.log('after insert');
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id)
 				measurements[i].setActive();			
@@ -225,16 +224,21 @@ function removeImage(imageID){
 	Element.remove($('addedImage_'+imageID))
 	
 	$('bottomDiv' + imageID).update();
-	$('sliderDiv' + imageID).update();
 }
 
 function checkActiveLayer(){
 	// $('zoomImage').hide();
+	console.log('active layer check');
+	console.log(''+addedImages.length);
+
 	if (addedImages.length > 0) {
 		addedImages.each(function(item){
 			item.makeNonActive();
 		});
+		console.log('active layer check2');
+
 		addedImages[0].makeActive();
+		console.log('active layer check3');
 		
 		// Set sequence so that active layer is always on top
 		id_array = Sortable.sequence("pictures");
@@ -246,12 +250,17 @@ function checkActiveLayer(){
 				break;
 			}
 		}
+		
 		id_array.splice(0, 0, temp);
+
+
 		Sortable.setSequence("pictures", id_array);
+
 	}
 	else{
 		$('zoomImage').hide();
 	}
+	
 }
 
 function addSlider(div, object){

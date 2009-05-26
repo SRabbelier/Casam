@@ -107,6 +107,7 @@ function getImageBitmaps(imgid) {
 			url,
 			{
 				method : 'get',
+				asynchronous: false,
 				onSuccess : function(transport, json) {
 					
 					var json = transport.responseText.evalJSON();

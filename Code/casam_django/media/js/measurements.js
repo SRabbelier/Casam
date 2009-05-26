@@ -292,6 +292,7 @@ function getImageMeasurements(imgid) {
 			+ '?time=' + new Date().getTime();
 	new Ajax.Request(url, {
 			method : 'get',
+			asynchronous: false,
 			onSuccess : function(transport, json) {
 				var json = transport.responseText.evalJSON();
 				var mainDiv = new Element('div');

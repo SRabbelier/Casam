@@ -16,8 +16,8 @@ import casam.views.imageloader
 import casam.views.bitmap_dump
 import casam.views.tag
 import casam.views.potential_measurement
-import casam.views.pdm
-import casam.logic.measurement
+#import casam.views.pdm
+#import casam.logic.measurement
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
@@ -44,7 +44,6 @@ urlpatterns = patterns('',
     (r'^project/imageManager/%s$' % ID_STR, casam.views.project.ImageManager()),
     (r'^project/show/%s$' % ID_STR, casam.views.project.Home()),
     (r'^pm/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurement()),
-    (r'^pmt/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurementType()),
     (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
     (r'^tag/select/%s$' % ID_STR, casam.views.tag.SelectTag()),
     (r'^imageLoader/byRatio/%s/%s/%s$' % (IMG_TYPE, IMG_RATIO, UUID), casam.views.imageloader.RatioHandler()),
@@ -64,6 +63,7 @@ urlpatterns = patterns('',
     (r'^JSON/projectImages/(.*)$', casam.views.project.projectImagesJSON),
     (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
     (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
+    (r'^JSON/projectStates/(.*)$', casam.views.project.projectStatesJSON),
     (r'^JSON/projectPotentialMeasurements/(.*)$', casam.views.project.projectPotentialMeasurementsJSON),
     (r'^JSON/projectImageCurrentMeasurements/(.*)$', casam.views.project.projectImageCurrentMeasurementsJSON),
     (r'^JSON/projectImageBitmaps/(.*)$', casam.views.project.projectImageBitmapsJSON),
@@ -74,9 +74,10 @@ urlpatterns = patterns('',
     (r'^AJaX/deleteImages/$', casam.views.main.deleteImages()),
     (r'^AJaX/deleteMeasurement/$', casam.views.main.deleteMeasurement()),
     (r'^AJaX/deletePotentialMeasurement/$', casam.views.main.deletePotentialMeasurement()),
-    
-    #VTK
-    (r'^vtk/noeska/PDMTest$', casam.views.pdm.PDMTestView()),
+    (r'^AJaX/addState/%s$' % UUID, casam.views.project.AddState()),
+
+   #VTK
+    #(r'^vtk/noeska/PDMTest$', casam.views.pdm.PDMTestView()),
     #(r'^vtk/noeska/(.*)$', casam.logic.measurement.getMeasurementsForProject),
 )
 

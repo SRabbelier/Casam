@@ -194,3 +194,12 @@ div.savedChangeDiv{
 a.saveChangeButton{
   display: block;
 }
+
+.stateDiv{
+	cursor:pointer;
+	margin:5px;
+	border:1px solid black;
+}
+.stateDivDate{
+	font-style:italic;
+}
