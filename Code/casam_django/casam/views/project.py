@@ -24,7 +24,7 @@ from casam.views import handler
 class ProjectForm(forms.Form):
   name = forms.CharField(max_length=50)
   description = forms.CharField(max_length=500, widget=forms.widgets.Textarea())
-  tags = forms.ModelMultipleChoiceField(Tag.objects.all())
+  tags = forms.ModelMultipleChoiceField(Tag.objects.all(),required=False)
 
 
 class Home(handler.Handler):

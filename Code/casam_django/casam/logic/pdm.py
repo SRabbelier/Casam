@@ -7,17 +7,35 @@ from casam.logic import point_distribution_model as pdm
 from django.conf import settings
 
 def tempPDM():
+  '''
+  Temporary PDM Creation without providing project, selected possible measurements and selected images
+  '''
   pdmodel = pdm.makePDM()
   project = Project.objects.all()[0] 
   potentials = PotentialMeasurement.objects.all().filter(project=project)
-  pointsets = [] 
+
+  totalmeasure = 0
   measurementcount = len(Measurement.objects.select_related().filter(mogelijkemeting=potentials[0]))
   for measure in range(measurementcount):
     coords = []
     for pot in potentials:
       measurements = Measurement.objects.select_related().filter(mogelijkemeting=pot)
-      coords.append((float(measurements[measure].x),float(measurements[measure].y),0.0)) 
-    pdmodel.addPointSet(coords)    
+      if totalmeasure == 0:
+        totalmeasure = len(measurements)
+        coords.append((float(measurements[measure].x),float(measurements[measure].y),0.0))
+      elif totalmeasure == len(measurements): 
+        coords.append((float(measurements[measure].x),float(measurements[measure].y),0.0))
+      else:
+        totalmeasure = 0
+        break   
+    if totalmeasure != 0:
+      pdmodel.addPointSet(coords)
+    else:
+      #raise some kind of exception here somehow!
+      pdmodel = pdm.makePDM()
+      pdmodel.addPointSet([(100,100,0)])
+      pdmodel.addPointSet([(250,150,0)])
+      break
   return pdmodel
 
 def createPDM(project_id,selectedPMs,selectedImages):
@@ -27,14 +45,29 @@ def createPDM(project_id,selectedPMs,selectedImages):
   pdmodel = pdm.makePDM()
   project = Project.objects.get(id=project_id)
   potentials = PotentialMeasurement.objects.all().filter(project=project).filter(id__in=selectedPMs)
+  
+  totalmeasure = 0
   measurementcount = len(Measurement.objects.select_related().filter(mogelijkemeting=potentials[0]))
-  #TODO check if measurements are valid
   for measure in range(measurementcount):
     coords = []
     for pot in potentials:
       measurements = Measurement.objects.select_related().filter(mogelijkemeting=pot)
-      coords.append((float(measurements[measure].x),float(measurements[measure].y),0.0)) 
-    pdmodel.addPointSet(coords)
+      if totalmeasure == 0:
+        totalmeasure = len(measurements)
+        coords.append((float(measurements[measure].x),float(measurements[measure].y),0.0))
+      elif totalmeasure == len(measurements): 
+        coords.append((float(measurements[measure].x),float(measurements[measure].y),0.0))
+      else:
+        totalmeasure = 0
+        break   
+    if totalmeasure != 0:
+      pdmodel.addPointSet(coords)
+    else:
+      #raise some kind of exception here somehow!
+      pdmodel = pdm.makePDM()
+      pdmodel.addPointSet([(100,100,0)])
+      pdmodel.addPointSet([(250,150,0)])
+      break
   return pdmodel
       
 def analyse(pdmodel, projectid, size):
