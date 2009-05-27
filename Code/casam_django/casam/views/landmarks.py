@@ -51,7 +51,7 @@ class LandmarkSaver(handler.Handler):
     img = OriginalImage.objects.filter(id=self.cleaned_data['imgid']).get()
     mmeting = PotentialMeasurement.objects.select_related().get(id=id);
     
-    if (mmeting.type.soort == 'B'):
+    if (mmeting.soort == 'B'):
       return http.HttpResponseServerError()
       
     #lets check if there is already one measurement for this image of this type

@@ -66,6 +66,7 @@ class Measurement(models.Model):
 class Bitmap(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   image = models.ForeignKey('OriginalImage')
+  mogelijkemeting = models.ForeignKey('PotentialMeasurement')
   imagewidth = models.CharField(max_length=4)
   imageheight = models.CharField(max_length=4)
   path = models.CharField(max_length=200)

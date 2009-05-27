@@ -436,7 +436,21 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 		option.update(potname);
 		var optgroup = $('optgroup_'+pottype).next();
 		$('mmmeting').add(option, optgroup);
+  } else{
+  	var link = new Element('a');
+		link.writeAttribute('href', '#');
+		link.writeAttribute('id', 'paintoverLink_'+potid);
+		link.addClassName('paintoverLink');
+		$('mm'+potid).insert({before: link});
+		link.update($('mm'+potid));
+  	observeEditLink(potid);
   }
+}
+function observeEditLink(potid){
+	$('paintoverLink_'+potid).observe('click', function(){
+  		if (addedImages.length > 0)
+  			loadEditScreen(addedImages[0].id);
+  	});
 }
 
 function removeMeasurements(imageID){

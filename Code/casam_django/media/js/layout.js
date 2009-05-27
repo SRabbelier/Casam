@@ -367,7 +367,7 @@ function closePopupAndReloadPotentialMeasurementTypes(pottype){
 	}
 }
 
-function loadEditScreen(id, bmid) {
+function loadEditScreen(id, bmid, potid) {
 	checkAuthenticationAndExecute( function() {
 
 		flashpainting = true;

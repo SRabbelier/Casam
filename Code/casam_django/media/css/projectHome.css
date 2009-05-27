@@ -107,6 +107,9 @@ div.whiteFrame_bottom_center {
 img.smallPictureButton{
 	border:0px;
 }
+img.paintoverLink{
+	border:0px;
+}
 
 #big_images{
 	position:relative;
@@ -138,6 +141,7 @@ img.smallPictureButton{
 img.mmPointer{
   float: left;
   position: relative;
+  border: 0px;
 }
 
 .pintooltip{
