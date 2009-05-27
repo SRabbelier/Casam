@@ -1,6 +1,9 @@
 {% extends 'popup.html' %}
 {% block title %}Nieuw tag{% endblock title %}
+{% block beforeJSLoad%}
+     $('id_tags').writeAttribute('size', Math.min(5, $('id_tags').childElements().length))
 
+{% endblock beforeJSLoad%}
 {% block body%}
 
 <a href="{{ BASE_PATH }}tag/new/{{ id }}" ><img src="{{BASE_PATH}}media/img/add.jpg" style="border:0px;" /></a>

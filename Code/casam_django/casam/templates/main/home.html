@@ -152,7 +152,7 @@
 	  document.observe("dom:loaded", function(){
 		  checkAuthenticationAndExecute(function(){
 		  		getProjects("{{tags|escapejs}}");
-
+		  		$('id_tags').writeAttribute('size', Math.min(5, $('id_tags').childElements().length))
 		  		//Change the functionality of the tag-form to not reload te page
 		  		var tagForm = $('whiteFrame_tagSelection_container').select('form')[0];
 					//Hack to disable standard form submit functionality

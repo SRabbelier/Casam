@@ -12,6 +12,8 @@
 	<script src="{{ BASE_PATH }}media/js/scriptaculous.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		document.observe("dom:loaded",function(){
+      {% block beforeJSLoad %}
+      {% endblock beforeJSLoad %}
 			{% block customJSLoad %}
 			$('popupContainer').setStyle({
 				display:'table',
