@@ -189,18 +189,6 @@ function initialisePictureTab(pictureJSON_array) {
 	// Generate a container for the pictures
   $('tab_pictures').insert(new Element('div',{'id':'pictures'}));
   
-	// Put below it a bar with tools
-	var toolbar = new Element('div');
-	toolbar.setStyle("clear:both;float:right;");
-	var addLink = new Element('a',{'href':'#'});
-	var addImage = new Element('img',{'src':base_path+'media/img/pencil.jpg','id':'addPictureButton','class':'smallPictureButton'});
-	addLink.insert(addImage);
-	toolbar.insert(addLink);
-	Event.observe(addLink,'click',function(){
-		popupIFrame(base_path+'project/imageManager/'+projectID,670,400);
-	});
-	$('tab_pictures').insert(toolbar);
-	
   // Create a picture container for each picture
   for(i=0; i < pictureJSON_array.length; i++)
 		makePictureContainer(pictureJSON_array[i]);

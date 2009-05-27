@@ -48,7 +48,7 @@ document.observe("dom:loaded", function()
 		
 		// Add tabs in whiteFrame
 		$('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), false, false));
-		$('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true, false));
+		$('leftFrame_content').insert(newTab('Pictures', $('tab_layers'), true, false));
 		
 		$('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true, false));
 		$('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true, false));
@@ -178,7 +178,21 @@ document.observe("dom:loaded", function()
 	<div id="tags" style="float:right;width:70px;"></div>
 </div>
 
-<div id="tab_pictures" class="tabContent"></div>
+<div id="tab_layers" >
+	<div id="tab_pictures" class="tabContent" style="max-height: 300px;	overflow-x:hidden;overflow-y:scroll;"></div>
+	<div id="tab_picture_tools" class="tabContent" style="height: 100px;">
+		<div>Bitmaps: |-----|------------------|</div>
+		<a href="#" onclick="">
+			Analyse selected landmarks
+		</a><br />
+		<a href="#" onclick="">
+			<img src="{{ BASE_PATH }}media/img/save.jpg" class="smallPictureButton">
+		</a> Save view
+		<a href="#" onclick="popupIFrame('{{ BASE_PATH }}project/imageManager/{{ id }}',670,400);">
+			<img src="{{ BASE_PATH }}media/img/pencil.jpg" id="addPictureButton" class="smallPictureButton">
+		</a> Manage images
+	</div>
+</div>
 
 <div id="tab_papers" class="tabContent"></div>
 <div id="tab_measurements" class="tabContent">
