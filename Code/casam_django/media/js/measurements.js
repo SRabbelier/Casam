@@ -212,6 +212,7 @@ function saveLandMark(mx, my, potid, imgid) {
 	}
 }
 
+// Load MMMM Measurement Decision Div
 function LoadMMDD(id, imgID) {
 	var viewportOffset = $('big_images').viewportOffset();
 	var mousex = $('MouseX').value;

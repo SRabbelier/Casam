@@ -32,12 +32,23 @@ var AddedImage = Class.create( {
 		this.opacity = opacityValue;
 		this.imageElement.setOpacity(this.opacity);
 	},
-	makeNonActive: function(){
+	makeNonActive: function(activeImage){
 		$('mainDiv_' + this.id).setStyle({border: 'none',
 																			backgroundColor: ''});
+		
+		// Make measurements inactive (green and fire LoadMMDD on click)
 		for(var i = 0; i < measurements.length; i++){
-			if(measurements[i].imageid == this.id)
+			if(measurements[i].imageid == this.id) {
+				
+				// Make green and non-draggable
 				measurements[i].nonActive();			
+				
+				// Redirect a click
+				measurements[i].pinDiv.observe('click', function(e) {
+					hideLandmarkTooltip(e);
+					LoadMMDD('', addedImages[0].id);
+				});
+			}
 		}
 		
 		$('zoomImage').setAttribute('src', '');
@@ -63,8 +74,12 @@ var AddedImage = Class.create( {
 		}
 
 		for(var i = 0; i < measurements.length; i++){
-			if(measurements[i].imageid == this.id)
-				measurements[i].setActive();			
+			if(measurements[i].imageid == this.id) {
+				
+				measurements[i].pinDiv.stopObserving('click');
+				
+				measurements[i].setActive();							
+			}
 		}
 	},
 	addSelfToImages: function(full) {

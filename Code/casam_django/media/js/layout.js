@@ -275,8 +275,7 @@ function makePictureContainer(pictureJSON) {
 }
 
 function addMeasurementsToPictureContainer(imgid, json) {
-	
-	
+
 	// Create overall container
 	var mainDiv = new Element('div');
 	mainDiv.writeAttribute('id', 'measurementsList_'+imgid);
@@ -285,6 +284,7 @@ function addMeasurementsToPictureContainer(imgid, json) {
 	// Add all measurements
 	var subtab = '';
 	for (i = 0; i < json.length; i++) {
+
 		if (json[i].model == 'casam.potentialmeasurementtype'){
 			subtab = createImageMeasurementSubTab(json[i].pk, json[i].fields.name, imgid);
 			mainDiv.insert(subtab);
