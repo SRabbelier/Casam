@@ -35,7 +35,7 @@
   
   function getProjectPotentialMeasurements(){
     
-    var pottype_array = parent.$('potSubTabType');
+    var pottype_array = parent.$('possiblemeasurements').childElements();
     for(var i = 0; i < pottype_array.length; i++){
       var potmeas_array = pottype_array[i].childElements()[2].childElements();
       var typeDiv = new Element('div');
