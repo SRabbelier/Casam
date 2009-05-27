@@ -80,13 +80,13 @@ document.observe("dom:loaded", function()
 			resizeScreenElements(false);
 		});
 		Event.observe('editTagsLink','click',function(){
-			popupIFrame(base_path+'tag/select/{{ id }}',350,150);
+			popupIFrame(base_path+'tag/select/{{ id }}');
 		});
 		Event.observe('editMeasurementLink','click',function(){
-      popupIFrame(base_path+'pm/new/{{ id }}',350,150);
+      popupIFrame(base_path+'pm/new/{{ id }}');
     });
     Event.observe('editMeasurementTypeLink', 'click', function(){
-			popupIFrame(base_path+'pmt/new/{{ id }}', 350, 150);
+			popupIFrame(base_path+'pmt/new/{{ id }}');
 		});
     Event.observe('undoLink','click',function(){
     	undoLastChange();

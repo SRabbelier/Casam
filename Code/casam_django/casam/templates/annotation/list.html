@@ -1,5 +1,76 @@
-{% for annotation in annotations %}
+{% extends 'popup.html' %}
 
-{% include 'annotation/show.html' %}
 
-{% endfor %}
+
+{% block customJSLoad %}
+			var url = base_path + 'JSON/projectAnnotations/{{project_id}}';
+			new Ajax.Request(url,{
+				onSuccess:function(transport){
+					var json = transport.responseText.evalJSON();
+					for(i = 0;i<json.length;i++){
+						var annotationDiv = new Element('div');
+
+						var annotationDeleteLink = new Element('a',{'href':'#'});
+						var annotationDeleteIMG = new Element('img',{'src':base_path+'media/img/delete.gif'});
+						annotationDeleteLink.update(annotationDeleteIMG);
+						annotationDiv.insert(annotationDeleteLink);
+						annotationDeleteIMG.addClassName('annotationDeleteIMG');
+						annotationDeleteIMG.addClassName('image_button');
+						
+						var annotationName = new Element('div');
+						annotationName.insert(json[i].fields.name);
+						annotationDiv.insert(annotationName);
+						annotationName.addClassName('annotationName');
+												
+						$('annotationsContainer').insert(annotationDiv);
+						annotationDiv.addClassName('annotationDiv');
+						makeDeleteAnnotation(json[i].pk,json[i].fields.name ,annotationDeleteLink, annotationDiv);
+
+					}
+					$('popupContainer').setStyle({
+						display:'table',
+						margin:'0px',
+						padding:'10px'
+					});
+		
+					var width = $('popupContainer').getWidth()+20;
+					var height = $('popupContainer').getHeight()+20;
+					parent.changePopupDimensions(width,height);
+										
+				}
+			}
+			);
+{% endblock customJSLoad%}
+
+{% block head %}
+	<script type="text/javascript">
+		function makeDeleteAnnotation(id, name, button, container){
+			button.observe('click',function(){
+				if(confirm('Are you sure you want to delete annotation: ' +name + '?' )){
+					var url = base_path + 'AJaX/deleteAnnotations/'
+					new Ajax.Request(url,{
+						method:'get',
+						parameters:{'annotationID':id},
+						onSuccess:function(){
+							new Effect.Fade(container);
+						},
+						onFailure:function(){
+							alert('Something went wrong while deleting the annotation');
+						}
+					});
+				}
+				
+			});
+		}
+	</script>
+{% endblock head %}
+
+{% block body%}
+<div id="annotationsContainer">
+	
+</div>
+
+<div id="addAnnotationLink">
+<a href="{{BASE_PATH}}annotation/new/{{project_id}}">Make new annotation</a>
+</div>
+{% endblock body%}

@@ -1,6 +1,29 @@
 body{	
 	background-color:#DDDDDD;
-	text-align:center;
-	margin:0px;
+	text-align:left;
+	margin:0px auto;
 	padding:0px;
+}
+
+#popupContainer{
+	margin:0px auto;	
+}
+
+.annotationName{
+	float:left;	
+}
+.annotationDeleteIMG{
+	float: left;
+}
+
+.annotationDiv{
+	clear:both;
+}
+
+#annotationsContainer{
+	clear:both;
+}
+
+#addAnnotationLink{
+	clear:both;
 }

@@ -66,6 +66,7 @@ class ListAnnotations(handler.Handler):
 
     context = self.getContext()
     context['annotations'] = annotations
+    context['project_id'] = project_id
 
     content = loader.render_to_string('annotation/list.html', dictionary=context)
     return http.HttpResponse(content)
@@ -98,7 +99,7 @@ class NewAnnotation(handler.Handler):
 
     if self.GET.get('type') not in ['file', 'url']:
       context['submit_value'] = 'choose'
-
+      
     content = loader.render_to_string('annotation/new.html', dictionary=context)
 
     return http.HttpResponse(content)
@@ -125,4 +126,4 @@ class NewAnnotation(handler.Handler):
     # TODO : rewrite this to use UUID instead of original filename
     annotation_logic.handle_add_annotation(name, url, project_id)
 
-    return http.HttpResponseRedirect(settings.BASE_PATH)
+    return http.HttpResponseRedirect(settings.BASE_PATH + 'annotation/list/' + project_id)

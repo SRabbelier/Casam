@@ -43,14 +43,16 @@ function popupIFrame(url,width,height){
 			new Effect.Appear('popup_overlay',{to:0.8});
 		}
 		popupActive = true;
-		if(!width)width=300;
-		if(!height)height=200;
+		if(!width)width=600;
+		if(!height)height=400;
 		
 		var iF = new Element('iframe', {'src':url});
 		$('popup').update(iF);
 		
 		$('popup').setWidth(width);
 		$('popup').setHeight(height);
+		//$('popup').setWidth(width);
+		//$('popup').setHeight(height);
 		$('popup').setStyle({
 			zIndex:9999,
 			top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
@@ -62,13 +64,14 @@ function popupIFrame(url,width,height){
 	
 }
 function changePopupDimensions(width,height){
-	$('popup').setWidth(width);
-	$('popup').setHeight(height);
+	$('popup').setWidth(width+1);
+	$('popup').setHeight(height+1);
 	$('popup').setStyle({
 		zIndex:9999,
 		top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
 		left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
 		});
+	console.log('Update popup size width:'+width+' height:'+height)
 }
 
 function closePopup(){

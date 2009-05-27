@@ -10,6 +10,7 @@ from django.template import loader
 from django.utils import simplejson
 from django.core import serializers
 
+from casam.models import Annotation
 from casam.models import Project
 from casam.models import OriginalImage
 from casam.models import Tag
@@ -86,6 +87,17 @@ class deleteProjects(handler.Handler):
     projectIDs = self.GET.getlist('projectID')
     for projectID in projectIDs:
       Project.objects.all().get(id = projectID).delete()
+    return http.HttpResponse("success")
+  
+class deleteAnnotations(handler.Handler):
+  def getPostForm(self):
+    return SelectTagForm(self.POST)
+  
+  def get(self):
+    #print self.cleaned_data['tags']
+    annotationIDs = self.GET.getlist('annotationID')
+    for annotationID in annotationIDs:
+      Annotation.objects.all().get(id = annotationID).delete()
     return http.HttpResponse("success")
   
 class deleteImages(handler.Handler):

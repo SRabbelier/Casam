@@ -7,7 +7,7 @@ function getProjectAnnotations(){
 		annotationManagerLink.update(annotationManagerImage);
 		annotationManagerLink.observe('click',
 			function(){
-				popupIFrame(base_path+'annotation/new/'+projectID,100,100);
+				popupIFrame(base_path+'annotation/list/'+projectID);
 			}
 		);
 		

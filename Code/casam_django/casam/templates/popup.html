@@ -13,18 +13,20 @@
 	<script type="text/javascript">
 		document.observe("dom:loaded",function(){
 			{% block customJSLoad %}
-			
 			$('popupContainer').setStyle({
 				display:'table',
 				margin:'0px',
-				padding:'0px'
+				padding:'10px'
 			});
-			
-			var width = $('popupContainer').getWidth()+20;
-			var height = $('popupContainer').getHeight()+30;
+
+			var width = $('popupContainer').getWidth()+0;
+			var height = $('popupContainer').getHeight()+20;
 			parent.changePopupDimensions(width,height);
-			//alert(document.getWidth());
+
 			{% endblock customJSLoad %}
+			$('popupBody').setStyle({
+				overflow:'auto'
+			});
 		});
 	</script>
 	
@@ -35,7 +37,7 @@
 {% endblock head %}
 </head>
 
-<body>
+<body style="overflow:hidden" id="popupBody">
 <div id="popupContainer">
 {% block body %}
 
