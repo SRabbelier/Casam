@@ -131,8 +131,8 @@ class PointDistributionModel(object):
       self.filterPCA.GetParameterisedShape(b, extreme)
       self.analyzedGrids.append(extreme)
        
-    for pos in range (self.analyzedGrids[0].GetNumberOfCells()):
-      for i in range(0,4):
+    for pos in range (self.analyzedGrids[0].GetNumberOfCells()):#the number of cells in each grid is exactly the same
+      for i in range(0,4):#2 modes of variation with a minimum and maximum
         bounds = self.analyzedGrids[i].GetCell(pos).GetBounds()
         self.variationPositions.append((bounds[0],bounds[2]))
   
