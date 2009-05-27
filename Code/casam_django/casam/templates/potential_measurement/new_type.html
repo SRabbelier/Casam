@@ -21,11 +21,11 @@
   });
   
   function getPotentialTypes(){
-    var type_array = parent.$$('div.potSubTabType')
+    var type_array = parent.$$('div.subTabHeader')
     for(var i = 0; i < type_array.length; i++){
       var containerDiv = new Element('div', {'id': type_array[i].childElements()[2].id.slice(9)});
       var textDiv = new Element('div');
-      textDiv.update(type_array[i].down('b').innerHTML)
+      textDiv.update(type_array[i].down('span').innerHTML)
       containerDiv.insert(textDiv);
       
       var checkbox = new Element('input', {'type': 'checkbox',

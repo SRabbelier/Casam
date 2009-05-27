@@ -287,7 +287,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 		}
 	}
 
-	var typename = $('potmeas_'+potid).up().up().down('b').innerHTML;
+	var typename = $('potmeas_'+potid).up().up().down('span').innerHTML;
 	var typeid = $('potmeas_'+potid).up().id.slice(9);
 	var measname = name + ' ( '+typename+' )';
 
@@ -386,8 +386,8 @@ function createPotentialMeasurementType(typeid, typename){
 	var container = new Element('div');
 	container.insert(mainDiv);
 
-	var tab_potentialtypes = newTab(typename, mainDiv, true);
-	tab_potentialtypes.addClassName('potSubTabType');
+	var tab_potentialtypes = newTab(typename, mainDiv, true, true);
+	tab_potentialtypes.writeAttribute('id','potSubTabType');
 	$('possiblemeasurements').insert(tab_potentialtypes);		
 }
 
@@ -411,7 +411,7 @@ function createPotentialMeasurement(potid, pottype, potname) {
 
 	$('typesList'+pottype).insert(pmmContainerDiv);
 	
-	var typename = $('typesList'+pottype).up().down('b').innerHTML;
+	var typename = $('typesList'+pottype).up().down('span').innerHTML;
 
 	var option = new Element('option', {
 		'id' : 'option' + potid,

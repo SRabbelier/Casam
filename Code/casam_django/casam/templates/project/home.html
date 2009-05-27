@@ -46,20 +46,19 @@ document.observe("dom:loaded", function()
 {
   checkAuthenticationAndExecute(function(){
 		
-     // Add tabs in whiteFrame
-     $('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true));
-     $('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true));
-     
-     $('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true));
-     $('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false));
-     $('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false));  
-     $('rightFrame_content').insert(newTab('Other', $('tab_attributes'), true));
-     $('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true));
-     $('rightFrame_content').insert(newTab('States', $('tab_states'), true));
-	 $('zoomImage').hide();
+		// Add tabs in whiteFrame
+		$('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true, false));
+		$('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true, false));
+		$('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true, false));
+		$('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false, false));
+		$('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false, false));  
+		$('rightFrame_content').insert(newTab('Action history', $('tab_attributes'), true, false));
+		$('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true, false));
+		$('rightFrame_content').insert(newTab('States', $('tab_states'), true, false));
+		$('zoomImage').hide();
 
 	  // Add mouse listener for image
-     Event.observe('big_images','mousemove', getMouseXY);
+		Event.observe('big_images','mousemove', getMouseXY);
 
 		// Load images
 		getProjectImages(false);
@@ -172,29 +171,31 @@ document.observe("dom:loaded", function()
 <div id="tab_projectinfo" class="tabContent"><b>{{ project }}</b><br>
 <p>{{ project.description }}</p>
 </div>
+
 <div id="tab_pictures" class="tabContent"></div>
+
 <div id="tab_papers" class="tabContent"></div>
 <div id="tab_measurements" class="tabContent">
-  <a id="editMeasurementLink" style="float: right; clear: both;" href="#">
-  <img src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
-  <a id="editMeasurementTypeLink" style="float: right; clear: both;" href="#">
-  <img src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
-<div id="possiblemeasurements"></div>
+
+	<!-- List containting all measurements -->
+	<div id="possiblemeasurements"></div>
+	
+	<!-- Toolbar -->
+  <a id="editMeasurementLink" href="#">
+  <img src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /> New measurement</a>
+  <a id="editMeasurementTypeLink" href="#">
+  <img src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /> New type</a>
+
 </div>
+
 <div id="tab_tags" class="tabContent"><a href="#"
 	id='editTagsLink' style="float: right; clear: both;"><img
 	src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
-<div id="tags"></div>
+	<div id="tags"></div>
 </div>
+
 <div id="tab_attributes" class="tabContent">
 <table style="width: 200px">
-	<tr>
-		<th>Coordinates</th>
-	</tr>
-	<tr>
-		<td><input type="text" id="MouseX" value="0" size="4"> X<br />
-		<input type="text" id="MouseY" value="0" size="4"> Y</td>
-	</tr>
 	<tr>
 		<th>Changes</th>
 	</tr>
@@ -208,9 +209,13 @@ document.observe("dom:loaded", function()
 	</tr>
 </table>
 </div>
+
 <div id="tab_zoom" class="tabContent">
 <div id="zoomContent"><img id="zoomImage" src="" /> <img
 	src="{{BASE_PATH}}media/img/hud.gif" id="crosshair" /></div>
+
+Coordinates:<input type="text" id="MouseX" value="0" size="3">x<input type="text" id="MouseY" value="0" size="3">
+
 </div>
 <div id="tab_states"> </div>
 

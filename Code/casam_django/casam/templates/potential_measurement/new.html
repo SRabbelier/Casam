@@ -24,11 +24,18 @@
     closeButton.observe('click',function(){
       parent.closePopupAndReloadPotentialMeasurements('');
     });
+
+		parent.changePopupDimensions(document.viewport.getWidth(),document.viewport.getHeight());
+		
+		//Blackout the standard popup loader which gives the wrong size
+		{% block customJSLoad %}
+
+		{% endblock customJSLoad %}
   });
   
   function getProjectPotentialMeasurements(){
     
-    var pottype_array = parent.$$('div.potSubTabType');
+    var pottype_array = parent.$('potSubTabType');
     for(var i = 0; i < pottype_array.length; i++){
       var potmeas_array = pottype_array[i].childElements()[2].childElements();
       var typeDiv = new Element('div');

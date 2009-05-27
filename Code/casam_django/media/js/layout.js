@@ -68,24 +68,31 @@ function resizeBigImages(){
 	var remainingHeight = document.viewport.getHeight() - 150;
 	$('big_images').setHeight(remainingHeight);
 	
-
 	//Resize the white frames 
 	remainingHeightWhiteFrame = remainingHeight - 36;
 	$('leftFrame').setHeight(remainingHeightWhiteFrame);
 	$('rightFrame').setHeight(remainingHeightWhiteFrame);	
 }
 
-function newTab(tab_title, content, open) {
+function newTab(tab_title, content, open, sub) {
 	var tabContainer = new Element('div');
+	// Attach right style-class to container
+	if (sub)
+		tabContainer.addClassName("subTabContainer");
+	else
+		tabContainer.addClassName("tabContainer");
+	
 	var tabHeader = new Element('div');
 	var tabLine = new Element('div');
+
+	// Construct tabBody
 	if (Object.isElement(content)) {
 		if(content.parentNode != null)
 			content.parentNode.removeChild(content);
 		tabBody = content;
-	} else {
+	} else
 		var tabBody = new Element('div', {'id':content});
-	}
+
 	if (!open)
 		tabBody.hide();
 
@@ -107,8 +114,12 @@ function newTab(tab_title, content, open) {
 			+ "media/img/fold_down.gif");
 	foldDownImageRight.setStyle("float:right;margin:2px;");
 
-	tabHeader.style.backgroundColor = "#dddddd";
-	tabHeader.style.cursor = "pointer";
+	// Attach right style-class to tab-header
+	if (sub)
+		tabHeader.addClassName("subTabHeader");
+	else
+		tabHeader.addClassName("tabHeader");
+	
 	tabHeader.observe('click', function() {
 		Effect.toggle(tabBody, 'blind', {
 			duration : 0.5
@@ -121,7 +132,7 @@ function newTab(tab_title, content, open) {
 			this.insert(foldDownImageLeft);
 			this.insert(foldDownImageRight);
 		}
-		this.innerHTML += "<b>" + tab_title + "</b>";
+		this.insert("<span>"+tab_title+"</span>");
 	});
 
 	if (open) {
@@ -131,12 +142,16 @@ function newTab(tab_title, content, open) {
 		tabHeader.insert(foldDownImageLeft);
 		tabHeader.insert(foldDownImageRight);
 	}
-	tabHeader.innerHTML += "<b>" + tab_title + "</b>";
+	tabHeader.insert("<span>"+tab_title+"</span>");
 
-	tabLine.style.height = "2px";
+	// Attach right style-class to tab-line
+	if (sub)
+		tabLine.addClassName("subTabLine");
+	else
+		tabLine.addClassName("tabLine");
+	
 	tabLine.style.backgroundImage = "url('" + base_path
 			+ "media/img/bar_middle.jpg')";
-	tabLine.style.backgroundRepeat = "repeat-x";
 	tabLine.innerHTML = "<img src=\"" + base_path
 			+ "media/img/bar_left.jpg\" style=\"float:left;\" />"
 			+ "<img src=\"" + base_path
@@ -261,6 +276,7 @@ function makePictureContainer(pictureJSON) {
 
 function addMeasurementsToPictureContainer(imgid, json) {
 	
+	
 	// Create overall container
 	var mainDiv = new Element('div');
 	mainDiv.writeAttribute('id', 'measurementsList_'+imgid);
@@ -292,12 +308,12 @@ function addMeasurementsToPictureContainer(imgid, json) {
 			i++;
 		}
 	}
-	
+
 	// Add this subtab
-	var tab_measurements = newTab('Measurements', mainDiv, true);
+	var tab_measurements = newTab('Measurements', mainDiv, true, true);
 	tab_measurements.id = 'measurementsDiv_'+imgid;
 	tab_measurements.addClassName('imgSubTabMeasurements');
-	$('bottomDiv_' + imgid).insert({ top: tab_measurements });	
+	$('bottomDiv_' + imgid).insert({ top: tab_measurements });
 }
 
 function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
@@ -322,7 +338,7 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid));
 	
 	// Add this subtab
-	var tab_bitmaps = newTab('Bitmaps', mainDiv, true);
+	var tab_bitmaps = newTab('Bitmaps', mainDiv, true, true);
 	tab_bitmaps.id = 'bitmapsDiv_'+imgid;
 	tab_bitmaps.addClassName('imgSubTabBitmaps');
 	$('bottomDiv_' + imgid).insert({ bottom: tab_bitmaps });
