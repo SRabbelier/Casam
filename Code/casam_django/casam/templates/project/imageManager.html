@@ -95,11 +95,7 @@ function getProjectImages()
 
 		document.observe('dom:loaded',function(){
 			getProjectImages();
-			var closeButton = new Element('input',{'type':'button','value':'Close image manager'});
-			$('closeContainer').insert(closeButton);
-			closeButton.observe('click',function(){
-				parent.closePopup();
-			});
+
 			});	
 		parent.changePopupDimensions(670,400);
 		
@@ -110,7 +106,6 @@ function getProjectImages()
 </script>
 {%endblock head%}
 {% block body %}
-	<div><h1>Image manager</h1></div>
+	<div><h2>Image manager</h2></div>
 	<div id="images"></div>
-	<div id="closeContainer"></div>
 {% endblock body %}

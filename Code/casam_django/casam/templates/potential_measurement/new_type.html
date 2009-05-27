@@ -4,12 +4,10 @@
 
 {% block head %}
 <script type="text/javascript">
+	Event.observe(window,'unload',function(){
+	  parent.closePopupAndReloadPotentialMeasurements('');
+	});
   document.observe('dom:loaded',function(){                                          
-    var closeButton = new Element('input',{'type':'button','value':'Close measurement type manager'});
-    $('closeContainer').insert(closeButton);
-    closeButton.observe('click',function(){
-      parent.closePopupAndReloadPotentialMeasurements('');
-    });
     getPotentialTypes();
     $('deleteTypesLink').observe('click', function(){
       var checkboxes = $$('input.typeCheckbox');
@@ -109,7 +107,5 @@
 </form>
 <div id='potentialTypesDiv'>
 <a href="#" id='deleteTypesLink'>Delete selected Types</a>
-</div>
-<div id='closeContainer'>
 </div>
 {% endblock body %}

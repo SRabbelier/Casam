@@ -88,6 +88,7 @@ function closePopup(){
 		top:'0px',
 		left:'0px'
 		});
+	$('popupIFrameContainer').update();
 	new Effect.Fade('popup_overlay',{afterFinish:
 		function(){
 			$('popup_overlay').setWidth(0);

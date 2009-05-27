@@ -6,7 +6,8 @@ body{
 }
 
 #popupContainer{
-	margin:0px auto;	
+	margin:0px auto;
+	padding:5px;
 }
 
 .annotationName{
