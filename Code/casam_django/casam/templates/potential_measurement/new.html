@@ -61,15 +61,6 @@
         parameters: {'potID': containerDiv.childElements()[1].name},
         onSuccess: function(transport, json) {
           containerDiv.remove();
-          //DELETE CURRENT MEASUREMENTS
-          var measurements = parent.measurements;
-          for(var j = 0; j < measurements.length; j++){
-            if (measurements[j].potid == containerDiv.childElements()[1].name){
-              measurements[j].erase();
-              parent.measurements.splice(j,1);
-              j = j - 1;
-            }                                             
-          }
           //DELETE POTENTIAL MEASUREMENTS
           var parentPotentialMeasurements = parent.$$('div.potMeasDiv');
           for(var i = 0; i < parentPotentialMeasurements.length; i++){
@@ -78,10 +69,16 @@
               parentPotentialMeasurements[i].remove();
             }                  
           }
-          //REMOVE TEXT OF CURRENT MEASUREMENTS
-          var currentMeasurementText = Element.select(parent.$('pictures'),'div[id=potidMeasDiv_'+containerDiv.childElements()[1].name+']');
-          for(var j = 0; j < currentMeasurementText.length; j++){
-            currentMeasurementText[j].remove();              
+          //DELETE CURRENT MEASUREMENTS
+          var measurements = parent.measurements;
+          for(var j = 0; j < measurements.length; j++){
+            if (measurements[j].potid == containerDiv.childElements()[1].name){
+              //REMOVE TEXT OF CURRENT MEASUREMENTS
+              parent.$('measidMeasDiv_'+measurements[j].id).remove();
+              measurements[j].erase();
+              parent.measurements.splice(j,1);
+              j = j - 1;
+            }                                             
           }
           //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
           var changes = parent.changes;

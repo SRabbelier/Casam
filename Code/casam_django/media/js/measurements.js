@@ -173,27 +173,23 @@ function saveLandMark(mx, my, potid, imgid) {
 							measurement.setPlace(mousex / measurement.piecex,
 									mousey / measurement.piecey);
 							measurement.place();
-							var currentMeasurements = $(
-									'measurementsList_' + measurement.imageid).childElements();
-
-							for ( var i = 0; i < currentMeasurements.length; i++) {
-								if (currentMeasurements[i].childElements()[0].name == measurement.id) {
-									currentMeasurements[i].childElements()[1]
-											.update(measurement.name + ' ('
-													+ Math.round(measurement.x)
-													+ ','
-													+ Math.round(measurement.y)
-													+ ')');
-									new Effect.Highlight(currentMeasurements[i]);
-									break;
-								}
-							}
+							$('span_'+measurement.id).update(measurement.name + ' ('
+											+ Math.round(measurement.x)
+											+ ','
+											+ Math.round(measurement.y)
+											+ ')');
+							new Effect.Highlight($('measidMeasDiv_'+measurement.id));
 						} else {
 							var json = transport.responseText.evalJSON();
 							//json[i] = meting
 							//getMainDiv to do mainDiv.insert
-							var mainDiv = $('measurementsList_' + json[0].fields.image);
-							mainDiv.insert(createMeasurement(c.lmname,
+							console.log('hallo')
+							console.log(json[0].fields.mogelijkemeting);
+							var typeid = $('potmeas_'+json[0].fields.mogelijkemeting).up().id.slice(9);
+							console.log(typeid);
+							var subtab = $('measurementTypeList_'+typeid);
+							console.log(subtab);
+							subtab.insert(createMeasurement(c.lmname,
 									mousex, mousey, json[0].pk, mm, json[0].fields.image,
 									json[0].fields.imagewidth,
 									json[0].fields.imageheight));
@@ -295,8 +291,8 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	}
 
 	var typename = $('potmeas_'+potid).up().up().down('b').innerHTML;
+	var typeid = $('potmeas_'+potid).up().id.slice(9);
 	var measname = name + ' ( '+typename+' )';
-	
 
 	var pinDiv = new Element('div');
 	pinDiv.addClassName('pinDiv');
@@ -324,7 +320,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 			imgwidth, imgheight);
 	
 	var measurementDiv = new Element('div', {
-		'id' : 'potidMeasDiv_' + potid
+		'id' : 'measidMeasDiv_' + measid
 	});
 	measurementDiv.addClassName('projectImageMeasurementDiv');
 
@@ -344,7 +340,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	checkboxes.push(check);
 
 	textspan = new Element('span', {
-		'id' : 'span_' + potid
+		'id' : 'span_' + measid
 	});
 	textspan.update(measname + ' (' + x + ', ' + y + ')')
 	measurementDiv.insert(checkbox);
@@ -360,7 +356,21 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 		measurement.nonActive();
 
 	measurements.push(measurement);
-	return measurementDiv
+	return measurementDiv;
+}
+
+function createImageMeasurementSubTab(typeid, typename, imgid){
+	var typeDiv = new Element('div');
+	typeDiv.writeAttribute('id', 'measurementTypeList_'+typeid);
+	typeDiv.addClassName('imgTypeMeasurements');
+	
+	var tempDiv = new Element('div');
+	tempDiv.insert(typeDiv);
+	
+	var subtab_measurements = newTab(typename, typeDiv, true);
+	subtab_measurements.id = 'measurementTypesDiv_'+typeid;
+	subtab_measurements.addClassName('imgSubTabMeasurementTypes');
+	return subtab_measurements;
 }
 
 function watchSaveButton(item) {

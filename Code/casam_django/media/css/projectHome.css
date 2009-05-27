@@ -134,6 +134,11 @@ div.mmText{
 	margin-right: 18px;
 }
 
+.imgSubTabMeasurementTypes{
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
 .potMeasDiv{
   display: block;
   clear:both;

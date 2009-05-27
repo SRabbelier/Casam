@@ -122,11 +122,19 @@ def projectPotentialMeasurementsJSON(request,id_str):
   return http.HttpResponse(data, mimetype="application/javascript")
 
 def projectImageCurrentMeasurementsJSON(request, id_str):
-  measurements = list(Measurement.objects.select_related().filter(image__id=id_str))
-  mm = list()
-  for m in measurements:
-    mm = mm + [m.mogelijkemeting] + [m]
-  data = serializers.serialize("json", mm)
+  #NON OPTIMAL CODE, WHICH RESULTS IN A LIST LIKE:
+  # {(TYPE, (MOGELIJKE METING,METING), (MOGELIJKE METING, METING)), 
+  #  (TYPE, (MOGELIJKE METING,METING), (MOGELIJKE METING, METING))}
+  pottypes = list(PotentialMeasurementType.objects.all())
+  final = list()
+  for type in pottypes:
+    measurements = list(Measurement.objects.select_related().filter(image__id=id_str).filter(mogelijkemeting__type = type))
+    mm = list()
+    mm = [type]
+    for m in measurements:
+      mm = mm + [m.mogelijkemeting] + [m]
+    final = final + mm
+  data = serializers.serialize("json", final)
   return http.HttpResponse(data, mimetype="application/javascript")
 
 def projectImageBitmapsJSON(request, id_str):

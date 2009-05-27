@@ -93,9 +93,8 @@ function reloadUndoneChange(metingid, posx, posy) {
 	pin.calcpieces();
 	pin.setPlace(posx / pin.piecex, posy / pin.piecey);
 	pin.place();
-	console.log($('potidMeasDiv_'+pin.potid));
-	new Effect.Highlight($('potidMeasDiv_'+pin.potid));
-  $('span_'+pin.potid).update(pin.name + ' (' + Math.round(pin.x) + ',' + Math.round(pin.y) + ')');
+	new Effect.Highlight($('measidMeasDiv_'+pin.id));
+  $('span_'+pin.id).update(pin.name + ' (' + Math.round(pin.x) + ',' + Math.round(pin.y) + ')');
 }
 
 function reloadUndonePlace(potid, imageID) {
@@ -125,8 +124,8 @@ function reloadUndonePlace(potid, imageID) {
 					$('mm' + potid).show();
 					
 					// Remove measurement text
-					Effect.Fade($('potidMeasDiv_'+potid));
-					$('potidMeasDiv_'+potid).remove();
+					Effect.Fade($('measidMeasDiv_'+pin.id));
+					$('measidMeasDiv_'+pin.id).remove();
 				},
 				onFailure : function() {
 					alert('Something went wrong while restoring measurement');

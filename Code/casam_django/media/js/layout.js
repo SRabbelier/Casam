@@ -259,7 +259,7 @@ function makePictureContainer(pictureJSON) {
 	}
 }
 
-function addMeasuermentsToPictureContainer(imgid, measurementJSON_array) {
+function addMeasurementsToPictureContainer(imgid, json) {
 	
 	// Create overall container
 	var mainDiv = new Element('div');
@@ -267,20 +267,30 @@ function addMeasuermentsToPictureContainer(imgid, measurementJSON_array) {
 	mainDiv.addClassName('projectPictureDiv');
 
 	// Add all measurements
-	for (i = 0; i < measurementJSON_array.length - 1; i = i + 2) {
-		
-		// Create measurement
-		tempMeasurement = createMeasurement(
-				measurementJSON_array[i].fields.name, 
-				measurementJSON_array[i + 1].fields.x,
-				measurementJSON_array[i + 1].fields.y,
-				measurementJSON_array[i + 1].pk,
-				measurementJSON_array[i].pk,
+	var subtab = '';
+	for (i = 0; i < json.length; i++) {
+		if (json[i].model == 'casam.potentialmeasurementtype'){
+			subtab = createImageMeasurementSubTab(json[i].pk, json[i].fields.name, imgid);
+			mainDiv.insert(subtab);
+			if ((i+1 == json.length) || (json[i+1].model == 'casam.potentialmeasurementtype'))
+				subtab.hide();
+		}
+		else{		
+			// Create measurement
+			tempMeasurement = createMeasurement(
+				json[i].fields.name, 
+				json[i + 1].fields.x,
+				json[i + 1].fields.y,
+				json[i + 1].pk,
+				json[i].pk,
 				imgid,
-				measurementJSON_array[i + 1].fields.imagewidth,
-				measurementJSON_array[i + 1].fields.imageheight);
-		
-		mainDiv.insert(tempMeasurement);
+				json[i + 1].fields.imagewidth,
+				json[i + 1].fields.imageheight);
+			
+			
+			subtab.childElements()[2].insert(tempMeasurement);
+			i++;
+		}
 	}
 	
 	// Add this subtab

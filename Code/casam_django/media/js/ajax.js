@@ -56,7 +56,7 @@ function getImageMeasurements(imgid) {
 			onSuccess : function(transport, json) {
 		
 				var json = transport.responseText.evalJSON();
-				addMeasuermentsToPictureContainer(imgid, json);
+				addMeasurementsToPictureContainer(imgid, json);
 			}
 	});
 }
