@@ -396,6 +396,11 @@ function createPotentialMeasurementType(typeid, typename){
 		$('measurementsList_'+addedImages[i].id).insert(subtab);
 		subtab.hide();
 	}
+	
+	var optgroup = new Element('optgroup');
+	optgroup.writeAttribute('label', typename);
+	optgroup.writeAttribute('id', 'optgroup_'+typeid);
+	$('mmmeting').add(optgroup,null);
 }
 
 function createPotentialMeasurement(potid, pottype, potname) {
@@ -424,8 +429,9 @@ function createPotentialMeasurement(potid, pottype, potname) {
 		'id' : 'option' + potid,
 		'value' : potid
 	});
-	option.update(potname+' ( '+typename+' )');
-	$('mmmeting').add(option, null)
+	option.update(potname);
+	var optgroup = $('optgroup_'+pottype).next();
+	$('mmmeting').add(option, optgroup);
 }
 
 function removeMeasurements(imageID){
