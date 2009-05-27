@@ -2,9 +2,9 @@ from casam.models import PotentialMeasurement
 from casam.models import PotentialMeasurementType
 
 
-def handle_add_potential_measurement(project, type, name):
+def handle_add_potential_measurement(project, type, soort, name):
   if PotentialMeasurement.objects.all().filter(project=project).filter(type=type).filter(name=name).count() == 0:
-    pm = PotentialMeasurement(name=name, type=type, project=project)
+    pm = PotentialMeasurement(name=name, type=type, soort=soort, project=project)
     pm.save()
     return pm
   else:

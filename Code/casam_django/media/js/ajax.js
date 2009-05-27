@@ -102,7 +102,7 @@ function getProjectPotentialMeasurements()
       		createPotentialMeasurementType(json[i].pk, json[i].fields.name);
       	}
       	else{
-        	createPotentialMeasurement(json[i].pk, json[i].fields.type, json[i].fields.name)
+        	createPotentialMeasurement(json[i].pk, json[i].fields.type, json[i].fields.name, json[i].fields.soort)
       	}
       }
     }

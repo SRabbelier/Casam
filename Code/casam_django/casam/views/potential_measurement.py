@@ -10,9 +10,15 @@ from casam.logic import potential_measurement as potential_measurement_logic
 from casam.views import handler
 
 
+TYPE_CHOICES = (
+      ('L', 'Landmark'),
+      ('B', 'Bitmap')
+)
+
 class PotentialMeasurementForm(forms.Form):
   name = forms.CharField(max_length=50)
   type = forms.ModelChoiceField(Type.objects.all(), empty_label=None)
+  soort = forms.CharField(max_length=1, widget=forms.Select(choices=TYPE_CHOICES))
   
 class PotentialMeasurementTypeForm(forms.Form):
   name = forms.CharField(max_length=40)
@@ -35,10 +41,11 @@ class NewPotentialMeasurement(handler.Handler):
   def post(self):
     name = self.cleaned_data['name']
     type = self.cleaned_data['type']
+    soort = self.cleaned_data['soort']
 
     id_str = self.kwargs['id_str']
     project = Project.objects.filter(id=id_str).get()
-    potmeas = potential_measurement_logic.handle_add_potential_measurement(project, type, name)
+    potmeas = potential_measurement_logic.handle_add_potential_measurement(project, type, soort, name)
     
     context = self.getContext()
     if potmeas == None:

@@ -2,12 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_extensions.db.fields import UUIDField
 
-TYPE_CHOICES = (
-      ('L', 'Landmark'),
-      ('B', 'Bitmap')
-)
-
-
 class Tag(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   name = models.CharField(max_length=50)
@@ -57,6 +51,8 @@ class PotentialMeasurement(models.Model):
   project = models.ForeignKey('Project')
   name = models.CharField(max_length=30)
   type = models.ForeignKey('PotentialMeasurementType')
+  soort = models.CharField(max_length=1)
+
 
 class Measurement(models.Model):
   id = UUIDField(primary_key=True, auto=True)
@@ -66,7 +62,6 @@ class Measurement(models.Model):
   y = models.CharField(max_length=4)
   imagewidth = models.CharField(max_length=4)
   imageheight = models.CharField(max_length=4)
-  #type = models.CharField(max_length=1, choices=TYPE_CHOICES)
   
 class Bitmap(models.Model):
   id = UUIDField(primary_key=True, auto=True)

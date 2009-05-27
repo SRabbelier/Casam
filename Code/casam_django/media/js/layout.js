@@ -362,7 +362,7 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 		closePopup();
 	else {
 		measObject = meas.evalJSON()[0];
-		createPotentialMeasurement(measObject.pk, measObject.fields.type, measObject.fields.name);
+		createPotentialMeasurement(measObject.pk, measObject.fields.type, measObject.fields.name, measObject.fields.soort);
 		new Effect.Highlight('potmeas_' + measObject.pk);
 		popupIFrame(base_path+'pm/new/'+projectID,350,150);
 	}

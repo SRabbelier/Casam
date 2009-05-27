@@ -403,15 +403,18 @@ function createPotentialMeasurementType(typeid, typename){
 	$('mmmeting').add(optgroup,null);
 }
 
-function createPotentialMeasurement(potid, pottype, potname) {
+function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 	var pmmContainerDiv = new Element('div', {
 		'id' : 'potmeas_' + potid
 	});
 	pmmContainerDiv.addClassName('potMeasDiv');
 	var pmmPointerIMG = new Element('img', {
-		'src' : base_path + 'media/img/pin_blue.gif',
 		'id' : ('mm' + potid)
 	});
+	if (potsoort == 'L')
+		pmmPointerIMG.writeAttribute('src', base_path + 'media/img/landmark.gif');
+	else
+	  pmmPointerIMG.writeAttribute('src', base_path + 'media/img/pencil.gif');
 	pmmPointerIMG.addClassName('mmPointer');
 	pmmContainerDiv.insert(pmmPointerIMG);
 	var json = json;
@@ -422,16 +425,18 @@ function createPotentialMeasurement(potid, pottype, potname) {
 	pmmContainerDiv.insert(pmmTextDiv);
 
 	$('typesList'+pottype).insert(pmmContainerDiv);
-	
-	var typename = $('typesList'+pottype).up().down('span').innerHTML;
 
-	var option = new Element('option', {
-		'id' : 'option' + potid,
-		'value' : potid
-	});
-	option.update(potname);
-	var optgroup = $('optgroup_'+pottype).next();
-	$('mmmeting').add(option, optgroup);
+  if (potsoort == 'L'){
+  	var typename = $('typesList'+pottype).up().down('span').innerHTML;
+
+		var option = new Element('option', {
+			'id' : 'option' + potid,
+			'value' : potid
+		});
+		option.update(potname);
+		var optgroup = $('optgroup_'+pottype).next();
+		$('mmmeting').add(option, optgroup);
+  }
 }
 
 function removeMeasurements(imageID){
