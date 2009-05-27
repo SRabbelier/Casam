@@ -47,14 +47,14 @@ document.observe("dom:loaded", function()
   checkAuthenticationAndExecute(function(){
 		
 		// Add tabs in whiteFrame
-		$('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), true, false));
+		$('leftFrame_content').insert(newTab('Project information', $('tab_projectinfo'), false, false));
 		$('leftFrame_content').insert(newTab('Pictures', $('tab_pictures'), true, false));
+		
 		$('rightFrame_content').insert(newTab('Possible measurements', $('tab_measurements'), true, false));
-		$('rightFrame_content').insert(newTab('Tags', $('tab_tags'), false, false));
-		$('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false, false));  
-		$('rightFrame_content').insert(newTab('Action history', $('tab_attributes'), true, false));
 		$('rightFrame_content').insert(newTab('Zoom', $('tab_zoom'), true, false));
-		$('rightFrame_content').insert(newTab('States', $('tab_states'), true, false));
+		$('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false, false));  
+		$('rightFrame_content').insert(newTab('Action history', $('tab_attributes'), false, false));
+		$('rightFrame_content').insert(newTab('States', $('tab_states'), false, false));
 		$('zoomImage').hide();
 
 	  // Add mouse listener for image
@@ -168,8 +168,14 @@ document.observe("dom:loaded", function()
 
 <!-- TABS -->
 
-<div id="tab_projectinfo" class="tabContent"><b>{{ project }}</b><br>
-<p>{{ project.description }}</p>
+<div id="tab_projectinfo" class="tabContent">
+<div style="float:left;display:block;">
+	<b>{{ project }}</b><br>
+	<p>{{ project.description }}</p>
+</div>
+<a href="#"	id='editTagsLink' style="float: right;"><img
+   src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
+	<div id="tags" style="float:right;width:70px;"></div>
 </div>
 
 <div id="tab_pictures" class="tabContent"></div>
@@ -188,17 +194,8 @@ document.observe("dom:loaded", function()
 
 </div>
 
-<div id="tab_tags" class="tabContent"><a href="#"
-	id='editTagsLink' style="float: right; clear: both;"><img
-	src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>
-	<div id="tags"></div>
-</div>
-
 <div id="tab_attributes" class="tabContent">
 <table style="width: 200px">
-	<tr>
-		<th>Changes</th>
-	</tr>
 	<tr>
 		<td id="ajax_result"></td>
 	</tr>
