@@ -2,6 +2,15 @@
 
 {% block title %}Nieuw project{% endblock title %}
 
+{% block head %}
+
+<script type='text/javascript'>
+  document.observe('dom:loaded', function(){
+    $('id_tags').writeAttribute('size', Math.min(5, $('id_tags').childElements().length))
+  });
+</script>
+{% endblock head %}
+
 {% block body%}
 
 <form enctype="multipart/form-data" method="post" action="new">

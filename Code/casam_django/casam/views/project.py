@@ -8,6 +8,7 @@ from django.core import serializers
 from django.template import loader
 
 from casam.logic import project as project_logic
+from casam.logic import tag as tag_logic
 from casam.models import Annotation
 from casam.models import OriginalImage
 from casam.models import Project
@@ -70,8 +71,10 @@ class NewProject(handler.Handler):
   def post(self):
     name = self.cleaned_data['name']
     description = self.cleaned_data['description']
+    tags = self.cleaned_data.get('tags', [])
 
-    project_logic.handle_add_project(self.profile, name, description)
+    project = project_logic.handle_add_project(self.profile, name, description)
+    tag_logic.handle_select_tags(project, tags)
 
     return http.HttpResponseRedirect(self.BASE_PATH)
 
