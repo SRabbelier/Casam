@@ -3,6 +3,7 @@
 
 
 {% block customJSLoad %}
+			parent.getProjectAnnotations();
 			var url = base_path + 'JSON/projectAnnotations/{{project_id}}';
 			new Ajax.Request(url,{
 				onSuccess:function(transport){
@@ -53,6 +54,7 @@
 						parameters:{'annotationID':id},
 						onSuccess:function(){
 							new Effect.Fade(container);
+							parent.getProjectAnnotations();
 						},
 						onFailure:function(){
 							alert('Something went wrong while deleting the annotation');
@@ -62,6 +64,7 @@
 				
 			});
 		}
+
 	</script>
 {% endblock head %}
 

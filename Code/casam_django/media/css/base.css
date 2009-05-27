@@ -23,3 +23,28 @@ a{
 	width:0px;
 	height:0px;
 }
+
+#popup{
+	position:absolute;
+	width:0px;
+	height:0px;
+	background-color:#808080;
+}
+
+#popupHead{
+	height:15px;
+	position:relative;
+}
+#popupIFrameContainer,#popupIFrameContainer iframe{
+	width:100%;
+	height:100%;
+	border:0px;
+}
+#popupCloseButton{
+	font-family:courier;
+	cursor:pointer;
+	right:3px;
+	top:0px;
+	position:absolute;	
+}
+

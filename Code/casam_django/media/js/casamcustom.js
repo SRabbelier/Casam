@@ -31,6 +31,12 @@ Element.addMethods({
                 return element;
         }});
 
+document.observe('dom:loaded',function(){
+	$('popupCloseButton').observe('click',function(){
+		closePopup();
+	});
+});
+
 function popupIFrame(url,width,height){
 	checkAuthenticationAndExecute(function(){
 		if(!popupActive){
@@ -47,10 +53,10 @@ function popupIFrame(url,width,height){
 		if(!height)height=400;
 		
 		var iF = new Element('iframe', {'src':url});
-		$('popup').update(iF);
+		$('popupIFrameContainer').update(iF);
 		
 		$('popup').setWidth(width);
-		$('popup').setHeight(height);
+		$('popup').setHeight(height+20);
 		//$('popup').setWidth(width);
 		//$('popup').setHeight(height);
 		$('popup').setStyle({

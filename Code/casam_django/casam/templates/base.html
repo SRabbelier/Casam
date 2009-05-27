@@ -17,6 +17,8 @@
 			var secondsToExpiration = parseInt('{{expiration_in_seconds}}');
 			//User is logged in
 			if(secondsToExpiration>0)decreaseTimeToExpiration(secondsToExpiration);
+
+			
 		});
 
 		function decreaseTimeToExpiration(currentSeconds){
@@ -47,7 +49,10 @@
 </head>
 
 <body>
-<div id="popup"></div>
+<div id="popup">
+	<div id="popupHead"><div id="popupCloseButton">x</div></div>
+	<div id="popupIFrameContainer"></div>
+</div>
 <div id="popup_overlay"></div>
 {% block user_dock %}
 

@@ -1,6 +1,6 @@
 function getProjectAnnotations(){
 	checkAuthenticationAndExecute( function() {
- 
+		$('tab_papers').update();
 		annotationManagerLink = new Element('a',{'href':'#'});
 		annotationManagerImage = new Element('img',{'src':base_path+'media/img/pencil.jpg'});
 		annotationManagerImage.addClassName('smallPictureButton');
