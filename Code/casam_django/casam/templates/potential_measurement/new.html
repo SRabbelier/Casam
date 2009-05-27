@@ -81,6 +81,8 @@
           for(var j = 0; j < measurements.length; j++){
             if (measurements[j].potid == containerDiv.childElements()[1].name){
               //REMOVE TEXT OF CURRENT MEASUREMENTS
+              if (parent.$('measidMeasDiv_'+measurements[j].id).up().childElements().length == 1)
+                parent.$('measidMeasDiv_'+measurements[j].id).up().up().hide();
               parent.$('measidMeasDiv_'+measurements[j].id).remove();
               measurements[j].erase();
               parent.measurements.splice(j,1);

@@ -21,16 +21,18 @@
   });
   
   function getPotentialTypes(){
-    var type_array = parent.$$('div.subTabHeader')
+    var type_array = parent.$('possiblemeasurements').childElements();
     for(var i = 0; i < type_array.length; i++){
-      var containerDiv = new Element('div', {'id': type_array[i].childElements()[2].id.slice(9)});
+      var typeid = type_array[i].childElements()[2].id.slice(9);
+      var typename = type_array[i].down('span').innerHTML
+      var containerDiv = new Element('div', {'id': typeid});
       var textDiv = new Element('div');
-      textDiv.update(type_array[i].down('span').innerHTML)
+      textDiv.update(typename)
       containerDiv.insert(textDiv);
       
       var checkbox = new Element('input', {'type': 'checkbox',
-                                 'name':type_array[i].childElements()[2].id.slice(9), 
-                                 'id': 'dpt'+type_array[i].childElements()[2].id.slice(9)
+                                 'name':typeid, 
+                                 'id': 'dpt'+typeid
                                  });
       checkbox.addClassName('typeCheckbox');
       containerDiv.insert(checkbox);
@@ -55,13 +57,10 @@
             }                                             
           }
           //TODO: REMOVE TEXT OF CURRENT MEASUREMENTS
-          var parentMeasurementTexts = parent.$$('div.projectImageMeasurementDiv');
-          for(var i = 0; i < parentMeasurementTexts.length; i++){
-            if (parent.$('potmeas_'+parentMeasurementTexts[i].id.slice(13)).up().id.slice(9) == typeid){
-              parentMeasurementTexts[i].remove();                                                                                  
-            }                                                       
-          }
-
+          var addedImages = parent.addedImages;
+          for(var i = 0; i < addedImages.length; i++){
+            parent.$('measurementTypesDiv_'+addedImages[i].id+'-'+typeid).remove();                                          
+          } 
           //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
           var changes = parent.changes;
           for(var i = 0; i < changes.length; i++){

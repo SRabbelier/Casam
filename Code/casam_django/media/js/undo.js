@@ -125,6 +125,8 @@ function reloadUndonePlace(potid, imageID) {
 					
 					// Remove measurement text
 					Effect.Fade($('measidMeasDiv_'+pin.id));
+					if ($('measidMeasDiv_'+pin.id).up().childElements().length == 1)
+						$('measidMeasDiv_'+pin.id).up().up().hide();
 					$('measidMeasDiv_'+pin.id).remove();
 				},
 				onFailure : function() {

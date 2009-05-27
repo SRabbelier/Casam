@@ -184,7 +184,7 @@ function saveLandMark(mx, my, potid, imgid) {
 							//json[i] = meting
 							//getMainDiv to do mainDiv.insert
 							var typeid = $('potmeas_'+json[0].fields.mogelijkemeting).up().id.slice(9);
-							var subtab = $('measurementTypeList_'+typeid);
+							var subtab = $('measurementTypeList_'+json[0].fields.image+'-'+typeid);
 							subtab.insert(createMeasurement(c.lmname,
 									mousex, mousey, json[0].pk, mm, json[0].fields.image,
 									json[0].fields.imagewidth,
@@ -358,14 +358,14 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 
 function createImageMeasurementSubTab(typeid, typename, imgid){
 	var typeDiv = new Element('div');
-	typeDiv.writeAttribute('id', 'measurementTypeList_'+typeid);
+	typeDiv.writeAttribute('id', 'measurementTypeList_'+imgid+'-'+typeid);
 	typeDiv.addClassName('imgTypeMeasurements');
 	
 	var tempDiv = new Element('div');
 	tempDiv.insert(typeDiv);
 	
 	var subtab_measurements = newTab(typename, typeDiv, true);
-	subtab_measurements.id = 'measurementTypesDiv_'+typeid;
+	subtab_measurements.id = 'measurementTypesDiv_'+imgid+'-'+typeid;
 	subtab_measurements.addClassName('imgSubTabMeasurementTypes');
 	return subtab_measurements;
 }
@@ -389,6 +389,12 @@ function createPotentialMeasurementType(typeid, typename){
 	var tab_potentialtypes = newTab(typename, mainDiv, true, true);
 	tab_potentialtypes.writeAttribute('id','potSubTabType');
 	$('possiblemeasurements').insert(tab_potentialtypes);		
+	
+	for(var i = 0;i < addedImages.length; i++){
+		var subtab = createImageMeasurementSubTab(typeid, typename, addedImages[i].id);
+		$('measurementsList_'+addedImages[i].id).insert(subtab);
+		subtab.hide();
+	}
 }
 
 function createPotentialMeasurement(potid, pottype, potname) {
