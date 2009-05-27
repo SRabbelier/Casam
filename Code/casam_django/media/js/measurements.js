@@ -183,16 +183,13 @@ function saveLandMark(mx, my, potid, imgid) {
 							var json = transport.responseText.evalJSON();
 							//json[i] = meting
 							//getMainDiv to do mainDiv.insert
-							console.log('hallo')
-							console.log(json[0].fields.mogelijkemeting);
 							var typeid = $('potmeas_'+json[0].fields.mogelijkemeting).up().id.slice(9);
-							console.log(typeid);
 							var subtab = $('measurementTypeList_'+typeid);
-							console.log(subtab);
 							subtab.insert(createMeasurement(c.lmname,
 									mousex, mousey, json[0].pk, mm, json[0].fields.image,
 									json[0].fields.imagewidth,
 									json[0].fields.imageheight));
+							subtab.up().show();
 							for ( var i = 0; i < measurements.length; i++) {
 								if (measurements[i].potid == mm
 										&& measurements[i].imageid == imageID) {
