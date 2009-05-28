@@ -96,23 +96,7 @@ function newTab(tab_title, content, open, sub) {
 	if (!open)
 		tabBody.hide();
 
-	foldUpImageLeft = new Element('img');
-	foldUpImageLeft.setAttribute("src", base_path + "media/img/fold_up.gif");
-	foldUpImageLeft.setStyle("float:left;margin:2px;");
 
-	foldUpImageRight = new Element('img');
-	foldUpImageRight.setAttribute("src", base_path + "media/img/fold_up.gif");
-	foldUpImageRight.setStyle("float:right;margin:2px;");
-
-	foldDownImageLeft = new Element('img');
-	foldDownImageLeft
-			.setAttribute("src", base_path + "media/img/fold_down.gif");
-	foldDownImageLeft.setStyle("float:left;margin:2px;");
-
-	foldDownImageRight = new Element('img');
-	foldDownImageRight.setAttribute("src", base_path
-			+ "media/img/fold_down.gif");
-	foldDownImageRight.setStyle("float:right;margin:2px;");
 
 	// Attach right style-class to tab-header
 	if (sub)
@@ -125,23 +109,11 @@ function newTab(tab_title, content, open, sub) {
 			duration : 0.5
 		});
 		this.update();
-		if (tabBody.style.display == "none") {
-			this.insert(foldUpImageLeft);
-			this.insert(foldUpImageRight);
-		} else {
-			this.insert(foldDownImageLeft);
-			this.insert(foldDownImageRight);
-		}
+		putArrowsInTabHeader(this, tabBody.style.display == "none")
 		this.insert("<span>"+tab_title+"</span>");
 	});
 
-	if (open) {
-		tabHeader.insert(foldUpImageLeft);
-		tabHeader.insert(foldUpImageRight);
-	} else {
-		tabHeader.insert(foldDownImageLeft);
-		tabHeader.insert(foldDownImageRight);
-	}
+	putArrowsInTabHeader(tabHeader, open)
 	tabHeader.insert("<span>"+tab_title+"</span>");
 
 	// Attach right style-class to tab-line
@@ -162,6 +134,32 @@ function newTab(tab_title, content, open, sub) {
 	tabContainer.insert(tabLine);
 	tabContainer.insert(tabBody);
 	return tabContainer;
+}
+
+function putArrowsInTabHeader(header, open) {
+	foldUpImageLeft = new Element('img');
+	foldUpImageLeft.setAttribute("src", base_path + "media/img/fold_up.gif");
+	foldUpImageLeft.setStyle("float:left;margin:2px;");
+
+	foldUpImageRight = new Element('img');
+	foldUpImageRight.setAttribute("src", base_path + "media/img/fold_up.gif");
+	foldUpImageRight.setStyle("float:right;margin:2px;");
+
+	foldDownImageLeft = new Element('img');
+	foldDownImageLeft.setAttribute("src", base_path + "media/img/fold_down.gif");
+	foldDownImageLeft.setStyle("float:left;margin:2px;");
+
+	foldDownImageRight = new Element('img');
+	foldDownImageRight.setAttribute("src", base_path	+ "media/img/fold_down.gif");
+	foldDownImageRight.setStyle("float:right;margin:2px;");
+	
+	if (open) {
+		header.insert(foldUpImageLeft);
+		header.insert(foldUpImageRight);
+	} else {
+		header.insert(foldDownImageLeft);
+		header.insert(foldDownImageRight);
+	}
 }
 
 function watchBox(item) {
