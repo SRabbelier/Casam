@@ -304,7 +304,7 @@ function addMeasurementsToPictureContainer(imgid, json) {
 	$('bottomDiv_' + imgid).insert({ top: tab_measurements });
 }
 
-function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
+function addBitmapsToPictureContainer(imgid, bitmapJSON_array, potid) {
 	
 	// Check or it is already there
 	if ($('bitmapsDiv_'+imgid) != null)
@@ -314,16 +314,10 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 	var mainDiv = new Element('div');
 	mainDiv.writeAttribute('id','bitmapsList_'+imgid)
 	mainDiv.addClassName('projectBitmapDiv');
-	
-	// Create temporary link to paintover
-	var paintoverLink = new Element('a', {
-		'href' : 'javascript:loadEditScreen(\''+imgid+'\')'
-	}).update('Paintover');
-	mainDiv.insert(paintoverLink);
 
 	// Add all the bitmaps
 	for ( var i = 0; i < bitmapJSON_array.length; i++)
-		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid));
+		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid, potid));
 	
 	// Add this subtab
 	var tab_bitmaps = newTab('Bitmaps', mainDiv, true, true);
@@ -367,7 +361,7 @@ function closePopupAndReloadPotentialMeasurementTypes(pottype){
 	}
 }
 
-function loadEditScreen(id, bmid, potid) {
+function loadEditScreen(id, pm_id, bmid) {
 	checkAuthenticationAndExecute( function() {
 
 		flashpainting = true;
@@ -406,7 +400,7 @@ function loadEditScreen(id, bmid, potid) {
 				"http://www.macromedia.com/go/getflashplayer");
 		movie_embed.writeAttribute('flashvars', "img_source=" + img_url
 				+ "&server_url=" + base_path + "bitmap_dump&img_id=" + id
-				+ "&img_bitmap=" + bitmap_url + "&img_previous_id=" + bmid);
+				+ "&img_bitmap=" + bitmap_url + "&img_previous_id=" + bmid+"&img_pm_id="+pm_id);
 
 		movie_object.insert(movie_embed);
 		$('big_images').update();
@@ -414,9 +408,9 @@ function loadEditScreen(id, bmid, potid) {
 	});
 }
 
-function closePaintOver(bmid) {
+function closePaintOver(bmid, potid) {
 	if(bmid != '' && $('bitmapDiv_'+bmid) == undefined) {
-		newBitmapDiv = addBitmap(bmid, addedImages[0].id);
+		newBitmapDiv = addBitmap(bmid, addedImages[0].id, potid);
 		$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
 	}
 	

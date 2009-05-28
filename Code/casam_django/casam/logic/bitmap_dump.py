@@ -4,7 +4,7 @@ from casam.models import Bitmap
 import time
 
 
-def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b):
+def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
   
   if dump.find("_scanline:") != 0:
     print "wrong dump"
@@ -59,7 +59,6 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b):
   
   im.putpalette(palette)
 
-  
   if previous_id == '0':
   
     image_name = image_id +"_"+str(holdit)+".gif"
@@ -68,11 +67,13 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b):
     # Create associated measurement
     properties = dict(
       image = original_image,
+      mogelijkemeting = mm,
       imagewidth = int(width),
       imageheight = int(height),
       path = image_name
-    )  
-    
+    )
+
+    print properties
     db_bitmap = Bitmap(**properties)
     db_bitmap.save()
     return db_bitmap.pk

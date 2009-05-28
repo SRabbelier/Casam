@@ -43,6 +43,7 @@ function getImageBitmaps(imgid) {
 			onSuccess : function(transport, json) {
 				var json = transport.responseText.evalJSON();
 				addBitmapsToPictureContainer(imgid, json);
+				alert(json);
 			}
 	});
 }

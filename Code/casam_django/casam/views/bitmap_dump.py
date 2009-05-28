@@ -4,11 +4,13 @@ from django.conf import settings
 from django.template import loader
 from casam.views import handler
 from casam.models import OriginalImage
+from casam.models import PotentialMeasurement
 from casam.logic.bitmap_dump import handle_bitmap_stream
 
 class BitmapForm(forms.Form):
   image_id = forms.CharField(max_length=36)
   previous_id = forms.CharField(max_length=36)
+  pm_id = forms.CharField(max_length=36)
   dump = forms.CharField(max_length=36000000)
   r = forms.CharField(max_length=3)
   g = forms.CharField(max_length=3)
@@ -29,5 +31,6 @@ class Save(handler.Handler):
     b = int(self.cleaned_data['b'])
     original_image = OriginalImage.objects.filter(id=self.cleaned_data['image_id']).get()
     previous_id = self.cleaned_data['previous_id']
-    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image,previous_id,r,g,b)
+    pm = PotentialMeasurement.objects.filter(id=self.cleaned_data['pm_id']).get()
+    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image,previous_id,r,g,b,pm)
     return http.HttpResponse("saved_id="+bitmap_id)

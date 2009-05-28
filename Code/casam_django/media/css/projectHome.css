@@ -120,11 +120,37 @@ img.paintoverLink{
 	margin:0px;
 }
 
-  div.slider { float: left; width:170px; margin: 5px 0 5px 4px; background-color:#ccc; height:10px; position: relative; }
-  div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
+div.slider {
+	float: left;
+	width:170px; 
+	margin: 5px 0 5px 4px; 
+	background-color:#ccc; 
+	height:10px; 
+	position: relative; 
+}
+div.slider div.handle { 
+	width:10px; 
+	height:15px; 
+	background-color:#f00; 
+	cursor:move; 
+	position: absolute; 
+}
 
-  div.bitmapSlider { float: left; width:140px; margin: 5px 0 5px 4px; background-color:#ccc; height:10px; position: relative;  }
-  div.bitmapSlider div.bitmapHandle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; } }									  												 
+div.bitmapSlider { 
+	float: left;
+	width:140px; 
+	margin: 5px 0 5px 4px; 
+	background-color:#ccc; 
+	height:10px; 
+	position: relative;  
+}
+div.bitmapSlider div.bitmapHandle { 
+	width:10px; 
+	height:15px; 
+	background-color:#f00; 
+	cursor:move; 
+	position: absolute; 
+}									  												 
 
 img.mmPointer{
   float: left;

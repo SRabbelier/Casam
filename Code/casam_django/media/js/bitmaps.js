@@ -21,7 +21,7 @@ var Bitmap = Class.create( {
 	}
 });
 
-function addBitmap(bmid, imgid) {
+function addBitmap(bmid, imgid, potid) {
 	var bitmapDiv = new Element('div', {
 		'id' : 'bitmapDiv_' + bmid
 	});
@@ -76,7 +76,7 @@ function addBitmap(bmid, imgid) {
 		'id' : 'spanbm_' + bmid
 	});
 	textspan.update("landmarkname_"+bmid.substr(0,3));
-	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+bmid+'\')'});
+	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+potid+'\', \''+bmid+'\')'});
 	editlink.insert('edit');
 	textspan.insert(editlink);
 	bitmapDiv.insert(checkbox);

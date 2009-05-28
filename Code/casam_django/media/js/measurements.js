@@ -380,12 +380,9 @@ function watchSaveButton(item) {
 }
 
 function createPotentialMeasurementType(typeid, typename){
+
 	var mainDiv = new Element('div', {'id': 'typesList'+typeid});
 	mainDiv.addClassName('projectPotentialTypeDiv');
-
-	//add temp div for tab creation	
-	var container = new Element('div');
-	container.insert(mainDiv);
 
 	var tab_potentialtypes = newTab(typename, mainDiv, true, true);
 	tab_potentialtypes.writeAttribute('id','potSubTabType');
@@ -444,12 +441,20 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 		$('mm'+potid).insert({before: link});
 		link.update($('mm'+potid));
   	observeEditLink(potid);
+  	
+  	
+  	// Create temporary link to paintover
+  	var paintoverLink = new Element('a', {
+  		'href' : ''
+  	}).update('Paintover');
+  	mainDiv.insert(paintoverLink);
+  	
   }
 }
 function observeEditLink(potid){
 	$('paintoverLink_'+potid).observe('click', function(){
   		if (addedImages.length > 0)
-  			loadEditScreen(addedImages[0].id);
+  			loadEditScreen(addedImages[0].id, potid);
   	});
 }
 
