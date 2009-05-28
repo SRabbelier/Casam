@@ -1,58 +1,16 @@
 var State = Class.create( {			
-	initialize : function(JSONString) {
-		//If no JSON string is given, create empty arrays
-		if(!JSONString){
-			this.stateData = new Array();
-		//Otherwise, create the arrays with the value of the JSON string
-		}else{
-			var JSONObject = JSONString.evalJSON();
-			this.stateData = JSONObject.fields.serializedState.evalJSON().stateData;
-			this.name = JSONObject.fields.name;
-			this.dateAdded = JSONObject.fields.added;
-			this.id = JSONObject.pk;
-		}
+	initialize : function() {
+			this.stateData = '';
+			this.width = 0;
+			this.height = 0;
 	},
 	fill: function(){
-		var addedObjects = new Array();
-		for(i=0;i<addedImages.length;i++){
-			var objectArray = new Array();
-			objectArray.push(addedImages[i].id);
-			objectArray.push(addedImages[i].name);
-			objectArray.push(addedImages[i].opacity);
-			
-			var measurementsArray = new Array();
-			var bitmapsArray= new Array();
-			var picturesArray = new Array();
-			
-			//Checkboxes should contain unique values,
-			//if not: kick Ben and Jaap :P
-			checkboxes.each(function(item){
-				if(item.item.imageid == addedImages[i].id){
-					if(item.checked){
-						if(item.type == 's'){
-							measurementsArray.push(item.id);
-						}else if(item.type=='b'){
-							var bitmapArray = new Array();
-							bitmapArray.push(item.id);
-							bitmapArray.push(0.5);
-							bitmapsArray.push(bitmapArray);
-						}else if(item.type=='u'){
-							//THIS DOESN'T SEEM TO BE NECESSARY
-							//picturesArray.push(item.id);
-						}
-					}
-				}
-			});
-			
-			
-			objectArray.push(measurementsArray);
-			objectArray.push(bitmapsArray);
-			
-			addedObjects.push(objectArray);
-		}
-		console.log(Object.toJSON(addedObjects));
-		//console.log(checkboxes);
-		this.stateData=addedObjects;
+		this.stateData=$('big_images').innerHTML;
+		var stateObject = this;
+		$('big_images').select('img.big_image_sibling').each(function(item){
+			stateObject.width = Math.max(stateObject.width,item.getWidth());
+			stateObject.height = Math.max(stateObject.height,item.getHeight());
+		});
 	}
 });
 
@@ -78,8 +36,10 @@ function loadStates(){
 			new Ajax.Request(url,{
 				method:'post',
 				parameters:{
-					'serializedState':Object.toJSON(state),
-					'name':$('stateNameTextfield').getValue()
+					'serializedState':state.stateData,
+					'name':$('stateNameTextfield').getValue(),
+					'width':state.width,
+					'height':state.height
 				},
 				onSuccess:function(){
 					loadStates();
@@ -91,58 +51,40 @@ function loadStates(){
 	var url = base_path + 'JSON/projectStates/' + projectID;
 	new Ajax.Request(url,{
 		onSuccess:function(transport){
-			var json = transport.responseText.evalJSON();
+			var states = transport.responseText.evalJSON();
 			var statesContainer = new Element('div');
-			states = new Array();
-			for(i=0;i<json.length;i++){
-				var stateDiv = new Element('div');
-
-				states.push(new State(Object.toJSON(json[i])));
-			}
 			for(i=0;i<states.length;i++){
 				var stateDiv = new Element('div',{'id':'stateDiv_'+states[i].id});
 				var nameDiv = new Element('div');
-				nameDiv.insert(states[i].name);
+				nameDiv.insert(states[i].fields.name);
 				stateDiv.insert(nameDiv);
 				
 				var dateDiv = new Element('div');
-				dateDiv.insert(states[i].dateAdded);
+				dateDiv.insert(states[i].fields.added);
 				dateDiv.addClassName('stateDivDate');
 				stateDiv.insert(dateDiv);
 				
 				stateDiv.addClassName('stateDiv');
 				statesContainer.insert(stateDiv);
 
-				makeStateObserver(stateDiv,states[i]);
-				
+				makeStateObserver(stateDiv,states[i].pk);
+
 			}
+
 			$('tab_states').insert(statesContainer);
 			
 		}
 	});
 }
 
-function makeStateObserver(div,stateObject){
+function makeStateObserver(div,id){
 	div.observe('click',function(){
 		new Effect.Highlight(div);
-		setState(stateObject);
+		popupIFrame(base_path+'state/show/'+id)
 	});
 }
 
-function setState(stateObject){
-	console.log(stateObject);
-	console.log('Revert to state: '+stateObject.name);
 
-	for(i = 0; i<stateObject.stateData.length;i++){
-		var id = stateObject.stateData[i][0];
-		var name = stateObject.stateData[i][1];
-		showImage(id,name);
-		$('use'+id).writeAttribute('checked','checked');
-	}
-	/*resizeScreenElements(true);
-	checkActiveLayer();*/
-
-}
 
 document.observe('dom:loaded',function(){
 	loadStates();

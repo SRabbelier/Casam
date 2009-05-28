@@ -97,6 +97,8 @@ class State(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   name = models.CharField(max_length=30)
   serializedState = models.TextField()
+  width = models.IntegerField()
+  height = models.IntegerField()
   project = models.ForeignKey('Project')
   added = models.DateField(auto_now_add=True)
 

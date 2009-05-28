@@ -159,6 +159,8 @@ def projectAnnotationsJSON(request, id_str):
 class StateForm(forms.Form):
   name = forms.CharField(max_length=30)
   serializedState = forms.CharField()
+  width = forms.IntegerField()
+  height = forms.IntegerField()
 
 class AddState(handler.Handler):
   """Handler for the creation of a new project.
@@ -177,8 +179,10 @@ class AddState(handler.Handler):
 
     name = self.cleaned_data['name']
     serializedState = self.cleaned_data['serializedState']
+    width = self.cleaned_data['width']
+    height = self.cleaned_data['height']
 
-    project_logic.handle_add_state(self.profile, name, serializedState,projectID)
+    project_logic.handle_add_state(self.profile, name, serializedState,projectID, width,height)
     return http.HttpResponse('success')
   def get(self):
     return

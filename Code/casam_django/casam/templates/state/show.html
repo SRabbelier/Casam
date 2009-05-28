@@ -1,0 +1,7 @@
+{% extends 'popup.html' %}
+{% block head%}
+	<link rel="stylesheet" href="{{ BASE_PATH }}media/css/state.css">
+{% endblock head %}
+{% block body%}
+	<div id="big_image_simulator" style="width:{{width}}px;height:{{height}}px;">{{stateData|safe}}</div>
+{% endblock body %}

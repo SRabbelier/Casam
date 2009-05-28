@@ -16,6 +16,7 @@ import casam.views.imageloader
 import casam.views.bitmap_dump
 import casam.views.tag
 import casam.views.potential_measurement
+import casam.views.state
 import casam.views.pdm
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
@@ -44,6 +45,7 @@ urlpatterns = patterns('',
     (r'^project/show/%s$' % ID_STR, casam.views.project.Home()),
     (r'^pm/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurement()),
     (r'^pmt/new/%s$' % ID_STR, casam.views.potential_measurement.NewPotentialMeasurementType()),
+    (r'^state/show/%s$' % ID_STR, casam.views.state.ShowState()),
     (r'^tag/new/%s$' % ID_STR, casam.views.tag.NewTag()),
     (r'^tag/select/%s$' % ID_STR, casam.views.tag.SelectTag()),
     (r'^imageLoader/byRatio/%s/%s/%s$' % (IMG_TYPE, IMG_RATIO, UUID), casam.views.imageloader.RatioHandler()),

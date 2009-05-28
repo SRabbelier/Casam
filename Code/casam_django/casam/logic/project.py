@@ -13,8 +13,8 @@ def handle_add_project(profile, name, description):
 def handle_remove_project(id):
   Project.objects.all().get(id=id).delete()
 
-def handle_add_state(profile, name, serializedState,projectID):
+def handle_add_state(profile, name, serializedState,projectID,width,height):
   #print projectID
   stateProject = Project.objects.all().get(id=projectID)
-  state = State(name=name, serializedState=serializedState,project = stateProject)
+  state = State(name=name, serializedState=serializedState,project = stateProject, width=width, height=height)
   state.save()

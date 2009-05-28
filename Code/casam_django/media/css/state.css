@@ -1,0 +1,9 @@
+#big_image_simulator{
+	position:relative;
+	overflow:hidden;
+	background-color:black;
+}
+
+#big_image_simulator img{
+	position:absolute;
+}
