@@ -47,6 +47,7 @@ function popupIFrame(url,width,height){
 				zIndex:9998
 			});
 			new Effect.Appear('popup_overlay',{to:0.8});
+			$('popup').show();
 		}
 		popupActive = true;
 		if(!width)width=600;
