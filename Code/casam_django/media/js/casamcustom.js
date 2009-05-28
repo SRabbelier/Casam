@@ -34,6 +34,7 @@ document.observe('dom:loaded',function(){
 	$('popupCloseButton').observe('click',function(){
 		closePopup();
 	});
+	$('popup').hide();
 });
 
 function popupIFrame(url,width,height){
@@ -80,8 +81,7 @@ function changePopupDimensions(width,height){
 }
 
 function closePopup(){
-	$('popup').setWidth(0);
-	$('popup').setHeight(0);
+	$('popup').hide();
 	$('popup').setStyle({
 		zIndex:0,
 		top:'0px',
