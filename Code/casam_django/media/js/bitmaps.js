@@ -75,7 +75,7 @@ function addBitmap(bmid, imgid, potid) {
 	textspan = new Element('span', {
 		'id' : 'spanbm_' + bmid
 	});
-	textspan.update("landmarkname_"+bmid.substr(0,3));
+	textspan.update($('potmeas_'+potid).down('div').innerHTML);
 	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+potid+'\', \''+bmid+'\')'});
 	editimg = new Element('img');
 	editimg.writeAttribute('src', base_path + 'media/img/pencil.gif');

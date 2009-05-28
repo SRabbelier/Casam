@@ -302,7 +302,7 @@ function addMeasurementsToPictureContainer(imgid, json) {
 	$('bottomDiv_' + imgid).insert({ top: tab_measurements });
 }
 
-function addBitmapsToPictureContainer(imgid, bitmapJSON_array, potid) {
+function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 	
 	// Check or it is already there
 	if ($('bitmapsDiv_'+imgid) != null)
@@ -315,7 +315,7 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array, potid) {
 
 	// Add all the bitmaps
 	for ( var i = 0; i < bitmapJSON_array.length; i++)
-		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid, potid));
+		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid, bitmapJSON_array[i].fields.mogelijkemeting));
 	
 	// Add this subtab
 	var tab_bitmaps = newTab('Bitmaps', mainDiv, true, true);

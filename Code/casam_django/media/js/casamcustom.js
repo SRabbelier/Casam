@@ -6,7 +6,6 @@ function checkAuthenticationAndExecute(customFunction,possibleFailureMessage){
 		},
 		onFailure:function(transport){
 			if(!possibleFailureMessage)possibleFailureMessage="You are not logged in, click OK to login";
-			alert(possibleFailureMessage);
 			location.href=base_path;
 		}
 	});

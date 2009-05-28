@@ -290,7 +290,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 
 	var typename = $('potmeas_'+potid).up().up().down('span').innerHTML;
 	var typeid = $('potmeas_'+potid).up().id.slice(9);
-	var measname = name + ' ( '+typename+' )';
+	var measname = name;// + ' ( '+typename+' )';
 
 	var pinDiv = new Element('div');
 	pinDiv.addClassName('pinDiv');
@@ -340,7 +340,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	textspan = new Element('span', {
 		'id' : 'span_' + measid
 	});
-	textspan.update(measname + ' (' + x + ', ' + y + ')')
+	textspan.update(measname);// + ' (' + x + ', ' + y + ')');
 	measurementDiv.insert(checkbox);
 	measurementDiv.insert(textspan);
 
@@ -440,15 +440,7 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 		link.addClassName('paintoverLink');
 		$('mm'+potid).insert({before: link});
 		link.update($('mm'+potid));
-  	observeEditLink(potid);
-  	
-  	
-  	// Create temporary link to paintover
-  	var paintoverLink = new Element('a', {
-  		'href' : ''
-  	}).update('Paintover');
-  	mainDiv.insert(paintoverLink);
-  	
+  	observeEditLink(potid);  	
   }
 }
 function observeEditLink(potid){
