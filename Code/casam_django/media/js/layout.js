@@ -239,7 +239,7 @@ function makePictureContainer(pictureJSON) {
 
 	// Insert image
 	leftDiv.insert(new Element('img', {
-		'src' : base_path + 'imageLoader/thumbnail/original/50/'
+		'src' : base_path + 'imageLoader/thumbnail/original/30/'
 				+ pictureJSON.pk
 	}));
 	rightDiv.insert(new Element('span').update(pictureJSON.fields.name)

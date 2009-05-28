@@ -44,6 +44,7 @@
 .pictureContainerLeftDiv {
 	float: left;
   margin: 5px;
+  margin-bottom: 0px;
 }
 
 .pictureContainerRightDiv {
@@ -53,7 +54,7 @@
 }
 .pictureContainerBottomDiv {
 	clear: both;
-	margin-left: 25px;
+	margin-left: 11px;
 }
 
 /* White frame */

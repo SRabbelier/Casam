@@ -77,7 +77,10 @@ function addBitmap(bmid, imgid, potid) {
 	});
 	textspan.update("landmarkname_"+bmid.substr(0,3));
 	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+potid+'\', \''+bmid+'\')'});
-	editlink.insert('edit');
+	editimg = new Element('img');
+	editimg.writeAttribute('src', base_path + 'media/img/pencil.gif');
+	editimg.addClassName('smallPictureButton');
+	editlink.insert(editimg);
 	textspan.insert(editlink);
 	bitmapDiv.insert(checkbox);
 	bitmapDiv.insert(textspan);
