@@ -7,7 +7,15 @@
 	<script type="text/javascript">
     	var base_path = '{{ BASE_PATH }}';
     	var data_dir = '{{ DATA_DIR }}';
-	</script>
+    	var popupActive = false;
+    	/*Firebug is not available?*/
+    	if(!window.console) {
+    	    var console = {
+    	       log: function(foo){/*do nothing... obviously*/},
+    	       dir: function(foo){/*again, don't break your neck just ignore the logmessage*/}
+    	    };
+    	}
+  </script>
 	<script src="{{ BASE_PATH }}media/js/prototype.js" type="text/javascript"></script>
 	<script src="{{ BASE_PATH }}media/js/scriptaculous.js" type="text/javascript"></script>
 	<script type="text/javascript">
