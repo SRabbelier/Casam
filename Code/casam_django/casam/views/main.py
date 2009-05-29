@@ -13,6 +13,7 @@ from django.core import serializers
 from casam.models import Annotation
 from casam.models import Project
 from casam.models import OriginalImage
+from casam.models import State
 from casam.models import Tag
 from casam.models import PotentialMeasurement
 from casam.models import PotentialMeasurementType
@@ -87,6 +88,14 @@ class deleteProjects(handler.Handler):
     projectIDs = self.GET.getlist('projectID')
     for projectID in projectIDs:
       Project.objects.all().get(id = projectID).delete()
+    return http.HttpResponse("success")
+
+class deleteStates(handler.Handler):
+  
+  def get(self):
+    stateIDs = self.GET.getlist('stateID')
+    for stateID in stateIDs:
+      State.objects.all().get(id = stateID).delete()
     return http.HttpResponse("success")
   
 class deleteAnnotations(handler.Handler):

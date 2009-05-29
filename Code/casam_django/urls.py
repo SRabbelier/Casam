@@ -72,6 +72,7 @@ urlpatterns = patterns('',
     (r'^JSON/userAuthenticated/$', casam.views.user.userAuthenticatedJSON),
     
     #AJaX Actions
+    (r'^AJaX/deleteStates/$', casam.views.main.deleteStates()),    
     (r'^AJaX/deleteProjects/$', casam.views.main.deleteProjects()),
     (r'^AJaX/deleteImages/$', casam.views.main.deleteImages()),
     (r'^AJaX/deleteMeasurement/$', casam.views.main.deleteMeasurement()),

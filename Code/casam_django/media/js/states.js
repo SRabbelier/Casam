@@ -29,6 +29,8 @@ function loadStates(){
 	stateSubmitButton.observe('click',function(){
 		if(!$('stateNameTextfield') || $('stateNameTextfield').getValue() == ''){
 			alert('Please give in a name for the state');
+		}else if(addedImages.length == 0){
+			alert('Please select at least one image before saving the state');
 		}else{
 			var state = new State();
 			state.fill();
@@ -54,20 +56,28 @@ function loadStates(){
 			var states = transport.responseText.evalJSON();
 			var statesContainer = new Element('div');
 			for(i=0;i<states.length;i++){
-				var stateDiv = new Element('div',{'id':'stateDiv_'+states[i].id});
+				var stateDiv = new Element('div',{'id':'stateDiv_'+states[i].pk});
+				var nameDateContainer = new Element('div');
 				var nameDiv = new Element('div');
 				nameDiv.insert(states[i].fields.name);
-				stateDiv.insert(nameDiv);
+				nameDateContainer.insert(nameDiv);
 				
 				var dateDiv = new Element('div');
 				dateDiv.insert(states[i].fields.added);
 				dateDiv.addClassName('stateDivDate');
-				stateDiv.insert(dateDiv);
+				nameDateContainer.insert(dateDiv);
 				
 				stateDiv.addClassName('stateDiv');
-				statesContainer.insert(stateDiv);
+				stateDiv.insert(nameDateContainer);
+				nameDateContainer.addClassName('stateNameDateDiv')
 
-				makeStateObserver(stateDiv,states[i].pk);
+				stateDeleteDiv = new Element('div');
+				stateDeleteDiv.insert(new Element('img',{'src':base_path+'media/img/delete.gif'}));
+				stateDeleteDiv.addClassName('stateDeleteDiv');
+				stateDiv.insert(stateDeleteDiv);
+
+				statesContainer.insert(stateDiv);
+				makeStateObserver(nameDateContainer,stateDeleteDiv,stateDiv,states[i].pk,states[i].fields.name);
 
 			}
 
@@ -77,12 +87,31 @@ function loadStates(){
 	});
 }
 
-function makeStateObserver(div,id){
-	div.observe('click',function(){
-		new Effect.Highlight(div);
+function makeStateObserver(clickDiv, deleteDiv, highlightDiv,id, stateName){
+	clickDiv.observe('click',function(){
+		new Effect.Highlight(highlightDiv);
 		popupIFrame(base_path+'state/show/'+id)
 	});
+	deleteDiv.observe('click',function(){
+		if(confirm('Are you sure you want to delete state: ' + stateName +'?')){
+			new Effect.Highlight(highlightDiv,{'startcolor':'#ff0000','queue':'end'});
+			var url = base_path + 'AJaX/deleteStates/';
+			new Ajax.Request(url,{
+				method: 'get',
+				parameters: {'stateID':id},
+				onSuccess:function(){
+					new Effect.Fade(highlightDiv,{'queue':'end'});
+				},
+				onFailure:function(){
+					alert('Something went wrong deleting '+stateName );
+				}
+			
+			});
+			
+		}
+	});
 }
+	
 
 
 

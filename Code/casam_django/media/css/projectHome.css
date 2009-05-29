@@ -246,9 +246,24 @@ a.saveChangeButton{
 }
 
 .stateDiv{
-	cursor:pointer;
 	margin:5px;
 	border:1px solid black;
+	width:193px;
+	height:28px;
+}
+
+.stateNameDateDiv{
+	cursor:pointer;
+	width:175px;
+	margin:0px;
+	float:left;
+}
+.stateDeleteDiv{
+	width:18px;
+	height:28px;
+	float:left;
+	cursor:pointer;
+	padding-top:6px;
 }
 .stateDivDate{
 	font-style:italic;
