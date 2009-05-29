@@ -56,29 +56,26 @@ function popupIFrame(url,width,height){
 		var iF = new Element('iframe', {'src':url});
 		$('popupIFrameContainer').update(iF);
 		
-		$('popup').setWidth(width);
-		$('popup').setHeight(height+20);
-		//$('popup').setWidth(width);
-		//$('popup').setHeight(height);
-		$('popup').setStyle({
-			zIndex:9999,
-			top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
-			left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
-			});
+		
+		changePopupDimensions(width, height);
 		
 
 	});
 	
 }
 function changePopupDimensions(width,height){
-	$('popup').setWidth(width+1);
-	$('popup').setHeight(height+1);
+	wishfulPopupWidth = width;
+	wishfulPopupHeight = height;
+	var maxWidth = document.viewport.getWidth() - 100;
+	var maxHeight = document.viewport.getHeight() - 100	;
+	$('popup').setWidth(Math.min(width+1,maxWidth));
+	$('popup').setHeight(Math.min(height+20,maxHeight));
 	$('popup').setStyle({
 		zIndex:9999,
 		top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
 		left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
 		});
-	console.log('Update popup size width:'+width+' height:'+height)
+	//console.log('Update popup size width:'+width+' height:'+height)
 }
 
 function closePopup(){
@@ -110,8 +107,12 @@ Event.observe(window,'resize',function(){
 			top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
 			left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
 			});
+		changePopupDimensions(wishfulPopupWidth,wishfulPopupHeight);
 	}
 });
+
+var wishfulPopupWidth = 0;
+var wishfulPopupHeight = 0;
 
 
 
