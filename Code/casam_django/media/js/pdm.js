@@ -33,11 +33,11 @@ document.observe('dom:loaded',function(){
 				'pdmData':Object.toJSON(pdmObject)
 			},
 			onSuccess:function(transport){
-				alert(transport.responseText);
+				//alert(transport.responseText);
 				getProjectOverlays();
 			},
 			onFailure:function(transport){
-				alert(transport.responseText);
+				//alert(transport.responseText);
 			}
 		});
 	});

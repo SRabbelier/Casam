@@ -35,8 +35,8 @@ Event.simulateMouse = function(element, eventName) {
   this.mark.style.borderTop = "1px solid red;";
   this.mark.style.borderLeft = "1px solid red;";
   
-  if(this.step)
-    alert('['+new Date().getTime().toString()+'] '+eventName+'/'+Test.Unit.inspect(options));
+  //if(this.step)
+  //  alert('['+new Date().getTime().toString()+'] '+eventName+'/'+Test.Unit.inspect(options));
   
   $(element).dispatchEvent(oEvent);
 };

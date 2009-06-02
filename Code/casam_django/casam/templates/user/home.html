@@ -68,7 +68,7 @@ div.whiteFrame_bottom_center {
 			    <div class="type">Type: {{ user.groups.all|first|default:"missing" }}</div>
 			    <div class="read">Read: {{ profile.read.all|join:", " }}</div>
 			    <div class="write">Write: {{ profile.write.all|join:", " }}</div>
-			    <a href="./edit/{{ user.id }}" class="edit">Edit</a>
+			    <a href="./edit/{{ user.id }}" class="edit">Edit</a> - 
 			    <a href="./changepass/{{ user.id }}" class="change_pass">Change password</a>
 			  </div>
 			  <br />

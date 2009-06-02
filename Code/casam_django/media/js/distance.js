@@ -81,13 +81,13 @@ function calcDistanceError(){
     var error = (ls-rs)/(max-min);
     distanceError = error;
     
-    //relation between ruler layer and meausering layer
+    // Relation between ruler layer and meausering layer
     var mean = (max+min)/2;
     var mid = L/(L+mean);
     distanceRelation = mid;
   }
   else{
-    alert('alle velden zijn verplicht');
+    alert('All fields are required!');
   }
 }
 
@@ -117,7 +117,7 @@ function startCalibration(){
     }
   }
   else{
-    alert('open eerst een foto!');
+    alert('First open the image!');
   }
 }
 
@@ -160,7 +160,7 @@ function startDistanceMeas(){
     }
   }
   else{
-    alert('Eerst de meetfout berekenen en kalibreren');
+    alert('First calculate the calculation error and calibrate!');
   }
 }
 
