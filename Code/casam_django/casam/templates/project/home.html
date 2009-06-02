@@ -185,14 +185,10 @@ document.observe("dom:loaded", function()
 </div>
 
 <div id="tab_layers" >
-	<div id="tab_pictures" class="tabContent" style="max-height: 300px;	overflow-x:hidden;overflow-y:scroll;"></div>
-	<div class="tabLine" style="background-image:url('{{BASE_PATH}}media/img/bar_middle.jpg')">
-		<img src="{{BASE_PATH}}media/img/bar_left.jpg" style="float:left;" />
-		<img src="{{BASE_PATH}}media/img/bar_right.jpg" style="float:right;" />
-	</div>
-	<div id="tab_picture_tools" class="tabContent" style="height: 100px;">
+
+	<div id="tab_picture_tools" class="tabContent" style="height: 50px;">
 		
-		<div style="float:left;">Opacity: </div>
+		<div style="float:left;">Bitmap opacity: </div>
 		<div id="createBitmapSlider">
 			<div style="height:3px;width:100px;" id="bitmap_slider" class="slider">
 				<div style="height:9px;width:3px;" id="bitmap_slider_handle" class="handle"></div>
@@ -210,6 +206,15 @@ document.observe("dom:loaded", function()
 			<img src="{{ BASE_PATH }}media/img/pencil.jpg" id="addPictureButton" class="smallPictureButton">
 		Manage images</a>
 	</div>
+
+	<div class="tabLine" style="background-image:url('{{BASE_PATH}}media/img/bar_middle.jpg')">
+		<img src="{{BASE_PATH}}media/img/bar_left.jpg" style="float:left;" />
+		<img src="{{BASE_PATH}}media/img/bar_right.jpg" style="float:right;" />
+	</div>
+
+	<div id="tab_pictures" class="tabContent"></div>
+
+
 </div>
 
 <div id="tab_papers" class="tabContent"></div>
