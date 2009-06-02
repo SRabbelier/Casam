@@ -24,10 +24,12 @@ class Project(models.Model):
 class Image(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   project = models.ForeignKey('Project')
-  path = models.CharField(max_length=100)
   name = models.CharField(max_length=30)
   added = models.DateField(auto_now_add=True)
   last_modified = models.DateField(auto_now=True)
+
+  def __unicode__(self):
+    return str(self.name)
 
   class Meta:
     abstract = True
@@ -39,7 +41,6 @@ class PDM(Image):
 class OriginalImage(Image):
   def __unicode__(self):
     return str(self.name)
-
 
 class ModifiedImage(Image):
   originalimage = models.ForeignKey('OriginalImage') 
@@ -69,12 +70,11 @@ class Measurement(models.Model):
     return self.mogelijkemeting.type
   def project(self):
     return self.image.project
-  
   def __unicode__(self):
     return str(self.mogelijkemeting.name)
   
-class Bitmap(models.Model):
-  id = UUIDField(primary_key=True, auto=True)
+
+class Bitmap(Image):
   image = models.ForeignKey('OriginalImage')
   mogelijkemeting = models.ForeignKey('PotentialMeasurement')
   imagewidth = models.CharField(max_length=4)
@@ -84,13 +84,12 @@ class Bitmap(models.Model):
   miny = models.CharField(max_length=4)
   maxy = models.CharField(max_length=4)
   path = models.CharField(max_length=200)
-  added = models.DateField(auto_now_add=True)
-  last_modified = models.DateField(auto_now=True)
   def type(self):
     return self.mogelijkemeting.type
   def project(self):
     return self.image.project
   
+
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
   user = models.ForeignKey(User, unique=True)  

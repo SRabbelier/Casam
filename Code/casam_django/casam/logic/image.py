@@ -9,22 +9,17 @@ from casam.models import Project
 from casam.models import OriginalImage
 
 
-#def handle_uploaded_image(file, name, is_left, id_str):
 def handle_uploaded_image(file, name, id_str):
   """TODO: Docstring
   """
 
-  location, fileNameOnly = fileupload_logic.handle_uploaded_file(file, name)
-  #handle_crop_image(file, location, timestamp)
+  location  = fileupload_logic.handle_uploaded_file(file, name)
 
   #save the uploaded image
-  OriginalImage.objects.all()
-
   proj = Project.objects.get(id=id_str)
 
   properties = dict(
       name=name,
-      path=fileNameOnly,
       project=proj,
       )
 

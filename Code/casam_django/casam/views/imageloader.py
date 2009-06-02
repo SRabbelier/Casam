@@ -14,7 +14,7 @@ from casam.logic import modified_image as modified_image_logic
 from casam.models import OriginalImage
 from casam.models import Bitmap
 from casam.models import PDM
-#from casam.models import ModifiedImage
+from casam.models import ModifiedImage
 from casam.views import handler
 
 
@@ -73,7 +73,8 @@ class BitmapImageHandler(object):
 
   def contentType(self):
     return 'image/gif'
-  
+
+ 
 class OverlayImageHandler(object):
   """Handler for Bitmaps.
   """
@@ -94,6 +95,7 @@ class OverlayImageHandler(object):
 
   def contentType(self):
     return 'image/png'  
+
 
 
 class ImageHandler(handler.Handler):
@@ -128,16 +130,15 @@ class ImageHandler(handler.Handler):
 
     imageRecord = handler.getImageRecord(imageID)
 
-    #transformation = self.infix()
-    #modim = modified_image_logic.getModifiedImage(imageRecord, transformation)
+    transformation = self.infix()
+    modim = modified_image_logic.getModifiedImage(imageRecord, transformation)
 
-    #img_name = modim.id + handler.suffix()
-    img_name = imageID + self.infix() + handler.suffix() 
+    img_name = modim.id + handler.suffix()
     img_path = os.path.join(tempfile.gettempdir(), img_name)
 
     #though the file already exists on the server, save it in temp to make sure it is jpeg
     if (not os.path.exists(img_path)) or img_type=='bitmap':
-      location = os.path.join(self.DATA_DIR, imageRecord.path)
+      location = os.path.join(self.DATA_DIR, imageRecord.id)
       im = Image.open(location)
       im = im.convert("RGBA")
 

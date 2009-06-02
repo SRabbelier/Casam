@@ -4,7 +4,7 @@ from casam.models import ModifiedImage
 
 
 def getModifiedImage(imageRecord, transformation):
-  hash = hashlib.sha1(transformation).hexdigest()
+  hash = hashlib.sha1(imageRecord.id + transformation).hexdigest()
 
   try:
     modim = ModifiedImage.objects.select_related().get(hash=hash)
@@ -13,6 +13,7 @@ def getModifiedImage(imageRecord, transformation):
     pass
 
   properties = dict(
+      project=imageRecord.project,
       originalimage=imageRecord,
       transformation=transformation,
       hash=hash,
