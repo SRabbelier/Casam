@@ -16,7 +16,6 @@ var PDM = Class.create( {
 			objectArray.push(measurementsArray);
 			addedObjects.push(objectArray);
 		}
-		console.log(Object.toJSON(addedObjects));
 		this.pdmData=addedObjects;
 	}
 	
@@ -26,8 +25,6 @@ document.observe('dom:loaded',function(){
 	$('analyzeLandmarksButton').observe('click',function(){
 		var pdmObject = new PDM();
 		pdmObject.fill();
-		console.log(pdmObject);
-		console.log(Object.toJSON(pdmObject));
 		var url = base_path+'vtk/PDMCreator?time='+new Date().getTime();
 		new Ajax.Request(url,{
 			method:'post',
@@ -36,10 +33,11 @@ document.observe('dom:loaded',function(){
 				'pdmData':Object.toJSON(pdmObject)
 			},
 			onSuccess:function(transport){
-				alert(transport.responseText)
+				alert(transport.responseText);
+				getProjectOverlays();
 			},
 			onFailure:function(transport){
-				alert(transport.responseText)
+				alert(transport.responseText);
 			}
 		});
 	});

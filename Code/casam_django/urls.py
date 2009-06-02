@@ -17,13 +17,13 @@ import casam.views.bitmap_dump
 import casam.views.tag
 import casam.views.potential_measurement
 import casam.views.state
-#import casam.views.pdm
+import casam.views.pdm
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
 ID_STR = r"(?P<id_str>%s)" % UUID
 LOL = r"(?P<img_name>[0-9a-zA-Z-./_()]+)"
-IMG_TYPE = r"(?P<img_type>original|bitmap)"
+IMG_TYPE = r"(?P<img_type>original|bitmap|overlay)"
 IMG_SIZE = r"(?P<img_size>[0-9]+)"
 IMG_RATIO = r"(?P<img_ratio>(\+?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?)))"
 IMG_WIDTH = r"(?P<img_width>(\+?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?)))"
@@ -63,6 +63,7 @@ urlpatterns = patterns('',
     #JSON object loaders
     (r'^JSON/projects/(.*)$', casam.views.main.projectsJSON()),    
     (r'^JSON/projectImages/(.*)$', casam.views.project.projectImagesJSON),
+    (r'^JSON/projectOverlays/(.*)$', casam.views.project.projectOverlaysJSON),
     (r'^JSON/projectTags/(.*)$', casam.views.project.projectTagsJSON),
     (r'^JSON/projectAnnotations/(.*)$', casam.views.project.projectAnnotationsJSON),
     (r'^JSON/projectStates/(.*)$', casam.views.project.projectStatesJSON),
@@ -82,7 +83,7 @@ urlpatterns = patterns('',
     (r'^AJaX/addState/%s$' % UUID, casam.views.project.AddState()),
 
    #VTK
-    #(r'^vtk/PDMCreator$', casam.views.pdm.PDMCreator()),
+    (r'^vtk/PDMCreator$', casam.views.pdm.PDMCreator()),
 
 )
 

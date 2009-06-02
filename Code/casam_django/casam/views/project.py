@@ -9,6 +9,7 @@ from django.template import loader
 
 from casam.logic import project as project_logic
 from casam.logic import tag as tag_logic
+
 from casam.models import Annotation
 from casam.models import OriginalImage
 from casam.models import Project
@@ -18,6 +19,7 @@ from casam.models import Measurement
 from casam.models import Tag
 from casam.models import State
 from casam.models import Bitmap
+from casam.models import PDM
 from casam.views import handler
 
 
@@ -111,6 +113,11 @@ class ImageManager(handler.Handler):
 
 def projectImagesJSON(request,id_str):
   img = OriginalImage.objects.select_related().order_by('project__name').filter(project__id=id_str)
+  data = serializers.serialize("json", img)
+  return http.HttpResponse(data, mimetype="application/javascript")
+
+def projectOverlaysJSON(request,id_str):
+  img = PDM.objects.select_related().order_by('project__name').filter(project__id=id_str)
   data = serializers.serialize("json", img)
   return http.HttpResponse(data, mimetype="application/javascript")
 

@@ -13,6 +13,7 @@ from PIL import Image
 from casam.logic import modified_image as modified_image_logic
 from casam.models import OriginalImage
 from casam.models import Bitmap
+from casam.models import PDM
 #from casam.models import ModifiedImage
 from casam.views import handler
 
@@ -72,6 +73,27 @@ class BitmapImageHandler(object):
 
   def contentType(self):
     return 'image/gif'
+  
+class OverlayImageHandler(object):
+  """Handler for Bitmaps.
+  """
+
+  def getImageRecord(self, imageID):
+    try:
+      imageRecord = PDM.objects.all().get(id = imageID)
+    except PDM.DoesNotExist:
+      raise ImageNotFound('Overlay could not be found')
+
+    return imageRecord
+
+  def save(self, im, img_path):
+    im.save(img_path)
+
+  def suffix(self):
+    return ".png"
+
+  def contentType(self):
+    return 'image/png'  
 
 
 class ImageHandler(handler.Handler):
@@ -85,6 +107,7 @@ class ImageHandler(handler.Handler):
     actions = {
         'original': OriginalImageHandler,
         'bitmap': BitmapImageHandler,
+        'overlay': OverlayImageHandler,
         }
 
     img_type = self.kwargs.get('img_type')

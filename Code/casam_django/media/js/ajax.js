@@ -33,6 +33,29 @@ function getProjectImages()
 	});
 }
 
+function getProjectOverlays()
+{
+	checkAuthenticationAndExecute(function(){
+				
+		// Notice the use of a proxy to circumvent the Same Origin Policy
+		var url = base_path+'JSON/projectOverlays/'+projectID+'?time='+new Date().getTime();
+		new Ajax.Request(url, {
+		  method: 'get',
+		  onSuccess: function(transport, json) {
+		  	// Grab the picture-array
+		    var json = transport.responseText.evalJSON();
+
+		    // Build the content of the tab
+		    addOverlayTab(json);
+		    
+
+		    makePicturesSortable();
+        
+			}
+		});
+	});
+}
+
 
 function getImageBitmaps(imgid) {
 	var url = base_path + 'JSON/projectImageBitmaps/' + imgid 

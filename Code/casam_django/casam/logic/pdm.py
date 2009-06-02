@@ -68,7 +68,6 @@ def analyse(pdmodel, projectid, selectedImages):
   pdmodel.variations()
   pdmObject = PDM(project = Project.objects.all().get(id=projectid))
   pdmObject.save()
-  
   DATADIR = settings.DATADIR
   
   #get size from the first original image (all images should be same size for analysis to work properly anyway
@@ -79,6 +78,10 @@ def analyse(pdmodel, projectid, selectedImages):
   pdmo.drawMeans(pdmodel.meanPositions)
   
   imagePath = DATADIR + pdmObject.id + ".png"
+  pdmObject.path = pdmObject.id + ".png"
+  pdmObject.name = "PDM-Overlay"
+  pdmObject.save()
+  print "path: ",pdmObject.path  
   pdmo.saveImage(imagePath)
 
     

@@ -192,6 +192,73 @@ function initialisePictureTab(pictureJSON_array) {
 		makePictureContainer(pictureJSON_array[i]);
 }
 
+function addOverlayTab(overlayJSON_array) {
+
+	//$('tab_pictures').insert(new Element('div',{'id':'overlays'}));
+  
+  // Create a picture container for each picture
+  for(i=0; i < overlayJSON_array.length; i++)
+		makeOverlayContainer(overlayJSON_array[i]);
+
+}
+
+function makeOverlayContainer(pictureJSON) {
+	var mainDiv = new Element('div', {
+		"id" : "mainDiv_" + pictureJSON.pk
+	});
+	mainDiv.addClassName('projectPictureDiv');
+	// Container for picture and activation selection
+	var leftDiv = new Element('div', {
+		"id" : "leftDiv_" + pictureJSON.pk
+	});
+	leftDiv.addClassName('pictureContainerLeftDiv');
+	
+    // Container for title
+	var rightDiv = new Element('div', {
+		"id" : "rightDiv_" + pictureJSON.pk
+	});
+	rightDiv.addClassName('pictureContainerRightDiv');
+	
+	// Container for slider
+	var sliderDiv = new Element('div', {
+		"id" : "sliderDiv_" + pictureJSON.pk
+	});
+	sliderDiv.addClassName('pictureContainerSliderDiv');
+	
+	// Create activation checkbox
+	var useCheck = new Element('input', {
+		'type' : 'checkbox',
+		'id' : 'use' + pictureJSON.pk
+	});
+	useCheck.observe('click', function() {
+		if (useCheck.checked == true)
+			showImage(pictureJSON.pk, pictureJSON.fields.name, pictureJSON.model);
+		else
+			hideImage(pictureJSON.pk);
+	});
+	
+	leftDiv.insert(useCheck);
+
+	// Insert image
+	leftDiv.insert(new Element('img', {
+		'src' : base_path + 'imageLoader/thumbnail/original/30/'
+				+ pictureJSON.pk
+	}));
+	rightDiv.insert(new Element('span').update(pictureJSON.fields.name)
+			.addClassName('projectPictureInfo'));	
+	mainDiv.insert(leftDiv);
+	mainDiv.insert(rightDiv);
+	mainDiv.insert(sliderDiv);
+	$('pictures').insert(mainDiv);
+	// Ugly IE fix for setting the checkboxes
+	for ( var i = 0; i < addedImages.length; i++) {
+		if (addedImages[i].id == pictureJSON.pk) {
+			Element.writeAttribute(useCheck, 'checked', true);
+			break;
+		}
+	}
+}
+
 function makePictureContainer(pictureJSON) {
 	// Overall container
 	var mainDiv = new Element('div', {

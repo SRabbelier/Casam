@@ -19,7 +19,7 @@ class PDMOverlay(object):
     '''
     Get a visual representation of the means at the given coordinates
     '''
-    ellipsoidSize = self.image.size[0]/1000 #size of the ellipsoids, dependent on width of image
+    ellipsoidSize = self.image.size[0]/500 #size of the ellipsoids, dependent on width of image
     for position in range(len(positions)):
       coordinate = positions[position]
       xmin = coordinate[0] - ellipsoidSize

@@ -1,8 +1,9 @@
 var AddedImage = Class.create( {
-	initialize : function(id, name) {
+	initialize : function(id, name, className) {
 		this.id = id;
 		this.name = name;
 		this.opacity = 1;
+		this.className = className; 
 		this.imageElement = new Element('img');
 
 		// HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
@@ -24,9 +25,17 @@ var AddedImage = Class.create( {
 
 	},
 	getAppropriateSizeURL : function() {
-		return (base_path + 'imageLoader/byMaxWidthHeight/original/'
+		console.log('get url');
+		if(!this.className){
+			console.log('no classname');
+			return (base_path + 'imageLoader/byMaxWidthHeight/original/'
 				+ ($('big_images').getWidth() - 2) + '/'
 				+ ($('big_images').getHeight() - 2) + '/' + this.id);
+		}else if(this.className == "casam.pdm"){
+			return (base_path + 'imageLoader/byMaxWidthHeight/overlay/'
+					+ ($('big_images').getWidth() - 2) + '/'
+					+ ($('big_images').getHeight() - 2) + '/' + this.id);
+		}
 	},
 	setOpacityForImage : function(opacityValue) {
 		this.opacity = opacityValue;
@@ -101,6 +110,7 @@ var AddedImage = Class.create( {
 		// Create a slider
 		$('sliderDiv_' + this.id).update();
 		addSlider($('sliderDiv_' + this.id),this);
+	
 	}
 });
 
@@ -139,14 +149,14 @@ function addImage(originalImage) {
 	makePicturesSortable();
 }
 
-function showImage(id, name) {
+function showImage(id, name, className) {
 	checkAuthenticationAndExecute( function() {
-
-		var newAddedImage = new AddedImage(id, name);
+		var newAddedImage = new AddedImage(id, name, className);
+		//console.log(newAddedImage);
 		$('big_images').insert(this.imageElement);
 		addedImages.splice(0, 0, newAddedImage);
 		newAddedImage.addSelfToImages(true);
-
+		
 		checkActiveLayer();
 	});
 }
