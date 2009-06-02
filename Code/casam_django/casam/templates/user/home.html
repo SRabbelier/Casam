@@ -2,23 +2,96 @@
 
 {% block title %}Gebruikers{% endblock title %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ BASE_PATH }}media/css/whiteFrame.css">
+<style type="text/css">
+
+div.whiteFrame_container {
+  width: 310px;
+  height: 436px;
+}
+div.whiteFrame_top_container {
+	 width: 310px;
+}
+div.whiteFrame_top_middle {
+  width: 274px;
+}
+div.whiteFrame_center_container {
+  width: 310px;
+  height: 400px;
+}
+div.whiteFrame_center_left {
+  height: 400px;
+}
+div.whiteFrame_center_middle {
+  width: 290px;
+  height: 400px;
+}
+div.whiteFrame_center_right {
+  height: 400px;
+}
+div.whiteFrame_bottom_container {
+  width: 310px;
+}
+div.whiteFrame_bottom_center {
+  width: 274px;
+}
+</style>
+{% endblock head %}
+
 {% block body %}
 
-<p>
-<a href='./new'>New User</a>
-</p>
+<div class="whiteFrame_container">
 
-{% for user, profile in users %}
-  <div class="user">
-    <div class="name">Name: {{ user.first_name|default:"missing" }}<div>
-    <div class="last name">Last name: {{ user.last_name|default:"missing" }}<div>
-    <div class="username">Username: {{user.username}}<div>
-    <div class="type">Type: {{ user.groups.all|first|default:"missing" }}</div>
-    <div class="read">Read: {{ profile.read.all|join:", " }}</div>
-    <div class="write">Write: {{ profile.write.all|join:", " }}</div>
-    <a href="./edit/{{ user.id }}" class="edit">edit</a>
-    <a href="./changepass/{{ user.id }}" class="change_pass">change pass</a>
-  </div>
-{% endfor %}
+	<!-- Top white frame -->
+	<div class="whiteFrame_top_container">
+		<div class="whiteFrame_top_left"></div>
+		<div class="whiteFrame_top_middle"></div>
+		<div class="whiteFrame_top_right"></div>
+	</div>
+
+	<div class="whiteFrame_center_container">
+
+		<!-- Left white frame -->
+		<div class="whiteFrame_center_left"></div>
+
+		<!-- Content white frame -->
+		<div class="whiteFrame_center_middle" style="overflow-y:scroll;margin-left:10px;">
+			
+			<b>Current users</b><br /><br />
+			
+			{% for user, profile in users %}
+			  <div class="user">
+			    <div class="name">Name: {{ user.first_name|default:"missing" }}</div>
+			    <div class="last name">Last name: {{ user.last_name|default:"missing" }}</div>
+			    <div class="username">Username: {{user.username}}</div>
+			    <div class="type">Type: {{ user.groups.all|first|default:"missing" }}</div>
+			    <div class="read">Read: {{ profile.read.all|join:", " }}</div>
+			    <div class="write">Write: {{ profile.write.all|join:", " }}</div>
+			    <a href="./edit/{{ user.id }}" class="edit">Edit</a>
+			    <a href="./changepass/{{ user.id }}" class="change_pass">Change password</a>
+			  </div>
+			  <br />
+			{% endfor %}
+
+			<p>
+			<a href='./new'>New User</a>
+			</p>
+
+
+		</div>
+
+		<!-- Right white frame -->
+		<div class="whiteFrame_center_right"></div>
+
+	</div>
+
+	<!-- Bottom white frame -->
+	<div class="whiteFrame_bottom_container">
+		<div class="whiteFrame_bottom_left"></div>
+		<div class="whiteFrame_bottom_center"></div>
+		<div class="whiteFrame_bottom_right"></div>
+	</div>
+</div>
 
 {% endblock body %}

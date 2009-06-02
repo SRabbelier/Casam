@@ -1,7 +1,7 @@
 var distanceError = '';
 var distanceRelation = '';
 function makeDistanceDiv(){
-  $('rightFrame_content').insert(newTab('Distances', $('tab_distances'), true, false));
+  $('rightFrame_content').insert(newTab('Distances', $('tab_distances'), false, false));
   mainDiv = new Element('div');
   
   labelL = new Element('label').update('Afstand camera:');

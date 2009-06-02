@@ -2,13 +2,83 @@
 
 {% block title %}Edit user{% endblock title %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ BASE_PATH }}media/css/whiteFrame.css">
+<style type="text/css">
+
+div.whiteFrame_container {
+  width: 310px;
+  height: 436px;
+}
+div.whiteFrame_top_container {
+	 width: 310px;
+}
+div.whiteFrame_top_middle {
+  width: 274px;
+}
+div.whiteFrame_center_container {
+  width: 310px;
+  height: 400px;
+}
+div.whiteFrame_center_left {
+  height: 400px;
+}
+div.whiteFrame_center_middle {
+  width: 300px;
+  height: 400px;
+}
+div.whiteFrame_center_right {
+  height: 400px;
+}
+div.whiteFrame_bottom_container {
+  width: 310px;
+}
+div.whiteFrame_bottom_center {
+  width: 274px;
+}
+</style>
+
+{% endblock head %}
+
 {% block body%}
 
-<form enctype="multipart/form-data" method="post">
-<table>
-{{ form }}
-<tr><td><input type="submit" value="Update" /></td></tr>
-</table>
-</form>
+<div class="whiteFrame_container">
+
+	<!-- Top white frame -->
+	<div class="whiteFrame_top_container">
+		<div class="whiteFrame_top_left"></div>
+		<div class="whiteFrame_top_middle"></div>
+		<div class="whiteFrame_top_right"></div>
+	</div>
+
+	<div class="whiteFrame_center_container">
+
+		<!-- Left white frame -->
+		<div class="whiteFrame_center_left"></div>
+
+		<!-- Content white frame -->
+		<div class="whiteFrame_center_middle">
+
+			<form enctype="multipart/form-data" method="post">
+			<table>
+			{{ form }}
+			<tr><td><input type="submit" value="Update" /></td></tr>
+			</table>
+			</form>
+
+		</div>
+
+		<!-- Right white frame -->
+		<div class="whiteFrame_center_right"></div>
+
+	</div>
+
+	<!-- Bottom white frame -->
+	<div class="whiteFrame_bottom_container">
+		<div class="whiteFrame_bottom_left"></div>
+		<div class="whiteFrame_bottom_center"></div>
+		<div class="whiteFrame_bottom_right"></div>
+	</div>
+</div>
 
 {% endblock body %}
