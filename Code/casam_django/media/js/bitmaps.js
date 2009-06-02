@@ -29,6 +29,7 @@ function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 	});
 	
 	bitmapDiv.addClassName('projectImageBitmapDiv');
+	bitmapDiv.addClassName('projectImageBitmapDivPotId_'+potid)
 
 	checkbox = new Element('input', {
 		'type' : 'checkbox',

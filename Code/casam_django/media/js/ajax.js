@@ -131,3 +131,72 @@ function getProjectPotentialMeasurements()
   });
   });
 }
+
+function removePotentialType(typeid){
+  var url = base_path + 'AJaX/deletePotentialMeasurementType/?time='+new Date().getTime();
+  new Ajax.Request(url, {
+      method: 'get',
+      parameters: {'potTypeID': typeid},
+      onSuccess: function(transport, json) {
+        //DELETE CURRENT MEASUREMENTS
+        for(var j = 0; j < measurements.length; j++){
+          if ($('potmeas_'+measurements[j].potid).up().id.slice(9) == typeid){
+            measurements.splice(j,1);
+            j = j - 1;
+          }                                             
+        }
+        //REMOVE TEXT OF CURRENT MEASUREMENTS
+        for(var i = 0; i < addedImages.length; i++){
+          $('measurementTypesDiv_'+addedImages[i].id+'-'+typeid).remove();                                          
+        }
+        //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
+        for(var i = 0; i < changes.length; i++){
+          if ($('potmeas_'+changes[i].potid).up().id.slice(9) == typeid){
+            changes[i].changeDiv.remove();
+            changes.splice(i,1);
+            i = i - 1;
+          }
+        }
+        //DELETE POTENTIAL MEASUREMENTS
+        var parentPotentialMeasurements = $$('div.potMeasDiv');
+        var bitmapIDs = new Array();
+        for(var i = 0; i < parentPotentialMeasurements.length; i++){
+          if (parentPotentialMeasurements[i].up().id.slice(9) == typeid){
+            Effect.Fade(parentPotentialMeasurements[i]);
+        		// REMOVE CURRENT BITMAPS
+            var parentCurrentBitmaps = $$('div.projectImageBitmapDivPotId_'+parentPotentialMeasurements[i].id.slice(8))
+            for(var i = 0; i < parentCurrentBitmaps.length; i++){
+      				var bmid = parentCurrentBitmaps[i].id.slice(10)
+      				bitmapIDs.push(bmid);
+      				//DELETE BITMAP FROM BIG_IMAGES
+      				$('bitmap_'+bmid).remove();
+      				parentCurrentBitmaps[i].remove();
+      			} 
+            if (!parentPotentialMeasurements[i].childElements()[0].hasClassName('paintoverLink'))
+            	$('option'+parentPotentialMeasurements[i].id.slice(8)).remove();
+            parentPotentialMeasurements[i].remove();
+          }                  
+        }
+        // DELETE BITMAPS FROM BITMAP ARRAY
+        for(var i = 0; i < bitmapIDs.length; i++){
+        	for(var j = 0; j < bitmaps.length; j++){
+        		if (bitmaps[j].id == bitmapIDs[i])
+        		  bitmaps.splice(j, 1);
+        		  break;
+        	}
+        }
+        //DELETE POTENTIAL MEASUREMENTS GROUP
+        var parentPotentialMeasurementTypes = $$('div.projectPotentialTypeDiv');
+        for(var i = 0; i < parentPotentialMeasurementTypes.length; i++){
+          if (parentPotentialMeasurementTypes[i].id.slice(9) == typeid){
+            Effect.Fade(parentPotentialMeasurementTypes[i].up());
+            $('optgroup_'+typeid).remove();
+            parentPotentialMeasurementTypes[i].up().remove();                                                              
+          }                                                                
+        }          
+      },
+      onFailure:function(){
+        alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
+      }
+  });                                   
+} 

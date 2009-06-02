@@ -10,8 +10,9 @@
       var checkboxes = $$('input.typeCheckbox');
       for(var i = 0; i < checkboxes.length; i++){
         if(checkboxes[i].checked == true)
-          removePotentialType(checkboxes[i].name);                                           
+          parent.removePotentialType(checkboxes[i].name);      
       }
+      parent.closePopupAndReloadPotentialMeasurementTypes('')
     });
   });
   
@@ -35,61 +36,7 @@
     }                           
   }
   
-  function removePotentialType(typeid){
-    var url = '{{ BASE_PATH }}AJaX/deletePotentialMeasurementType/?time='+new Date().getTime();
-    new Ajax.Request(url, {
-        method: 'get',
-        parameters: {'potTypeID': typeid},
-        onSuccess: function(transport, json) {
-          $(typeid).remove();
-          //DELETE CURRENT MEASUREMENTS
-          var measurements = parent.measurements;
-          for(var j = 0; j < measurements.length; j++){
-            if (parent.$('potmeas_'+measurements[j].potid).up().id.slice(9) == typeid){
-              measurements[j].erase();
-              parent.measurements.splice(j,1);
-              j = j - 1;
-            }                                             
-          }
-          //TODO: REMOVE TEXT OF CURRENT MEASUREMENTS
-          var addedImages = parent.addedImages;
-          for(var i = 0; i < addedImages.length; i++){
-            parent.$('measurementTypesDiv_'+addedImages[i].id+'-'+typeid).remove();                                          
-          } 
-          //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
-          var changes = parent.changes;
-          for(var i = 0; i < changes.length; i++){
-            if (parent.$('potmeas_'+changes[i].potid).up().id.slice(9) == typeid){
-              changes[i].erase();
-              parent.changes.splice(i,1);
-              i = i - 1;
-            }
-          }
-          //DELETE POTENTIAL MEASUREMENTS
-          var parentPotentialMeasurements = parent.$$('div.potMeasDiv');
-          for(var i = 0; i < parentPotentialMeasurements.length; i++){
-            if (parentPotentialMeasurements[i].up().id.slice(9) == typeid){
-              Effect.Fade(parentPotentialMeasurements[i]);
-              parentPotentialMeasurements[i].remove();
-              parent.$('option'+parentPotentialMeasurements[i].id.slice(8)).remove();
-            }                  
-          }
-          //DELETE POTENTIAL MEASUREMENTS GROUP
-          var parentPotentialMeasurementTypes = parent.$$('div.projectPotentialTypeDiv');
-          for(var i = 0; i < parentPotentialMeasurementTypes.length; i++){
-            if (parentPotentialMeasurementTypes[i].id.slice(9) == typeid){
-              Effect.Fade(parentPotentialMeasurementTypes[i].up());
-              parentPotentialMeasurementTypes[i].up().remove();                                                              
-            }                                                                
-          }          
-          //CLOSE POPUP
-          parent.closePopupAndReloadPotentialMeasurements('')
-        },
-        onFailure:function(){
-          alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
-        }
-    });                                   
-  } 
+
   
 </script>
 {% endblock head %}

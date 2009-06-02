@@ -410,8 +410,9 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 	});
 	if (potsoort == 'L')
 		pmmPointerIMG.writeAttribute('src', base_path + 'media/img/landmark.gif');
-	else
+	else{
 	  pmmPointerIMG.writeAttribute('src', base_path + 'media/img/pencil.gif');
+	}
 	pmmPointerIMG.addClassName('mmPointer');
 	pmmContainerDiv.insert(pmmPointerIMG);
 	var json = json;
