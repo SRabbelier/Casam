@@ -57,10 +57,12 @@ class NewPotentialMeasurement(handler.Handler):
     else:
       context['potmeas'] = serializers.serialize("json",[potmeas])
     content = loader.render_to_string('potential_measurement/success.html', dictionary=context)
+    print 'should have loaded success'
     return http.HttpResponse(content)
 
   def get(self):
     context = self.getContext()
+    print 'going to load new.html'
     content = loader.render_to_string('potential_measurement/new.html', dictionary=context)
     return http.HttpResponse(content)
 

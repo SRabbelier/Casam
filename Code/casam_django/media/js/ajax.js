@@ -61,7 +61,6 @@ function getImageBitmaps(imgid) {
 	var url = base_path + 'JSON/projectImageBitmaps/' + imgid 
 			+ '?time=' + new Date().getTime();
 	new Ajax.Request(url,	{
-			asynchronous:	false,
 			method : 'get',
 			onSuccess : function(transport, json) {
 				var json = transport.responseText.evalJSON();

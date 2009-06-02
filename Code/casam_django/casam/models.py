@@ -83,7 +83,6 @@ class Bitmap(Image):
   maxx = models.CharField(max_length=4)
   miny = models.CharField(max_length=4)
   maxy = models.CharField(max_length=4)
-  path = models.CharField(max_length=200)
   def type(self):
     return self.mogelijkemeting.type
   def project(self):
