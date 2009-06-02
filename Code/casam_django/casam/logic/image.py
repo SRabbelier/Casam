@@ -23,7 +23,8 @@ def handle_uploaded_image(file, name, id_str):
 
   oi = OriginalImage(**properties)
   oi.save()
-  
-  fileupload_logic.handle_uploaded_file(file, oi.id)
+
+  file_name = oi.id + '.jpg'
+  fileupload_logic.handle_uploaded_file(file, file_name)
 
   return oi
