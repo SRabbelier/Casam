@@ -48,6 +48,9 @@ class OriginalImageHandler(object):
   def suffix(self):
     return ".jpg"
 
+  def cachable(self):
+    return True
+
   def contentType(self):
     return "image/jpeg"
 
@@ -71,6 +74,10 @@ class BitmapImageHandler(object):
   def suffix(self):
     return ".gif"
 
+  def cachable(self):
+    # not cachable since new versions of the same overlay may be saved
+    return False
+
   def contentType(self):
     return 'image/gif'
 
@@ -92,6 +99,9 @@ class OverlayImageHandler(object):
 
   def suffix(self):
     return ".png"
+
+  def cachable(self):
+    return True
 
   def contentType(self):
     return 'image/png'  
@@ -137,8 +147,8 @@ class ImageHandler(handler.Handler):
     img_path = os.path.join(tempfile.gettempdir(), img_name)
 
     #though the file already exists on the server, save it in temp to make sure it is jpeg
-    if (not os.path.exists(img_path)) or img_type=='bitmap':
-      location = os.path.join(self.DATA_DIR, imageRecord.id + '.gif')
+    if (not os.path.exists(img_path)) or not handler.cachable():
+      location = os.path.join(self.DATA_DIR, imageRecord.id + handler.suffix())
       im = Image.open(location)
       im = im.convert("RGBA")
 
