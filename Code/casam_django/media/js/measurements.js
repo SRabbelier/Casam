@@ -446,9 +446,14 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 }
 function observeEditLink(potid){
 	$('paintoverLink_'+potid).observe('click', function(){
-  		if (addedImages.length > 0)
+		if (addedImages.length > 0)
+  		var bitmapIDs = $('bitmapsList_'+addedImages[0].id).select('div.projectImageBitmapDivPotId_'+potid);
+  		console.log(bitmapIDs)
+			if (bitmapIDs.length > 0)
+				loadEditScreen(addedImages[0].id, potid, bitmapIDs[0].id.slice(10));
+  		else 
   			loadEditScreen(addedImages[0].id, potid);
-  	});
+  });
 }
 
 function removeMeasurements(imageID){
