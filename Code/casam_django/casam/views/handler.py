@@ -46,6 +46,9 @@ class Handler(object):
     if self.is_post and self.form.is_valid():
       self.cleaned_data = self.form.cleaned_data
       return self.post()
+    else:
+      is_valid_returnde = self.form.is_valid()
+      errors = self.form.errors
 
     return self.get()
 
