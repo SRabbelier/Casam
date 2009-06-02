@@ -382,7 +382,11 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 
 	// Add all the bitmaps
 	for ( var i = 0; i < bitmapJSON_array.length; i++)
-		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid, bitmapJSON_array[i].fields.mogelijkemeting));
+		
+		mainDiv.insert(addBitmap(bitmapJSON_array[i].pk, imgid, bitmapJSON_array[i].fields.mogelijkemeting,
+				                     bitmapJSON_array[i].fields.minx, bitmapJSON_array[i].fields.maxx,
+				                     bitmapJSON_array[i].fields.miny, bitmapJSON_array[i].fields.maxy));
+		
 	
 	// Add this subtab
 	var tab_bitmaps = newTab('Bitmaps', mainDiv, true, true);
@@ -426,9 +430,16 @@ function closePopupAndReloadPotentialMeasurementTypes(pottype){
 	}
 }
 
-function loadEditScreen(id, pm_id, bmid) {
+function loadEditScreen(id, pm_id, bmid, min_x, max_x, min_y, max_y) {
 	checkAuthenticationAndExecute( function() {
 
+		if (min_x == undefined || max_x == undefined || min_y == undefined || max_y == undefined) {
+			min_x = 0;
+			max_x = 0;
+			min_y = 0;
+			max_y = 0;
+		}
+		
 		flashpainting = true;
 		
 		// Are we editing an existing bitmap?
@@ -465,7 +476,9 @@ function loadEditScreen(id, pm_id, bmid) {
 				"http://www.macromedia.com/go/getflashplayer");
 		movie_embed.writeAttribute('flashvars', "img_source=" + img_url
 				+ "&server_url=" + base_path + "bitmap_dump&img_id=" + id
-				+ "&img_bitmap=" + bitmap_url + "&img_previous_id=" + bmid+"&img_pm_id="+pm_id);
+				+ "&img_bitmap=" + bitmap_url + "&img_previous_id=" + bmid
+				+ "&img_pm_id=" + pm_id + "&min_x=" + min_x + "&max_x=" + max_x 
+				+ "&min_y=" + min_y + "&max_y=" + max_y);
 
 		movie_object.insert(movie_embed);
 		$('big_images').update();
@@ -473,14 +486,37 @@ function loadEditScreen(id, pm_id, bmid) {
 	});
 }
 
-function closePaintOver(bmid, potid) {
-	if(bmid != '' && $('bitmapDiv_'+bmid) == undefined) {
-		newBitmapDiv = addBitmap(bmid, addedImages[0].id, potid);
-		$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
+function closePaintOver(bmid, potid, imgid, min_x, max_x, min_y, max_y) {
+	
+	// Was cancel or save pressed?
+	if (bmid != '') {
+		
+		// Are we editing of is this new?
+		if ($('bitmapDiv_'+bmid) == undefined) {
+			
+			// Add new bitmap
+			newBitmapDiv = addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y);
+			$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
+			
+		} else {
+			
+			// Edit editlink
+			$('spanbm_' + bmid).update($('potmeas_'+potid).down('div').innerHTML);
+			editlink = new Element('a', {'href':'javascript:loadEditScreen(\''
+																		+imgid+'\', \''+potid+'\', \''+bmid+'\', \''
+																		+min_x+'\', \''+max_x+'\', \''+min_y+'\', \''+max_y+'\')'});
+			editimg = new Element('img');
+			editimg.writeAttribute('src', base_path + 'media/img/pencil.gif');
+			editimg.addClassName('smallPictureButton');
+			editlink.insert(editimg);
+			$('spanbm_' + bmid).insert(editlink);
+			
+		}	
 	}
 	
+	// Do what always should be done
 	flashpainting = false; 
-	reloadImages(false); 
+	reloadImages(false);
 } 
 
 

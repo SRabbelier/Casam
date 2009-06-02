@@ -21,7 +21,9 @@ var Bitmap = Class.create( {
 	}
 });
 
-function addBitmap(bmid, imgid, potid) {
+function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
+	
+	// Create html-elementes
 	var bitmapDiv = new Element('div', {
 		'id' : 'bitmapDiv_' + bmid
 	});
@@ -76,7 +78,7 @@ function addBitmap(bmid, imgid, potid) {
 		'id' : 'spanbm_' + bmid
 	});
 	textspan.update($('potmeas_'+potid).down('div').innerHTML);
-	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+potid+'\', \''+bmid+'\')'});
+	editlink = new Element('a', {'href':'javascript:loadEditScreen(\''+imgid+'\', \''+potid+'\', \''+bmid+'\', \''+min_x+'\', \''+max_x+'\', \''+min_y+'\', \''+max_y+'\')'});
 	editimg = new Element('img');
 	editimg.writeAttribute('src', base_path + 'media/img/pencil.gif');
 	editimg.addClassName('smallPictureButton');
