@@ -5,7 +5,7 @@ import time
 
 
 def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
-  
+
   if not (r >= 0 and r <= 255 and 
           g >= 0 and g <= 255 and 
           b >= 0 and b <= 255):
@@ -113,10 +113,10 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
 
     db_bitmap = Bitmap(**properties)
     db_bitmap.save()
-    
-    img_path = os.path.join(settings.DATADIR, db_bitmap.id)
-    im.save(img_path,transparency=0);
-    
+
+    img_path = os.path.join(settings.DATADIR, db_bitmap.id + ".gif")
+    im.save(img_path,transparency=0)
+
     return db_bitmap.pk
   
   # Just overwrite previous image-file

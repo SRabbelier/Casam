@@ -14,7 +14,6 @@ def getModifiedImage(imageRecord, transformation):
 
   properties = dict(
       project=imageRecord.project,
-      originalimage=imageRecord,
       transformation=transformation,
       hash=hash,
       )

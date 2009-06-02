@@ -138,7 +138,7 @@ class ImageHandler(handler.Handler):
 
     #though the file already exists on the server, save it in temp to make sure it is jpeg
     if (not os.path.exists(img_path)) or img_type=='bitmap':
-      location = os.path.join(self.DATA_DIR, imageRecord.id)
+      location = os.path.join(self.DATA_DIR, imageRecord.id + '.gif')
       im = Image.open(location)
       im = im.convert("RGBA")
 

@@ -43,7 +43,6 @@ class OriginalImage(Image):
     return str(self.name)
 
 class ModifiedImage(Image):
-  originalimage = models.ForeignKey('OriginalImage') 
   hash = models.CharField(max_length=40) 
   transformation = models.TextField() 
   def __unicode__(self):
