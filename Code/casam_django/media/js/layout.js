@@ -519,4 +519,20 @@ function closePaintOver(bmid, potid, imgid, min_x, max_x, min_y, max_y) {
 	reloadImages(false);
 } 
 
+function createBitmapSlider(){
+	new Control.Slider(
+		$('bitmap_slider_handle'),
+		$('bitmap_slider'), 
+		{ minimum : 0,
+			maximum : 1,
+			sliderValue : .5,
+			onSlide : function(value) {
+				slideBitmap(value);
+			}}
+	);
+}
 
+function slideBitmap(value) {
+	for (i = 0; i < bitmaps.length; i++)
+		$('bitmap_'+bitmaps[i].id).setOpacity(value);
+}

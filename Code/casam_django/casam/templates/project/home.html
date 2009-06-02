@@ -78,6 +78,8 @@ document.observe("dom:loaded", function()
 		// Make draggable's for each Measurement
 		new Draggable('lmdd');
 
+		createBitmapSlider();
+
 		resizeScreenElements(true);
 		Event.observe(window,'resize',function(){
 			resizeScreenElements(false);
@@ -189,8 +191,16 @@ document.observe("dom:loaded", function()
 		<img src="{{BASE_PATH}}media/img/bar_right.jpg" style="float:right;" />
 	</div>
 	<div id="tab_picture_tools" class="tabContent" style="height: 100px;">
-		<div>Bitmaps: |-----|------------------|</div>
-		<a href="#" id="analyzeLandmarksButton">
+		
+		<div style="float:left;">Opacity: </div>
+		<div id="createBitmapSlider">
+			<div style="height:3px;width:100px;" id="bitmap_slider" class="slider">
+				<div style="height:9px;width:3px;" id="bitmap_slider_handle" class="handle"></div>
+			</div>
+		</div>		
+		<br>
+		
+		<a href="#" id="analyzeLandmarksButton" style="clear:both;">
 			Analyse selected landmarks
 		</a><br />
 		<a href="#" onclick="">
