@@ -23,7 +23,7 @@
 		document.observe("dom:loaded",function(){
 			var secondsToExpiration = parseInt('{{expiration_in_seconds}}');
 			//User is logged in
-			if(secondsToExpiration>0)decreaseTimeToExpiration(secondsToExpiration);
+			if(secondsToExpiration>0 && $('automaticLogout'))decreaseTimeToExpiration(secondsToExpiration);
 
 			
 		});

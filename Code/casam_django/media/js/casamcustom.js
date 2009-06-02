@@ -46,7 +46,8 @@ function popupIFrame(url,width,height){
 			$('popup_overlay').setStyle({
 				zIndex:9998
 			});
-			new Effect.Appear('popup_overlay',{to:0.8});
+			new Effect.Appear('popup_overlay',{to:0.8,duration:0.3});
+			$('popup').setOpacity(0.01);
 			$('popup').show();
 		}
 		popupActive = true;
@@ -57,25 +58,31 @@ function popupIFrame(url,width,height){
 		$('popupIFrameContainer').update(iF);
 		
 		
-		changePopupDimensions(width, height);
+		changePopupDimensions(width, height,true );
 		
 
 	});
 	
 }
-function changePopupDimensions(width,height){
+function changePopupDimensions(width,height, initial){
 	wishfulPopupWidth = width;
 	wishfulPopupHeight = height;
 	var maxWidth = document.viewport.getWidth() - 100;
 	var maxHeight = document.viewport.getHeight() - 100	;
-	$('popup').setWidth(Math.min(width+1,maxWidth));
-	$('popup').setHeight(Math.min(height+20,maxHeight));
+	var minWidth = 200;
+	var minHeight = 150;
+	$('popup').setWidth(Math.max(Math.min(width+1,maxWidth),minWidth));
+	$('popup').setHeight(Math.max(Math.min(height+20,maxHeight),minHeight));
 	$('popup').setStyle({
 		zIndex:9999,
 		top:((document.viewport.getHeight() - $('popup').getHeight())/2)+'px',
 		left:((document.viewport.getWidth() - $('popup').getWidth())/2)+'px'
 		});
-	//console.log('Update popup size width:'+width+' height:'+height)
+	
+	if(typeof(initial)=="undefined" || initial != true){
+		new Effect.Appear('popup',{to:1});
+	}
+	console.log('Update popup size width:'+width+' height:'+height)
 }
 
 function closePopup(){

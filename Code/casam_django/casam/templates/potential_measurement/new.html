@@ -2,9 +2,7 @@
 
 {% block title %}Nieuw potential measurement{% endblock title %}
 
-{% block head %}
-<script type="text/javascript">
-  document.observe('dom:loaded',function(){                                          
+{% block beforeJSLoad %}
     getProjectPotentialMeasurements();
     Element.observe('undoLink','click',function(){
       var potentialMeasurements = $$('div.deletePotMeasDiv');
@@ -19,19 +17,12 @@
         });                     
       }                             
     });
-    var closeButton = new Element('input',{'type':'button','value':'Close measurement manager'});
-    $('closeContainer').insert(closeButton);
-    closeButton.observe('click',function(){
-      parent.closePopupAndReloadPotentialMeasurements('');
-    });
 
-		parent.changePopupDimensions(document.viewport.getWidth(),document.viewport.getHeight());
-		
-		//Blackout the standard popup loader which gives the wrong size
-		{% block customJSLoad %}
+{% endblock beforeJSLoad %}
+   
 
-		{% endblock customJSLoad %}
-  });
+{% block head %}
+<script type="text/javascript">
   
   function getProjectPotentialMeasurements(){
     
