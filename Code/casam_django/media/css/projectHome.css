@@ -289,3 +289,14 @@ a.saveChangeButton{
 #tab_papers{
 	text-align:right;
 }
+
+#tab_distances label {
+  display: inline;
+}
+#tab_distances input {
+  display: inline; 
+  width: 45px; 
+  margin: 0px 3px 0px 3px;
+  size: 9px;
+  height: 10px;
+}
