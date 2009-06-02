@@ -87,6 +87,7 @@ class NewPotentialMeasurementType(handler.Handler):
     potmeastype = potential_measurement_logic.handle_add_potential_measurement_type(project, name)
     
     context = self.getContext()
+    
     if potmeastype == None:
       context['potmeastype'] = ''
     else:

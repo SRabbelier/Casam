@@ -4,9 +4,6 @@
 
 {% block head %}
 <script type="text/javascript">
-	Event.observe(window,'unload',function(){
-	  parent.closePopupAndReloadPotentialMeasurements('');
-	});
   document.observe('dom:loaded',function(){                                          
     getPotentialTypes();
     $('deleteTypesLink').observe('click', function(){

@@ -421,8 +421,9 @@ function closePopupAndReloadPotentialMeasurements(meas) {
 
 
 function closePopupAndReloadPotentialMeasurementTypes(pottype){
-	if (pottype == '')
+	if (pottype == ''){
 		closePopup();
+	}
 	else{
 		typeObject = pottype.evalJSON()[0];
 		createPotentialMeasurementType(typeObject.pk, typeObject.fields.name);
