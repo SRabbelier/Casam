@@ -12,9 +12,7 @@ from casam.models import OriginalImage
 def handle_uploaded_image(file, name, id_str):
   """TODO: Docstring
   """
-
-  location  = fileupload_logic.handle_uploaded_file(file, name)
-
+  
   #save the uploaded image
   proj = Project.objects.get(id=id_str)
 
