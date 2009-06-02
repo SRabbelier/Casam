@@ -38,6 +38,7 @@
 <script src="{{ BASE_PATH }}media/js/undo.js" type="text/javascript"></script>
 <script src="{{ BASE_PATH }}media/js/states.js" type="text/javascript"></script>
 <script src="{{ BASE_PATH }}media/js/annotations.js" type="text/javascript"></script>
+<script src="{{ BASE_PATH }}media/js/distance.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -92,6 +93,7 @@ document.observe("dom:loaded", function()
     Event.observe('undoLink','click',function(){
     	undoLastChange();
     });
+    makeDistanceDiv();
 	});
 });
 
@@ -234,6 +236,7 @@ Coordinates:<input type="text" id="MouseX" value="0" size="3">x<input type="text
 
 </div>
 <div id="tab_states"> </div>
+<div id="tab_distances"> </div>
 
 
 <!-- POPUP -->
