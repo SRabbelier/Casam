@@ -17,8 +17,12 @@ TYPE_CHOICES = (
 
 class PotentialMeasurementForm(forms.Form):
   name = forms.CharField(max_length=50)
-  type = forms.ModelChoiceField(Type.objects.all(), empty_label=None)
+  type = forms.ModelChoiceField(Type.objects.none(), empty_label=None)
   soort = forms.CharField(max_length=1, widget=forms.Select(choices=TYPE_CHOICES))
+  
+  def __init__(self, projectid, *args, **kwargs):
+    super(PotentialMeasurementForm, self).__init__(*args, **kwargs)
+    self.fields['type'].queryset = Type.objects.filter(project__id = projectid)
   
 class PotentialMeasurementTypeForm(forms.Form):
   name = forms.CharField(max_length=40)
@@ -33,7 +37,7 @@ class NewPotentialMeasurement(handler.Handler):
     return self.profile and proj in [i.id for i in self.profile.read.all()]
 
   def getGetForm(self):
-    return PotentialMeasurementForm()
+    return PotentialMeasurementForm(self.kwargs['id_str'])
 
   def getPostForm(self):
     return PotentialMeasurementForm(self.POST)
