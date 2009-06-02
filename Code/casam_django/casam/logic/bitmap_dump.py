@@ -2,7 +2,7 @@ from PIL import Image
 from django.conf import settings
 from casam.models import Bitmap
 import time
-
+import os
 
 def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
 
@@ -12,7 +12,7 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
     r = 255
     g = 0
     b = 0
-  
+    
   dump = dump.split("#")
   header = dump[0].split("x")
   body = dump[1]
@@ -94,7 +94,6 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
   assert len(palette) == 768
   
   im.putpalette(palette)
-
   # Make database insert
   if previous_id == '0':    
     # Create associated measurement
@@ -110,18 +109,17 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
       project = original_image.project,
       name = "bitmap",
     )
-
     db_bitmap = Bitmap(**properties)
     db_bitmap.save()
 
+    
     img_path = os.path.join(settings.DATADIR, db_bitmap.id + ".gif")
+    
     im.save(img_path,transparency=0)
-
-    return db_bitmap.pk
+    return db_bitmap.id
   
   # Just overwrite previous image-file
   else:
-
     previous_image = Bitmap.objects.all().get(id=previous_id)
     previous_image.minx = min_x
     previous_image.maxx = max_x
@@ -129,7 +127,7 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
     previous_image.maxy = max_y
     previous_image.save()
     
-    image_path = os.path.join(settings.DATADIR, previous_image.id)
+    image_path = os.path.join(settings.DATADIR, previous_image.id + '.gif')
     im.save(image_path,transparency=0);
     
     return previous_id
