@@ -70,7 +70,7 @@ var Measurement = Class.create( {
 		$('mm' + this.potid).hide();
 	},
 	nonActive : function() {
-		this.changeColor('green');
+		this.changeColor('blue');
 		if (this.drag != null)
 			this.drag.destroy();
 	},
