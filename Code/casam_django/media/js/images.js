@@ -179,10 +179,8 @@ function hideImage(id) {
 
 		// Remove changes
 		removeChanges(id);
-		console.log('test')				
 		// Remove image
 		removeImage(id);
-		console.log('test')					
 		// Check for new active layer
 		checkActiveLayer();
 	});
@@ -256,8 +254,9 @@ function removeImage(imageID){
 	Element.remove($('addedImage_'+imageID))
 	
 	$('sliderDiv_' + imageID).update();
-	if (!$('rightDiv_' + imageID).childElements()[0].innerHTML == "PDM-Overlay")
+	if ($('rightDiv_' + imageID).childElements()[0].innerHTML != "PDM-Overlay"){
 		$('bottomDiv_' + imageID).update();
+	}
 }
 
 function checkActiveLayer(){
