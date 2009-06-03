@@ -5,7 +5,7 @@ var Check = Class.create( {
 		//			sg (showGroup) is for showing all measurements in a group
 	this.type = type;
 
-	if ((this.type == 's') || (this.type == 'sa'))
+	if ((this.type == 's') || (this.type == 'sa') || (this.type == 'sg'))
 		this.defaultValue = true;
 	else
 		this.defaultValue = false;
@@ -171,6 +171,7 @@ function watchBox(item) {
 			if (item.type == 's'){
 				item.item.place();
 				$('showAll_'+item.item.imageid).checked = true;
+				$('super_check_'+item.item.typeid).checked = true;
 			}
 			else if (item.type == 'b')
 				item.item.bitmap.show();
@@ -181,6 +182,26 @@ function watchBox(item) {
 							checkboxes[i].box.checked = true;
 							checkboxes[i].update(checkboxes[i].box.checked);
 							checkboxes[i].item.place();
+						}
+					}
+					else if (checkboxes[i].type == 'sg'){
+						if (checkboxes[i].box.up().up().id.slice(17) == item.id){
+							checkboxes[i].box.checked = true;
+							checkboxes[i].update(checkboxes[i].box.checked);
+						}
+					}
+				}
+			}
+			else if (item.type == 'sg'){
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
+							if (checkboxes[i].item.typeid == item.box.name){
+								checkboxes[i].box.checked = true;
+								checkboxes[i].update(checkboxes[i].box.checked);
+								checkboxes[i].item.place();
+								$('showAll_'+item.box.up().up().id.slice(17)).checked = true;
+							}
 						}
 					}
 				}
@@ -199,6 +220,20 @@ function watchBox(item) {
 				}
 				if (!checked)
 				  $('showAll_'+item.item.imageid).checked = false;
+				  
+				var typeChecked = false;
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if ((checkboxes[i].item.imageid == item.item.imageid) &&
+								(checkboxes[i].item.typeid == item.item.typeid) &&
+								(checkboxes[i].box.checked == true)){
+							typeChecked = true;
+							break;
+						}
+					}
+				}
+				if (!typeChecked)
+				  $('super_check_'+item.item.typeid).checked = false;
 			}
 			else if (item.type == 'b')
 				item.item.bitmap.hide();
@@ -211,7 +246,39 @@ function watchBox(item) {
 							checkboxes[i].item.hide();
 						}
 					}
+					else if (checkboxes[i].type == 'sg'){
+						if (checkboxes[i].box.up().up().id.slice(17) == item.id){
+							checkboxes[i].box.checked = false;
+							checkboxes[i].update(checkboxes[i].box.checked);
+						}
+					}
 			  }
+			}
+			else if (item.type == 'sg'){
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
+							if (checkboxes[i].item.typeid == item.box.name){
+								checkboxes[i].box.checked = false;
+								checkboxes[i].update(checkboxes[i].box.checked);
+								checkboxes[i].item.hide();
+							}
+						}
+					}
+				}
+				var checked = false;
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
+							if (checkboxes[i].box.checked == true){
+								checked = true;
+								break;
+							}
+						}
+					}
+				}
+				if (!checked)
+				  $('showAll_'+item.box.up().up().id.slice(17)).checked = false;
 			}
 		}
 	});
@@ -416,6 +483,7 @@ function addMeasurementsToPictureContainer(imgid, json) {
 	var check = new Check('sa', imgid, groupcheck, null);
 	check.setDefault();
 	check.watch();
+	checkboxes.push(check);
 }
 
 function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {

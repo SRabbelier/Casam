@@ -364,11 +364,17 @@ function createImageMeasurementSubTab(typeid, typename, imgid){
 	super_check = new Element('input');
 	super_check.writeAttribute('id', 'super_check_'+typeid);
 	super_check.writeAttribute('type', 'checkbox');
+	super_check.writeAttribute('name', typeid);
 	super_check.writeAttribute('style', 'margin:0px;float:left;');
-	super_check.defaultChecked = true;
+	//super_check.defaultChecked = true;
 	subtab_measurements.insert({top: super_check});
 	
-	listenSuperCheck(super_check, typeid);
+	//listenSuperCheck(super_check, typeid);
+	
+	var check = new Check('sg', typeid, super_check, null);
+	check.setDefault();
+	check.watch();
+	checkboxes.push(check);
 
 	return subtab_measurements;
 }
