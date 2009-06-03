@@ -94,7 +94,7 @@ function reloadUndoneChange(metingid, posx, posy) {
 	pin.setPlace(posx / pin.piecex, posy / pin.piecey);
 	pin.place();
 	new Effect.Highlight($('measidMeasDiv_'+pin.id));
-  $('span_'+pin.id).update(pin.name + ' (' + Math.round(pin.x) + ',' + Math.round(pin.y) + ')');
+  $('span_'+pin.id).update(pin.name);
 }
 
 function reloadUndonePlace(potid, imageID) {
