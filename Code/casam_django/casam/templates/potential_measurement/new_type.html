@@ -6,14 +6,6 @@
 <script type="text/javascript">
   document.observe('dom:loaded',function(){                                          
     getPotentialTypes();
-    $('deleteTypesLink').observe('click', function(){
-      var checkboxes = $$('input.typeCheckbox');
-      for(var i = 0; i < checkboxes.length; i++){
-        if(checkboxes[i].checked == true)
-          parent.removePotentialType(checkboxes[i].name);      
-      }
-      parent.closePopupAndReloadPotentialMeasurementTypes('')
-    });
   });
   
   function getPotentialTypes(){
@@ -33,7 +25,21 @@
       checkbox.addClassName('typeCheckbox');
       containerDiv.insert(checkbox);
       $('potentialTypesDiv').insert(containerDiv);
-    }                           
+    } 
+    if (type_array.length > 0){
+      var link = new Element('a', {'href': '#',
+                                   'id': 'deleteTypesLink'});
+      link.update('Delete selected Types');
+      $('potentialTypesDiv').insert(link);
+      link.observe('click', function(){
+      var checkboxes = $$('input.typeCheckbox');
+      for(var i = 0; i < checkboxes.length; i++){
+        if(checkboxes[i].checked == true)
+          parent.removePotentialType(checkboxes[i].name);      
+      }
+      parent.closePopupAndReloadPotentialMeasurementTypes('')
+    });
+    }                          
   }
   
 
@@ -50,6 +56,6 @@
 </table>
 </form>
 <div id='potentialTypesDiv'>
-<a href="#" id='deleteTypesLink'>Delete selected Types</a>
+
 </div>
 {% endblock body %}
