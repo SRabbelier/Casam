@@ -376,9 +376,23 @@ function createImageMeasurementSubTab(typeid, typename, imgid){
 function listenSuperCheck(checkbox, check_typeid) {
 	Element.observe(checkbox,'click', function(){
 		checkboxes.each(function(item){
-			if(item.item.typeid == check_typeid)
+			if(item.item.typeid == check_typeid) {
 
 				item.box.checked = $('super_check_'+check_typeid).checked;
+				
+				item.update(item.box.checked);
+				if (item.box.checked == true) {
+					if (item.type == 's')
+						item.item.place();
+					else if (item.type == 'b')
+						item.item.bitmap.show();
+				} else {
+					if (item.type == 's')
+						item.item.hide();
+					else if (item.type == 'b')
+						item.item.bitmap.hide();
+				}
+			}
 		});
 	});
 }
