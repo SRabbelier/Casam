@@ -66,12 +66,11 @@ class Measurement(models.Model):
   y = models.CharField(max_length=4)
   imagewidth = models.CharField(max_length=4)
   imageheight = models.CharField(max_length=4)
+  project = models.ForeignKey('Project')
   def type(self):
     return self.mogelijkemeting.type
   def name(self):
     return self.mogelijkemeting.name
-  def project(self):
-    return self.image.project
   def __unicode__(self):
     return self.name()
   
@@ -87,9 +86,6 @@ class Bitmap(Image):
   maxy = models.CharField(max_length=4)
   def type(self):
     return self.mogelijkemeting.type
-  def project(self):
-    return self.image.project
-  
 
 class UserProfile(models.Model):
   id = UUIDField(primary_key=True, auto=True)
