@@ -121,5 +121,15 @@ Event.observe(window,'resize',function(){
 var wishfulPopupWidth = 0;
 var wishfulPopupHeight = 0;
 
-
+function changePopupCloseFunctionForWindowLife(temporaryWindow, customFunction){
+	//Redefine the close function
+	$('popupCloseButton').stopObserving();
+	$('popupCloseButton').observe('click',customFunction);
+	
+	//Reset the function when the current window closes
+	Event.observe(temporaryWindow,'unload',function(){
+		$('popupCloseButton').stopObserving();
+		$('popupCloseButton').observe('click',closePopup);
+	});
+}
 
