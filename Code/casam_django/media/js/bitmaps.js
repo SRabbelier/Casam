@@ -49,6 +49,12 @@ function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 	bitmap.addClassName('big_image_sibling_bitmap');
 	$('big_images').insert(bitmap);
 	bitmap.hide();
+	
+	// Redirect a click
+	bitmap.observe('click', function(e) {
+		hideLandmarkTooltip(e);
+		LoadMMDD('', addedImages[0].id);
+	});
 
 	bitmap.setOpacity(0.5);
 
