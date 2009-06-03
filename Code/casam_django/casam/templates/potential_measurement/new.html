@@ -4,23 +4,6 @@
 
 {% block beforeJSLoad %}
     getProjectPotentialMeasurements();
-    Element.observe('undoLink','click',function(){
-      var potentialMeasurements = $$('div.deletePotMeasDiv');
-      var deletePMs = new Array();
-      for(var i = 0; i < potentialMeasurements.length; i++){
-        if (potentialMeasurements[i].childElements()[1].checked == true){
-          deletePMs.push(potentialMeasurements[i].childElements()[1].name);
-          potentialMeasurements[i].remove();
-        }                                                              
-      }
-      if (deletePMs.size() > 0){
-        deletePMs.each(function(id){
-          parent.removePotentialMeasurement(id);
-          //CLOSE POPUP
-        });            
-        parent.closePopupAndReloadPotentialMeasurements('');         
-      }                             
-    });
 
 {% endblock beforeJSLoad %}
    
@@ -31,6 +14,7 @@
   function getProjectPotentialMeasurements(){
     
     var pottype_array = parent.$('possiblemeasurements').childElements();
+    var measurements = false;
     for(var i = 0; i < pottype_array.length; i++){
       var potmeas_array = pottype_array[i].childElements()[2].childElements();
       var typeDiv = new Element('div');
@@ -49,8 +33,32 @@
         measDiv.insert(label);
         measDiv.insert(checkbox);
         typeDiv.insert(measDiv);
+        measurements = true;
       }
       $('potentialMeasurements').insert(typeDiv);  
+    }
+    if (measurements){
+      var link = new Element('a', {'href': '#',
+                                   'id': 'undoLink'});
+      link.update('Delete selected');
+      $('deleteDiv').insert(link);
+      Element.observe('undoLink','click',function(){
+      var potentialMeasurements = $$('div.deletePotMeasDiv');
+      var deletePMs = new Array();
+      for(var i = 0; i < potentialMeasurements.length; i++){
+        if (potentialMeasurements[i].childElements()[1].checked == true){
+          deletePMs.push(potentialMeasurements[i].childElements()[1].name);
+          potentialMeasurements[i].remove();
+        }                                                              
+      }
+      if (deletePMs.size() > 0){
+        deletePMs.each(function(id){
+          parent.removePotentialMeasurement(id);
+          //CLOSE POPUP
+        });            
+        parent.closePopupAndReloadPotentialMeasurements('');         
+      }                             
+    });
     }
     
       
@@ -70,7 +78,7 @@
 <div id='deleteDiv'>
   <div id='potentialMeasurements'>
   </div>
-  <a href='#' id='undoLink'>Delete selected</a>
+  
 </div>
 <div id='closeContainer'>
 </div>
