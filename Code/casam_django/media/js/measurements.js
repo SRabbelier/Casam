@@ -1,8 +1,9 @@
 var Measurement = Class.create( {
-	initialize : function(id, potid, name, imageid, pin, originalWidth,
+	initialize : function(id, potid, typeid, name, imageid, pin, originalWidth,
 			originalHeight) {
 		this.id = id;
 		this.potid = potid;
+		this.typeid = typeid;
 		this.name = name;
 
 		//info about the image
@@ -15,7 +16,8 @@ var Measurement = Class.create( {
 		this.y = 0;
 
 		this.pinDiv = pin;
-		//theze are the coordinates of the pin in the scaled image
+		
+		// These are the coordinates of the pin in the scaled image
 		this.left = 0;
 		this.top = 0;
 
@@ -308,9 +310,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	pinDiv.insert(pintooltip);
 	$('big_images').insert(pinDiv);
 	
-	
-
-	var measurement = new Measurement(measid, potid, measname, imgid, pinDiv,
+	var measurement = new Measurement(measid, potid, typeid, measname, imgid, pinDiv,
 			imgwidth, imgheight);
 	
 	var measurementDiv = new Element('div', {
@@ -321,7 +321,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	checkbox = new Element('input', {
 		'type' : 'checkbox',
 		'name' : measid,
-		'id' : 'show' + measid
+		'id' : 'showm_' + measid
 	});
 
 	var check = new Check('s', measid, checkbox, measurement);
@@ -358,13 +358,29 @@ function createImageMeasurementSubTab(typeid, typename, imgid){
 	typeDiv.writeAttribute('id', 'measurementTypeList_'+imgid+'-'+typeid);
 	typeDiv.addClassName('imgTypeMeasurements');
 	
-	var tempDiv = new Element('div');
-	tempDiv.insert(typeDiv);
-	
 	var subtab_measurements = newTab(typename, typeDiv, true);
 	subtab_measurements.id = 'measurementTypesDiv_'+imgid+'-'+typeid;
 	subtab_measurements.addClassName('imgSubTabMeasurementTypes');
+	super_check = new Element('input');
+	super_check.writeAttribute('id', 'super_check_'+typeid);
+	super_check.writeAttribute('type', 'checkbox');
+	super_check.writeAttribute('style', 'margin:0px;float:left;');
+	super_check.defaultChecked = true;
+	subtab_measurements.insert({top: super_check});
+	
+	listenSuperCheck(super_check, typeid);
+
 	return subtab_measurements;
+}
+
+function listenSuperCheck(checkbox, check_typeid) {
+	Element.observe(checkbox,'click', function(){
+		checkboxes.each(function(item){
+			if(item.item.typeid == check_typeid)
+
+				item.box.checked = $('super_check_'+check_typeid).checked;
+		});
+	});
 }
 
 function watchSaveButton(item) {

@@ -1,8 +1,9 @@
 var Bitmap = Class.create( {
-	initialize : function(bm, bmid, imageid) {
+	initialize : function(bm, bmid, imageid, typeid) {
 		this.bitmap = bm;
 		this.id = bmid;
 		this.imageid = imageid;
+		this.typeid = 0; // Ugly default so this 'measurement' won't be selected when super_check is (de)selected
 	},
 	getAppropriateSizeURL : function() {
 		return (base_path + 'imageLoader/byMaxWidthHeight/bitmap/'

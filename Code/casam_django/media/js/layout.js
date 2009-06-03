@@ -356,8 +356,7 @@ function addMeasurementsToPictureContainer(imgid, json) {
 				json[i + 1].fields.imagewidth,
 				json[i + 1].fields.imageheight);
 			
-			
-			subtab.childElements()[2].insert(tempMeasurement);
+			subtab.childElements()[3].insert(tempMeasurement);
 			i++;
 		}
 	}
