@@ -420,6 +420,7 @@ function createPotentialMeasurementType(typeid, typename){
 		subtab.hide();
 	}
 	
+	
 	var optgroup = new Element('optgroup');
 	optgroup.writeAttribute('label', typename);
 	optgroup.writeAttribute('id', 'optgroup_'+typeid);
@@ -496,8 +497,8 @@ function removeMeasurements(imageID){
 }
 function resizeMeasurements(imageID){
 	for(var i = 0; i < checkboxes.length; i++) {
-		if ((checkboxes[i].item.imageid == imageID) && (checkboxes[i].box.checked == true) &&
-		    (checkboxes[i].type == 's')){
+		if ((checkboxes[i].type == 's') && (checkboxes[i].item.imageid == imageID) &&
+		    (checkboxes[i].box.checked == true)){
 			  	checkboxes[i].item.replace();
 		}
 	}

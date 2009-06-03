@@ -110,7 +110,6 @@ var AddedImage = Class.create( {
 		// Create a slider
 		$('sliderDiv_' + this.id).update();
 		addSlider($('sliderDiv_' + this.id),this);
-	
 	}
 });
 
@@ -227,9 +226,11 @@ function updateImageList() {
 
 function removeCheckboxes(imageID){
 	for(var i = 0; i < checkboxes.length; i++){
-		if(checkboxes[i].item.imageid == imageID){
-			checkboxes.splice(i,1);
-			i = i - 1;
+		if ((checkboxes[i].type == 's') || (checkboxes[i].type == 'b')){
+			if(checkboxes[i].item.imageid == imageID){
+				checkboxes.splice(i,1);
+				i = i - 1;
+			}
 		}
 	}
 }

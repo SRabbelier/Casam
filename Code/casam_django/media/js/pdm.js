@@ -9,8 +9,10 @@ var PDM = Class.create( {
 			objectArray.push(addedImages[i].id);//get the active images		
 			var measurementsArray = new Array();
 			checkboxes.each(function(item){
-				if(item.item.imageid == addedImages[i].id && item.checked && item.type =='s'){
-					measurementsArray.push(item.id);//get the measurements for each of those images
+				if ((item.type == 's') || (item.type == 'b')){					
+					if(item.item.imageid == addedImages[i].id && item.checked && item.type =='s'){
+						measurementsArray.push(item.id);//get the measurements for each of those images
+					}
 				}
 			});
 			objectArray.push(measurementsArray);

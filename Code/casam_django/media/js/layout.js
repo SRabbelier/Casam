@@ -1,9 +1,11 @@
 var Check = Class.create( {
 	initialize : function(type, name, checkbox, item) {
 		//type: s (show) is for measurements, u (use) is for pictures, b (bitmap) is for bitmaps
+		//      sa (showAll) is for showing all measurements
+		//			sg (showGroup) is for showing all measurements in a group
 	this.type = type;
 
-	if (this.type == 's')
+	if ((this.type == 's') || (this.type == 'sa'))
 		this.defaultValue = true;
 	else
 		this.defaultValue = false;
@@ -163,18 +165,54 @@ function putArrowsInTabHeader(header, open) {
 }
 
 function watchBox(item) {
-	item.box.observe('click', function() {
+	item.box.observe('change', function() {
 		item.update(item.box.checked);
 		if (item.box.checked == true) {
-			if (item.type == 's')
+			if (item.type == 's'){
 				item.item.place();
+				$('showAll_'+item.item.imageid).checked = true;
+			}
 			else if (item.type == 'b')
 				item.item.bitmap.show();
+			else if (item.type == 'sa'){
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.id){
+							checkboxes[i].box.checked = true;
+							checkboxes[i].update(checkboxes[i].box.checked);
+							checkboxes[i].item.place();
+						}
+					}
+				}
+			}
 		} else {
-			if (item.type == 's')
+			if (item.type == 's'){
 				item.item.hide();
+				var checked = false;
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if ((checkboxes[i].item.imageid == item.item.imageid) && (checkboxes[i].box.checked == true)){
+							checked = true;
+							break;
+						}
+					}
+				}
+				if (!checked)
+				  $('showAll_'+item.item.imageid).checked = false;
+			}
 			else if (item.type == 'b')
 				item.item.bitmap.hide();
+			else if (item.type == 'sa'){
+			  for(var i = 0; i < checkboxes.length; i++){
+				  if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.id){
+							checkboxes[i].box.checked = false;
+							checkboxes[i].update(checkboxes[i].box.checked);
+							checkboxes[i].item.hide();
+						}
+					}
+			  }
+			}
 		}
 	});
 }
@@ -366,6 +404,18 @@ function addMeasurementsToPictureContainer(imgid, json) {
 	tab_measurements.id = 'measurementsDiv_'+imgid;
 	tab_measurements.addClassName('imgSubTabMeasurements');
 	$('bottomDiv_' + imgid).insert({ top: tab_measurements });
+	
+	var groupcheck = new Element('input', {
+		'type' : 'checkbox',
+		'name' : imgid,
+		'id' : 'showAll_'+imgid
+	});
+	groupcheck.setStyle({cssFloat: 'left'});
+	$('bottomDiv_'+imgid).insert({top: groupcheck});
+	
+	var check = new Check('sa', imgid, groupcheck, null);
+	check.setDefault();
+	check.watch();
 }
 
 function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
