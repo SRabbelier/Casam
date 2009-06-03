@@ -1,5 +1,8 @@
 import csv
 import StringIO
+import zipfile
+import time
+import os
 
 from django import http
 from django.template import loader
@@ -14,10 +17,17 @@ class ExportHandler(handler.Handler):
 
   def get(self):
     project_id = self.kwargs['id_str']
+    timestampedIDFilename = str(project_id) + '_' + str(time.time()) + '.zip'
+    filepath = os.path.join('export',timestampedIDFilename)
+    print filepath
+    zip = zipfile.ZipFile(file=filepath,mode='w')
     export_script = export_logic.exportModels([Project, Measurement, OriginalImage], [Project], project_id)
     f = open('export_script.py', 'w')
     f.write(export_script)
-    return http.HttpResponse('kdone')
+    f.close()
+    zip.write('export_script.py')
+    zip.close()
+    return http.HttpResponse('Saved file as %s' % timestampedIDFilename)
 
 
 class CSVExportHandler(handler.Handler):
