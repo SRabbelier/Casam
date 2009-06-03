@@ -29,6 +29,7 @@ class MorphCreator(handler.Handler):
       if len(imagemeasure[1]) != measurecount or len(imagemeasure[1]) == 0:
         return http.HttpResponseServerError('Incorrect number of landmarks per image selected.') 
       images.append(imagemeasure[0])
+      measurements.append(imagemeasure[1])
     morphmodel, result = morph.createMorph(images,measurements)
     if result == 0:
       return http.HttpResponseServerError('Landmarks are not comparable.') 
