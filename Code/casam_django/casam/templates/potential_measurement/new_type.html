@@ -2,12 +2,13 @@
 
 {% block title %}Nieuw potential measurement type{% endblock title %}
 
+{% block beforeJSLoad %}
+    getPotentialTypes();
+
+{% endblock beforeJSLoad %}
+
 {% block head %}
 <script type="text/javascript">
-  document.observe('dom:loaded',function(){                                          
-    getPotentialTypes();
-  });
-  
   function getPotentialTypes(){
     var type_array = parent.$('possiblemeasurements').childElements();
     for(var i = 0; i < type_array.length; i++){
