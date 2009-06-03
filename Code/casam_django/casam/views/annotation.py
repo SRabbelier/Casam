@@ -10,6 +10,8 @@ from casam.logic import annotation as annotation_logic
 from casam.logic import fileupload as fileupload_logic
 from casam.views import handler
 from casam.models import Annotation
+from casam.models import ProjectFile
+from casam.models import Project
 
 from django.conf import settings
 
@@ -120,9 +122,13 @@ class NewAnnotation(handler.Handler):
 
     if annotation_type == 'file':
       file = self.FILES['file']
-      _, filext = os.path.splitext(file.name)
-      generatedFilename = str(uuid.uuid4()) + filext 
-      location = fileupload_logic.handle_uploaded_file(file, generatedFilename)
+      filename, fileext = os.path.splitext(file.name)
+      #generatedFilename = str(uuid.uuid4()) + filext
+      project = Project.objects.get(id=project_id)
+      projectFile = ProjectFile(name=filename,extension=fileext,project=project)
+      projectFile.save()
+       
+      location = fileupload_logic.handle_uploaded_file(file, projectFile.diskfilename())
       url = settings.BASE_PATH + location
 
     # TODO : rewrite this to use UUID instead of original filename

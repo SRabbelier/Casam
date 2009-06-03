@@ -117,3 +117,10 @@ class State(models.Model):
   project = models.ForeignKey('Project')
   added = models.DateField(auto_now_add=True)
 
+class ProjectFile(models.Model):
+  uuid = UUIDField(primary_key=True, auto=True)
+  project = models.ForeignKey('Project')
+  name = models.CharField(max_length=30)
+  extension = models.TextField()
+  def diskfilename(self):
+    return str(self.uuid) + str(self.extension)
