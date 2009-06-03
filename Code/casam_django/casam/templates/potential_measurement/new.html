@@ -4,6 +4,7 @@
 
 {% block beforeJSLoad %}
     getProjectPotentialMeasurements();
+    addOptionListener();
 
 {% endblock beforeJSLoad %}
    
@@ -62,6 +63,12 @@
     }
     
       
+  }
+  
+  function addOptionListener(){
+    $('id_soort').observe('change', function(event, target){
+      $('id_shapedefining').up().up().toggle();
+    });
   }
   
 </script>
