@@ -57,6 +57,7 @@ document.observe("dom:loaded", function()
 		$('rightFrame_content').insert(newTab('Papers', $('tab_papers'), false, false));  
 		$('rightFrame_content').insert(newTab('Action history', $('tab_attributes'), false, false));
 		$('rightFrame_content').insert(newTab('States', $('tab_states'), false, false));
+		$('rightFrame_content').insert(newTab('Legenda', $('tab_legenda'), true, false));
 		$('zoomImage').hide();
 
 	  // Add mouse listener for image
@@ -97,6 +98,8 @@ document.observe("dom:loaded", function()
     	undoLastChange();
     });
     makeDistanceDiv();
+    
+    getLegenda();
 	});
 });
 
@@ -250,6 +253,7 @@ Coordinates:<input type="text" id="MouseX" value="0" size="3">x<input type="text
 </div>
 <div id="tab_states"> </div>
 <div id="tab_distances"> </div>
+<div id="tab_legenda"> </div>
 
 
 <!-- POPUP -->

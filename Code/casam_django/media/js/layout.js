@@ -537,3 +537,46 @@ function slideBitmap(value) {
 	for (i = 0; i < bitmaps.length; i++)
 		$('bitmap_'+bitmaps[i].id).setOpacity(value);
 }
+
+function getLegenda(){
+	var activeMeasurement = new Element('div', {'id': 'activeMeasurementLegenda'});
+	var pinIMGActiveMeasurement = new Element('img', {'src': base_path+'media/img/pin_red.gif'});
+	var textspanActiveMeasurement = new Element('span');
+	textspanActiveMeasurement.update('Pin of active measurement');
+	activeMeasurement.insert(pinIMGActiveMeasurement);
+	activeMeasurement.insert(textspanActiveMeasurement);
+	
+	var nonActiveMeasurement = new Element('div', {'id': 'nonActiveMeasurementLegenda'});
+	var pinIMGNonActiveMeasurement = new Element('img', {'src': base_path+'media/img/pin_blue.gif'});
+	var textspanNonActiveMeasurement = new Element('span');
+	textspanNonActiveMeasurement.update('Pin of non-active measurement');
+	nonActiveMeasurement.insert(pinIMGNonActiveMeasurement);
+	nonActiveMeasurement.insert(textspanNonActiveMeasurement);
+	
+	var activeLayer = new Element('div', {'id': 'activeLayerLegenda'});
+	var textspanActiveLayer = new Element('span');
+	textspanActiveLayer.setStyle({border: '1px red dashed',
+																backgroundColor: '#ffdddd'});
+	textspanActiveLayer.update('This is the active layer');
+	activeLayer.insert(textspanActiveLayer);
+	
+	var potentialMeasurement = new Element('div', {'id': 'potentialMeasurementLegenda'});
+	var pinIMGPotentialMeasurement = new Element('img', {'src': base_path+'media/img/landmark.gif'});
+	var textspanPotentialMeasurement = new Element('span');
+	textspanPotentialMeasurement.update('Pin of potential measurement');
+	potentialMeasurement.insert(pinIMGPotentialMeasurement);
+	potentialMeasurement.insert(textspanPotentialMeasurement);
+	
+	var potentialBitmap = new Element('div', {'id': 'potentialBitmapLegenda'});
+	var pinIMGPotentialBitmap = new Element('img', {'src': base_path+'media/img/pencil.gif'});
+	var textspanPotentialBitmap = new Element('span');
+	textspanPotentialBitmap.update('Pin of potential bitmap');
+	potentialBitmap.insert(pinIMGPotentialBitmap);
+	potentialBitmap.insert(textspanPotentialBitmap);
+	
+	$('tab_legenda').insert(activeMeasurement);
+	$('tab_legenda').insert(nonActiveMeasurement);
+	$('tab_legenda').insert(activeLayer);
+	$('tab_legenda').insert(potentialMeasurement);
+	$('tab_legenda').insert(potentialBitmap);
+}
