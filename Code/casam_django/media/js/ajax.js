@@ -138,7 +138,9 @@ function removePotentialMeasurement(potid){
     method: 'get',
     parameters: {'potID': potid},
     onSuccess: function(transport, json) {
-      //containerDiv.remove();
+      // REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
+      if (!$('potmeas_'+potid).childElements()[0].hasClassName('paintoverLink'))
+      	$('option'+potid).remove();
       //DELETE POTENTIAL MEASUREMENTS
       var parentPotentialMeasurements = $$('div.potMeasDiv');
       for(var i = 0; i < parentPotentialMeasurements.length; i++){
@@ -161,6 +163,25 @@ function removePotentialMeasurement(potid){
           j = j - 1;
         }                                             
       }
+      //DELETE CURRENT BITMAPS
+      var parentCurrentBitmaps = $$('div.projectImageBitmapDivPotId_'+potid);
+      var bitmapIDs = new Array();
+      for(var i = 0; i < parentCurrentBitmaps.length; i++){
+				var bitmapid = parentCurrentBitmaps[i].id.slice(10);
+				bitmapIDs.push(bitmapid);
+				Effect.Fade(parentCurrentBitmaps[i]);
+				parentCurrentBitmaps[i].remove();
+				$('bitmap_'+bitmapid).remove();     	
+      }
+      // DELETE BITMAPS FROM THE BITMAPS ARRAY
+      for(var j = 0; j < bitmapIDs.length; j++){
+      	for(var i = 0; i < bitmaps.length; i++){
+      		if (bitmaps[i].id == bitmapsIDs[j]){
+      		  bitmaps.splice(i, 1);
+      		  break;
+      		}
+      	}
+      }
       //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
       for(var i = 0; i < changes.length; i++){
         if (changes[i].potid == potid){
@@ -169,11 +190,9 @@ function removePotentialMeasurement(potid){
           i = i - 1;
         }
       }
-      // REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
-      $('option'+potid).remove();
     },
     onFailure:function(){
-      alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
+      alert('Something went wrong while deleting potential measurement '+potid);
     }
   });
 }

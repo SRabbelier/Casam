@@ -8,8 +8,10 @@
       var potentialMeasurements = $$('div.deletePotMeasDiv');
       var deletePMs = new Array();
       for(var i = 0; i < potentialMeasurements.length; i++){
-        if (potentialMeasurements[i].childElements()[1].checked == true)
-          deletePMs.push(potentialMeasurements[i].childElements()[1].name);                                                              
+        if (potentialMeasurements[i].childElements()[1].checked == true){
+          deletePMs.push(potentialMeasurements[i].childElements()[1].name);
+          potentialMeasurements[i].remove();
+        }                                                              
       }
       if (deletePMs.size() > 0){
         deletePMs.each(function(id){
