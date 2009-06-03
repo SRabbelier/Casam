@@ -9,12 +9,14 @@
       var deletePMs = new Array();
       for(var i = 0; i < potentialMeasurements.length; i++){
         if (potentialMeasurements[i].childElements()[1].checked == true)
-          deletePMs.push(potentialMeasurements[i]);                                                              
+          deletePMs.push(potentialMeasurements[i].childElements()[1].name);                                                              
       }
       if (deletePMs.size() > 0){
-        deletePMs.each(function(item){
-          deleteMeasurement(item);
-        });                     
+        deletePMs.each(function(id){
+          parent.removePotentialMeasurement(id);
+          //CLOSE POPUP
+        });            
+        parent.closePopupAndReloadPotentialMeasurements('');         
       }                             
     });
 
@@ -50,54 +52,6 @@
     }
     
       
-  }
-  
-  function deleteMeasurement(containerDiv){
-    var url = '{{ BASE_PATH }}AJaX/deletePotentialMeasurement/?time='+new Date().getTime();
-    new Ajax.Request(url, {
-        method: 'get',
-        parameters: {'potID': containerDiv.childElements()[1].name},
-        onSuccess: function(transport, json) {
-          containerDiv.remove();
-          //DELETE POTENTIAL MEASUREMENTS
-          var parentPotentialMeasurements = parent.$$('div.potMeasDiv');
-          for(var i = 0; i < parentPotentialMeasurements.length; i++){
-            if (parentPotentialMeasurements[i].id.slice(8) == containerDiv.childElements()[1].name){
-              Effect.Fade(parentPotentialMeasurements[i]);
-              parentPotentialMeasurements[i].remove();
-            }                  
-          }
-          //DELETE CURRENT MEASUREMENTS
-          var measurements = parent.measurements;
-          for(var j = 0; j < measurements.length; j++){
-            if (measurements[j].potid == containerDiv.childElements()[1].name){
-              //REMOVE TEXT OF CURRENT MEASUREMENTS
-              if (parent.$('measidMeasDiv_'+measurements[j].id).up().childElements().length == 1)
-                parent.$('measidMeasDiv_'+measurements[j].id).up().up().hide();
-              parent.$('measidMeasDiv_'+measurements[j].id).remove();
-              measurements[j].erase();
-              parent.measurements.splice(j,1);
-              j = j - 1;
-            }                                             
-          }
-          //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
-          var changes = parent.changes;
-          for(var i = 0; i < changes.length; i++){
-            if (changes[i].potid == containerDiv.childElements()[1].name){
-              changes[i].erase();
-              parent.changes.splice(i,1);
-              i = i - 1;
-            }
-          }
-          //TODO: REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
-          parent.$('option'+containerDiv.childElements()[1].name).remove();
-          //CLOSE POPUP
-          parent.closePopupAndReloadPotentialMeasurements('')
-        },
-        onFailure:function(){
-          alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
-        }
-    });                             
   }
   
 </script>

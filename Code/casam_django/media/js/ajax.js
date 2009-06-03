@@ -132,6 +132,52 @@ function getProjectPotentialMeasurements()
   });
 }
 
+function removePotentialMeasurement(potid){
+	var url = base_path + 'AJaX/deletePotentialMeasurement/?time='+new Date().getTime();
+  new Ajax.Request(url, {
+    method: 'get',
+    parameters: {'potID': potid},
+    onSuccess: function(transport, json) {
+      //containerDiv.remove();
+      //DELETE POTENTIAL MEASUREMENTS
+      var parentPotentialMeasurements = $$('div.potMeasDiv');
+      for(var i = 0; i < parentPotentialMeasurements.length; i++){
+        if (parentPotentialMeasurements[i].id.slice(8) == potid){
+          Effect.Fade(parentPotentialMeasurements[i]);
+          parentPotentialMeasurements[i].remove();
+        }                  
+      }
+      //DELETE CURRENT MEASUREMENTS
+      for(var j = 0; j < measurements.length; j++){
+        if (measurements[j].potid == potid){
+          // HIDE THE POTENTIAL TYPE IF THE CURRENT LANDMARK IS THE ONLY LANDMARK OF THAT TYPE
+          if ($('measidMeasDiv_'+measurements[j].id).up().childElements().length == 1)
+            $('measidMeasDiv_'+measurements[j].id).up().up().hide();
+          // REMOVE TEXT OF CURRENT MEASUREMENTS
+          $('measidMeasDiv_'+measurements[j].id).remove();
+          // REMOVE CURRENT MEASUREMENT FROM ARRAY
+          measurements[j].erase();
+          measurements.splice(j,1);
+          j = j - 1;
+        }                                             
+      }
+      //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
+      for(var i = 0; i < changes.length; i++){
+        if (changes[i].potid == potid){
+          changes[i].erase();
+          changes.splice(i,1);
+          i = i - 1;
+        }
+      }
+      // REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
+      $('option'+potid).remove();
+    },
+    onFailure:function(){
+      alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);
+    }
+  });
+}
+
 function removePotentialType(typeid){
   var url = base_path + 'AJaX/deletePotentialMeasurementType/?time='+new Date().getTime();
   new Ajax.Request(url, {
