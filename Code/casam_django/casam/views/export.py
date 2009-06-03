@@ -4,6 +4,7 @@ import StringIO
 from django import http
 from django.template import loader
 
+from casam.models import Project, Measurement
 from casam.views import handler
 
 class ExportHandler(handler.Handler):
@@ -32,7 +33,7 @@ class ExportHandler(handler.Handler):
         context = self.getContext()
         context['data'] = data
         content = loader.render_to_string('export.html', dictionary=context)
-     
+        content_type = 'text/csv'
         response = http.HttpResponse(content, mimetype=content_type)
         filename = project.name
         export_extension = ".csv"
