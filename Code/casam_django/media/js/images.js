@@ -167,21 +167,22 @@ function hideImage(id) {
 		if (addedImages[0].id == id)
 			addedImages[0].makeNonActive();
 
+		
 		// Remove checkboxes
 		removeCheckboxes(id);		
 		
 		//remove bitmaps
 		removeBitmaps(id);
-		
+
 		// Remove measurements
 		removeMeasurements(id);
-		
+
 		// Remove changes
 		removeChanges(id);
-		
+		console.log('test')				
 		// Remove image
 		removeImage(id);
-		
+		console.log('test')					
 		// Check for new active layer
 		checkActiveLayer();
 	});
@@ -255,7 +256,8 @@ function removeImage(imageID){
 	Element.remove($('addedImage_'+imageID))
 	
 	$('sliderDiv_' + imageID).update();
-	$('bottomDiv_' + imageID).update();
+	if (!$('rightDiv_' + imageID).childElements()[0].innerHTML == "PDM-Overlay")
+		$('bottomDiv_' + imageID).update();
 }
 
 function checkActiveLayer(){
