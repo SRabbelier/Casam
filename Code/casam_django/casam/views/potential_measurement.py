@@ -15,10 +15,13 @@ TYPE_CHOICES = (
       ('B', 'Bitmap')
 )
 
+
+
 class PotentialMeasurementForm(forms.Form):
   name = forms.CharField(max_length=50)
   type = forms.ModelChoiceField(Type.objects.all(), empty_label=None)
   soort = forms.CharField(max_length=1, widget=forms.Select(choices=TYPE_CHOICES))
+  shapedefining = forms.BooleanField(required=False)
 
 class PotentialMeasurementTypeForm(forms.Form):
   name = forms.CharField(max_length=40)
@@ -45,10 +48,11 @@ class NewPotentialMeasurement(handler.Handler):
     name = self.cleaned_data['name']
     type = self.cleaned_data['type']
     soort = self.cleaned_data['soort']
+    shape = self.cleaned_data['shapedefining']
 
     id_str = self.kwargs['id_str']
     project = Project.objects.filter(id=id_str).get()
-    potmeas = potential_measurement_logic.handle_add_potential_measurement(project, type, soort, name)
+    potmeas = potential_measurement_logic.handle_add_potential_measurement(project, type, soort, name, shape)
     
     context = self.getContext()
     if potmeas == None:

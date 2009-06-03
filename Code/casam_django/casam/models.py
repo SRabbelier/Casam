@@ -54,6 +54,7 @@ class PotentialMeasurement(models.Model):
   name = models.CharField(max_length=30)
   type = models.ForeignKey('PotentialMeasurementType')
   soort = models.CharField(max_length=1)
+  shapedefining = models.BooleanField()
   def __unicode__(self):
     return str(self.name)
 
