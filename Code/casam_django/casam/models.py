@@ -68,10 +68,12 @@ class Measurement(models.Model):
   imageheight = models.CharField(max_length=4)
   def type(self):
     return self.mogelijkemeting.type
+  def name(self):
+    return self.mogelijkemeting.name
   def project(self):
     return self.image.project
   def __unicode__(self):
-    return str(self.mogelijkemeting.name)
+    return self.name()
   
 
 class Bitmap(Image):

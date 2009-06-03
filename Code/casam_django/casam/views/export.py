@@ -11,10 +11,12 @@ class ExportHandler(handler.Handler):
     """
 
     def get(self):
-        data = {}
-        key_order = []
+        project_id = self.kwargs['id_str']
+        project = Project.objects.get(id=project_id)
+        measurements = Measurement.objects.filter(image__project=project)
+        data = [dict(id=i.id, name=i.name(), x=i.x, y=i.y) for i in measurements]
         file_handler = StringIO.StringIO()
-        key_order = []
+        key_order = ['id', 'name', 'x', 'y']
 
         writer = csv.DictWriter(file_handler, key_order, dialect='excel')
 
@@ -32,7 +34,8 @@ class ExportHandler(handler.Handler):
         content = loader.render_to_string('export.html', dictionary=context)
      
         response = http.HttpResponse(content, mimetype=content_type)
-     
+        filename = project.name
+        export_extension = ".csv"
         response['Content-Disposition'] = 'attachment; filename=%s%s' % (
             filename, export_extension)
 

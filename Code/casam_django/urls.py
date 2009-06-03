@@ -7,6 +7,7 @@ admin.autodiscover()
 
 import casam.views.main
 import casam.views.annotation
+import casam.views.export
 import casam.views.project
 import casam.views.fileupload
 import casam.views.landmarks
@@ -37,6 +38,7 @@ urlpatterns = patterns('',
     (r'^annotation/new/%s$' % UUID, casam.views.annotation.NewAnnotation()),
     (r'^annotation/list/%s$' % UUID, casam.views.annotation.ListAnnotations()),
     (r'^data/%s' % LOL, casam.views.fileupload.ViewFile()),
+    (r'^export/%s$' % ID_STR, casam.views.export.ExportHandler()),
     (r'^fileupload/%s$' % ID_STR, casam.views.fileupload.FileUpload()),
     (r'^landmarks/save', casam.views.landmarks.LandmarkSaver()),
     (r'^login', casam.views.login.Login()),
