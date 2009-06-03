@@ -21,7 +21,7 @@ function getProjectAnnotations(){
 				json.each(function(item){
 					var annoDiv = new Element('div');
 					var annoName = new Element('p').update(item.fields.name);
-					var annoLink = new Element('p').update(item.fields.url.truncate(35));
+					var annoLink = new Element('p').update(item.fields.url.truncate(34));
 					annoLink.addClassName('italic');
 					annoDiv.insert(annoName);
 					annoDiv.insert(annoLink);

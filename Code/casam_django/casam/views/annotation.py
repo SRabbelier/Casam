@@ -1,5 +1,6 @@
 import uuid
 import urllib
+import os
 
 from django import http
 from django import forms
@@ -11,7 +12,6 @@ from casam.views import handler
 from casam.models import Annotation
 
 from django.conf import settings
-
 
 
 CHOICES = [
@@ -120,8 +120,10 @@ class NewAnnotation(handler.Handler):
 
     if annotation_type == 'file':
       file = self.FILES['file']
-      location = fileupload_logic.handle_uploaded_file(file, name)
-      url = settings.BASE_PATH + location[0]
+      _, filext = os.path.splitext(file.name)
+      generatedFilename = str(uuid.uuid4()) + filext 
+      location = fileupload_logic.handle_uploaded_file(file, generatedFilename)
+      url = settings.BASE_PATH + location
 
     # TODO : rewrite this to use UUID instead of original filename
     annotation_logic.handle_add_annotation(name, url, project_id)

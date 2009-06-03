@@ -24,13 +24,13 @@ def handle_uploaded_file(file, name):
 
 def load_file(name):
   mime = mimetypes.MimeTypes()
-
+  
   DATADIR = settings.DATADIR
   location = os.path.join(DATADIR, name)
 
-  if os.path.exists(filename) and os.path.isfile(filename):
-    mimetype, _ = mime.guess_type(filename)
-    picture = open(filename,'rb')
+  if os.path.exists(location) and os.path.isfile(location):
+    mimetype, _ = mime.guess_type(location)
+    picture = open(location,'rb')
     return mimetype, picture
 
   return None, None
