@@ -203,6 +203,12 @@
 				<tr><td><input type="submit" value="filter" /></td></tr>
 			</form>
 			</div>
+			{% if is_beheerder %}
+			<div id="whiteFrame_adminPanel_container">
+			  <a href="{{ BASE_PATH }}admin" onfocus="blur()">
+			    <img src="{{ BASE_PATH }}media/img/admin.jpg" alt="Admin panel" border="0" /></a>  
+			</div>
+			{% endif %}
 			<div id="projectMainSpinnerContainer">
 				<img style="display:none" id="spinner" src="{{ BASE_PATH }}media/img/spinner_small_whitebg.gif"/>
 			</div>

@@ -133,6 +133,12 @@ div.whiteFrame_bottom_center {
 	height:48px;
 	float:left;
 }
+
+#whiteFrame_adminPanel_container {
+  width:48px;
+  height:48px;
+  float:right;
+}
 #whiteFrame_export_container {
 	width:48px;
 	height:34px;
