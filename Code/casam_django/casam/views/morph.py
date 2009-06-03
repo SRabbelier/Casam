@@ -34,7 +34,7 @@ class MorphCreator(handler.Handler):
     if result == 0:
       return http.HttpResponseServerError('Landmarks are not comparable.') 
     #morph.analyse(pdmodel, projectID, images)
-    return http.HttpResponse('Successfully saved Point Distribution Model overlay-image to data directory.')
+    return http.HttpResponse('Successfully morphed.')
 
   
   def get(self):
