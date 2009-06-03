@@ -173,11 +173,7 @@ function saveLandMark(mx, my, potid, imgid) {
 							measurement.setPlace(mousex / measurement.piecex,
 									mousey / measurement.piecey);
 							measurement.place();
-							$('span_'+measurement.id).update(measurement.name + ' ('
-											+ Math.round(measurement.x)
-											+ ','
-											+ Math.round(measurement.y)
-											+ ')');
+							$('span_'+measurement.id).update(measurement.name);
 							new Effect.Highlight($('measidMeasDiv_'+measurement.id));
 						} else {
 							var json = transport.responseText.evalJSON();
