@@ -33,11 +33,29 @@ document.observe('dom:loaded',function(){
 				'pdmData':Object.toJSON(pdmObject)
 			},
 			onSuccess:function(transport){
-				//alert(transport.responseText);
+				alert(transport.responseText);
 				getProjectOverlays();
 			},
 			onFailure:function(transport){
-				//alert(transport.responseText);
+				alert(transport.responseText);
+			}
+		});
+	});
+	$('MakeMorphButton').observe('click',function(){
+		var pdmObject = new PDM();
+		pdmObject.fill();
+		var url = base_path+'vtk/MorphCreator?time='+new Date().getTime();
+		new Ajax.Request(url,{
+			method:'post',
+			parameters:{
+				'projectID':projectID,
+				'pdmData':Object.toJSON(pdmObject)
+			},
+			onSuccess:function(transport){
+				alert(transport.responseText);
+			},
+			onFailure:function(transport){
+				alert(transport.responseText);
 			}
 		});
 	});

@@ -72,7 +72,7 @@ def analyse(pdmodel, projectid, selectedImages):
   
   #get size from the first original image (all images should be same size for analysis to work properly anyway
   image = OriginalImage.objects.all().get(id=selectedImages[0])
-  im = Image.open(DATADIR+image.path)
+  im = Image.open(DATADIR+image.id+'.jpg')
   pdmo = pdmoverlay.PDMOverlay(im.size)
   pdmo.drawVariations(pdmodel.variationPositions)
   pdmo.drawMeans(pdmodel.meanPositions)

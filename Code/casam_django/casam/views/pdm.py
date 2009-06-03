@@ -19,7 +19,6 @@ class PDMCreator(handler.Handler):
     projectID = self.cleaned_data['projectID']
     pdmData = self.cleaned_data['pdmData']
     pdmDataObject = simplejson.loads(pdmData)['pdmData']
-    print len(pdmDataObject)
     if (len(pdmDataObject)==0):
       return http.HttpResponseServerError('Not enough landmarks selected.')
     images = []
