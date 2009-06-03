@@ -18,6 +18,7 @@ import casam.views.tag
 import casam.views.potential_measurement
 import casam.views.state
 import casam.views.pdm
+import casam.views.morph
 
 UUID = r"(?P<uuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
 USER_ID = r"(?P<user_id>[0-9]+)"
@@ -84,6 +85,7 @@ urlpatterns = patterns('',
 
    #VTK
     (r'^vtk/PDMCreator$', casam.views.pdm.PDMCreator()),
+    (r'^vtk/MorphCreator$', casam.views.morph.MorphCreator()),
 
 )
 

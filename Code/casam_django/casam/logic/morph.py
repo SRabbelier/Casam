@@ -1,5 +1,6 @@
 import vtk
 
+from casam.logic import point_distribution_model as pdm
 from casam.models import OriginalImage
 from casam.models import Measurement
 from casam.models import PotentialMeasurement
@@ -10,8 +11,12 @@ from django.conf import settings
 
 def createMorph(selectedImages,selectedPMs):
   '''
-  Create the Point Distribution Model from the selected measurements
+  Morph
   '''
+  
+  #procrustes alignment
+  pdmodel = pdm.makePDM()
+  
   potentialids = []
   totalcoordsx = []
   totalcoordsy = []

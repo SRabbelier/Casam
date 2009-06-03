@@ -44,15 +44,18 @@ def createPDM(selectedImages,selectedPMs):
   '''
   Create the Point Distribution Model from the selected measurements
   '''
+  print selectedPMs
   pdmodel = pdm.makePDM()
   potentialids = []
   for i in range(len(selectedPMs)):#for the number of images
     measures = Measurement.objects.all().filter(id__in=selectedPMs[i])#get the measurements
+    measures = [i for i in measures]
+    measures.sort(key=lambda x: x.mogelijkemeting.name)
     coords = []
-    for k in range(len(measures)):#for every measurement in the measurements
-      measurement = measures[k]
+    for k, measurement in enumerate(measures):
       if i == 0: #to check if the measurements come from the same potentialmeasurements
         potentialids.append(measurement.mogelijkemeting.id)#on first run, store
+        print "potentialids: ", potentialids
       elif potentialids[k] != measurement.mogelijkemeting.id:#on second run compare
         return pdmodel, 0
       coords.append((float(measurement.x),float(measurement.y),0.0))

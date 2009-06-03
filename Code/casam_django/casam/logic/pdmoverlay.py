@@ -35,9 +35,9 @@ class PDMOverlay(object):
     for position in range(len(positions)/2):
       #color first and second modes of variation differently
       if (position%2 == 0):
-        color=(0,255,0)
+        color=(255,0,0)
       else:
-        color = (0,0,255)
+        color = (255,0,0)
       coordinate1 = positions[position*2]
       coordinate2 = positions[(position*2)+1]
       x1 = coordinate1[0]
