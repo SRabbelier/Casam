@@ -244,6 +244,16 @@ function showLandmarkTooltip(e) {
 		yoffset = obj.offsetTop * 1 - 5;
 		var tooltip = obj.parentNode.lastChild
 		tooltip.setStyle('left: ' + xoffset + 'px; top: ' + yoffset + 'px;');
+		
+		// If the box doesn't fit on the rightbottom side in big_images, replace it
+		if ( ((sizeFromStyle(obj.parentNode.style.left) + tooltip.getWidth() + 5) > $('big_images').getWidth() ) || 
+				 ((sizeFromStyle(obj.parentNode.style.top) + tooltip.getHeight() + 5) > $('big_images').getHeight() ) )
+			
+			tooltip.setStyle('margin-left: -' + (tooltip.getWidth() + 5) + 'px;'
+					           +' margin-top: -' + (tooltip.getHeight() + 5) + 'px;');
+		else
+			tooltip.setStyle('margin-left: 0px;margin-top: 0px;');
+		
 		tooltip.show();
 	}
 }

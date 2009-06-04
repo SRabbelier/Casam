@@ -133,3 +133,6 @@ function changePopupCloseFunctionForWindowLife(temporaryWindow, customFunction){
 	});
 }
 
+function sizeFromStyle(str) {
+	return parseInt(str.substr(0,str.indexOf("px")));
+}
