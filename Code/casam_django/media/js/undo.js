@@ -9,6 +9,7 @@ var Change = Class.create( {
 		this.oldy = '';
 		this.saved = false;
 		this.changeDiv = '';
+		// Since changes are always performed on the active image
 		this.imageid = addedImages[0].id;
 		this.saveButton = '';
 		this.posx = '';
@@ -91,6 +92,8 @@ function reloadUndoneChange(metingid, posx, posy) {
 		}
 	}
 	pin.calcpieces();
+	// Since 'setPlace' corrects for the resizing of the image, and we don't want that now,
+	// we must correct for it too
 	pin.setPlace(posx / pin.piecex, posy / pin.piecey);
 	pin.place();
 	new Effect.Highlight($('measidMeasDiv_'+pin.id));
@@ -98,6 +101,7 @@ function reloadUndoneChange(metingid, posx, posy) {
 }
 
 function reloadUndonePlace(potid, imageID) {
+	// Is basically the same as deleting a measurement
 	var url = base_path + 'AJaX/deleteMeasurement/?time='
 			+ new Date().getTime();
 	new Ajax.Request(

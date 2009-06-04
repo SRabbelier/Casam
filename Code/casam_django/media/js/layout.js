@@ -5,6 +5,7 @@ var Check = Class.create( {
 		//			sg (showGroup) is for showing all measurements in a group
 	this.type = type;
 
+	// Needs to be set, else defaults to false
 	if ((this.type == 's') || (this.type == 'sa') || (this.type == 'sg'))
 		this.defaultValue = true;
 	else
@@ -17,6 +18,7 @@ var Check = Class.create( {
 	this.checked = this.defaultValue;
 },
 update : function(newValue) {
+	// WARNING: THIS DOES NOT UPDATE THE VALUE OF THE CHECKBOX!
 	this.oldValue = this.checked;
 	this.checked = newValue;
 },
@@ -31,6 +33,144 @@ repair : function() {
 		this.box.checked = true;
 }
 });
+function watchBox(item) {
+	item.box.observe('change', function() {
+		// set the new value of the checkbox
+		item.update(item.box.checked);
+		if (item.box.checked == true) {
+			if (item.type == 's'){
+				// Show measurement
+				item.item.place();
+				// check the 'showAll' and its showGroup checkbox
+				$('showAll_'+item.item.imageid).checked = true;
+				$('super_check_'+item.item.typeid).checked = true;
+			}
+			else if (item.type == 'b')
+			// Show bitmap
+				item.item.bitmap.show();
+			else if (item.type == 'sa'){
+				// Show all measurements and groups
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.id){
+							checkboxes[i].box.checked = true;
+							checkboxes[i].update(checkboxes[i].box.checked);
+							checkboxes[i].item.place();
+						}
+					}
+					else if (checkboxes[i].type == 'sg'){
+						if (checkboxes[i].box.up().up().id.slice(17) == item.id){
+							checkboxes[i].box.checked = true;
+							checkboxes[i].update(checkboxes[i].box.checked);
+						}
+					}
+				}
+			}
+			else if (item.type == 'sg'){
+				// show all measurements of group and check the 'showAll' checkbox
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
+							if (checkboxes[i].item.typeid == item.box.name){
+								checkboxes[i].box.checked = true;
+								checkboxes[i].update(checkboxes[i].box.checked);
+								checkboxes[i].item.place();
+								$('showAll_'+item.box.up().up().id.slice(17)).checked = true;
+							}
+						}
+					}
+				}
+			}
+		} else {
+			if (item.type == 's'){
+				// hide the current measurement
+				item.item.hide();
+				// loop through all the checkboxes, to see if there is still one checkbox checked.
+				// if this is so, do not uncheck the 'showAll' checkbox
+				var checked = false;
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if ((checkboxes[i].item.imageid == item.item.imageid) && (checkboxes[i].box.checked == true)){
+							checked = true;
+							break;
+						}
+					}
+				}
+				if (!checked)
+				  $('showAll_'+item.item.imageid).checked = false;
+				
+				// Loop through all the checkboxes of this type, to see if there is still one checkbox checked.
+				// if this is so, do not uncheck the 'showGroup' checkbox  
+				var typeChecked = false;
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if ((checkboxes[i].item.imageid == item.item.imageid) &&
+								(checkboxes[i].item.typeid == item.item.typeid) &&
+								(checkboxes[i].box.checked == true)){
+							typeChecked = true;
+							break;
+						}
+					}
+				}
+				if (!typeChecked)
+				  $('super_check_'+item.item.typeid).checked = false;
+			}
+			else if (item.type == 'b')
+			  // Hide the bitmap
+				item.item.bitmap.hide();
+			else if (item.type == 'sa'){
+				//Uncheck the 'showAll' checkbox:
+				// Uncheck all measurement checkboxes
+				// Uncheck the 'showGroup' checkboxes
+			  for(var i = 0; i < checkboxes.length; i++){
+				  if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.id){
+							checkboxes[i].box.checked = false;
+							checkboxes[i].update(checkboxes[i].box.checked);
+							checkboxes[i].item.hide();
+						}
+					}
+					else if (checkboxes[i].type == 'sg'){
+						if (checkboxes[i].box.up().up().id.slice(17) == item.id){
+							checkboxes[i].box.checked = false;
+							checkboxes[i].update(checkboxes[i].box.checked);
+						}
+					}
+			  }
+			}
+			else if (item.type == 'sg'){
+				// Uncheck the 'showGroup' checkbox:
+				// Uncheck all measurement checkboxes of this group.
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
+							if (checkboxes[i].item.typeid == item.box.name){
+								checkboxes[i].box.checked = false;
+								checkboxes[i].update(checkboxes[i].box.checked);
+								checkboxes[i].item.hide();
+							}
+						}
+					}
+				}
+				// Loop to see if there is still a measurement checkbox checked.
+				// If so, do not uncheck the 'showAll' checkbox
+				var checked = false;
+				for(var i = 0; i < checkboxes.length; i++){
+					if (checkboxes[i].type == 's'){
+						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
+							if (checkboxes[i].box.checked == true){
+								checked = true;
+								break;
+							}
+						}
+					}
+				}
+				if (!checked)
+				  $('showAll_'+item.box.up().up().id.slice(17)).checked = false;
+			}
+		}
+	});
+}
 
 function resizeScreenElements(firsttime) {
 	checkAuthenticationAndExecute( function() {
@@ -51,13 +191,6 @@ function resizeScreenElements(firsttime) {
 
 		// If we are viewing images 
 		} else {  
-			//reloadImages(firsttime); 
-		
-			// big_images need to be resized again when the images are
-			// loaded
-			// the javascript continues while this.getAppropriateSizeURL()
-			// is still
-			// finding the correct size for the image
 			resizeBigImages();
 			reloadImages(firsttime);
 		}
@@ -98,8 +231,6 @@ function newTab(tab_title, content, open, sub) {
 	if (!open)
 		tabBody.hide();
 
-
-
 	// Attach right style-class to tab-header
 	if (sub)
 		tabHeader.addClassName("subTabHeader");
@@ -131,7 +262,7 @@ function newTab(tab_title, content, open, sub) {
 			+ "<img src=\"" + base_path
 			+ "media/img/bar_right.jpg\" style=\"float:right;\" />";
 
-	// Return the three div's
+	// insert the three div's
 	tabContainer.insert(tabHeader);
 	tabContainer.insert(tabLine);
 	tabContainer.insert(tabBody);
@@ -164,126 +295,6 @@ function putArrowsInTabHeader(header, open) {
 	}
 }
 
-function watchBox(item) {
-	item.box.observe('change', function() {
-		item.update(item.box.checked);
-		if (item.box.checked == true) {
-			if (item.type == 's'){
-				item.item.place();
-				$('showAll_'+item.item.imageid).checked = true;
-				$('super_check_'+item.item.typeid).checked = true;
-			}
-			else if (item.type == 'b')
-				item.item.bitmap.show();
-			else if (item.type == 'sa'){
-				for(var i = 0; i < checkboxes.length; i++){
-					if (checkboxes[i].type == 's'){
-						if (checkboxes[i].item.imageid == item.id){
-							checkboxes[i].box.checked = true;
-							checkboxes[i].update(checkboxes[i].box.checked);
-							checkboxes[i].item.place();
-						}
-					}
-					else if (checkboxes[i].type == 'sg'){
-						if (checkboxes[i].box.up().up().id.slice(17) == item.id){
-							checkboxes[i].box.checked = true;
-							checkboxes[i].update(checkboxes[i].box.checked);
-						}
-					}
-				}
-			}
-			else if (item.type == 'sg'){
-				for(var i = 0; i < checkboxes.length; i++){
-					if (checkboxes[i].type == 's'){
-						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
-							if (checkboxes[i].item.typeid == item.box.name){
-								checkboxes[i].box.checked = true;
-								checkboxes[i].update(checkboxes[i].box.checked);
-								checkboxes[i].item.place();
-								$('showAll_'+item.box.up().up().id.slice(17)).checked = true;
-							}
-						}
-					}
-				}
-			}
-		} else {
-			if (item.type == 's'){
-				item.item.hide();
-				var checked = false;
-				for(var i = 0; i < checkboxes.length; i++){
-					if (checkboxes[i].type == 's'){
-						if ((checkboxes[i].item.imageid == item.item.imageid) && (checkboxes[i].box.checked == true)){
-							checked = true;
-							break;
-						}
-					}
-				}
-				if (!checked)
-				  $('showAll_'+item.item.imageid).checked = false;
-				  
-				var typeChecked = false;
-				for(var i = 0; i < checkboxes.length; i++){
-					if (checkboxes[i].type == 's'){
-						if ((checkboxes[i].item.imageid == item.item.imageid) &&
-								(checkboxes[i].item.typeid == item.item.typeid) &&
-								(checkboxes[i].box.checked == true)){
-							typeChecked = true;
-							break;
-						}
-					}
-				}
-				if (!typeChecked)
-				  $('super_check_'+item.item.typeid).checked = false;
-			}
-			else if (item.type == 'b')
-				item.item.bitmap.hide();
-			else if (item.type == 'sa'){
-			  for(var i = 0; i < checkboxes.length; i++){
-				  if (checkboxes[i].type == 's'){
-						if (checkboxes[i].item.imageid == item.id){
-							checkboxes[i].box.checked = false;
-							checkboxes[i].update(checkboxes[i].box.checked);
-							checkboxes[i].item.hide();
-						}
-					}
-					else if (checkboxes[i].type == 'sg'){
-						if (checkboxes[i].box.up().up().id.slice(17) == item.id){
-							checkboxes[i].box.checked = false;
-							checkboxes[i].update(checkboxes[i].box.checked);
-						}
-					}
-			  }
-			}
-			else if (item.type == 'sg'){
-				for(var i = 0; i < checkboxes.length; i++){
-					if (checkboxes[i].type == 's'){
-						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
-							if (checkboxes[i].item.typeid == item.box.name){
-								checkboxes[i].box.checked = false;
-								checkboxes[i].update(checkboxes[i].box.checked);
-								checkboxes[i].item.hide();
-							}
-						}
-					}
-				}
-				var checked = false;
-				for(var i = 0; i < checkboxes.length; i++){
-					if (checkboxes[i].type == 's'){
-						if (checkboxes[i].item.imageid == item.box.up().up().id.slice(17)){
-							if (checkboxes[i].box.checked == true){
-								checked = true;
-								break;
-							}
-						}
-					}
-				}
-				if (!checked)
-				  $('showAll_'+item.box.up().up().id.slice(17)).checked = false;
-			}
-		}
-	});
-}
-
 function initialisePictureTab(pictureJSON_array) {
 	
 	// Clear the general container
@@ -299,7 +310,6 @@ function initialisePictureTab(pictureJSON_array) {
 
 function addOverlayTab(overlayJSON_array) {
 
-	//$('tab_pictures').insert(new Element('div',{'id':'overlays'}));
   
   // Create a picture container for each picture
   for(i=0; i < overlayJSON_array.length; i++)
@@ -312,13 +322,14 @@ function makeOverlayContainer(pictureJSON) {
 		"id" : "mainDiv_" + pictureJSON.pk
 	});
 	mainDiv.addClassName('projectPictureDiv');
+	
 	// Container for picture and activation selection
 	var leftDiv = new Element('div', {
 		"id" : "leftDiv_" + pictureJSON.pk
 	});
 	leftDiv.addClassName('pictureContainerLeftDiv');
 	
-    // Container for title
+  // Container for title
 	var rightDiv = new Element('div', {
 		"id" : "rightDiv_" + pictureJSON.pk
 	});
@@ -355,6 +366,7 @@ function makeOverlayContainer(pictureJSON) {
 	mainDiv.insert(rightDiv);
 	mainDiv.insert(sliderDiv);
 	$('pictures').insert(mainDiv);
+	
 	// Ugly IE fix for setting the checkboxes
 	for ( var i = 0; i < addedImages.length; i++) {
 		if (addedImages[i].id == pictureJSON.pk) {
@@ -461,7 +473,11 @@ function addMeasurementsToPictureContainer(imgid, json) {
 				json[i + 1].fields.imagewidth,
 				json[i + 1].fields.imageheight);
 			
+			// This works, because the first element of the JSON string is always a potential measurement type.
+			// This means that in the first loop a subtab is created, which is declared outside of the 
+			// loop. In the second loop, this subtab is retrieved again, and is this not empty.
 			subtab.childElements()[3].insert(tempMeasurement);
+			// Because for each measurement, 2 JSON elements are needed, update i with 1 more.
 			i++;
 		}
 	}
@@ -472,15 +488,15 @@ function addMeasurementsToPictureContainer(imgid, json) {
 	tab_measurements.addClassName('imgSubTabMeasurements');
 	$('bottomDiv_' + imgid).insert({ top: tab_measurements });
 	
-	var groupcheck = new Element('input', {
+	var imagecheck = new Element('input', {
 		'type' : 'checkbox',
 		'name' : imgid,
 		'id' : 'showAll_'+imgid
 	});
-	groupcheck.setStyle({cssFloat: 'left'});
-	$('bottomDiv_'+imgid).insert({top: groupcheck});
+	imagecheck.setStyle({cssFloat: 'left'});
+	$('bottomDiv_'+imgid).insert({top: imagecheck});
 	
-	var check = new Check('sa', imgid, groupcheck, null);
+	var check = new Check('sa', imgid, imagecheck, null);
 	check.setDefault();
 	check.watch();
 	checkboxes.push(check);
@@ -515,7 +531,6 @@ function addBitmapsToPictureContainer(imgid, bitmapJSON_array) {
 function closePopupAndReloadPictures() {
 	getProjectImages(false);
 	new Effect.Highlight('pictures');
-	//$('tab_pictures').scrollTo($('addPictureButton'));
 	closePopup();
 }
 

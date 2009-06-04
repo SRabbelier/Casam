@@ -21,6 +21,7 @@ var Measurement = Class.create( {
 		this.left = 0;
 		this.top = 0;
 
+		// These are the scaling factors
 		this.piecex = 0;
 		this.piecey = 0;
 
@@ -34,8 +35,10 @@ var Measurement = Class.create( {
 		this.top = y * this.piecey;
 	},
 	place : function() {
+		// if the pinDiv was not placed, place it
 		if (this.pinDiv.ancestors() == '')
 		  $('big_images').insert(this.pinDiv);
+		
 		this.pinDiv.setStyle( {
 			position : 'absolute',
 			left : '' + (Math.round(this.left)) + 'px',
@@ -57,6 +60,7 @@ var Measurement = Class.create( {
 	},
 	restore : function() {
 		this.pinDiv.hide();
+		// Show potential measurement again
 		$('mm' + this.potid).show();
 	},
 	hide : function() {
@@ -69,20 +73,32 @@ var Measurement = Class.create( {
 	setActive : function() {
 		this.changeColor('red');
 		this.drag = makeDraggable(this, this.pinDiv, this.potid, this.imageid);
+		// Hide corresponding potential measurement
 		$('mm' + this.potid).hide();
 	},
 	nonActive : function() {
 		this.changeColor('blue');
+		// NonActive measurements are not draggable
 		if (this.drag != null)
 			this.drag.destroy();
 	},
 	erase : function() {
-		this.nonActive(); //to destroy draggable
-		this.pinDiv.remove(); //remove the whole pin
+		// To destroy draggable
+		this.nonActive(); 
+		// Remove the whole pin
+		this.pinDiv.remove(); 
 	}
 });
+function watchSaveButton(item) {
+	item.saveButton.observe('click', function() {
+		item.save();
+
+		saveLandMark(item.posx, item.posy, item.potid, item.imageid);
+	});
+}
 
 function undoLastLandmarkChange(x, y, potid, imgid, mid) {
+	// Measurement-id is unknown to the change on placing of landmark, so this can be checked
 	if (mid == '')
 		reloadUndonePlace(potid, imgid);
 	else {
@@ -113,8 +129,6 @@ function saveLandMark(mx, my, potid, imgid) {
 	savex = mousex * 1 + viewportOffset.left * 1;
 	savey = mousey * 1 + viewportOffset.top * 1;
 	
-	var lmname = $('mmmeting').options[$('mmmeting').selectedIndex].text.replace(/\s\(\s\w*\s\)/,"");
-
 	var c = '';
 	var measurement = null;
 
@@ -128,11 +142,10 @@ function saveLandMark(mx, my, potid, imgid) {
 				break;
 			}
 		}
-		;
+		// Make change on saving landmark
 		if (found) {
 			c = new Change('r', mm, lmname);
-			c.position(Math.round(measurement.left), Math
-					.round(measurement.top));
+			c.position(Math.round(measurement.left), Math.round(measurement.top));
 			c.reposition(measurement.id, mousex, mousey);
 		} else {
 			c = new Change('p', mm, lmname);
@@ -158,6 +171,7 @@ function saveLandMark(mx, my, potid, imgid) {
 						imageheight : $('addedImage_' + imageID).height
 					},
 					onSuccess : function(transport, json) {
+						// save the last created change. This can be done, because the change was created just before
 						c = changes.pop();
 						c.save();
 						changes.push(c);
@@ -171,6 +185,7 @@ function saveLandMark(mx, my, potid, imgid) {
 							}
 						}
 						if (found) {
+							// Replace existing measurement
 							measurement.calcpieces();
 							measurement.setPlace(mousex / measurement.piecex,
 									mousey / measurement.piecey);
@@ -178,6 +193,7 @@ function saveLandMark(mx, my, potid, imgid) {
 							$('span_'+measurement.id).update(measurement.name);
 							new Effect.Highlight($('measidMeasDiv_'+measurement.id));
 						} else {
+							// Create new measurement
 							var json = transport.responseText.evalJSON();
 							//json[i] = meting
 							//getMainDiv to do mainDiv.insert
@@ -188,6 +204,7 @@ function saveLandMark(mx, my, potid, imgid) {
 									json[0].fields.imagewidth,
 									json[0].fields.imageheight));
 							subtab.up().show();
+							// Replace the (new) measurement, just to be sure
 							for ( var i = 0; i < measurements.length; i++) {
 								if (measurements[i].potid == mm
 										&& measurements[i].imageid == imageID) {
@@ -203,6 +220,7 @@ function saveLandMark(mx, my, potid, imgid) {
 
 						
 					},
+					// on either fail or complete:
 					onComplete: function(){
 						$('lmdd').hide();						
 					}
@@ -238,6 +256,7 @@ function LoadMMDD(id, imgID) {
 }
 
 function showLandmarkTooltip(e) {
+	// Set 'obj' no matter using firefox or internet explorer
 	obj = (!e.target ? e.srcElement : e.target);
 	if ($('MouseX').value != "" && $('MouseY').value != "") {
 		xoffset = obj.offsetLeft * 1 + 12;
@@ -258,6 +277,7 @@ function showLandmarkTooltip(e) {
 	}
 }
 function hideLandmarkTooltip(e) {
+	// Set 'obj' no matter using firefox or internet explorer
 	obj = (!e.target ? e.srcElement : e.target);
 	var tooltip = obj.parentNode.lastChild;
 	tooltip.hide();
@@ -267,6 +287,7 @@ function hideLandmarkTooltip(e) {
 function makeDraggable(measurement, pinDiv, potid, imageid) {
 	return new Draggable(pinDiv, {
 		onStart : function() {
+			// When starting the drag, create the change
 			var c = new Change('r', potid, measurement.name);
 			c.position(Math.round(measurement.left), Math
 					.round(measurement.top));
@@ -276,6 +297,7 @@ function makeDraggable(measurement, pinDiv, potid, imageid) {
 			pinDiv.childElements()[1].hide();
 		},
 		onEnd : function() {
+			// When ending the drag, update the change
 			LoadMMDD(potid, imageid);
 			var c = changes.pop();
 			c.reposition(measurement.id, $('lmmx').value, $('lmmy').value);
@@ -288,6 +310,7 @@ function makeDraggable(measurement, pinDiv, potid, imageid) {
 function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 														imgheight) {
 	
+	// Find the image name, which is needed for the tooltip of the measurement
 	var imgname = '';
 	for ( var j = 0; j < addedImages.length; j++) {
 		if (addedImages[j].id == imgid) {
@@ -298,7 +321,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 
 	var typename = $('potmeas_'+potid).up().up().down('span').innerHTML;
 	var typeid = $('potmeas_'+potid).up().id.slice(9);
-	var measname = name;// + ' ( '+typename+' )';
+	var measname = name;
 
 	var pinDiv = new Element('div');
 	pinDiv.addClassName('pinDiv');
@@ -320,6 +343,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	pinDiv.insert(pintooltip);
 	$('big_images').insert(pinDiv);
 	
+	// Make new measurement object
 	var measurement = new Measurement(measid, potid, typeid, measname, imgid, pinDiv,
 			imgwidth, imgheight);
 	
@@ -334,19 +358,16 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 		'id' : 'showm_' + measid
 	});
 
+	// Make new checkbox object
 	var check = new Check('s', measid, checkbox, measurement);
-
-	//when called insert, IE defaults his checkboxes to the default value (which is false).
-	//so set the default to true
 	check.setDefault();
 	check.watch();
-
 	checkboxes.push(check);
 
 	textspan = new Element('span', {
 		'id' : 'span_' + measid
 	});
-	textspan.update(measname);// + ' (' + x + ', ' + y + ')');
+	textspan.update(measname);
 	measurementDiv.insert(checkbox);
 	measurementDiv.insert(textspan);
 
@@ -354,6 +375,7 @@ function createMeasurement(	name, x, y, measid, potid, imgid, imgwidth,
 	measurement.setPlace(x, y);
 	measurement.place();
 
+	// If the measurement is for the active image
 	if (addedImages[0].id == imgid)
 		measurement.setActive();
 	else
@@ -371,54 +393,22 @@ function createImageMeasurementSubTab(typeid, typename, imgid){
 	var subtab_measurements = newTab(typename, typeDiv, true);
 	subtab_measurements.id = 'measurementTypesDiv_'+imgid+'-'+typeid;
 	subtab_measurements.addClassName('imgSubTabMeasurementTypes');
+	
+	// Create type checkbox
 	super_check = new Element('input');
 	super_check.writeAttribute('id', 'super_check_'+typeid);
 	super_check.writeAttribute('type', 'checkbox');
 	super_check.writeAttribute('name', typeid);
 	super_check.writeAttribute('style', 'margin:0px;float:left;');
-	//super_check.defaultChecked = true;
 	subtab_measurements.insert({top: super_check});
 	
-	//listenSuperCheck(super_check, typeid);
-	
+	// Create ceckbox object
 	var check = new Check('sg', typeid, super_check, null);
 	check.setDefault();
 	check.watch();
 	checkboxes.push(check);
 
 	return subtab_measurements;
-}
-
-function listenSuperCheck(checkbox, check_typeid) {
-	Element.observe(checkbox,'click', function(){
-		checkboxes.each(function(item){
-			if(item.item.typeid == check_typeid) {
-
-				item.box.checked = $('super_check_'+check_typeid).checked;
-				
-				item.update(item.box.checked);
-				if (item.box.checked == true) {
-					if (item.type == 's')
-						item.item.place();
-					else if (item.type == 'b')
-						item.item.bitmap.show();
-				} else {
-					if (item.type == 's')
-						item.item.hide();
-					else if (item.type == 'b')
-						item.item.bitmap.hide();
-				}
-			}
-		});
-	});
-}
-
-function watchSaveButton(item) {
-	item.saveButton.observe('click', function() {
-		item.save();
-
-		saveLandMark(item.posx, item.posy, item.potid, item.imageid);
-	});
 }
 
 function createPotentialMeasurementType(typeid, typename){
@@ -430,13 +420,15 @@ function createPotentialMeasurementType(typeid, typename){
 	tab_potentialtypes.writeAttribute('id','potSubTabType');
 	$('possiblemeasurements').insert(tab_potentialtypes);		
 	
+	// Add the new subtab to the measurementslists of the images, but hide it.
+	// This is so the measurements themselves can be added to their measurement types
 	for(var i = 0;i < addedImages.length; i++){
 		var subtab = createImageMeasurementSubTab(typeid, typename, addedImages[i].id);
 		$('measurementsList_'+addedImages[i].id).insert(subtab);
 		subtab.hide();
 	}
 	
-	
+	// Create an optiongroup for each potential measurement type
 	var optgroup = new Element('optgroup');
 	optgroup.writeAttribute('label', typename);
 	optgroup.writeAttribute('id', 'optgroup_'+typeid);
@@ -444,13 +436,16 @@ function createPotentialMeasurementType(typeid, typename){
 }
 
 function createPotentialMeasurement(potid, pottype, potname, potsoort) {
+	
 	var pmmContainerDiv = new Element('div', {
 		'id' : 'potmeas_' + potid
 	});
 	pmmContainerDiv.addClassName('potMeasDiv');
+	
 	var pmmPointerIMG = new Element('img', {
 		'id' : ('mm' + potid)
 	});
+	// Base the picture of the potential measurement on it's 'soort'
 	if (potsoort == 'L')
 		pmmPointerIMG.writeAttribute('src', base_path + 'media/img/landmark.gif');
 	else{
@@ -465,8 +460,11 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 	}).update(potname);
 	pmmContainerDiv.insert(pmmTextDiv);
 
+	// Add the containerDiv to the correct list
 	$('typesList'+pottype).insert(pmmContainerDiv);
 
+	// Only add the potential measurement to the option list for creating measurements if it is a
+	// 'Landmark'
   if (potsoort == 'L'){
   	var typename = $('typesList'+pottype).up().down('span').innerHTML;
 
@@ -477,7 +475,9 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 		option.update(potname);
 		var optgroup = $('optgroup_'+pottype).next();
 		$('mmmeting').add(option, optgroup);
-  } else{
+  } 
+  // Otherwise, set a link to the paintOver
+  else{
   	var link = new Element('a');
 		link.writeAttribute('href', '#');
 		link.writeAttribute('id', 'paintoverLink_'+potid);
@@ -490,8 +490,8 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 function observeEditLink(potid){
 	$('paintoverLink_'+potid).observe('click', function(){
 		if (addedImages.length > 0)
+  		// Change the link if the bitmap already exists for the active image
   		var bitmapIDs = $('bitmapsList_'+addedImages[0].id).select('div.projectImageBitmapDivPotId_'+potid);
-  		console.log(bitmapIDs)
 			if (bitmapIDs.length > 0)
 				loadEditScreen(addedImages[0].id, potid, bitmapIDs[0].id.slice(10));
   		else 
@@ -507,6 +507,7 @@ function removeMeasurements(imageID){
 			}
 			measurements[i].pinDiv.remove();
 			measurements.splice(i, 1);
+			// Correct for the index changing, done by the splice method
 			i = i - 1;
 		}
 	}
