@@ -697,3 +697,14 @@ function getLegenda(){
 	$('tab_legenda').insert(potentialMeasurement);
 	$('tab_legenda').insert(potentialBitmap);
 }
+
+function removeCheckboxes(imageID){
+	for(var i = 0; i < checkboxes.length; i++){
+		if ((checkboxes[i].type == 's') || (checkboxes[i].type == 'b')){
+			if(checkboxes[i].item.imageid == imageID){
+				checkboxes.splice(i,1);
+				i = i - 1;
+			}
+		}
+	}
+}

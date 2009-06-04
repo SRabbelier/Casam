@@ -3,7 +3,8 @@ var Bitmap = Class.create( {
 		this.bitmap = bm;
 		this.id = bmid;
 		this.imageid = imageid;
-		this.typeid = 0; // Ugly default so this 'measurement' won't be selected when super_check is (de)selected
+		// Ugly default so this 'measurement' won't be selected when super_check is (de)selected
+		this.typeid = 0; 
 	},
 	getAppropriateSizeURL : function() {
 		return (base_path + 'imageLoader/byMaxWidthHeight/bitmap/'
@@ -15,8 +16,7 @@ var Bitmap = Class.create( {
 		this.bitmap.observe('load', function() {
 			//big_images need to be resized again when the bitmaps are loaded 
 			// the javascript continues while this.getAppropriateSizeURL()
-			// is still
-			// finding the correct size for the bitmap
+			// is still finding the correct size for the bitmap
 			resizeBigImages();
 		});
 	}
@@ -24,19 +24,13 @@ var Bitmap = Class.create( {
 
 function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 	
-	// Create html-elementes
+	// Create html-elements
 	var bitmapDiv = new Element('div', {
 		'id' : 'bitmapDiv_' + bmid
 	});
 	
 	bitmapDiv.addClassName('projectImageBitmapDiv');
 	bitmapDiv.addClassName('projectImageBitmapDivPotId_'+potid)
-
-	checkbox = new Element('input', {
-		'type' : 'checkbox',
-		'name' : bmid,
-		'id' : 'showbm' + bmid
-	});
 
 	var bitmap = new Element('img', {
 		'id' : 'bitmap_' + bmid
@@ -59,27 +53,15 @@ function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 
 	bitmap.setOpacity(0.5);
 
-	/*
-	 * var opacitySliderContainer = new Element('div'); //HARDCODE THIS WIDTH
-	 * FOR THE SLIDER TO WORK INITIALLY opacitySliderContainer.setWidth(140);
-	 * opacitySliderContainer.writeAttribute('id','bitmapOpacitySliderContainer_'+bmid);
-	 * opacitySliderContainer.addClassName('bitmapSlider');
-	 * 
-	 * var opacitySliderHandle = new Element('div');
-	 * opacitySliderHandle.writeAttribute('id','bitmapOpacitySliderHandle_'+bmid);
-	 * opacitySliderHandle.addClassName('bitmapHandle');
-	 * 
-	 * opacitySliderContainer.insert(opacitySliderHandle);
-	 */
+	checkbox = new Element('input', {
+		'type' : 'checkbox',
+		'name' : bmid,
+		'id' : 'showbm' + bmid
+	});	
 
 	var check = new Check('b', bmid, checkbox, bm);
-
-	// when called insert, IE defaults his checkboxes to the default value
-	// (which is false).
-	// so set the default to true
 	check.setDefault();
 	check.watch();
-
 	checkboxes.push(check);
 
 	textspan = new Element('span', {
@@ -99,7 +81,7 @@ function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 }
 
 function reloadBitmaps() {
-	
+	//loop through the checkboxes array, to find all the bitmaps
 	for ( var i = 0; i < checkboxes.length; i++) {
 		if ((checkboxes[i].type == 'b')) {
 
@@ -107,6 +89,7 @@ function reloadBitmaps() {
 
 			$('big_images').insert(checkboxes[i].item.bitmap);
 			checkboxes[i].item.bitmap.hide();
+			// only show the bitmaps when the checkbox was checked
 			if (checkboxes[i].checked)
 				checkboxes[i].item.bitmap.show();
 		}

@@ -6,9 +6,10 @@ var AddedImage = Class.create( {
 		this.className = className; 
 		this.imageElement = new Element('img');
 
-		// HARDCODE THIS WIDTH FOR THE SLIDER TO WORK INITIALLY
+		// Create the image opacity slider
 		this.opacitySliderContainer = new Element('div');
 		this.opacitySliderContainer.setHeight(3);
+		// Hardcode this width for the slider to work initially
 		this.opacitySliderContainer.setWidth(100);
 		this.opacitySliderContainer.writeAttribute('id',
 				'opacitySliderContainer_' + this.id);
@@ -25,9 +26,8 @@ var AddedImage = Class.create( {
 
 	},
 	getAppropriateSizeURL : function() {
-		console.log('get url');
+		// className needed to distinguish between images and PMD-overlays
 		if(!this.className){
-			console.log('no classname');
 			return (base_path + 'imageLoader/byMaxWidthHeight/original/'
 				+ ($('big_images').getWidth() - 2) + '/'
 				+ ($('big_images').getHeight() - 2) + '/' + this.id);
@@ -42,10 +42,11 @@ var AddedImage = Class.create( {
 		this.imageElement.setOpacity(this.opacity);
 	},
 	makeNonActive: function(activeImage){
+		// Restore this layer to not be the active layer
 		$('mainDiv_' + this.id).setStyle({border: 'none',
 																			backgroundColor: ''});
 		
-		// Make measurements inactive (green and fire LoadMMDD on click)
+		// Make measurements inactive (blue and fire LoadMMDD on click)
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id) {
 				
@@ -60,20 +61,24 @@ var AddedImage = Class.create( {
 			}
 		}
 		
+		// Hide the zoom image
 		$('zoomImage').setAttribute('src', '');
 		$('zoomImage').hide();
 	},
 	makeActive: function(){
+		// Make this layer the acitve layer
 		$('mainDiv_' + this.id).setStyle({border: '1px red dashed',
 																			backgroundColor: '#ffdddd'});
 
-		// Zoom image
+		// Set the new zoom image
 		$('zoomImage').writeAttribute('src', base_path + 'imageLoader/byRatio/original/150/' + this.id);
 		$('zoomImage').show();
 
+		// If the imageElement was already added to the page, remove it first
 		if(this.imageElement.parentNode){
 			this.imageElement.remove();
 		}
+		// Add the imageElement to big_images
 		$('big_images').insert( { bottom : this.imageElement	});
 
 		// Restore potential measurement pins
@@ -82,6 +87,7 @@ var AddedImage = Class.create( {
 			mm_array[i].show();
 		}
 
+		// Make the measurements of the new active layer active
 		for(var i = 0; i < measurements.length; i++){
 			if(measurements[i].imageid == this.id) {
 				
@@ -93,10 +99,9 @@ var AddedImage = Class.create( {
 	},
 	addSelfToImages: function(full) {
 		
-		// We need this for the observer and the slider
-		parentAddedImageObject = this;
+		// Stop observing the imageElement, so that no event is fired on unload of src
 		this.imageElement.stopObserving();
-		//because of slow servers we need to empty the src
+		// Create a new imageElement
 		this.imageElement = new Element('img');
 		this.imageElement.writeAttribute('id', 'addedImage_' + this.id);
 		this.imageElement.addClassName('big_image_sibling');
@@ -117,14 +122,13 @@ var AddedImage = Class.create( {
 function makeImageObservers(image, full){
 	image.imageElement.observe('load', function() {
 	
-		// Resize the measurements and load them in the tabs
+		// If needed, first get the image measurements and bitmaps, before the measurements can be resized
 		if (full){
 			getImageMeasurements(image.id);
 			getImageBitmaps(image.id);
 		}
 		resizeMeasurements(image.id);
 		
-		//resizeBigImages();
 	});
 		
 	image.imageElement.observe('click', function() {
@@ -137,9 +141,10 @@ function deleteImage(id) {
 
 	$('mainDiv_' + id).remove();
 
+	// Detele the image, and all corresponding stuff
 	removeImage(id);
 
-	//delete active image for this image
+	// Check for the new active layer
 	checkActiveLayer();
 }
 
@@ -149,23 +154,27 @@ function addImage(originalImage) {
 }
 
 function showImage(id, name, className) {
+	// Function is called when the checkbox in front of an image is turned on
 	checkAuthenticationAndExecute( function() {
+		// Create a new Image object
 		var newAddedImage = new AddedImage(id, name, className);
-		//console.log(newAddedImage);
 		$('big_images').insert(this.imageElement);
+		// Add this new image to the fron of the array
 		addedImages.splice(0, 0, newAddedImage);
+		// Let it add itself
 		newAddedImage.addSelfToImages(true);
 		
+		// Set the new active layer accordingly
 		checkActiveLayer();
 	});
 }
 
 function hideImage(id) {
+	// Function is called when the checkbox in front of an image is turned off
 	checkAuthenticationAndExecute( function() {
 
 		if (addedImages[0].id == id)
 			addedImages[0].makeNonActive();
-
 		
 		// Remove checkboxes
 		removeCheckboxes(id);		
@@ -178,8 +187,10 @@ function hideImage(id) {
 
 		// Remove changes
 		removeChanges(id);
+		
 		// Remove image
 		removeImage(id);
+		
 		// Check for new active layer
 		checkActiveLayer();
 	});
@@ -188,9 +199,10 @@ function hideImage(id) {
 function reloadImages(full) {
 	checkAuthenticationAndExecute( function() {
 
-		// .update() clears the contents of the elements
+		// Clear the contents of big_images
 		$('big_images').update();
 
+		// Let every image add itself again, and mark only the first image as the active layer
 		for ( var i = 0; i < addedImages.length; i++) {
 			if ( i >= 1)
 				addedImages[i].makeNonActive();
@@ -200,15 +212,22 @@ function reloadImages(full) {
 		if (addedImages.length > 0) {
 			addedImages[0].makeActive();
 		}
+		
+		// Make the pictures sortable again
 		makePicturesSortable();
+		
+		// Also reload the bitmaps, since big_images was cleared
 		reloadBitmaps();
 	});
 }
 
 function updateImageList() {
+	// Function is called on change of the sortable
 	checkAuthenticationAndExecute( function() {
+		// Get the new sequence as it is on screen
 		id_array = Sortable.sequence("pictures");
 		new_list = new Array();
+		// Set this sequence in a new array
 		for ( var i = 0; i < id_array.length; i++) {
 			for ( var j = 0; j < addedImages.length; j++) {
 				if (id_array[i] == addedImages[j].id) {
@@ -217,62 +236,43 @@ function updateImageList() {
 				}
 			}
 		}
+		// Copy this array to 'addedImages'
 		addedImages = new_list;
 		
+		// Check to see what the active layer is now
 		checkActiveLayer();
 
 	});
 }
 
-function removeCheckboxes(imageID){
-	for(var i = 0; i < checkboxes.length; i++){
-		if ((checkboxes[i].type == 's') || (checkboxes[i].type == 'b')){
-			if(checkboxes[i].item.imageid == imageID){
-				checkboxes.splice(i,1);
-				i = i - 1;
-			}
-		}
-	}
-}
-
-function removeChanges(imageID){
-	for ( var i = 0; i < changes.length; i++) {
-		if (changes[i].imageid == imageID) {
-			changes[i].changeDiv.remove();
-			changes.splice(i, 1);
-			i = i - 1;
-		}
-	}
-}
-
 function removeImage(imageID){
+	// Remove the image from 'addedImages'
 	for ( var i = 0; i < addedImages.length; i++){
 		if (addedImages[i].id == imageID){
 			addedImages.splice(i, 1);
 			break;
 		}
 	}
+	// Remove the image itself
 	Element.remove($('addedImage_'+imageID))
 	
+	// Remove the images slider
 	$('sliderDiv_' + imageID).update();
+	// If the image is a real image, and not a PDM-Overlay, clear all measurement and bitmap information
 	if ($('rightDiv_' + imageID).childElements()[0].innerHTML != "PDM-Overlay"){
 		$('bottomDiv_' + imageID).update();
 	}
 }
 
 function checkActiveLayer(){
-	// $('zoomImage').hide();
-	console.log('active layer check');
-	console.log(''+addedImages.length);
-
+	// When there are images showing
 	if (addedImages.length > 0) {
+		// Make each image 'nonActive'
 		addedImages.each(function(item){
 			item.makeNonActive();
 		});
-		console.log('active layer check2');
-
+		// Make the first image Active
 		addedImages[0].makeActive();
-		console.log('active layer check3');
 		
 		// Set sequence so that active layer is always on top
 		id_array = Sortable.sequence("pictures");
@@ -284,10 +284,10 @@ function checkActiveLayer(){
 				break;
 			}
 		}
-		
 		id_array.splice(0, 0, temp);
 		Sortable.setSequence("pictures", id_array);
 	}
+	// When there are no images showing
 	else{
 		$('zoomImage').hide();
 	}

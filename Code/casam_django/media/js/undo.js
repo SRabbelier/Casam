@@ -141,3 +141,13 @@ function undoLastChange() {
 		c.undo();
 	}
 }
+
+function removeChanges(imageID){
+	for ( var i = 0; i < changes.length; i++) {
+		if (changes[i].imageid == imageID) {
+			changes[i].changeDiv.remove();
+			changes.splice(i, 1);
+			i = i - 1;
+		}
+	}
+}
