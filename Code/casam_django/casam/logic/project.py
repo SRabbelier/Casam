@@ -23,8 +23,9 @@ def handle_import_project(file, profile):
     f.close()
   
   script = zip.read('export_script.py')
+  script = script.replace('\r\n','\n')
   compiled = compile(script, 'compile_result.txt', 'exec')
-  #print compiled
+  print compiled
   exec(compiled)
   result = run(profile)
   print result
