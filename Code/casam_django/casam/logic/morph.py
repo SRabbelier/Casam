@@ -6,7 +6,10 @@ from casam.models import Measurement
 from casam.models import PotentialMeasurement
 from casam.models import Project
 from casam.models import PDM
+from casam.models import Bitmap
 from django.conf import settings
+
+from PIL import Image
 # read in coordinates
 
 def createMorph(selectedImages,selectedPMs):
@@ -19,7 +22,6 @@ def createMorph(selectedImages,selectedPMs):
    
   #now get the associated measurements
   measures = Measurement.objects.all().filter(id__in=selectedPMs[0])
-  print 'measures', measures
   measures = [j for j in measures]
   measures.sort(key=lambda x: x.mogelijkemeting.name)
    
@@ -28,163 +30,162 @@ def createMorph(selectedImages,selectedPMs):
   for k, measurement in enumerate(measures):#for every measurement in the measurements
     coordsx.append(float(measurement.x))
     coordsy.append(float(measurement.y))
-  
-  print 'coordsx: ',coordsx  
-  print 'coordsy: ',coordsy 
-  
+
   r1 = vtk.vtkJPEGReader()
   r1.SetFileName(settings.DATADIR + mainImage.id + ".jpg")
   r1.Update() 
-     
+
   # flip y coord (VTK has opposite convention), create 3-d coords
   ydim = r1.GetOutput().GetDimensions()[1]
   coords = [(x, ydim - y, 0) for (x,y) in zip(coordsx, coordsy)]
   
-  print 'coords: ',coords
-  
   # convert everything to vtkPoints
-#  coords = [l2_255_coords, l5_coords]
-#  lms = [vtk.vtkPoints() for _ in range(2)]
+  lmt = vtk.vtkPoints()
+  lmt.SetNumberOfPoints(len(coords))
+  for i, coord in enumerate(coords):
+    lmt.SetPoint(i,coord)
   
-#  for idx, c in enumerate(coords):
-#      lms[idx].SetNumberOfPoints(len(c))
-#      for ptidx, pt in enumerate(c):
-#          lms[idx].SetPoint(ptidx, pt)
+  #The target is set, let's get the sources
+  images = []
+  selectedImages.pop(0)
+  selectedPMs.pop(0)
+  for id in selectedImages:
+    images.append(OriginalImage.objects.all().get(id=id))
+  #images = list(OriginalImage.objects.all().filter(id__in=selectedImages))
 
+  transformations = []
+  morphtransformations = []
+  
+  img = OriginalImage(project=mainImage.project, name='warpedimage')
+  img.save()
+  
+  bitmaps = Bitmap.objects.all().filter(image=mainImage)
+  
+  print "original bitmaps: ", bitmaps
+  
+  for bm in bitmaps:
+    #store bitmaps of mainImage as sub of img
+    bitmap = Bitmap(project=img.project, name='warpedbitmap', image=img, 
+                      mogelijkemeting=bm.mogelijkemeting, imagewidth=bm.imagewidth, 
+                      imageheight=bm.imageheight, minx=bm.minx, miny=bm.miny, maxx=bm.maxx, maxy=bm.maxy)
+    bitmap.save()
+      
+    im = Image.open(settings.DATADIR + bm.id + '.gif')
+    im = im.convert("RGBA")
+    im.save(settings.DATADIR + bitmap.id + '.gif', transparency=0)
+    
 
+  for i in range(len(images)):#for each image
+    print "image checking: ",images[i].name
+    measures = Measurement.objects.all().filter(id__in=selectedPMs[i])#get measurements
+    measures = [j for j in measures]
+    measures.sort(key=lambda x: x.mogelijkemeting.name)
+    coordsx = []
+    coordsy = []    
+    for k, measurement in enumerate(measures):#for every measurement in the measurements
+      coordsx.append(float(measurement.x))
+      coordsy.append(float(measurement.y))
 
-#  #procrustes alignment
-#  pdmodel,result = pdm.createPDM(selectedImages,selectedPMs)
-#  if (result == 1):
-#    pdmodel.procrustes()
-#    pdmodel.pca()
-#    #transformation = pdmodel.filterGPA.GetLandmarkTransform()
-#    
-#    transformation = vtk.vtkLandmarkTransform()
-#    transformation.SetSourceLandmarks()
-#    transformation.SetTargetLandmarks(pdmodel.getOutput(0))
-#    transformation.SetModeToRigidBody()
-#    
-#    print transformation.GetSourceLandmarks()
-#    print transformation.GetTargetLandmarks()
-#    
-#    transformation.Inverse()
-#    transformation.Update()
-#    
-#    totalImages = []
-#    for i in range(len(selectedImages)):
-#      totalImages.append(OriginalImage.objects.all().get(id=selectedImages[i]))
-#    
-#    r1 = vtk.vtkJPEGReader()
-#    r1.SetFileName(settings.DATADIR + totalImages[0].id + ".jpg")
-#    r1.Update()  
-#    # then transform
-#    
-#    
-#    ir = vtk.vtkImageReslice()
-#    
-#    # use cubic for highest quality (slower)
-#    # we're using linear here to shave off a few microseconds. :)
-#    ir.SetInterpolationModeToLinear()
-#    print "transform", transformation
-#    ir.SetResliceTransform(transformation)
-#    ir.SetInput(r1.GetOutput())
-#    dw = vtk.vtkPNGWriter()
-#    dw.SetFileName('c:\warp2.png')
-#    dw.SetInput(ir.GetOutput())
-#    dw.Write()
-#  else:
-#    return 0
-#  #now transform the required image to the aligned image
-#
-#  potentialids = []
-#  totalcoordsx = []
-#  totalcoordsy = []
-#  #coordinates aan de hand selected measurements goed opbouwen in vtkpoints
-#  for i in range(len(selectedPMs)):#for the number of images
-#    measures = Measurement.objects.all().filter(id__in=selectedPMs[i])#get the measurements
-#    measures = [j for j in measures]
-#    measures.sort(key=lambda x: x.mogelijkemeting.name)
-#    
-#    coordsx = []
-#    coordsy = []
-#    for k, measurement in enumerate(measures):#for every measurement in the measurements
-#      if i == 0: #to check if the measurements come from the same potentialmeasurements
-#        potentialids.append(measurement.mogelijkemeting.id)#on first run, store
-#      elif potentialids[k] != measurement.mogelijkemeting.id:#on second run compare
-#        return pdmodel, 0
-#      coordsx.append(float(measurement.x))
-#      coordsy.append(float(measurement.y))
-#      
-#    totalcoordsx.append(coordsx)
-#    totalcoordsy.append(coordsy)
-#  
-#  totalImages = []
-#  for i in range(len(selectedImages)):
-#    totalImages.append(OriginalImage.objects.all().get(id=selectedImages[i]))
-#    
-#  totalcoords = []
-#  first = True
-#      
-#  while len(totalImages) != 1:  
-#    r1 = vtk.vtkJPEGReader()
-#    r1.SetFileName(settings.DATADIR + totalImages[0].id + ".jpg")
-#    r1.Update()  
-#    
-#    ydim1 = r1.GetOutput().GetDimensions()[1]
-#    totalcoords.append([(x, ydim1 - y, 0) for (x,y) in zip(totalcoordsx[0], totalcoordsy[0])])
-#
-#    r2 = vtk.vtkJPEGReader()
-#    r2.SetFileName(settings.DATADIR + totalImages[1].id + ".jpg")
-#    r2.Update()
-#    ydim2 = r2.GetOutput().GetDimensions()[1]
-#    totalcoords.append([(x, ydim2 - y, 0) for (x,y) in zip(totalcoordsx[1], totalcoordsy[1])])
-#  
-#    # convert everything to vtkPoints
-#    coords = [totalcoords[0], totalcoords[1]]
-#    lms = [vtk.vtkPoints() for _ in range(2)]
-#    
-#    for idx, c in enumerate(coords):
-#        lms[idx].SetNumberOfPoints(len(c))
-#        for ptidx, pt in enumerate(c):
-#            lms[idx].SetPoint(ptidx, pt)
-#    
-#    # setup the transform
-#    tps = vtk.vtkThinPlateSplineTransform()
-#    tps.SetBasisToR2LogR()
-#    tps.SetSourceLandmarks(lms[0])
-#    lms[0].Modified()
-#    tps.SetTargetLandmarks(lms[1])
-#    lms[1].Modified()
-#    # the tps transforms from lms[0] to lms[1] (see the docs)
-#    # but we're going to apply this as a reslice transform, which means
-#    # the grid and not the coordinates is transformed, which means we need
-#    # the inverse.  This is slow.
-#    tps.Inverse()
-#    tps.Update()
-#   
-#    # then transform
-#    ir = vtk.vtkImageReslice()
-#    
-#    # use cubic for highest quality (slower)
-#    # we're using linear here to shave off a few microseconds. :)
-#    ir.SetInterpolationModeToLinear()
-#    ir.SetResliceTransform(tps)
-#    ir.SetInput(r1.GetOutput())
-#    ir.SetInformationInput(r2.GetOutput())
-#        
-#    totalImages.pop(0)
-#    totalImages.pop(0)
-#    
-#    totalImages.insert(0, ir)
-#    first = False
-#  
-#  dw = vtk.vtkPNGWriter()
-#  dw.SetFileName('c:\warp.png')
-#  dw.SetInput(totalImages[0].GetOutput())
-#  dw.Write()
-#  
-#
-#  return True, 1
+    r = vtk.vtkJPEGReader()
+    r.SetFileName(settings.DATADIR + images[i].id + ".jpg")
+    r.Update()
+
+    ydim = r.GetOutput().GetDimensions()[1]
+    coordso = [(x, ydim - y, 0) for (x,y) in zip(coordsx, coordsy)]
+    lms = vtk.vtkPoints()
+    lms.SetNumberOfPoints(len(coordso))
+    for k, coord in enumerate(coordso):
+      lms.SetPoint(k,coord)
+
+    transformation = vtk.vtkLandmarkTransform()
+    transformation.SetTargetLandmarks(lmt)  
+    lmt.Modified()
+    transformation.SetSourceLandmarks(lms)
+    lms.Modified()
+    transformation.SetModeToRigidBody()
+    transformation.Update()
+     
+    
+    transformation.Inverse()
+    transformation.Update()
+    out = vtk.vtkPoints()
+    transformation.TransformPoints(lms,out)
+    transformations.append(transformation)
+    # then transform
+    ir = vtk.vtkImageReslice()
+    # use cubic for highest quality (slower)
+    # we're using linear here to shave off a few microseconds. :)
+    #ir.SetInterpolationModeToNearestNeighbor()
+    ir.SetInterpolationModeToLinear()
+    ir.SetResliceTransform(transformation)
+    ir.SetInput(r.GetOutput())
+    ir.SetInformationInput(r.GetOutput())
+    w = vtk.vtkJPEGWriter()
+    w.SetFileName('translated'+images[i].id+'.jpg')
+    w.SetInput(ir.GetOutput())
+    w.Write()
+    r2 = vtk.vtkJPEGReader()
+    r2.SetFileName('translated'+images[i].id+'.jpg')
+    r2.Update()  
+ 
+
+    
+    morphtransform = vtk.vtkThinPlateSplineTransform()
+    
+    morphtransform.SetBasisToR2LogR()
+    morphtransform.SetSourceLandmarks(out)
+    out.Modified()
+    morphtransform.SetTargetLandmarks(lmt)
+    lmt.Modified()
+    #morphtransform.SetModeToRigidBody()
+    morphtransform.Inverse()
+    morphtransform.Update()
+    morphtransformations.append(morphtransform)
+    ir.SetResliceTransform(morphtransform)
+    ir.SetInput(r2.GetOutput())
+    ir.SetInformationInput(r1.GetOutput())
+#    w2 = vtk.vtkJPEGWriter()
+#    w2.SetFileName('morphed'+images[i].id+'.jpg')
+#    w2.SetInput(ir.GetOutput())
+#    w2.Write()
+    
+    
+    bitmaps = Bitmap.objects.all().filter(image=images[i])
+    
+    print bitmaps
+    
+    for bm in bitmaps:
+      location = settings.DATADIR + bm.id + ".gif"
+      im = Image.open(location)
+      im = im.convert("RGB")
+      im.save(settings.DATADIR + bm.id + ".jpg", "JPEG")
+
+      r3 = vtk.vtkJPEGReader()
+      r3.SetFileName(settings.DATADIR + bm.id + '.jpg')
+      r3.Update()
+      
+      print bm  
+      ir.SetInput(r3.GetOutput())
+      ir.SetInformationInput(r1.GetOutput())
+      
+      w3 = vtk.vtkPNGWriter()
+      w3.SetFileName('morphinatingthepeasants'+bm.id+'.png')
+      w3.SetInput(ir.GetOutput())
+      w3.Write()
+      
+      im2 = Image.open(settings.DATADIR + mainImage.id + '.jpg')
+      im2.save(settings.DATADIR + img.id + '.jpg', 'JPEG')
+      
+      bitmap = Bitmap(project=img.project, name='warpedbitmap', image=img, 
+                      mogelijkemeting=bm.mogelijkemeting, imagewidth=bm.imagewidth, 
+                      imageheight=bm.imageheight, minx=bm.minx, miny=bm.miny, maxx=bm.maxx, maxy=bm.maxy)
+      bitmap.save()
+      
+      im = Image.open('morphinatingthepeasants'+bm.id+'.png')
+      im = im.convert("RGBA")
+      im.save(settings.DATADIR + bitmap.id + '.gif', transparency=0)
+      
+
+  return True, 1
 #  #images readen aan de hand selectedImages
   

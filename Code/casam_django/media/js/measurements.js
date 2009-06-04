@@ -129,6 +129,8 @@ function saveLandMark(mx, my, potid, imgid) {
 	savex = mousex * 1 + viewportOffset.left * 1;
 	savey = mousey * 1 + viewportOffset.top * 1;
 	
+	var lmname = $('mmmeting').options[$('mmmeting').selectedIndex].text.replace(/\s\(\s\w*\s\)/,""); 
+	
 	var c = '';
 	var measurement = null;
 
