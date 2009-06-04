@@ -33,7 +33,6 @@ class MorphCreator(handler.Handler):
     morphmodel, result = morph.createMorph(images,measurements)
     if result == 0:
       return http.HttpResponseServerError('Landmarks are not comparable.') 
-    #morph.analyse(pdmodel, projectID, images)
     return http.HttpResponse('Successfully morphed.')
 
   

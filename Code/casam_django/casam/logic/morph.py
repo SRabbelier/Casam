@@ -58,7 +58,8 @@ def createMorph(selectedImages,selectedPMs):
   
   img = OriginalImage(project=mainImage.project, name='warpedimage')
   img.save()
-  
+  imp = Image.open(settings.DATADIR + mainImage.id + '.jpg')
+  imp.save(settings.DATADIR + img.id + '.jpg', 'JPEG')  
   bitmaps = Bitmap.objects.all().filter(image=mainImage)
   
   print "original bitmaps: ", bitmaps

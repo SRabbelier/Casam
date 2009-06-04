@@ -55,6 +55,7 @@ document.observe('dom:loaded',function(){
 			},
 			onSuccess:function(transport){
 				alert(transport.responseText);
+				getProjectImages()
 			},
 			onFailure:function(transport){
 				alert(transport.responseText);
