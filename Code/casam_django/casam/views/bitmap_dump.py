@@ -32,5 +32,5 @@ class Save(handler.Handler):
     original_image = OriginalImage.objects.filter(id=self.cleaned_data['image_id']).get()
     previous_id = self.cleaned_data['previous_id']
     pm = PotentialMeasurement.objects.filter(id=self.cleaned_data['pm_id']).get()
-    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],self.cleaned_data['image_id'],original_image,previous_id,r,g,b,pm)
+    bitmap_id = handle_bitmap_stream(self.cleaned_data['dump'],original_image,previous_id,r,g,b,pm)
     return http.HttpResponse("saved_id="+bitmap_id)

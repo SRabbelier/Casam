@@ -498,6 +498,7 @@ function observeEditLink(potid){
 				loadEditScreen(addedImages[0].id, potid, bitmapIDs[0].id.slice(10));
   		else 
   			loadEditScreen(addedImages[0].id, potid);
+        //loadEditScreen(id, pm_id, bmid, min_x, max_x, min_y, max_y)
   });
 }
 

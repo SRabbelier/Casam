@@ -4,8 +4,19 @@ from casam.models import Bitmap
 import time
 import os
 
-def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
+def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
+  """ With the string representation of a bitmap; the original_image
+     this bitmap is painted over; the id of the previous bitmap;
+     the color information and the id of the possible measurement
+     this function saves the dump as a .gif-file and puts it in the db.
+  """ 
 
+  # Check the header
+  if dump == "_empty":
+    print "Empty bitmap submitted"
+    return
+
+  # Initialise color information
   if not (r >= 0 and r <= 255 and 
           g >= 0 and g <= 255 and 
           b >= 0 and b <= 255):
@@ -13,14 +24,17 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
     g = 0
     b = 0
     
+  # Split dump in header and body
   dump = dump.split("#")
   header = dump[0].split("x")
   body = dump[1]
-  
+
+  # Check the header
   if header[0] != "_scanline:":
     print "wrong dump"
     return
 
+  # Load needed variables from header
   total_width  = int(header[1])
   total_height = int(header[2])
   min_x = int(header[3])
@@ -28,21 +42,28 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
   min_y = int(header[5])
   max_y = int(header[6])
   
+  
+  # Derive needed variables from loaded variables
   block_width  = max_x - min_x + 1
   block_height = max_y - min_y + 1
-  
+
+
   skip_before = min_y * total_width + min_x
   skip_between = min_x + (total_width - 1 - max_x)
   skip_after = (total_height - 1 - max_y) * total_width + (total_width - 1 - max_x)
   
-  back_before  = ''.zfill(skip_before).replace('0',chr(0))
-  back_after   = ''.zfill(skip_after).replace('0',chr(0))
+  # Create string to fill before and after block
+  fill_before  = ''.zfill(skip_before).replace('0',chr(0))
+  fill_after   = ''.zfill(skip_after).replace('0',chr(0))
   
+  # Keep track of the amount of pixels that is currently on the line
+  # in the block to be able to determine how often we need to add skip_between
   line_fill = 0
-
+  
   # Make decode bit-stream
-  stream = back_before 
+  stream = fill_before 
  
+  # Do as long as there is still data in body
   while len(body) > 1:
     
     # Find number of black pixels
@@ -50,16 +71,21 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
     i = int(body[:end])
     body = body[end+1:]
     
-    # Do we need to add lines?
+    # We need at least to add i pixels
     line_fill += i
     
+    # Each whole amount block_with fits in line_fill,
+    # we need to add skip_between
+    
     while line_fill > block_width:
+      
       i += skip_between
       line_fill -= block_width
-    
-    # Write to the bit-stream
-    stream += ''.zfill(i).replace('0',chr(0))
       
+    # Write i background pixels to the bit-stream
+    stream += ''.zfill(i).replace('0',chr(0))
+
+    # Stop if we now finished the end of the string data
     if len(body) < 2: break;
   
     # Now do the foreground
@@ -67,17 +93,41 @@ def handle_bitmap_stream(dump,image_id,original_image,previous_id,r,g,b,mm):
     i = int(body[:end])
     body = body[end+1:]
     
-    # Do we need to add lines?
-    line_fill += i
+    # If we now need to add lines, it should
+    # also be background outside the block
+    if line_fill + i > block_width:
+      
+      # First write foreground pixels to fill the current row in the block
+      stream += ''.zfill(block_width - line_fill).replace('0', chr(255))
+      
+      # We still have this much pixels to write
+      line_fill = i - (block_width - line_fill)
+      
+      # As long as we can fill full block lines 
+      while line_fill > block_width:
+
+        # First write background line to get back to block
+        stream += ''.zfill(skip_between).replace('0', chr(0))
+        
+        # Then write a full line foreground-data
+        stream += ''.zfill(block_width).replace('0', chr(255))
+        line_fill -= block_width
+
+      # Return to a new line (by filling space outside the block)
+      stream += ''.zfill(skip_between).replace('0', chr(0))
+
+      # We still have a number of pixels left to write
+      i = line_fill
     
-    if line_fill > block_width:
-      print "this should never happen:"
-    
+    # Otherwise we also need to remember this set of pixels
+    else:
+      line_fill += i
+ 
     # Write to the bit-stream
     stream += ''.zfill(i).replace('0',chr(255))
 
-  stream += back_after
-
+  stream += fill_after
+  
   # Build image
   im = Image.fromstring("L",(total_width,total_height), stream, "raw", "L")
   
