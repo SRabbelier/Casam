@@ -7,7 +7,8 @@ import os
 from django import http
 from django.template import loader
 
-from casam.models import Project, Measurement, OriginalImage
+from casam.models import (Project, PDM, OriginalImage, PotentialMeasurement, Bitmap,
+                          Measurement, Annotation, PotentialMeasurementType, State, ProjectFile)
 from casam.logic import export as export_logic
 from casam.views import handler
 
@@ -21,7 +22,12 @@ class ExportHandler(handler.Handler):
     filepath = os.path.join('export',timestampedIDFilename)
     print filepath
     zip = zipfile.ZipFile(file=filepath,mode='w')
-    export_script = export_logic.exportModels([Project, Measurement, OriginalImage], [Project], project_id)
+    export_script = export_logic.exportModels([Project, PDM, OriginalImage, PotentialMeasurement, Bitmap,
+                                                Measurement, Annotation, PotentialMeasurementType, State, ProjectFile], 
+                                                [Project], 
+                                                [PDM, OriginalImage, Bitmap, ProjectFile],
+                                                zip,
+                                                project_id)
     f = open('export_script.py', 'w')
     f.write(export_script)
     f.close()

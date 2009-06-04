@@ -30,14 +30,20 @@ Improvements:
 """
 
 import sys
+import os
+import glob
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from django.utils.encoding import smart_unicode, force_unicode
 from django.contrib.contenttypes.models import ContentType
 
-def exportModels(models, nofilter, projectid):
-    context = {'_projectid_': projectid, '_nofilter_': nofilter} # town bicycle ftw  
+def exportModels(models, nofilter, tozip , zip, projectid):
+    context = {'_projectid_': projectid,
+               '_nofilter_': nofilter,
+               '_tozip_': tozip,
+               '_zip_': zip,
+               } # town bicycle ftw  
   
     # Create a dumpscript object and let it format itself as a string
     script = Script(models=models, context=context)
@@ -80,7 +86,9 @@ class ModelCode(Code):
     def __init__(self, model, context={}):
         self.model = model
         self.projectid = context['_projectid_']
-        self.nofilter = context['_nofilter_']
+        self.nofilter = self.model in context['_nofilter_']
+        self.tozip = self.model in context['_tozip_']
+        self.zip = context['_zip_']
         self.context = context
         self.instances = []
         self.indent = 0
@@ -98,11 +106,18 @@ class ModelCode(Code):
         """
         code = []
 
-        if self.model in self.nofilter:
-          iterator = self.model.objects.all().filter(id=self.projectid)
+        if self.nofilter:
+            iterator = self.model.objects.all().filter(id=self.projectid)
         else:
-          iterator = self.model.objects.filter(project__id = self.projectid)
+            iterator = self.model.objects.filter(project__id = self.projectid)
         for counter, item in enumerate(iterator):
+            if self.tozip:
+                fileglob = os.path.join('data',item.id + '.*')
+                for filename in glob.glob(fileglob):
+                    filename = filename.encode('utf-8')
+                    self.zip.write(filename,arcname=os.path.basename(filename))
+              
+              
             instance = InstanceCode(instance=item, id=counter+1, context=self.context)
             self.instances.append(instance)
             if instance.waiting_list:
