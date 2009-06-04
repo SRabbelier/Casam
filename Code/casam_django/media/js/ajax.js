@@ -13,7 +13,6 @@ function getProjectImages()
 {
 	checkAuthenticationAndExecute(function(){
 				
-		// Notice the use of a proxy to circumvent the Same Origin Policy
 		var url = base_path+'JSON/projectImages/'+projectID+'?time='+new Date().getTime();
 		new Ajax.Request(url, {
 		  method: 'get',
@@ -37,18 +36,18 @@ function getProjectOverlays()
 {
 	checkAuthenticationAndExecute(function(){
 				
-		// Notice the use of a proxy to circumvent the Same Origin Policy
 		var url = base_path+'JSON/projectOverlays/'+projectID+'?time='+new Date().getTime();
 		new Ajax.Request(url, {
 		  method: 'get',
 		  onSuccess: function(transport, json) {
-		  	// Grab the picture-array
+		  	
+		  	// Grab the projectOverlay-array
 		    var json = transport.responseText.evalJSON();
 
 		    // Build the content of the tab
 		    addOverlayTab(json);
 		    
-
+				// Initialise the dragging of images
 		    makePicturesSortable();
         
 			}
@@ -63,7 +62,11 @@ function getImageBitmaps(imgid) {
 	new Ajax.Request(url,	{
 			method : 'get',
 			onSuccess : function(transport, json) {
+				
+				// Grab the image bitmap-array
 				var json = transport.responseText.evalJSON();
+				
+				// Build the content of the tab
 				addBitmapsToPictureContainer(imgid, json);
 			}
 	});
@@ -76,8 +79,9 @@ function getImageMeasurements(imgid) {
 	new Ajax.Request(url, {
 			method : 'get',
 			onSuccess : function(transport, json) {
-		
+				// Grab the image measurements-array
 				var json = transport.responseText.evalJSON();
+				// Build the content of the tab
 				addMeasurementsToPictureContainer(imgid, json);
 			}
 	});
@@ -94,11 +98,13 @@ function getProjectTags()
 		  method: 'get',
 		  onSuccess: function(transport, json) {
 			  
+			  // Grab the tags-array
 		    var json = transport.responseText.evalJSON();
 		    			     
+		    // Clear the 'tags' information
 		    $('tags').update();
 		     
-		    // Create a picture container for each picture
+		    // Show every tag
 		    for(i=0; i < json.length; i++)
 					$('tags').insert(new Element('p').update(json[i].fields.name));
 			}
@@ -114,15 +120,19 @@ function getProjectPotentialMeasurements()
   new Ajax.Request(url, {
     method: 'get',
     onSuccess: function(transport, json) {
-
+			
+			// Grab the potential measurements array
       var json = transport.responseText.evalJSON();
 
+      // Clear the potential measurements tab
       $('possiblemeasurements').update();
-      // Create a picture container for each picture
+      
       for(i=0; i < json.length; i++){
+      	// For each potential measurement type, create a new subtab
       	if (json[i].model == 'casam.potentialmeasurementtype'){
       		createPotentialMeasurementType(json[i].pk, json[i].fields.name);
       	}
+      	// For each potential measurement, create it
       	else{
         	createPotentialMeasurement(json[i].pk, json[i].fields.type, json[i].fields.name, json[i].fields.soort)
       	}
@@ -138,10 +148,11 @@ function removePotentialMeasurement(potid){
     method: 'get',
     parameters: {'potID': potid},
     onSuccess: function(transport, json) {
-      // REMOVE POTENTIAL MEASUREMENT FROM OPTION LIST
+      
+      // Remove potential measurement from option list
       if (!$('potmeas_'+potid).childElements()[0].hasClassName('paintoverLink'))
       	$('option'+potid).remove();
-      //DELETE POTENTIAL MEASUREMENTS
+      // Delete potential measurements
       var parentPotentialMeasurements = $$('div.potMeasDiv');
       for(var i = 0; i < parentPotentialMeasurements.length; i++){
         if (parentPotentialMeasurements[i].id.slice(8) == potid){
@@ -149,31 +160,34 @@ function removePotentialMeasurement(potid){
           parentPotentialMeasurements[i].remove();
         }                  
       }
-      //DELETE CURRENT MEASUREMENTS
+      // Delete current measurements
       for(var j = 0; j < measurements.length; j++){
         if (measurements[j].potid == potid){
-          // HIDE THE POTENTIAL TYPE IF THE CURRENT LANDMARK IS THE ONLY LANDMARK OF THAT TYPE
+          // Hide the potential type if the current measurement is the only measurement of the type
           if ($('measidMeasDiv_'+measurements[j].id).up().childElements().length == 1)
             $('measidMeasDiv_'+measurements[j].id).up().up().hide();
-          // REMOVE TEXT OF CURRENT MEASUREMENTS
+          // Remove text of current measurements
           $('measidMeasDiv_'+measurements[j].id).remove();
-          // REMOVE CURRENT MEASUREMENT FROM ARRAY
+          // Remove current measurements from array
           measurements[j].erase();
           measurements.splice(j,1);
+          // correct for index-changing by 'splice' method
           j = j - 1;
         }                                             
       }
-      //DELETE CURRENT BITMAPS
+      // Delete current bitmaps
       var parentCurrentBitmaps = $$('div.projectImageBitmapDivPotId_'+potid);
       var bitmapIDs = new Array();
       for(var i = 0; i < parentCurrentBitmaps.length; i++){
+				// Find the bitmap-id to remove the bitmaps from the bitmaps array
 				var bitmapid = parentCurrentBitmaps[i].id.slice(10);
 				bitmapIDs.push(bitmapid);
 				Effect.Fade(parentCurrentBitmaps[i]);
+				// Delete bitmap from big_images
 				parentCurrentBitmaps[i].remove();
 				$('bitmap_'+bitmapid).remove();     	
       }
-      // DELETE BITMAPS FROM THE BITMAPS ARRAY
+      // Delete bitmaps from bitmaps array
       for(var j = 0; j < bitmapIDs.length; j++){
       	for(var i = 0; i < bitmaps.length; i++){
       		if (bitmaps[i].id == bitmapsIDs[j]){
@@ -182,7 +196,7 @@ function removePotentialMeasurement(potid){
       		}
       	}
       }
-      //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
+      // Since deletion cannot be undone, delete changes
       for(var i = 0; i < changes.length; i++){
         if (changes[i].potid == potid){
           changes[i].erase();
@@ -203,18 +217,18 @@ function removePotentialType(typeid){
       method: 'get',
       parameters: {'potTypeID': typeid},
       onSuccess: function(transport, json) {
-        //DELETE CURRENT MEASUREMENTS
+        // Delete current measurements
         for(var j = 0; j < measurements.length; j++){
           if ($('potmeas_'+measurements[j].potid).up().id.slice(9) == typeid){
             measurements.splice(j,1);
             j = j - 1;
           }                                             
         }
-        //REMOVE TEXT OF CURRENT MEASUREMENTS
+        // Remove text of current measurements
         for(var i = 0; i < addedImages.length; i++){
           $('measurementTypesDiv_'+addedImages[i].id+'-'+typeid).remove();                                          
         }
-        //SINCE DELETION CANNOT BE UNDONE, DELETE CHANGES
+      	// Since deletion cannot be undone, delete changes
         for(var i = 0; i < changes.length; i++){
           if ($('potmeas_'+changes[i].potid).up().id.slice(9) == typeid){
             changes[i].changeDiv.remove();
@@ -222,27 +236,29 @@ function removePotentialType(typeid){
             i = i - 1;
           }
         }
-        //DELETE POTENTIAL MEASUREMENTS
+        // Delete potential measurements
         var parentPotentialMeasurements = $$('div.potMeasDiv');
         var bitmapIDs = new Array();
         for(var i = 0; i < parentPotentialMeasurements.length; i++){
           if (parentPotentialMeasurements[i].up().id.slice(9) == typeid){
             Effect.Fade(parentPotentialMeasurements[i]);
-        		// REMOVE CURRENT BITMAPS
+        		// Remove current bitmaps
             var parentCurrentBitmaps = $$('div.projectImageBitmapDivPotId_'+parentPotentialMeasurements[i].id.slice(8))
             for(var i = 0; i < parentCurrentBitmaps.length; i++){
+							// Find the bitmap-id to remove the bitmaps from the bitmaps array
       				var bmid = parentCurrentBitmaps[i].id.slice(10)
       				bitmapIDs.push(bmid);
-      				//DELETE BITMAP FROM BIG_IMAGES
+      				// Delete bitmaps from big_images
       				$('bitmap_'+bmid).remove();
       				parentCurrentBitmaps[i].remove();
       			} 
+            // Only delete measurement from option-list if measurement is no bitmap
             if (!parentPotentialMeasurements[i].childElements()[0].hasClassName('paintoverLink'))
             	$('option'+parentPotentialMeasurements[i].id.slice(8)).remove();
             parentPotentialMeasurements[i].remove();
           }                  
         }
-        // DELETE BITMAPS FROM BITMAP ARRAY
+        // Delete bitmaps from bitmap array
         for(var i = 0; i < bitmapIDs.length; i++){
         	for(var j = 0; j < bitmaps.length; j++){
         		if (bitmaps[j].id == bitmapIDs[i])
@@ -250,7 +266,7 @@ function removePotentialType(typeid){
         		  break;
         	}
         }
-        //DELETE POTENTIAL MEASUREMENTS GROUP
+        // Delete potential measurements group
         var parentPotentialMeasurementTypes = $$('div.projectPotentialTypeDiv');
         for(var i = 0; i < parentPotentialMeasurementTypes.length; i++){
           if (parentPotentialMeasurementTypes[i].id.slice(9) == typeid){

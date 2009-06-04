@@ -20,7 +20,7 @@ from django.conf import settings
 import Image
 
 class LandmarkForm(forms.Form):
-  """TODO: dosctring
+  """Form to load in the website to create a measurement
   """
 
   mm = forms.CharField() # TODO fix forms.UUIDField?
@@ -51,6 +51,7 @@ class LandmarkSaver(handler.Handler):
     img = OriginalImage.objects.filter(id=self.cleaned_data['imgid']).get()
     mmeting = PotentialMeasurement.objects.select_related().get(id=id);
     
+    #the saved measurement cannot be of the 'bitmap' type
     if (mmeting.soort == 'B'):
       return http.HttpResponseServerError()
       
@@ -60,6 +61,7 @@ class LandmarkSaver(handler.Handler):
     except Measurement.DoesNotExist:
       meting = None
 
+    #get the image from file, to look at it's size
     location = os.path.join(settings.DATADIR, img.id + '.jpg')
     im = Image.open(location)
     piecex = float(self.cleaned_data['imagewidth']) / im.size[0]
@@ -76,6 +78,7 @@ class LandmarkSaver(handler.Handler):
     )
     
     punt = Measurement(**properties)
+    #overwrite the potentially existing measurement
     if meting:
       punt.id = meting.id;
     punt.save();
