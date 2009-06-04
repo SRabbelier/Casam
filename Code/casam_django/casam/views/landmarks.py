@@ -71,7 +71,8 @@ class LandmarkSaver(handler.Handler):
       x=int(round(float(self.cleaned_data['x'])/piecex)),
       y=int(round(float(self.cleaned_data['y'])/piecey)),
       imagewidth=im.size[0],
-      imageheight=im.size[1]
+      imageheight=im.size[1],
+      project=img.project
     )
     
     punt = Measurement(**properties)
