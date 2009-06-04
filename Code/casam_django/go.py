@@ -21,7 +21,7 @@ def main():
   CASAM = [os.path.join(HERE, 'casam_django', 'casam')]
   PIL = [os.path.join(HERE, 'PIL')]
   if os.name == 'posix':
-    VTK = [os.path.join(HERE, 'VTK-linux', 'lib', 'python2.5', 'site-packages')]
+    VTK = []
   else:
     VTK = [os.path.join(HERE, 'VTK', 'lib', 'site-packages')]
   

@@ -186,11 +186,14 @@ class UUIDField(CharField):
             raise UUIDVersionError("UUID version %s is not valid." % self.version)
 
     def pre_save(self, model_instance, add):
-        if self.auto and add:
+            
+        value = super(UUIDField, self).pre_save(model_instance, add)
+        if not value:
+          if self.auto and add:
             value = unicode(self.create_uuid())
             setattr(model_instance, self.attname, value)
             return value
-        else:
+          else:
             value = super(UUIDField, self).pre_save(model_instance, add)
             if self.auto and not value:
                 value = unicode(self.create_uuid())

@@ -186,6 +186,12 @@ class InstanceCode(Code):
         # e.g. model_name_35.save()
         if code_lines:
             code_lines.append("%s.save()\n" % (self.variable_name))
+            #Custom hack for appending projects to user profiles
+            if self.model.__name__ == 'Project':
+              code_lines.append("profile.read.add(%s)" % self.variable_name)
+              code_lines.append("profile.write.add(%s)" % self.variable_name)
+              code_lines.append("profile.save()")
+              
 
         code_lines += self.get_many_to_many_lines(force=force)
 
@@ -227,9 +233,10 @@ class InstanceCode(Code):
         code_lines = []
 
         if not self.instantiated:
+            
             code_lines.append("%s = %s()" % (self.variable_name, self.model.__name__))
             self.instantiated = True
-
+            
             # Store our variable name for future foreign key references
             pk_name = self.instance._meta.pk.name
             key = '%s_%s' % (self.model.__name__, getattr(self.instance, pk_name))
@@ -332,7 +339,7 @@ import datetime
 from decimal import Decimal
 from django.contrib.contenttypes.models import ContentType
 
-def run():
+def run(profile):
 
 """ % " ".join(sys.argv)
 

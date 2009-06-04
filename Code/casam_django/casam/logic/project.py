@@ -1,5 +1,6 @@
 import os
 import zipfile
+import datetime
 
 from django.conf import settings
 
@@ -10,7 +11,7 @@ def run():
   return "Uploaded export does not define a run method."
 
 
-def handle_import_project(file):
+def handle_import_project(file, profile):
   zip = zipfile.ZipFile(file, mode='r')
   files = zip.namelist()
   exportables = [i for i in files if i != 'export_script.py']
@@ -23,8 +24,9 @@ def handle_import_project(file):
   
   script = zip.read('export_script.py')
   compiled = compile(script, 'compile_result.txt', 'exec')
+  #print compiled
   exec(compiled)
-  result = run()
+  result = run(profile)
   print result
 
 

@@ -78,7 +78,7 @@ class ImportProject(handler.Handler):
   def post(self):
     file = self.FILES['file']
 
-    project_logic.handle_import_project(file)
+    project_logic.handle_import_project(file, self.profile)
     return http.HttpResponseRedirect(self.BASE_PATH)
   
   def get(self):
