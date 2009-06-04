@@ -65,7 +65,6 @@ class Code(object):
         """ Returns a string representation of this script. 
         """
         if self.imports:
-            sys.stderr.write(repr(self.import_lines))
             return flatten_blocks([""] + self.import_lines + [""] + self.lines, num_indents=self.indent)
         else:
             return flatten_blocks(self.lines, num_indents=self.indent)
@@ -112,7 +111,7 @@ class ModelCode(Code):
             iterator = self.model.objects.filter(project__id = self.projectid)
         for counter, item in enumerate(iterator):
             if self.tozip:
-                fileglob = os.path.join('data',item.id + '.*')
+                fileglob = os.path.join('data',item.pk + '.*')
                 for filename in glob.glob(fileglob):
                     filename = filename.encode('utf-8')
                     self.zip.write(filename,arcname=os.path.basename(filename))
@@ -306,21 +305,15 @@ class Script(Code):
 
         # Queue and process the required models
         for model_class in queue_models(self.models, context=self.context):
-            sys.stderr.write('Processing model: %s\n' % model_class.model.__name__)
             code.append(model_class.import_lines)
             code.append("")
-            code.append("# o really?")
             code.append(model_class.lines)
-            code.append("# for sure")
 
-        code.append("# doing nothing")
         # Process left over foreign keys from cyclic models
         for model in self.models:
-            sys.stderr.write('Re-processing model: %s\n' % model.model.__name__)
             for instance in model.instances:
                 if instance.waiting_list or instance.many_to_many_waiting_list:
                     code.append(instance.get_lines(force=True))
-        code.append("# lazy bastid")
         return code
 
     lines = property(get_lines)
@@ -441,13 +434,14 @@ def queue_models(models, context):
         model = models.pop(0)
         
         # If the model is ready to be processed, add it to the list
-        if check_dependencies(model, model_queue):
-            model_class = ModelCode(model=model, context=context)
-            model_queue.append(model_class)
-
+        #if check_dependencies(model, model_queue):
+        
+        model_class = ModelCode(model=model, context=context)
+        model_queue.append(model_class)
+        #print model_class
         # Otherwise put the model back at the end of the list
-        else:
-            models.append(model)
+        #else:
+        #    models.append(model)
 
         # Check for infinite loops. 
         # This means there is a cyclic foreign key structure

@@ -7,8 +7,8 @@ import os
 from django import http
 from django.template import loader
 
-from casam.models import (Project, PDM, OriginalImage, PotentialMeasurement, Bitmap,
-                          Measurement, Annotation, PotentialMeasurementType, State, ProjectFile)
+from casam.models import (Project, PotentialMeasurementType, PotentialMeasurement, OriginalImage, Bitmap, PDM,
+                          Measurement, Annotation, State, ProjectFile)
 from casam.logic import export as export_logic
 from casam.views import handler
 
@@ -20,10 +20,10 @@ class ExportHandler(handler.Handler):
     project_id = self.kwargs['id_str']
     timestampedIDFilename = str(project_id) + '_' + str(time.time()) + '.zip'
     filepath = os.path.join('export',timestampedIDFilename)
-    print filepath
-    zip = zipfile.ZipFile(file=filepath,mode='w')
-    export_script = export_logic.exportModels([Project, PDM, OriginalImage, PotentialMeasurement, Bitmap,
-                                                Measurement, Annotation, PotentialMeasurementType, State, ProjectFile], 
+    file_handler = StringIO.StringIO()
+    zip = zipfile.ZipFile(file_handler, mode='w')
+    export_script = export_logic.exportModels([Project, PDM, OriginalImage, PotentialMeasurementType, PotentialMeasurement, Bitmap,
+                                                Measurement, Annotation, State, ProjectFile], 
                                                 [Project], 
                                                 [PDM, OriginalImage, Bitmap, ProjectFile],
                                                 zip,
@@ -31,9 +31,16 @@ class ExportHandler(handler.Handler):
     f = open('export_script.py', 'w')
     f.write(export_script)
     f.close()
+    #zip.writestr('project_id.txt', project_id)
     zip.write('export_script.py')
     zip.close()
-    return http.HttpResponse('Saved file as %s' % timestampedIDFilename)
+    
+    data = file_handler.getvalue()
+    content_type = 'application/octet-stream'
+    response = http.HttpResponse(data, mimetype=content_type)
+    response['Content-Disposition'] = 'attachment; filename=%s' % timestampedIDFilename
+    
+    return response
 
 
 class CSVExportHandler(handler.Handler):

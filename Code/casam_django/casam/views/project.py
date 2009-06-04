@@ -23,6 +23,13 @@ from casam.models import PDM
 from casam.views import handler
 
 
+class ImportForm(forms.Form):
+  """TODO: dosctring
+  """
+
+  file = forms.FileField()
+
+
 class ProjectForm(forms.Form):
   name = forms.CharField(max_length=50)
   description = forms.CharField(max_length=500, widget=forms.widgets.Textarea())
@@ -56,7 +63,29 @@ class Home(handler.Handler):
 
     return http.HttpResponse(content)
 
+class ImportProject(handler.Handler):
+  """Handler for importing existing (exported) projects
+  """
+  def authenticated(self):
+    return self.profile_type == 'Onderzoeker'
+  
+  def getGetForm(self):
+    return ImportForm()
+  
+  def getPostForm(self):
+    return ImportForm(self.POST, self.FILES)
+  
+  def post(self):
+    file = self.FILES['file']
 
+    project_logic.handle_import_project(file)
+    return http.HttpResponseRedirect(self.BASE_PATH)
+  
+  def get(self):
+    context = self.getContext()
+    content = loader.render_to_string('project/import.html', dictionary=context)
+    return http.HttpResponse(content)
+  
 class NewProject(handler.Handler):
   """Handler for the creation of a new project.
   """

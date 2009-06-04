@@ -1,5 +1,31 @@
+import os
+import zipfile
+
+from django.conf import settings
+
 from casam.models import Project
 from casam.models import State
+
+def run():
+  return "Uploaded export does not define a run method."
+
+
+def handle_import_project(file):
+  zip = zipfile.ZipFile(file, mode='r')
+  files = zip.namelist()
+  exportables = [i for i in files if i != 'export_script.py']
+  for i in exportables:
+    filename = os.path.join(settings.DATADIR, i)
+    print filename
+    f = open(filename, 'wb')
+    f.write(zip.read(i))
+    f.close()
+  
+  script = zip.read('export_script.py')
+  compiled = compile(script, 'compile_result.txt', 'exec')
+  exec(compiled)
+  result = run()
+  print result
 
 
 def handle_add_project(profile, name, description):

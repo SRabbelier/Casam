@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Import project{% endblock title %}
+
+{% block head %}	 
+{% endblock head %}
+
+{% block body %}
+
+<form enctype="multipart/form-data" method="post">
+<table>
+{{ form }}
+<tr><td><input type="submit" value="import" /></td></tr>
+</table>
+</form>
+
+
+{% endblock body %}
