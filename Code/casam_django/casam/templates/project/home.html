@@ -181,7 +181,7 @@ document.observe("dom:loaded", function()
 <div style="float:left;display:block;">
 	<b>{{ project }}</b><br>
 	<p>{{ project.description }}</p>
-	<a href="{{BASE_PATH}}project/export/{{id}}"><img class="smallPictureButton" src="{{BASE_PATH}}media/img/export.jpg" alt="export project"/></a>
+	<div style="text-align: center; width: 90px;"><a href="{{BASE_PATH}}project/export/{{id}}"><img class="smallPictureButton" src="{{BASE_PATH}}media/img/export.jpg" alt="export project"/><br />Export project</a></div>
 </div>
 <a href="#"	id='editTagsLink' style="float: right;"><img
    src="{{BASE_PATH}}media/img/pencil.jpg" style="border: 0px;" /></a>

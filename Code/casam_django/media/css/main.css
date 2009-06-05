@@ -146,10 +146,11 @@ div.whiteFrame_bottom_center {
 }
 
 #whiteFrame_import_container {
-	width:48px;
+	width:80px;
 	height:34px;
 	float:right;
 	clear:right;
+  text-align: center;
 }
 .main_project_deletebutton{
 	position:absolute;
