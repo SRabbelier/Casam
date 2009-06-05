@@ -1,0 +1,21 @@
+\section{Aanpak}
+\label{Aanpak}
+Een van de eerste beslissingen die moest worden genomen is de architectuur van het systeem. Al snel bleek dat de opdrachtgever een voorkeur had voor een webapplicatie die door het hele EMC op het netwerk simpel en snel gebruikt kon worden. 
+Voor onze Image Processing kregen wij het advies van Dr. Botha om een aantal Python bibliotheken te bekijken en deze indien mogelijk te gebruiken. 
+
+De combinatie van deze feiten leidde ons richting Django, dit is een python framework voor het bouwen van websites in Python. Na wat research en de ervaringen die \'{e}\'{e}n van de projectleden al had met Django hebben we ervoor gekozen om Django te gaan gebruiken. 
+
+Voor wat betreft de visuele interactie hebben we gekeken naar verschillende Javascript bibliotheken, mede door de uitgebreide ervaringen van diverse leden hebben we uiteindelijk gekozen voor de combinatie van Prototype en Scriptaculous.
+
+Tijdens het project bleek uiteindelijk dat er behoefte was aan een tekenapplicatie binnen de omgeving en deze was niet te realiseren via Javascript en is er uiteindelijk ook nog een Flash applicatie geschreven welke communiceert met Javascript.
+
+\subsection{Project gerelateerd}
+In de begin periode hebben wij ons ingelezen op de basis anatomische kennis die nodig was om de experts van het EMC te kunnen volgen. Hierbij hebben we vooral veel gebruik gemaakt van de kennis van een van de groepsleden. Ook zijn we een dag langs geweest bij het EMC en hebben daar een rondleiding gehad door het laboratorium en de snijzalen waar onderzoek wordt gedaan. 
+
+Een andere uitdaging was de relatief grote groep voor dit project. Om te voorkomen dat we elkaar te veel in de weg zouden zitten hebben we de diverse delen van het project opgesplitst en de taken duidelijk verdeeld. Daarnaast hebben we gebruik gemaakt van software zoals Trac, dit is een Project Management Systeem. Daarnaast hadden we een locatie geregeld op de TU Delft waar we iedere dag hebben gewerkt en waar we elke ochtend een werkoverleg konden hebben voor wat er die dag zou gebeuren. Hierdoor bleef iedereen goed op de hoogte van de status van het hele project.
+\subsection{Database systeem}
+Zoals hierboven al aangegeven zouden we gaan werken met Django en moest het beschikbaar worden als webapplicatie. Django is een MVC opgebouwde taal met een duidelijk abstractie laag voor het database gedeelte. Na diverse brainstorm sessies zijn we uiteindelijk uitgekomen op een klasse diagram wat de basis zou gaan vormen voor het database systeem. Het diagram staat in bijlage B.
+Voor de interface hebben we ervoor gekozen om veel gebruik te maken van Javascript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van Javascript gebruik maken van de AJAX techniek, hiermee konden server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had. 
+\subsection{Image Processing}
+Dit was een van de grootste uitdagingen van het project. Niemand had ervaring met de verschillende bibliotheken of uitgebreide ervaring met Image Processing in het algemeen. Uiteindelijk is er, mede op advies van Dr. Botha, gekozen voor de VTK bibliotheek. Al snel bleek dat er veel research nodig was om dit te kunnen gaan gebruiken en zijn we lang bezig geweest met het bekend raken met de begrippen over Point Distribution Model, Thin Plane Spline Transformatie, etc.
+
