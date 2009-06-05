@@ -24,6 +24,8 @@ def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
     g = 0
     b = 0
     
+  #backgroundColor = ((r << 16) & 0xFF) + ((g << 8) & 0xFF) + (b & 0xFF);
+    
   # Split dump in header and body
   dump = dump.split("#")
   header = dump[0].split("x")
@@ -137,6 +139,10 @@ def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
   for i in range(256):
     palette.extend((0, 0, 0))
 
+  palette[0] = 0
+  palette[1] = 0
+  palette[2] = 0
+
   palette[765] = r  
   palette[766] = g
   palette[767] = b
@@ -166,7 +172,7 @@ def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
     
     img_path = os.path.join(settings.DATADIR, db_bitmap.id + ".gif")
     
-    im.save(img_path,transparency=0)
+    im.save(img_path, transparency=0)
     return db_bitmap.id
   
   # Just overwrite previous image-file
@@ -179,6 +185,7 @@ def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
     previous_image.save()
     
     image_path = os.path.join(settings.DATADIR, previous_image.id + '.gif')
-    im.save(image_path,transparency=0);
+    
+    im.save(image_path, transparency=0)
     
     return previous_id
