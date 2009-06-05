@@ -144,6 +144,7 @@ def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
   assert len(palette) == 768
   
   im.putpalette(palette)
+  
   # Make database insert
   if previous_id == '0':    
     # Create associated measurement

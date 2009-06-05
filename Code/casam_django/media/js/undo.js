@@ -124,6 +124,7 @@ function reloadUndonePlace(potid, imageID) {
 						}
 					}
 					pin.restore();
+					
 					// Restore potential measurement pin
 					$('mm' + potid).show();
 					

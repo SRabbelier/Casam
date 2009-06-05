@@ -624,12 +624,15 @@ function closePaintOver(bmid, potid, imgid, min_x, max_x, min_y, max_y) {
 	// Was cancel or save pressed?
 	if (bmid != '') {
 		
-		// Are we editing of is this new?
+		// Are we editing or is this new?
 		if ($('bitmapDiv_'+bmid) == undefined) {
 			
 			// Add new bitmap
 			newBitmapDiv = addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y);
 			$('bitmapsList_'+addedImages[0].id).insert(newBitmapDiv);
+			
+  		// Hide corresponding potential measurement
+			$('mm' + potid).hide();
 			
 		} else {
 			
@@ -644,7 +647,7 @@ function closePaintOver(bmid, potid, imgid, min_x, max_x, min_y, max_y) {
 			editlink.insert(editimg);
 			$('spanbm_' + bmid).insert(editlink);
 			
-		}	
+		}
 	}
 	
 	// Do what always should be done

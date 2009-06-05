@@ -450,9 +450,9 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 	// Base the picture of the potential measurement on it's 'soort'
 	if (potsoort == 'L')
 		pmmPointerIMG.writeAttribute('src', base_path + 'media/img/landmark.gif');
-	else{
+	else
 	  pmmPointerIMG.writeAttribute('src', base_path + 'media/img/pencil.gif');
-	}
+	
 	pmmPointerIMG.addClassName('mmPointer');
 	pmmContainerDiv.insert(pmmPointerIMG);
 	var json = json;
@@ -465,9 +465,9 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 	// Add the containerDiv to the correct list
 	$('typesList'+pottype).insert(pmmContainerDiv);
 
-	// Only add the potential measurement to the option list for creating measurements if it is a
-	// 'Landmark'
-  if (potsoort == 'L'){
+	// Only add the potential measurement to the option list for 
+	// creating measurements if it is a 'Landmark'
+  if (potsoort == 'L') {
   	var typename = $('typesList'+pottype).up().down('span').innerHTML;
 
 		var option = new Element('option', {
@@ -477,28 +477,25 @@ function createPotentialMeasurement(potid, pottype, potname, potsoort) {
 		option.update(potname);
 		var optgroup = $('optgroup_'+pottype).next();
 		$('mmmeting').add(option, optgroup);
-  } 
+  }
+  
   // Otherwise, set a link to the paintOver
-  else{
+  else {
   	var link = new Element('a');
 		link.writeAttribute('href', '#');
 		link.writeAttribute('id', 'paintoverLink_'+potid);
 		link.addClassName('paintoverLink');
 		$('mm'+potid).insert({before: link});
 		link.update($('mm'+potid));
-  	observeEditLink(potid);  	
+  	observeEditLink(potid);
   }
 }
 function observeEditLink(potid){
-	$('paintoverLink_'+potid).observe('click', function(){
+		$('paintoverLink_'+potid).observe('click', function(){
 		if (addedImages.length > 0)
-  		// Change the link if the bitmap already exists for the active image
-  		var bitmapIDs = $('bitmapsList_'+addedImages[0].id).select('div.projectImageBitmapDivPotId_'+potid);
-			if (bitmapIDs.length > 0)
-				loadEditScreen(addedImages[0].id, potid, bitmapIDs[0].id.slice(10));
-  		else 
-  			loadEditScreen(addedImages[0].id, potid);
-        //loadEditScreen(id, pm_id, bmid, min_x, max_x, min_y, max_y)
+  		
+			// Change the link if the bitmap already exists for the active image
+			loadEditScreen(addedImages[0].id, potid);
   });
 }
 
