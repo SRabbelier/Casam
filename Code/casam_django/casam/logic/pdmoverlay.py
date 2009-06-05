@@ -26,10 +26,8 @@ class PDMOverlay(object):
       xmax = coordinate[0] + ellipsoidSize
       ymin = coordinate[1] - ellipsoidSize
       ymax = coordinate[1] + ellipsoidSize
-      self.imageDraw.ellipse((xmin,ymin,xmax,ymax), fill=(50,205,50))#forest green
-  #(34,139,34) Forest Green
-  #(60,179,113) Medium Sea Green
-  #(46,139,87) Sea Green
+      self.imageDraw.ellipse((xmin,ymin,xmax,ymax), fill=(50,205,50))
+
   def drawVariations(self, positions):
     '''
     Get a visual representation of the variations at the given coordinates using lines
@@ -37,9 +35,9 @@ class PDMOverlay(object):
     for position in range(len(positions)/2):
       #color first and second modes of variation differently
       if (position%2 == 0): #first mode of variation
-        color=(255,00,0)#Medium Sea Green
+        color=(255,00,0)
       else:
-        color = (255,69,71)#Sea Green
+        color = (255,69,71)
       coordinate1 = positions[position*2]
       coordinate2 = positions[(position*2)+1]
       x1 = coordinate1[0]
