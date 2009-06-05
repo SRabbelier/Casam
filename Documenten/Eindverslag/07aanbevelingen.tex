@@ -36,7 +36,7 @@ Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opge
 %TODO voor Bastiaan
 
 %titels zijn voorstellen, kunnen gewijzigd worden
-\subsection{opslaan van statistische data bij landmarks}
+\subsection{statistische data bij landmarks}
 Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kan worden bij de aangegeven landmarks.
 Deze data heeft dan bijvoorbeeld betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
 In de huidige situatie wordt deze data apart in een Excel-sheet bijgehouden, en naar een statisticus gebracht.
@@ -46,11 +46,38 @@ In een ideale situatie zouden zelfs de grafieken in het systeem moeten kunnen ve
 
 Vanwege de complexiteit van het opslaan van de statistische data, het later genereren van de bijbehorende grafieken, en het kunnen opvragen van de waardes op een willekeurig punt, hebben wij hier nog geen stappen voor ondernomen.
 Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data, en deze overzichtelijk weer te geven, zonder hier grafieken van de maken.
-Het maken van de grafieken zou bijvoorbeeld gedaan kunnen worden met de PyCha module.
-
-\subsection{analyse van deze statische data}
+De analyse van deze data, en het hieruit produceren van bruikbare data, is daarna weer een probleem apart, wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek benodigt.
+Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen, is dat er een PyCha module bestaat, waarmee in Python grafieken gemaakt kunnen worden.
 
 \subsection{uitgebreid user management en arts-view mode}
+Wat betreft het huidige user management zijn er nog vele verbeteringen mogelijk.
+Momenteel zijn er namelijk 3 gebruikersgroepen aanwezig, die niet altijd evengoed gecontroleerd worden.
+Zo is het nu voor een arts ook mogelijk om landmarks toe te voegen aan een project, terwijl dit niet zou moeten mogen.
+Ook moet het toekennen van rechten aan projecten beter en duidelijker gaan verlopen.
+Daarnaast zou een gebruiker ten alle tijden zijn eigen wachtwoord aan moeten kunnen passen, terwijl dat nu alleen door een 'beheerder' gedaan kan worden.
+
+Zoals al aangegeven is er voor het user management al wel een begin gemaakt, maar dit moet eigenlijk nog uitgebreid worden.
+Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samengewerkt met de permissions die in Django aan gebruikers toegekend kunnen worden, omdat hier eigenlijk nog niets mee gebeurd.
+
+Zelf zijn wij door tijdsdruk hier niet goed meer aan toegekomen, en is het eigenlijk blijven liggen, ondanks dat een degelijke user management in eerste instantie wel een van de eisen het EMC was.
+
+\subsection{verwijderen measurements e.d. zonder admin}
+Wat betreft het verwijderen van een aantal objecten uit het systeem, is er ook nog grote winst te behalen.
+Zo wordt voor het verwijderen van de volgende objecten nu nog de Django-admin-interface gebruikt:
+\begin{itemize}
+  \item Bitmaps
+  \item Landmarks
+  \item PDMs
+  \item Projects
+  \item Tags
+\end{itemize}
+Van deze objecten wordt er nu alleen voor projecten ook de mogelijkheid geboden om deze via de normale interface te verwijderen, terwijl het eigenlijk het netst is, om alle objecten via de interface te kunnen verwijderen.
+
+Toen wij hier zelf over aan het nadenken waren, kwamen wij tot de conclusie dat een aantal oplossingen waren die allemaal eigenlijk niet zo goed ginen werken.
+De oplossingen waar wij aan gedacht hebben, staan hier onder beschreven.
+\subsubsection{Inline delete}
+\subsubsection{}
+\subsubsection{}
 
 \subsection{morphen naar standaard AnatomicalView}
 
