@@ -177,12 +177,14 @@ function showImage(id, name, className) {
 
 function hideImage(id) {
 	// Function is called when the checkbox in front of an image is turned off
-	if (addedImages[0].id == id)
-		addedImages[0].makeNonActive();
-	
+	if (addedImages.length > 0){
+		if (addedImages[0].id == id)
+			addedImages[0].makeNonActive();
+	}
+
 	// Remove checkboxes
 	removeCheckboxes(id);		
-	
+
 	//remove bitmaps
 	removeBitmaps(id);
 
@@ -191,10 +193,10 @@ function hideImage(id) {
 
 	// Remove changes
 	removeChanges(id);
-	
+
 	// Remove image
 	removeImage(id);
-	
+
 	// Check for new active layer
 	checkActiveLayer();
 }
@@ -252,18 +254,17 @@ function removeImage(imageID){
 	// Remove the image from 'addedImages'
 	for ( var i = 0; i < addedImages.length; i++){
 		if (addedImages[i].id == imageID){
+			// Remove the image itself
+			Element.remove($('addedImage_'+imageID))
+			// Remove the images slider
+			$('sliderDiv_' + imageID).update();
+			// If the image is a real image, and not a PDM-Overlay, clear all measurement and bitmap information
+			if ($('rightDiv_' + imageID).childElements()[0].innerHTML != "PDM-Overlay"){
+				$('bottomDiv_' + imageID).update();
+			}
 			addedImages.splice(i, 1);
 			break;
 		}
-	}
-	// Remove the image itself
-	Element.remove($('addedImage_'+imageID))
-	
-	// Remove the images slider
-	$('sliderDiv_' + imageID).update();
-	// If the image is a real image, and not a PDM-Overlay, clear all measurement and bitmap information
-	if ($('rightDiv_' + imageID).childElements()[0].innerHTML != "PDM-Overlay"){
-		$('bottomDiv_' + imageID).update();
 	}
 }
 

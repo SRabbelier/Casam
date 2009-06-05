@@ -11,7 +11,9 @@ class PDMForm(forms.Form):
   pdmData = forms.CharField()
     
 class PDMCreator(handler.Handler):
-
+  """
+  Creates the Point Distribution model from the images and associated landmarksd
+  """
   def getPostForm(self):
     return PDMForm(self.POST)
 

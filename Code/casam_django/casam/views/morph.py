@@ -12,6 +12,8 @@ class MorphForm(forms.Form):
   pdmData = forms.CharField()
     
 class MorphCreator(handler.Handler):
+  """Morphs the supplied images, associated bitmaps and landmarks
+  """
 
   def getPostForm(self):
     return MorphForm(self.POST)

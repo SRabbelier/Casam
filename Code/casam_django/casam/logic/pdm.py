@@ -41,9 +41,9 @@ def tempPDM():
   return pdmodel
 
 def createPDM(selectedImages,selectedPMs):
-  '''
+  """
   Create the Point Distribution Model from the selected measurements
-  '''
+  """
   pdmodel = pdm.makePDM()
   potentialids = []
   for i in range(len(selectedPMs)):#for the number of images
@@ -61,9 +61,10 @@ def createPDM(selectedImages,selectedPMs):
   return pdmodel, 1 
       
 def analyse(pdmodel, projectid, selectedImages):
-  '''
+  """
   Analyse the given pdmodel using Procrustes & PCA, save to database and to image
-  '''
+  """
+  
   pdmodel.procrustes()
   pdmodel.pca()
   pdmodel.variations()

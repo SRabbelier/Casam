@@ -2,6 +2,7 @@ var PDM = Class.create( {
 	initialize : function() {
 		this.pdmData = new Array();
 	},
+	//gets all the checkbox items required: images and measurements
 	fill: function(){
 		var addedObjects = new Array();
 		for(i=0;i<addedImages.length;i++){
@@ -23,7 +24,9 @@ var PDM = Class.create( {
 	
 });
 
+
 document.observe('dom:loaded',function(){
+	//Create PDM
 	$('analyzeLandmarksButton').observe('click',function(){
 		var pdmObject = new PDM();
 		pdmObject.fill();
@@ -43,6 +46,7 @@ document.observe('dom:loaded',function(){
 			}
 		});
 	});
+	//Create Morph
 	$('MakeMorphButton').observe('click',function(){
 		var pdmObject = new PDM();
 		pdmObject.fill();
