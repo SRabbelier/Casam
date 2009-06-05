@@ -286,6 +286,13 @@ function checkActiveLayer(){
 		}
 		id_array.splice(0, 0, temp);
 		Sortable.setSequence("pictures", id_array);
+		
+		// Set the bitmaps to the end of the big_images, to ensure correct transparency
+		var big_bitmaps = $('big_images').select('img.big_image_sibling_bitmap');
+		for(var i = 0; i < big_bitmaps.length; i++){
+			big_bitmaps[i].remove();
+			$('big_images').insert({ bottom: big_bitmaps[i]});
+		}
 	}
 	// When there are no images showing
 	else{
