@@ -21,14 +21,14 @@ class ExportHandler(handler.Handler):
     timestampedIDFilename = str(project_id) + '_' + str(time.time()) + '.zip'
     filepath = os.path.join('export',timestampedIDFilename)
     file_handler = StringIO.StringIO()
-    zip = zipfile.ZipFile(file_handler, mode='w')
+    zip = zipfile.ZipFile(file_handler, mode='wb')
     export_script = export_logic.exportModels([Project, PDM, OriginalImage, PotentialMeasurementType, PotentialMeasurement, Bitmap,
                                                 Measurement, Annotation, State, ProjectFile], 
                                                 [Project], 
                                                 [PDM, OriginalImage, Bitmap, ProjectFile],
                                                 zip,
                                                 project_id)
-    f = open('export_script.py', 'w')
+    f = open('export_script.py', 'wb')
     f.write(export_script)
     f.close()
     #zip.writestr('project_id.txt', project_id)

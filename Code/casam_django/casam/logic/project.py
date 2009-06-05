@@ -12,7 +12,7 @@ def run():
 
 
 def handle_import_project(file, profile):
-  zip = zipfile.ZipFile(file, mode='r')
+  zip = zipfile.ZipFile(file, mode='rb')
   files = zip.namelist()
   exportables = [i for i in files if i != 'export_script.py']
   for i in exportables:
