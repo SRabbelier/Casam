@@ -1,5 +1,10 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
+{% block nav-global %}
+<div id='home_link'>
+<a href="../" style="display: block; text-align: center; margin-bottom: 5px; margin-top: -24px;">Back to C.A.S.A.M.</a>
+</div>
+{% endblock %}
 
 {% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css{% endblock %}
 
@@ -11,7 +16,6 @@
 
 {% block content %}
 <div id="content-main">
-
 {% if app_list %}
     {% for app in app_list %}
         <div class="module">
