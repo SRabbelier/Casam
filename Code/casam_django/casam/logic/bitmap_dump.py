@@ -14,7 +14,7 @@ def handle_bitmap_stream(dump,original_image,previous_id,r,g,b,mm):
   # Check the header
   if dump == "_empty":
     print "Empty bitmap submitted"
-    return
+    return previous_id
 
   # Initialise color information
   if not (r >= 0 and r <= 255 and 
