@@ -5,6 +5,7 @@ from casam.views import handler
 from casam.logic import pdm
 from django import forms
 from django.utils import simplejson
+from django.core import serializers
 
 class PDMForm(forms.Form):
   projectID = forms.CharField(max_length=36)
@@ -35,8 +36,9 @@ class PDMCreator(handler.Handler):
     pdmodel, result = pdm.createPDM(images,measurements)
     if result == 0:
       return http.HttpResponseServerError('Landmarks are not comparable.') 
-    pdm.analyse(pdmodel, projectID, images)
-    return http.HttpResponse('Successfully saved Point Distribution Model overlay-image to data directory.')
+    object = pdm.analyse(pdmodel, projectID, images)
+    data = serializers.serialize("json", [object]) 
+    return http.HttpResponse(data, mimetype="application/javascript")
 
   
   def get(self):

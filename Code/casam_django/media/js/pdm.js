@@ -37,9 +37,10 @@ document.observe('dom:loaded',function(){
 				'projectID':projectID,
 				'pdmData':Object.toJSON(pdmObject)
 			},
-			onSuccess:function(transport){
-				//alert(transport.responseText);
-				getProjectOverlays();
+			onSuccess:function(transport, json){
+				var json = transport.responseText.evalJSON();
+				makeOverlayContainer(json[0]);
+				makePicturesSortable();
 			},
 			onFailure:function(transport){
 				alert(transport.responseText);

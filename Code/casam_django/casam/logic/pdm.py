@@ -83,7 +83,9 @@ def analyse(pdmodel, projectid, selectedImages):
   pdmObject.path = pdmObject.id + ".png"
   pdmObject.name = "PDM-Overlay"
   pdmObject.save()
-  print "path: ",pdmObject.path  
+
   pdmo.saveImage(imagePath)
+  
+  return pdmObject
 
     

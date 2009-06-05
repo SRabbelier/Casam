@@ -47,7 +47,7 @@ function getProjectOverlays()
 		    // Build the content of the tab
 		    addOverlayTab(json);
 		    
-				// Initialise the dragging of images
+			// Initialise the dragging of images
 		    makePicturesSortable();
         
 			}
