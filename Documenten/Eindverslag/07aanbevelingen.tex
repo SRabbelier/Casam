@@ -1,18 +1,52 @@
 \section{Aanbevelingen}
 \label{Aanbevelingen}
-Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten de scoop van het project vielen of tijdens het project bedacht werden. In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  In de toelichting geven we ook een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
+Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
+Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten de scope van het project vielen of tijdens het project bedacht werden. 
+In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
+In de toelichting geven we ook een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
+Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
 
 \subsection{Bestandstypen van foto's}
-Op dit moment kan het systeem alleen foto's aan die het bestandstype jpeg hebben, alhoewel dit het meest voorkomende type is zou het een verbetering zijn als het systeem ook met andere typen om kan gaan.
+Op dit moment kan de morph-functie alleen foto's aan die het bestandstype jpeg hebben. 
+Alhoewel dit het meest voorkomende type is zou het een verbetering zijn als het systeem ook met andere typen om kan gaan. 
+Een probleem hierbij is, dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het eigenlijk nog geen jpeg foto's zijn. 
+Het kan nu bijvoorbeeld gebeuren dat er een gif-afbeelding wordt geupload, die vervolgens de extensie jpg krijgt. 
+Hierdoor geeft de vtkJPEGReader een error, en kan er met dit plaatje niet gemorphed worden. 
+Het weergeven van de afbeelding in de browser gaat echter wel goed, waardoor het voor de gebruiker niet duidelijk is dat er eigenlijk iets mis is met de afbeelding.
+
+Een oplossing zou kunnen zijn om bij het uploaden van de afbeelding de Python Imaging Library te laten kijken naar de foto, en deze om te laten zetten naar een echt jpeg bestand. 
+Het gevaar hierbij is echter, dat er door de compressie van het jpeg formaat het een en ander aan scherpte van de foto verloren gaat.
+Een eventuele oplossing voor dit probleem zou kunnen zijn om helemaal geen jpeg-bestanden meer op te slaan, en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren, en voor dit formaat zijn dezelfde VTK-library's beschikbaar als voor het jpeg formaat.
+
+Dit is echter een probleem waar wij binnen het project zodanig laat tegenaan liepen, dat er geen tijd meer was om dit op een fatsoenlijke manier op te lossen.
 
 \subsection{Verschillende kleuren in flash applicatie}
+Binnen onze applicatie is het op dit moment al mogelijk om een bitmap te tekenen in een willekeurige kleur. 
+Wat echter nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren op te slaan.
+Voor de gebruikers zou het echter intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
+Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opgeslagen in de kleur waarmee het laatst is gewerkt.
+%TODO voor Bastiaan
 
 \subsection{Opslaan van een lege bitmap}
 * alle correcties weggooien en geen wijziging opslaan?
 * lege bitmap opslaan?
+%TODO voor Bastiaan
+
+\subsection{Te grote foto's inladen in de flash-applicate}
+%TODO voor Bastiaan
 
 %titels zijn voorstellen, kunnen gewijzigd worden
 \subsection{opslaan van statistische data bij landmarks}
+Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kan worden bij de aangegeven landmarks.
+Deze data heeft dan bijvoorbeeld betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
+In de huidige situatie wordt deze data apart in een Excel-sheet bijgehouden, en naar een statisticus gebracht.
+Deze maakt hier vervolgens in aparte software (SPSS) een aantal grafieken van, die de gebruikers eigenlijk bij de andere data op zouden willen slaan.
+In de toekomst zou het mogelijk moeten zijn om deze data bij de landmarks zelf op te slaan.
+In een ideale situatie zouden zelfs de grafieken in het systeem moeten kunnen verschijnen, waarna de gebruikers van een willekeurig punt op de grafiek de waarde op kunnen vragen.
+
+Vanwege de complexiteit van het opslaan van de statistische data, het later genereren van de bijbehorende grafieken, en het kunnen opvragen van de waardes op een willekeurig punt, hebben wij hier nog geen stappen voor ondernomen.
+Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data, en deze overzichtelijk weer te geven, zonder hier grafieken van de maken.
+Het maken van de grafieken zou bijvoorbeeld gedaan kunnen worden met de PyCha module.
 
 \subsection{analyse van deze statische data}
 
