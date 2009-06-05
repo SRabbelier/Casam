@@ -96,6 +96,13 @@ var AddedImage = Class.create( {
 				measurements[i].setActive();							
 			}
 		}
+		
+		// Disable editing of existing bitmaps
+		for(var i = 0; i < bitmaps.length; i++){
+			if(bitmaps[i].imageid == this.id) {
+				$('mm' + bitmaps[i].potid).hide();
+			}
+		}
 	},
 	addSelfToImages: function(full) {
 		

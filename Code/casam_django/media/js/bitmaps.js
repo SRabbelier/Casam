@@ -1,8 +1,9 @@
 var Bitmap = Class.create( {
-	initialize : function(bm, bmid, imageid, typeid) {
+	initialize : function(bm, bmid, imageid, potid, typeid) {
 		this.bitmap = bm;
 		this.id = bmid;
 		this.imageid = imageid;
+		this.potid = potid;
 		// Ugly default so this 'measurement' won't be selected when super_check is (de)selected
 		this.typeid = 0; 
 	},
@@ -36,7 +37,7 @@ function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 		'id' : 'bitmap_' + bmid
 	});
 
-	var bm = new Bitmap(bitmap, bmid, imgid)
+	var bm = new Bitmap(bitmap, bmid, imgid, potid)
 	bitmaps.push(bm);
 
 	bitmap.writeAttribute('src', '');
@@ -77,6 +78,8 @@ function addBitmap(bmid, imgid, potid, min_x, max_x, min_y, max_y) {
 	bitmapDiv.insert(checkbox);
 	bitmapDiv.insert(textspan);
 
+	$('mm' + potid).hide();
+	
 	return bitmapDiv;
 }
 
