@@ -493,7 +493,7 @@ function addMeasurementsToPictureContainer(imgid, json) {
 		'name' : imgid,
 		'id' : 'showAll_'+imgid
 	});
-	imagecheck.setStyle({cssFloat: 'left'});
+	imagecheck.setStyle({cssFloat: 'left', margin: '0px'});
 	$('bottomDiv_'+imgid).insert({top: imagecheck});
 	
 	var check = new Check('sa', imgid, imagecheck, null);
