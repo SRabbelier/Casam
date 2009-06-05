@@ -5,6 +5,7 @@ from casam.views import handler
 from casam.logic import morph
 from django import forms
 from django.utils import simplejson
+from django.core import serializers
 
 class MorphForm(forms.Form):
   projectID = forms.CharField(max_length=36)
@@ -30,10 +31,11 @@ class MorphCreator(handler.Handler):
         return http.HttpResponseServerError('Incorrect number of landmarks per image selected.') 
       images.append(imagemeasure[0])
       measurements.append(imagemeasure[1])
-    morphmodel, result = morph.createMorph(images,measurements)
+    new_image, result = morph.createMorph(images,measurements)
     if result == 0:
-      return http.HttpResponseServerError('Landmarks are not comparable.') 
-    return http.HttpResponse('Successfully morphed.')
+      return http.HttpResponseServerError('Landmarks are not comparable.')
+    data = serializers.serialize("json", [new_image]) 
+    return http.HttpResponse(data, mimetype="application/javascript")
 
   
   def get(self):

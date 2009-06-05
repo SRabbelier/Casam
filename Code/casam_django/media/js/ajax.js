@@ -25,7 +25,7 @@ function getProjectImages()
 		    initialisePictureTab(json);
 
 		    // Initialise the dragging of images
-        makePicturesSortable();
+		    makePicturesSortable();
         
 			}
 		});

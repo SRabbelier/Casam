@@ -102,6 +102,7 @@ function reloadBitmaps() {
 function removeBitmaps(imageID){
 	for(var i = 0; i < bitmaps.length; i++){
 		if(bitmaps[i].imageid == imageID){
+			console.log(bitmaps[i].id)
 			Element.remove($('bitmap_' + bitmaps[i].id));
 			bitmaps.splice(i, 1);
 			i = i - 1;

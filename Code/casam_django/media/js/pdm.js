@@ -35,7 +35,7 @@ document.observe('dom:loaded',function(){
 				'pdmData':Object.toJSON(pdmObject)
 			},
 			onSuccess:function(transport){
-				alert(transport.responseText);
+				//alert(transport.responseText);
 				getProjectOverlays();
 			},
 			onFailure:function(transport){
@@ -53,9 +53,10 @@ document.observe('dom:loaded',function(){
 				'projectID':projectID,
 				'pdmData':Object.toJSON(pdmObject)
 			},
-			onSuccess:function(transport){
-				alert(transport.responseText);
-				getProjectImages()
+			onSuccess:function(transport, json){
+				var json = transport.responseText.evalJSON();
+				makePictureContainer(json[0]);
+				makePicturesSortable();
 			},
 			onFailure:function(transport){
 				alert(transport.responseText);

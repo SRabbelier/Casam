@@ -145,7 +145,6 @@ function makeImageObservers(image, full){
 }
 
 function deleteImage(id) {
-
 	$('mainDiv_' + id).remove();
 
 	// Detele the image, and all corresponding stuff
@@ -178,29 +177,26 @@ function showImage(id, name, className) {
 
 function hideImage(id) {
 	// Function is called when the checkbox in front of an image is turned off
-	checkAuthenticationAndExecute( function() {
+	if (addedImages[0].id == id)
+		addedImages[0].makeNonActive();
+	
+	// Remove checkboxes
+	removeCheckboxes(id);		
+	
+	//remove bitmaps
+	removeBitmaps(id);
 
-		if (addedImages[0].id == id)
-			addedImages[0].makeNonActive();
-		
-		// Remove checkboxes
-		removeCheckboxes(id);		
-		
-		//remove bitmaps
-		removeBitmaps(id);
+	// Remove measurements
+	removeMeasurements(id);
 
-		// Remove measurements
-		removeMeasurements(id);
-
-		// Remove changes
-		removeChanges(id);
-		
-		// Remove image
-		removeImage(id);
-		
-		// Check for new active layer
-		checkActiveLayer();
-	});
+	// Remove changes
+	removeChanges(id);
+	
+	// Remove image
+	removeImage(id);
+	
+	// Check for new active layer
+	checkActiveLayer();
 }
 
 function reloadImages(full) {

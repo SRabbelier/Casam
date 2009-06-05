@@ -69,6 +69,7 @@ function getProjectImages()
 					  method: 'get',
 					  parameters: {'imageID': id},
 					  onSuccess: function(transport, json) {
+						  parent.hideImage(id);
 						  Effect.Fade(containerToDelete);
 						  parent.deleteImage(id);
 					  },

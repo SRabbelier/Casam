@@ -19,7 +19,7 @@ def createMorph(selectedImages,selectedPMs):
   
   #get the measurements for the first image (our targets)
   mainImage = OriginalImage.objects.all().get(id=selectedImages[0])
-   
+  potentialids = [] 
   #now get the associated measurements
   measures = Measurement.objects.all().filter(id__in=selectedPMs[0])
   measures = [j for j in measures]
@@ -30,7 +30,7 @@ def createMorph(selectedImages,selectedPMs):
   for k, measurement in enumerate(measures):#for every measurement in the measurements
     coordsx.append(float(measurement.x))
     coordsy.append(float(measurement.y))
-
+    potentialids.append(measurement.mogelijkemeting.id)
   r1 = vtk.vtkJPEGReader()
   r1.SetFileName(settings.DATADIR + mainImage.id + ".jpg")
   r1.Update() 
@@ -60,24 +60,22 @@ def createMorph(selectedImages,selectedPMs):
   img.save()
   imp = Image.open(settings.DATADIR + mainImage.id + '.jpg')
   imp.save(settings.DATADIR + img.id + '.jpg', 'JPEG')  
-  bitmaps = Bitmap.objects.all().filter(image=mainImage)
+  orig_bitmaps = Bitmap.objects.all().filter(image=mainImage)
   
-  print "original bitmaps: ", bitmaps
-  
-  for bm in bitmaps:
+  print "original bitmaps: ", orig_bitmaps
+  for bm in orig_bitmaps:
     #store bitmaps of mainImage as sub of img
     bitmap = Bitmap(project=img.project, name='warpedbitmap', image=img, 
                       mogelijkemeting=bm.mogelijkemeting, imagewidth=bm.imagewidth, 
                       imageheight=bm.imageheight, minx=bm.minx, miny=bm.miny, maxx=bm.maxx, maxy=bm.maxy)
     bitmap.save()
       
-    im = Image.open(settings.DATADIR + bm.id + '.gif')
-    im = im.convert("RGBA")
-    im.save(settings.DATADIR + bitmap.id + '.gif', transparency=0)
+    bitmap_image = Image.open(settings.DATADIR + bm.id + '.gif')
+    bitmap_image = bitmap_image.convert("RGBA")
+    bitmap_image.save(settings.DATADIR + bitmap.id + '.gif', transparency=0)
     
 
   for i in range(len(images)):#for each image
-    print "image checking: ",images[i].name
     measures = Measurement.objects.all().filter(id__in=selectedPMs[i])#get measurements
     measures = [j for j in measures]
     measures.sort(key=lambda x: x.mogelijkemeting.name)
@@ -86,7 +84,8 @@ def createMorph(selectedImages,selectedPMs):
     for k, measurement in enumerate(measures):#for every measurement in the measurements
       coordsx.append(float(measurement.x))
       coordsy.append(float(measurement.y))
-
+      if potentialids[k] != measurement.mogelijkemeting.id:#on second run compare
+        return img, 0
     r = vtk.vtkJPEGReader()
     r.SetFileName(settings.DATADIR + images[i].id + ".jpg")
     r.Update()
@@ -104,9 +103,6 @@ def createMorph(selectedImages,selectedPMs):
     transformation.SetSourceLandmarks(lms)
     lms.Modified()
     transformation.SetModeToRigidBody()
-    transformation.Update()
-     
-    
     transformation.Inverse()
     transformation.Update()
     out = vtk.vtkPoints()
@@ -116,11 +112,11 @@ def createMorph(selectedImages,selectedPMs):
     ir = vtk.vtkImageReslice()
     # use cubic for highest quality (slower)
     # we're using linear here to shave off a few microseconds. :)
-    #ir.SetInterpolationModeToNearestNeighbor()
-    ir.SetInterpolationModeToLinear()
+    ir.SetInterpolationModeToNearestNeighbor()
+    #ir.SetInterpolationModeToLinear()
     ir.SetResliceTransform(transformation)
     ir.SetInput(r.GetOutput())
-    ir.SetInformationInput(r.GetOutput())
+    ir.SetInformationInput(r1.GetOutput())
     w = vtk.vtkJPEGWriter()
     w.SetFileName('translated'+images[i].id+'.jpg')
     w.SetInput(ir.GetOutput())
@@ -158,11 +154,11 @@ def createMorph(selectedImages,selectedPMs):
     for bm in bitmaps:
       location = settings.DATADIR + bm.id + ".gif"
       im = Image.open(location)
-      im = im.convert("RGB")
-      im.save(settings.DATADIR + bm.id + ".jpg", "JPEG")
+      im = im.convert("RGBA")
+      im.save(settings.DATADIR + bm.id + ".png", "PNG")
 
-      r3 = vtk.vtkJPEGReader()
-      r3.SetFileName(settings.DATADIR + bm.id + '.jpg')
+      r3 = vtk.vtkPNGReader()
+      r3.SetFileName(settings.DATADIR + bm.id + '.png')
       r3.Update()
       
       print bm  
@@ -174,8 +170,8 @@ def createMorph(selectedImages,selectedPMs):
       w3.SetInput(ir.GetOutput())
       w3.Write()
       
-      im2 = Image.open(settings.DATADIR + mainImage.id + '.jpg')
-      im2.save(settings.DATADIR + img.id + '.jpg', 'JPEG')
+      #im2 = Image.open(settings.DATADIR + mainImage.id + '.jpg')
+      #im2.save(settings.DATADIR + img.id + '.jpg', 'JPEG')
       
       bitmap = Bitmap(project=img.project, name='warpedbitmap', image=img, 
                       mogelijkemeting=bm.mogelijkemeting, imagewidth=bm.imagewidth, 
@@ -187,6 +183,6 @@ def createMorph(selectedImages,selectedPMs):
       im.save(settings.DATADIR + bitmap.id + '.gif', transparency=0)
       
 
-  return True, 1
+  return img, 1
 #  #images readen aan de hand selectedImages
   
