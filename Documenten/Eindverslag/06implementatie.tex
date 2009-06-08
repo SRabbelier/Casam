@@ -30,6 +30,11 @@ Nu we de benodigde co\"{o}rdinaten hebben (gemiddelde en extremen) kunnen we beg
 
 
 \subsubsection{Thin Plate Spline Transformatie}
+Toen het tijd was om de daadwerkelijke morph uit te voeren van de getekende structuren moesten we eerst een transformatie uitvoeren om verschillen in translaties en rotaties tussen de verschillende foto's te verwijderen. Na overleg met dr. Botha is besloten om dit niet via Generalized Procrustes Aligment te doen maar om \'{e}\'{e}n foto (in dit geval de eerste) als de voorbeeld te zien en alle andere getekende structuren naar deze foto te morphen. Dit heeft een groot voordeel, als er namelijk van een foto die naar het gemiddelde van de landmarks wordt gemorphed wordt er een anatomie verondersteld die niet echt is, het is dan bijvoorbeeld een niet bestaand been. Als er echter een bestaande foto wordt gebruikt om naar toe te morphen is het een bestaande anatomie. Helaas kwam de implementatie van dit onderdeel van het project te laat om ook nog het Point Distribution Model volgens deze gedachte te implementeren. 
+
+In grote lijnen werkt de implementatie op dezelfde methode als die van het Point Distribution Model met een paar verschillen. Wederom worden landmarks uit de interface ingelezen en opgehaald. Er wordt naast de eerdergenoemde checks ook nog gekeken of de landmarks wel allemaal shapedefining zijn. Voor het morphproces worden namelijk een ander soort landmarks gebruikt van voor het berekenen van het Point Distribution Model. De shapedefining landmarks zijn landmarks die kenmerkend zijn voor de vorm van het hele object (je kunt hierbij denken aan bijvoorbeeld de bony landmarks van het been met daartussen op gelijke afstanden geplaatste landmarks op de omtrek van het been). 
+
+Met de gevonden images en de bijbehorende landmarks worden de c\"{o}\"{o}rdinaten van de landmarks ditmaal direct in 
 
 
 \subsubsection{Tekenen}
