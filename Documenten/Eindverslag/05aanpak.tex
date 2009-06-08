@@ -36,9 +36,14 @@ Waar het Active Shape Model zich bezighoud met het automatisch herkennen van str
 
 \subsubsection{Thin Plate Spline Transformatie}
 Om het tweede doel te bereiken, het morphen van getekende structuren is er gebruik gemaakt van een Thin Plate Spline transformatie. Om de Thin Plate Spline transformatie uit te voeren zijn landmarks nodig die bepalend zijn voor de vorm van een object. Hierbij kan gedacht worden aan een set van landmarks die bestaat uit bony landmarks (landmarks die voortkomen uit de anatomie van het menselijk lichaam en voelbaar zijn vanaf de buitenkant), landmarks die de grenzen van het object aangeven en landmarks die zich op gelijke afstanden tussen voorgaande landmarks bevinden. 
-Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk het aangeven van lijnen, gebieden of punten die interessant zijn voor de onderzoeker. We hebben ervoor gekozen om de onderzoeker dit real-time te laten doen in de applicatie door gebruik van Flash.
 
-Over de theoretische achtergrond van de verschillende gebruikte technieken is meer te vinden in het ori\"{e}ntatieverslag. De implementatie komt aan bod in de volgende sectie. 
+
+\subsection{Tekenen}
+Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk het aangeven van lijnen, gebieden of punten die interessant zijn voor de onderzoeker. We hebben ervoor gekozen om de onderzoeker dit in de browser te laten doen als geïntegreed tekenprogramma. Hierbij zal het mogelijk zijn elke foto als achtergrond te kiezen en hieroverheen met één kleur bepaalde gebieden aan te geven.
+
+Binnen browsers zou dit tekenprogramma gemaakt kunnen worden door gebruik te maken van Canvas, een onderdeel dat tot een nieuwe HTML-standaard behoort, maar nog niet ondersteund wordt door Internet Explorer 6. Omdat we tijdens de keuze van de techniek er vanuit gingen dat het systeem in IE 6 moest draaien hebben we gekozen om niet Canvas maar Flash te gebruiken. Dit vereis een plugin in de browser, maar bijna iedereen heeft deze plugin.
+
+Over de theoretische achtergrond van de verschillende gebruikte technieken is meer te vinden in het ori\"{e}ntatieverslag. De implementatie komt aan bod in de volgende sectie.
 
 
 
