@@ -1,29 +1,30 @@
 \section{Aanbevelingen}
 \label{Aanbevelingen}
 Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
-Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten de scope van het project vielen of tijdens het project bedacht werden. 
+Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten de scoop van het project vielen of omdat ze tijdens het project bedacht werden. 
 In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
-In de toelichting geven we ook een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
+
+In de toelichting geven we een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
 Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
 
 \subsection{Bestandstypen van foto's}
-Op dit moment kan de morph-functie alleen foto's aan die het bestandstype jpeg hebben. 
-Alhoewel dit het meest voorkomende type is zou het een verbetering zijn als het systeem ook met andere typen om kan gaan. 
-Een probleem hierbij is, dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het eigenlijk nog geen jpeg foto's zijn. 
-Het kan nu bijvoorbeeld gebeuren dat er een gif-afbeelding wordt geupload, die vervolgens de extensie jpg krijgt. 
-Hierdoor geeft de vtkJPEGReader een error, en kan er met dit plaatje niet gemorphed worden. 
-Het weergeven van de afbeelding in de browser gaat echter wel goed, waardoor het voor de gebruiker niet duidelijk is dat er eigenlijk iets mis is met de afbeelding.
+Op dit moment kan de morph-functie alleen foto's aan van het JPEG-formaat. 
+Alhoewel dit het meest gebruikte formaat is zou het een verbetering zijn als het systeem ook met andere formaten om kan gaan. 
+Een probleem is, dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het geen jpeg foto's zijn. 
+Het kan nu gebeuren dat er een gif-afbeelding wordt geupload, die vervolgens de extensie jpg krijgt. 
+Hierdoor geeft de vtkJPEGReader een error, en kan er met dit plaatje niet gemorphd worden. 
+Het weergeven van de afbeelding in de browser gaat wel goed, waardoor het voor de gebruiker niet duidelijk is dat er eigenlijk iets mis is met de afbeelding.
 
 Een oplossing zou kunnen zijn om bij het uploaden van de afbeelding de Python Imaging Library te laten kijken naar de foto, en deze om te laten zetten naar een echt jpeg bestand. 
-Het gevaar hierbij is echter, dat er door de compressie van het jpeg formaat het een en ander aan scherpte van de foto verloren gaat.
-Een eventuele oplossing voor dit probleem zou kunnen zijn om helemaal geen jpeg-bestanden meer op te slaan, en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren, en voor dit formaat zijn dezelfde VTK-library's beschikbaar als voor het jpeg formaat.
+Het gevaar hierbij is, dat er door de compressie van het JPEG-formaat er aan scherpte van de foto verloren gaat.
+Een oplossing voor dit probleem zou kunnen zijn om helemaal geen jpeg-bestanden meer op te slaan, en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren, en voor dit formaat zijn dezelfde VTK-library's beschikbaar als voor het jpeg formaat.
 
-Dit is echter een probleem waar wij binnen het project zodanig laat tegenaan liepen, dat er geen tijd meer was om dit op een fatsoenlijke manier op te lossen.
+Dit is echter een probleem waar wij binnen het project te laat tegenaan liepen, waardoor er geen tijd meer was om dit op te lossen.
 
 \subsection{Verschillende kleuren in flash applicatie}
 Binnen onze applicatie is het op dit moment al mogelijk om een bitmap te tekenen in een willekeurige kleur. 
-Wat echter nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren op te slaan.
-Voor de gebruikers zou het echter intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
+Wat echter nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren te gebruiken.
+Voor de gebruikers zou het intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
 Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opgeslagen in de kleur waarmee het laatst is gewerkt.
 %TODO voor Bastiaan
 
@@ -38,28 +39,34 @@ Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opge
 %titels zijn voorstellen, kunnen gewijzigd worden
 \subsection{statistische data bij landmarks}
 Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kan worden bij de aangegeven landmarks.
-Deze data heeft dan bijvoorbeeld betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
-In de huidige situatie wordt deze data apart in een Excel-sheet bijgehouden, en naar een statisticus gebracht.
-Deze maakt hier vervolgens in aparte software (SPSS) een aantal grafieken van, die de gebruikers eigenlijk bij de andere data op zouden willen slaan.
+Deze data heeft betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
+In de huidige situatie wordt deze data apart in een Excel-sheet bijgehouden en naar een statisticus gebracht.
+Deze maakt hier vervolgens in aparte software (SPSS)\ref{spss} een aantal grafieken van, die de gebruiker bij de andere data op zou willen slaan.
 In de toekomst zou het mogelijk moeten zijn om deze data bij de landmarks zelf op te slaan.
-In een ideale situatie zouden zelfs de grafieken in het systeem moeten kunnen verschijnen, waarna de gebruikers van een willekeurig punt op de grafiek de waarde op kunnen vragen.
+In een ideale situatie zouden zelfs de grafieken in het systeem moeten verschijnen, waarna de gebruikers van een willekeurig punt op de grafiek de waarde op kunnen vragen.
 
-Vanwege de complexiteit van het opslaan van de statistische data, het later genereren van de bijbehorende grafieken, en het kunnen opvragen van de waardes op een willekeurig punt, hebben wij hier nog geen stappen voor ondernomen.
-Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data, en deze overzichtelijk weer te geven, zonder hier grafieken van de maken.
-De analyse van deze data, en het hieruit produceren van bruikbare data, is daarna weer een probleem apart, wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek benodigt.
-Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen, is dat er een PyCha module bestaat, waarmee in Python grafieken gemaakt kunnen worden.
+Vanwege de complexiteit van het opslaan van de statistische data, het later genereren van de bijbehorende grafieken en het kunnen opvragen van de waardes op een willekeurig punt, hebben wij hier nog geen stappen voor ondernomen.
+Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data en deze overzichtelijk weer te geven, zonder hier grafieken van de maken.
+De analyse van deze data en het hieruit produceren van bruikbare data, is daarna weer een probleem apart.
+Wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek nodig heeft.
+Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen is dat er een PyCha module bestaat waarmee in Python grafieken gemaakt kunnen worden.
 
 \subsection{uitwerken afstand meet applicatie}
-Vanuit het EMC was de wens opgekomen om het mogelijk te maken om in foto's afstanden te meten.
-Dit zou dan gebruikt kunnen worden bij een deel van de statistische data, zoals dit hierboven al beschreven is.
-Aangezien een van de eerste vragen van het EMC was hebben we hier al even naar gekeken, en een zgn. 'spiky solution' voor gebouwd.
+Vanuit het EMC was de wens gekomen om het mogelijk te maken om in foto's afstanden te meten.
+Dit zou dan gebruikt kunnen worden bij de statistische data, zoals dit hierboven al beschreven is.
+Aangezien dit een van de eerste vragen van het EMC was hebben we hier al even naar gekeken en er een spike solution voor gebouwd.
 Hier zat echter nog een niet acceptabele meetfout in, waardoor de functie niet in de uiteindelijke interface terecht is gekomen.
+
 Er waren echter wel een aantal manieren waarop de nu aanwezige meetfout waarschijnlijk teruggedrongen kon worden:
 \begin{description}
-	\item[verplaatsen lineaal] Op de foto's van het EMC is een lineaal zichtbaar. Echter deze lineaal ligt op de verkeerde positie ten op zichte van waar gemeten wordt, er is namelijk een diepte verschil. Ook ligt de lineaal niet recht onder de camera, dit zorgt voor een hoek in de kalibratie stap.
-	\item[fout zichtbaar maken] Op dit moment wordt er wel gerekend en wordt de fout op een basis manier uitgerekend. Deze fout zou zichtbaar moeten gemaakt worden aan de gebruiker, zodat hiermee rekening kan worden gehouden.
-	\item[opslaan kalibratie] Elke keer als een foto wordt geopend moet de kalibratie stap opnieuw worden uitgevoerd. Hierdoor ontstaat mogelijk onzorgvuldigheid en eigenlijk moet de kalibratie stap worden opgeslagen.
-	\item[automatische herkenning] Als we de lineaal kunnen laten herkennen door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
+	\item[verplaatsen lineaal] Op de foto's van het EMC is een lineaal zichtbaar. 
+	Echter deze lineaal ligt op de verkeerde positie ten op zichte van waar gemeten wordt, er is namelijk een diepte verschil. 
+	Ook ligt de lineaal niet recht onder de camera, dit zorgt voor een hoek in de kalibratie stap.
+	\item[fout zichtbaar maken] Op dit moment wordt de fout wel uitgerekend. 
+	Deze fout zou zichtbaar moeten gemaakt worden aan de gebruiker, zodat hiermee rekening kan worden gehouden.
+	\item[opslaan kalibratie] Elke keer als een foto wordt geopend moet de kalibratie stap opnieuw worden uitgevoerd. 
+	Hierdoor ontstaat mogelijk onzorgvuldigheid en de kalibratie stap zou moeten worden opgeslagen.
+	\item[automatische herkenning] Als de lineaal kan worden herkent door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
 \end{description}
 
 \subsection{uitgebreid user management en arts-view mode}
