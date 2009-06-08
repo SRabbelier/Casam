@@ -9,6 +9,7 @@ Op deze manier hadden we in een vrij korte tijd een basis systeem met haar basis
 Zo konden we ons vervolgens concentreren op de Javascript functies welke zouden gaan zorgen voor de AJaX afhandeling en de visuele effecten.
 
 \subsection{Project gerelateerd}
+\label{implementatie_project_gerelateerd}
 Daar waar het mogelijk en handig was hebben we geprogrammeerd in tweetallen. 
 Tijdens de implementatie fase hebben we veel gebruik gemaakt van de beschikbare whiteboards.
 Deze waren handig voor het brainstormen en als iemand vast liep, kon het probleem getekend en uitgelegd worden. 
@@ -17,7 +18,27 @@ Ook tijdens de implementatie fase hebben we veel contact gehad met de leden van 
 Steeds hebben we na deze presentaties een uitgebreid overleg gehad over de stand van zaken en ge\"{e}valueerd over hoe het project er voor stond. In sommige gevallen hebben we ook onze prioriteitenlijst aangepast aan de hand van deze vergaderingen.
 
 \subsection{Database systeem}
-Voordat we konden beginnen met het database systeem
+\label{implementatie_database_systeem}
+Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien als Figuur \ref{brainstorm_klassediagram}.
+De uiteindelijke versie van dit model is te zien als Figuur \ref{databasediagram}.
+Een aantal van de belangrijkste wijzgingen zijn:
+\begin{description}
+  \item[Measurement types] In het originele model was er een algemeen MeasurementType bedacht, waar alle 3 de types van overerven. 
+  In het uiteindelijke model was er nog wel ruimte voor MeasurementTypes, maar zijn dit types geworden die aangemaakt kunnen worden door de gebruiker.
+  De MeasurementTypes zoals die bedacht waren bestaan uiteindelijk alleen nog uit Measurements en Bitmaps, waarvan Bitmaps overerft vanuit Image, in plaats van een algemeen MeasurementType.
+  \item[Measurements] De Measurements zelf zijn nu wat in het originele model een PointMeasurement heette.
+  Ook de ProjectMeasurementsList is uit het model verdwenen, en vervangen door de algemene PotentialMeasurements.
+  \item[Images] Het algemene type Image is in het uiteindelijke model gespaard gebleven.
+  De Patient die echter aan een OriginalImage hing, is uiteindelijk gesneuveld, omdat dit eigenlijk niets toevoegde aan het systeem.
+  Ook hebben we besloten om EditedImages niet op te slaan, en in plaats daarvan States te bewaren.
+  \item[States en Projectfiles] Deze States zijn samen met de Projectfiles nieuw aan het model toegevoegd.
+  Hierbij zijn de States bedoeld om de huidige configuratie van zichtbare foto's, Bitmaps en Measurements op te slaan en weer op te halen.
+  De Projectfiles zijn bedoeld voor de export van een project.
+  \item[Users] In het originele model was er bedacht dat er voor de Users eigenlijk niets nodig zou zijn, omdat het user-management door Django geregeld zou worden.
+  Zoals tijdens de implementatie is gebleken, was dit helaas niet waar, en moesten we er zelf ook nog een UserProfile aan toe voegen.
+  In dit UserProfile staat opgeslagen welke User welke rechten heeft op welk project.
+\end{description}
+Een aantal andere aspecten van het database systeem staan hieronder uitgewerkt.
 
 \subsubsection{Verschillende doorzichtige foto's over elkaar heenleggen om de verschillen te bekijken}
 Voor de weergave van afbeeldingen in het project, is er bedacht dat er meerdere afbeeldingen tegelijk zichtbaar moesten kunnen zijn.
@@ -73,6 +94,7 @@ Deze nieuwe tags kunnen daarna wel direct aan andere projecten worden gekoppeld.
 Op het eind van het project hadden we veel bereikt. Maar ook is er werk blijven liggen. De dingen die zijn blijven liggen bespreken we in sectie \ref{Aanbevelingen}
 
 \subsection{Image Processing}
+\label{implementatie_image_processing}
 Dit was \'{e}\'{e}n van de grootste uitdagingen van het project. Niemand had ervaring met de verschillende bibliotheken of uitgebreide ervaring met dit aspect van Image Processing. Er waren verschillende opties om de benodigde technieken te implementeren, zo konden we ze zelf implementeren met behulp van Numpy\cite{numpy}, of gebruik maken van grotere libraries zoals Insight Segmentation and Registration Toolkit (ITK)\cite{ITK} of de Visualization Toolkit (VTK)\cite{vtk}. Verder was er nog de Python Imaging Library (PIL)\cite{pil}, die geschikt is om eenvoudige beeldbewerking te doen. Uiteindelijk is er, mede op advies van Dr. Botha, gekozen voor PIL in combinatie met de VTK bibliotheek. Om aan de vraagstelling te kunnen voldoen, het in kaart brengen van de variaties per landmark en het kunnen projecteren van getekende gebieden op één gemiddeld plaatje, hebben we gekozen om een deel van de methode Active Shape Modeling, genaamd Point Distribution Models, toe te passen in combinatie met Thin Plate Spline transformaties. Hierdoor is het mogelijk voor de onderzoeker om op een wiskundige verantwoorde manier anatomische structuren op een gemiddelde te projecteren en de variaties per landmark te visualiseren.
 Al snel bleek dat er veel onderzoek nodig was om de theorie achter Principal Component Analysis, Active Shape Models, Point Distribution Models en de Thin Plate Spline Transformaties te doorgronden. Ook kostte het enige extra tijd om met de VTK bibliotheek bekend te raken.
 
