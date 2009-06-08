@@ -34,6 +34,8 @@ Ook gebruikers\-beheer is standaard een onderdeel van Django, waardoor dit voor 
 
 Voor de interface hebben we ervoor gekozen om veel gebruik te maken van JavaScript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van JavaScript gebruik maken van de AJaX techniek, hiermee konden server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had.
 
+In de ontwerpfase is besloten dat het mogelijk moet zijn om uitwisseling van datasets tussen gebruikers. Om te zorgen dat gebruikers verschillende projecten kunnen uitwisselen is hier al in een vroeg stadium rekening mee gehouden. Er is gekozen alle objecten die worden gebruikt op te slaan met Universal Unique ID's, wat wil zeggen dat de kans dat bij het kopi"{e}ren van objecten objecten een zelfde identificator hebben zodanig klein is, dat hij wordt beschouwd als niet bestaand. Hierdoor is het mogelijk om datasets uit te wisselen tussen verschillende databases zonder dat er conflicten optreden.
+
 \subsection{Image Processing}
 De doelen op Image Processing gebied waren: het in kaart brengen van de variaties per landmark en het morphen van getekende structuren (bijvoorbeeld zenuwen of venen) naar een standaardview. Zo kunnen structuren die van verschillende foto's afkomen toch op \'{e}\'{e}n foto worden afgebeeld.
 
