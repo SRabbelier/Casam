@@ -29,12 +29,13 @@ Voor de interface hebben we ervoor gekozen om veel gebruik te maken van Javascri
 \subsection{Image Processing}
 De doelen op Image Processing gebied waren het in kaart brengen van de variaties per landmark en het morphen van getekende structuren (bijvoorbeeld zenuwen of venen) naar een standaardview waarop bijvoorbeeld structuren die van verschillende benen afkomen toch op \'{e}\'{e}n been kunnen worden afgebeeld.
 
+\subsubsection{Point Distribution Model}
 Om het eerste doel te bereiken hebben we gebruik gemaakt van een sub-onderdeel van een volledig Active Shape Model, namelijk het Point Distribution Model. Het Active Shape Model is ontwikkeld door Tim Cootes, in de paper An Introduction to Active Shape Models licht hij de theorie toe.\cite{introASM}
 
 Waar het Active Shape Model zich bezighoud met het automatisch herkennen van structuren uit een foto, is het Point Distribution Model\cite{pdm} in staat gegeven een aantal landmarks (van hetzelfde type) op verschillende foto's het gemiddelde en de hoofdassen van variatie weer te geven. Een landmark is hierbij een punt dat zo is gekozen dat het in iedere foto te vinden is en duidelijk op ieder fotovoorbeeld te vinden is. De landmarks die nodig zijn voor het Point Distribution Model moeten hierbij informatie geven over het verloop van een structuur, bijvoorbeeld het aangeven van het verloop van een bepaalde vene.
 
+\subsubsection{Thin Plate Spline Transformatie}
 Om het tweede doel te bereiken, het morphen van getekende structuren is er gebruik gemaakt van een Thin Plate Spline transformatie. Om de Thin Plate Spline transformatie uit te voeren zijn landmarks nodig die bepalend zijn voor de vorm van een object. Hierbij kan gedacht worden aan een set van landmarks die bestaat uit bony landmarks (landmarks die voortkomen uit de anatomie van het menselijk lichaam en voelbaar zijn vanaf de buitenkant), landmarks die de grenzen van het object aangeven en landmarks die zich op gelijke afstanden tussen voorgaande landmarks bevinden. 
-
 Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk het aangeven van lijnen, gebieden of punten die interessant zijn voor de onderzoeker. We hebben ervoor gekozen om de onderzoeker dit real-time te laten doen in de applicatie door gebruik van Flash.
 
 Over de theoretische achtergrond van de verschillende gebruikte technieken is meer te vinden in het ori\"{e}ntatieverslag. De implementatie komt aan bod in de volgende sectie. 
