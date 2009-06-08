@@ -1,4 +1,4 @@
-\section{Aanbevelingen}
+\section{Aanbevelingen} %7
 \label{Aanbevelingen}
 Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
 Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten de scoop van het project vielen of omdat ze tijdens het project bedacht werden. 
@@ -7,7 +7,7 @@ In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er nie
 In de toelichting geven we een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
 Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
 
-\subsection{Bestandstypen van foto's}
+\subsection{Bestandstypen van foto's} %7.1
 Op dit moment kan de morph-functie alleen foto's aan van het JPEG-formaat. 
 Alhoewel dit het meest gebruikte formaat is zou het een verbetering zijn als het systeem ook met andere formaten om kan gaan. 
 Een probleem is, dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het geen jpeg foto's zijn. 
@@ -21,7 +21,7 @@ Een oplossing voor dit probleem zou kunnen zijn om helemaal geen jpeg-bestanden 
 
 Dit is echter een probleem waar wij binnen het project te laat tegenaan liepen, waardoor er geen tijd meer was om dit op te lossen.
 
-\subsection{Verschillende kleuren in flash applicatie}
+\subsection{Verschillende kleuren in flash applicatie} %7.2 <---
 Binnen onze applicatie is het op dit moment al mogelijk om een bitmap te tekenen in een willekeurige kleur. 
 Wat echter nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren te gebruiken.
 Voor de gebruikers zou het intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
@@ -29,15 +29,19 @@ Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opge
 %TODO voor Bastiaan
 
 \subsection{Opslaan van een lege bitmap}
-* alle correcties weggooien en geen wijziging opslaan?
-* lege bitmap opslaan?
-%TODO voor Bastiaan
+Op dit moment is het niet mogelijk om een bestaande bitmap te bewerken naar een lege, omdat dan in de submit de minimale en maximale coördinaten gezet zijn naar defaultwaarden die de server niet aankan. Daarom wordt nu afgevangen dat er een lege bitmap is gesubmit, maar deze wordt verder niet opgeslagen.
+
+De enige reden om een lege bitmap op te slaan is om deze te verwijderen, maar zoals elders beschreven moet dat nu nog via de admin-interface gedaan worden. Lege bitmaps opslaan is niet de manier, en wegens de huidige implementatie wordt de lege dump dus ook niet opgeslagen.
+
+Het systeem zou verbeterd kunnen worden door de Save-knop weg te halen uit de Flash-appliactie als er niets is getekend. Dat maakt het voor de gebruiker duidelijker dat opslaan van een leeg plaatje niet kan. Er moet sowieso ook nog een verwijderknop in het systeem gemaakt worden. Als deze duidelijker aanwezig is voorkomt dit dat de gebruiker een lege bitmap op zou willen slaan.
 
 \subsection{Te grote foto's inladen in de flash-applicate}
-%TODO voor Bastiaan
+Een vervelende beperking van de Flash-applicatie waar we op een erg laat moment achter kwamen is dat de maximale grootte van een afbeelding die je in Flash kan laden 2880 x 2880 pixels is. De afbeeldingen die gebruikt zullen worden in het systeem zijn doorgaans groter, wat erin resluiteert dat alle pixels die buiten de marge het ondersteunde gebied vallen gewoon niet geladen worden. Het wordt dan niet mogelijk om buiten dit gebied te tekenen en de naar de server geposte dump is ook maximaal 2880 x 2880 pixels.
+
+Er zijn grofweg twee oplossingen te bedenken. De makkelijkste is het resizen van de image naar maximaal 2880 x 2880 pixels voordat deze door de Flash-applicatie geladen wordt. Dit kan het systeem al. Het probleem komt aan de serverkant wanneer de server de geposte dump terug moet rekenen naar volledige grootte. Deze moet opgevraagd worden bij de orignele afbeeldingen die in verkleinde vorm als achtergrond diende. Het probleem bij deze aanpak is dat er geen pixelprecisie meer is in het tekenen over de afbeeldingen, omdat deze geresized wordt. Omdat de resolutie van de afbeeldingen redelijk groot is, is dit geen groot probleem.
 
 %titels zijn voorstellen, kunnen gewijzigd worden
-\subsection{statistische data bij landmarks}
+\subsection{statistische data bij landmarks} %7.5
 Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kan worden bij de aangegeven landmarks.
 Deze data heeft betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
 In de huidige situatie wordt deze data apart in een Excel-sheet bijgehouden en naar een statisticus gebracht.
@@ -51,7 +55,7 @@ De analyse van deze data en het hieruit produceren van bruikbare data, is daarna
 Wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek nodig heeft.
 Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen is dat er een PyCha module bestaat waarmee in Python grafieken gemaakt kunnen worden.
 
-\subsection{uitwerken afstand meet applicatie}
+\subsection{uitwerken afstand meet applicatie} %7.6
 Vanuit het EMC was de wens gekomen om het mogelijk te maken om in foto's afstanden te meten.
 Dit zou dan gebruikt kunnen worden bij de statistische data, zoals dit hierboven al beschreven is.
 Aangezien dit een van de eerste vragen van het EMC was hebben we hier al even naar gekeken en er een spike solution voor gebouwd.
@@ -69,7 +73,7 @@ Er waren echter wel een aantal manieren waarop de nu aanwezige meetfout waarschi
 	\item[automatische herkenning] Als de lineaal kan worden herkent door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
 \end{description}
 
-\subsection{uitgebreid user management en arts-view mode}
+\subsection{uitgebreid user management en arts-view mode} %7.7
 Wat betreft het huidige user management zijn er nog vele verbeteringen mogelijk.
 Momenteel zijn er namelijk 3 gebruikersgroepen aanwezig, die niet altijd evengoed gecontroleerd worden.
 Zo is het nu voor een arts ook mogelijk om landmarks toe te voegen aan een project, terwijl dit niet zou moeten mogen.
