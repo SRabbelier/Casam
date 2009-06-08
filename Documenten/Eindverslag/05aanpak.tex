@@ -19,12 +19,17 @@ Het database systeem is het onderdeel van het project dat dient om de gebruikte 
 
 \begin{itemize}
 \item Aangeven van herkenningspunten bij de foto's
-\item Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven
+\item Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd
 \item Verschillende doorzichtige foto's over elkaar heenleggen om de verschillen te bekijken
+\item Toevoegen van relevante papers en websites bij een project
+\item Tags toevoegen bij projecten om ze te categoriseren
+\item Vastleggen van interessante configuraties om de foto's en bijbehorende informatie te tonen, ook wel states genoemd
+\item Afstanden meten in foto's
+\item Een knop aanbieden om een Point Distribution Model te cre\"{e}ren
 \end{itemize}
 
-Zoals in de paragraaf Aanpak al aangegeven zouden we gaan werken met Django en moest het product beschikbaar worden als webapplicatie. Django is een MVC LEG UIT!!! opgebouwde taal met een duidelijk abstractie laag voor het database gedeelte. Na diverse brainstorm sessies zijn we uiteindelijk uitgekomen op een klasse diagram wat de basis zou gaan vormen voor het database systeem. Het diagram staat in bijlage B.
-Voor de interface hebben we ervoor gekozen om veel gebruik te maken van Javascript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van Javascript gebruik maken van de AJAX techniek, hiermee konden server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had.
+Zoals in de paragraaf Aanpak al aangegeven zouden we gaan werken met Django en moest het product beschikbaar worden als webapplicatie. Django is een Model View Controller opgebouwde taal, wat wil zeggen dat het datamodel en functionaliteit met betrekking tot het datamodel gescheiden is van de gebruikersinterface en functionaliteit met betrekking tot de gebruikersinterface. Django heeft ook een duidelijk abstractie laag voor het database gedeelte, een Object-Relational Database Mapping. Deze maakt het mogelijk om in een object\-ge\"{o}rienteerde taal te programmeren, maar de aangemaakte objecten worden opgeslagen in een relationele database, dit verlicht de implementatie aanzienlijk. Na diverse brainstorm sessies zijn we uiteindelijk uitgekomen op een klasse diagram\pageref{Databasediagram} wat de basis zou gaan vormen voor het database systeem.
+Voor de interface hebben we ervoor gekozen om veel gebruik te maken van JavaScript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van JavaScript gebruik maken van de AJaX techniek, hiermee konden server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had.
 
 \subsection{Image Processing}
 De doelen op Image Processing gebied waren het in kaart brengen van de variaties per landmark en het morphen van getekende structuren (bijvoorbeeld zenuwen of venen) naar een standaardview waarop bijvoorbeeld structuren die van verschillende benen afkomen toch op \'{e}\'{e}n been kunnen worden afgebeeld.
