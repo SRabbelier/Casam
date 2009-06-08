@@ -15,8 +15,16 @@ In de begin periode hebben wij ons ingelezen op de basis anatomische kennis die 
 Een andere uitdaging was de relatief grote groep studenten voor dit project. Om te voorkomen dat we elkaar te veel in de weg zouden zitten hebben we de diverse delen van het project opgesplitst en de taken duidelijk verdeeld. Daarnaast hebben we gebruik gemaakt van software zoals Trac, dit is een Project Management Systeem. Daarnaast was een locatie geregeld op de TU Delft waar we iedere dag hebben gewerkt en waar we elke ochtend een werkoverleg konden hebben voor wat er die dag zou gebeuren. Hierdoor bleef iedereen goed op de hoogte van de status van het gehele project.
 
 \subsection{Database systeem}
-Zoals hierboven al aangegeven zouden we gaan werken met Django en moest het beschikbaar worden als webapplicatie. Django is een Model-View-Controller (MVC) opgebouwde taal met een duidelijk abstractie laag voor het database gedeelte. Na diverse brainstorm sessies zijn we uiteindelijk uitgekomen op een klasse diagram wat de basis zou gaan vormen voor het database systeem. Het diagram staat in bijlage B.
-Voor de interface hebben we ervoor gekozen om veel gebruik te maken van Javascript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van Javascript gebruik maken van de AJAX techniek, hiermee konden server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had. 
+Het database systeem is het onderdeel van het project dat dient om de gebruikte foto's overzichtelijk in te delen in verschillende projecten. Hiervandaan wordt de gebruiker in staat gesteld om de handelingen te verrichten die nodig zijn om analyse te plegen op  foto's. Typische handelingen zijn bijvoorbeeld: 
+
+\begin{itemize}
+\item Aangeven van herkenningspunten bij de foto's
+\item Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven
+\item Verschillende doorzichtige foto's over elkaar heenleggen om de verschillen te bekijken
+\end{itemize}
+
+Zoals in de paragraaf Aanpak al aangegeven zouden we gaan werken met Django en moest het product beschikbaar worden als webapplicatie. Django is een MVC LEG UIT!!! opgebouwde taal met een duidelijk abstractie laag voor het database gedeelte. Na diverse brainstorm sessies zijn we uiteindelijk uitgekomen op een klasse diagram wat de basis zou gaan vormen voor het database systeem. Het diagram staat in bijlage B.
+Voor de interface hebben we ervoor gekozen om veel gebruik te maken van Javascript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van Javascript gebruik maken van de AJAX techniek, hiermee konden server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had.
 
 \subsection{Image Processing}
 De doelen op Image Processing gebied waren het in kaart brengen van de variaties per landmark en het morphen van getekende structuren (bijvoorbeeld zenuwen of venen) naar een standaardview waarop bijvoorbeeld structuren die van verschillende benen afkomen toch op \’{e}\’{e}n been kunnen worden afgebeeld.
