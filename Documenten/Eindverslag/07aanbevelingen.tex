@@ -1,8 +1,7 @@
-<<<<<<< .mine
-<<<<<<< .mine
 \section{Aanbevelingen} %7
 \label{Aanbevelingen}
 Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
+
 Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten het bereik van het project vielen of omdat ze tijdens het project bedacht werden. 
 In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
 
@@ -29,6 +28,7 @@ Wat echter nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren te
 Voor de gebruikers zou het intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
 Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opgeslagen in de kleur waarmee het laatst is gewerkt.
 
+
 \subsection{Opslaan van een lege bitmap} %7.3
 Op dit moment is het niet mogelijk om een bestaande bitmap te bewerken naar een lege bitmap, omdat dan in de submit de minimale en maximale co\"ordinaten gezet zijn naar standaardwaarden die de server niet aankan. Daarom wordt nu afgevangen dat er een lege bitmap is verstuurd, maar deze wordt verder niet opgeslagen.
 
@@ -43,163 +43,6 @@ Er zijn twee oplossingen te bedenken. De makkelijkste is het schalen van de foto
 
 Een tweede oplossing is om het laden van de afbeelding in losse blokken van maximaal 2880 x 2880 pixels op te delen. Dit is nog ingewikkelder omdat de server in dit geval delen van plaatjes moet kunnen teruggeven en de Flash-applicatie deze na elkaar moet in kunnen laden en naast elkaar moet kunnen plaatsen.
 
-%titels zijn voorstellen, kunnen gewijzigd worden
-\subsection{statistische data bij landmarks} %7.5
-Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kan worden bij de aangegeven landmarks.
-Deze data heeft betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
-In de huidige situatie wordt deze data apart in een Excel-sheet bijgehouden en naar een statisticus gebracht.
-Deze maakt hier vervolgens in aparte software (SPSS)\ref{spss} een aantal grafieken van, die de gebruiker bij de andere data op zou willen slaan.
-In de toekomst zou het mogelijk moeten zijn om deze data bij de landmarks zelf op te slaan.
-In een ideale situatie zouden zelfs de grafieken in het systeem moeten verschijnen, waarna de gebruikers van een willekeurig punt op de grafiek de waarde op kunnen vragen.
-
-Vanwege de complexiteit van het opslaan van de statistische data, het later genereren van de bijbehorende grafieken en het kunnen opvragen van de waardes op een willekeurig punt, hebben wij hier nog geen stappen voor ondernomen.
-Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data en deze overzichtelijk weer te geven, zonder hier grafieken van de maken.
-De analyse van deze data en het hieruit produceren van bruikbare data, is daarna weer een probleem apart.
-Wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek nodig heeft.
-Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen is dat er een PyCha module bestaat waarmee in Python grafieken gemaakt kunnen worden.
-
-\subsection{uitwerken afstand meet applicatie} %7.6
-Vanuit het EMC was de wens gekomen om het mogelijk te maken om in foto's afstanden te meten.
-Dit zou dan gebruikt kunnen worden bij de statistische data, zoals dit hierboven al beschreven is.
-Aangezien dit een van de eerste vragen van het EMC was hebben we hier al even naar gekeken en er een spike solution voor gebouwd.
-Hier zat echter nog een niet acceptabele meetfout in, waardoor de functie niet in de uiteindelijke interface terecht is gekomen.
-
-Er waren echter wel een aantal manieren waarop de nu aanwezige meetfout waarschijnlijk teruggedrongen kon worden:
-\begin{description}
-	\item[verplaatsen lineaal] Op de foto's van het EMC is een lineaal zichtbaar. 
-	Echter deze lineaal ligt op de verkeerde positie ten op zichte van waar gemeten wordt, er is namelijk een diepte verschil. 
-	Ook ligt de lineaal niet recht onder de camera, dit zorgt voor een hoek in de kalibratie stap.
-	\item[fout zichtbaar maken] Op dit moment wordt de fout wel uitgerekend. 
-	Deze fout zou zichtbaar moeten gemaakt worden aan de gebruiker, zodat hiermee rekening kan worden gehouden.
-	\item[opslaan kalibratie] Elke keer als een foto wordt geopend moet de kalibratie stap opnieuw worden uitgevoerd. 
-	Hierdoor ontstaat mogelijk onzorgvuldigheid en de kalibratie stap zou moeten worden opgeslagen.
-	\item[automatische herkenning] Als de lineaal kan worden herkent door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
-\end{description}
-
-\subsection{uitgebreid user management en arts-view mode} %7.7
-Wat betreft het huidige user management zijn er nog vele verbeteringen mogelijk.
-Momenteel zijn er namelijk 3 gebruikersgroepen aanwezig, die niet altijd evengoed gecontroleerd worden.
-Zo is het nu voor een arts ook mogelijk om landmarks toe te voegen aan een project, terwijl dit niet zou moeten mogen.
-Ook moet het toekennen van rechten aan projecten beter en duidelijker gaan verlopen.
-Daarnaast zou een gebruiker ten alle tijden zijn eigen wachtwoord aan moeten kunnen passen, terwijl dat nu alleen door een 'beheerder' gedaan kan worden.
-
-Zoals al aangegeven is er voor het user management al wel een begin gemaakt, maar dit moet eigenlijk nog uitgebreid worden.
-Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samengewerkt met de permissions die in Django aan gebruikers toegekend kunnen worden, omdat hier eigenlijk nog niets mee gebeurd.
-
-Zelf zijn wij door tijdsdruk hier niet goed meer aan toegekomen, en is het eigenlijk blijven liggen, ondanks dat een degelijke user management in eerste instantie wel een van de eisen het EMC was.
-
-\subsection{verwijderen measurements zonder admin}
-Wat betreft het verwijderen van objecten uit het systeem, is er grote winst te behalen.
-Zo wordt voor het verwijderen van de volgende objecten nu nog de Django admin-interface gebruikt:
-\begin{itemize}
-  \item Bitmaps
-  \item Landmarks
-  \item PDMs
-  \item Projects
-  \item Tags
-\end{itemize}
-Van deze objecten wordt er alleen voor projecten ook de mogelijkheid geboden om deze via de normale interface te verwijderen. 
-Terwijl eigenlijk alle objecten via de interface verwijderd moeten worden.
-
-Toen wij hier zelf over aan het nadenken waren, kwamen wij tot de conclusie dat er een aantal oplossingen waren die allemaal eigenlijk niet zo goed zouden werken.
-De oplossingen waar wij aan gedacht hebben, staan hier onder beschreven:
-\begin{description}
-  \item[Inline delete] Een van de mogelijkheden is om in de interface achter elke landmark en elke bitmap een rood kruisje te plaatsen.
-  Hier hebben wij vanaf gezien, omdat wij vonden dat de gewone gebruikersinterface dan te vol zou worden.
-  Verder staan er nergens in de interface kruisjes en hebben we overal managers voor
-  \item[Bij de image manager] Omdat de landmarks en bitmaps onderdeel zijn van de afbeeldingen, zou het bij de image manager erbij kunnen.
-  Dit zou dan inhouden dat er eerst op de afbeelding geklikt moet worden, waarna er een lijstje met landmarks en bitmaps verschijnt die verwijderd kunnen worden.
-  Nadeel hiervan is dat de image manager niet de plek is om dit soort dingen in te regelen, omdat hij bedoeld is voor de afbeeldingen.
-  \item[Delete mode]De meest radicale oplossing is om een delete mode toe te voegen aan de interface.
-  Het idee is dat je op een knop kan drukken, waarna er een nieuwe interface geladen wordt.
-  In deze nieuwe interface kan je dan eigenlijk alles naar een prullenbak slepen, waarna het verwijderd word op het moment dat je deze delete mode weer verlaat.
-  Dit klinkt op zich als een leuk idee, echter het zou heel veel tijd gaan kosten.
-  Daar komt nog eens bij dat we niet zeker weten of dit wel een idee was wat aan zou slaan bij de gebruikers, en of dit voor de gebruikers wel intu\"{i}tief is.
-  \item[Eigen manager] Een eigen manager voor de landmarks en bitmaps is waarschijnlijk het beste idee, maar door de tijdsdruk zijn we ook hier niet aan toe gekomen.
-  Het enige tegen deze oplossing was het feit dat er dan nog een link bij zou komen in de interface.
-  Gekscherend werd er gezegd dat er bijna behoefte was aan een manager voor de managers, omdat het er inmiddels al zo veel zijn.
-\end{description}
-
-\subsection{morphen naar standaard AnatomicalView}
-%TODO: NOESKA
-
-\subsection{zoom op meerdere niveau's}
-Een leuke en handige uitbreiding voor de nu aanwezige zoomfunctie in de interface, is om het niveau van de zoom in te kunnen stellen.
-In het zoom-scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid is, maar idealiter is dit in te stellen naar een willekeurige grootte.
-Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
-Dit kan dan later nog uitgebreid worden naar een door de gebruiker in te stellen niveau, binnen vastgestelde grenzen.
-
-Wij hebben dit nog niet aangepakt, omdat er nog een aantal haken en ogen aan de huidige implementatie zitten, namelijk:
-\begin{description}
-	\item[inladen vaste niveau's] Het inladen van een afbeelding op een aantal vaste niveau's is wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit onhaalbaar.
-	\item[inladen geselecteerd niveau] Een alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
-	Het nadeel hiervan is dat \'{e}\'{e}n afbeelding dan heel vaak opgehaald moet worden, voordat de gebruiker het gewenste niveau heeft gevonden.
-	\item[vergroten in venster] Een volgende oplossing is het laten vergroten van de reeds ingeladen afbeelding.
-	Het grote nadeel van deze oplossing is dat een afbeelding momenteel wordt ingeladen met een afmeting die afhankelijk is van de afmeting van zijn container.
-Als deze dus klein is, wordt er standaard een foto met heel weinig detail ingeladen.
-Op het moment dat deze foto vervolgens uitvergroot wordt, blijft er in de uitvergrootte afbeelding te weinig detail over om bruikbaar te zijn.
-	\item[verkleinen in venster] Een oplossing die zou kunnen werken, is om de afbeelding altijd op een maximum percentage in te laden  en deze te verkleinen, afhankelijk van het gewenste niveau.
-\end{description}
-
-\subsection{schaalweergave in image}
-Omdat een afbeelding nu wordt ingeladen op een formaat dat afhankelijk is van het formaat van zijn container, is er vrijwel altijd sprake van een schaalweergave.
-Dit wordt echter nergens in het systeem getoond.
-Voor de volledigheid van het systeem zou er  bij een afbeelding dus nog een schaal moeten worden weergegeven.
-Omdat het daadwerkelijke ophalen van de afbeelding door Python gebeurd is het wellicht het handigst om deze schaal ook door Python te laten berekenen en terug te laten geven aan de website.
-
-\subsection{export on unix import on windows}
-Doordat Windows geen ondersteuning heefd voor reverse seeks is het niet mogelijk om een export die gemaakt is op Unix of Mac OS X te importeren op een Windows server. Vermoedelijk kan dit verholpen worden door de inkomende import eerst naar een tijdelijk bestand weg te schrijven, maar dit is niet zeker. Als ook dat niet werkt dan kan er gekeken worden naar een ander bestandsformaat voor import/export (zoals tar.gz).
-
-\subsection{HTML en JavaScript refactor}
-Omdat het systeem in korte tijd is ge\"evolueerd naar een uitgebreid systeem is het aan te bevelen om in de toekomst code te herschrijven. Van het scherm dat per project getoond wordt is het het belangrijkst dat het herschreven wordt, omdat hierin de meeste gebruikershandelingen worden gedaan en het onderdeel is dat het meest uitgebreid zal worden. Het is verstandig om een stricte scheiding te maken tussen geladen objecten vanuit de database en de HTML die hiervoor wordt gegenereerd. Het is aan te bevelen om per projectscherm \'{e}\'{e}n controller-object te maken die voor alle mogelijke transacties de administratie van objecten en HTML moet bijhouden. Hierdoor ontstaat een frontend systeem dat consistent is met de backend, iets dat vooral door de realtime natuur van de gebruikte AJaX een goede administratie vereist. Om de workflow te verbeteren is het tenslotte belangrijk dat de gebruikersinteractie door het hele systeem zo veel mogelijk \'in de pagina zelf gebeurt, zodat de gebruiker voor zo weinig mogelijk acties hele pagina's moet \(her\)laden. Dit is op veel plaatsen in het systeem al gedaan door te werken met popups die in de pagina verschijnen.=======
-\section{Aanbevelingen} %7
-\label{Aanbevelingen}
-Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
-=======
-\section{Aanbevelingen} %7
-\label{Aanbevelingen}
-Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
->>>>>>> .r902
-Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten het bereik van het project vielen of omdat ze tijdens het project bedacht werden. 
-In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
-
-In de toelichting geven we een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
-Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
-
-\subsection{Bestandstypen van foto's} %7.1
-Op dit moment kan de morph-functie alleen foto's aan van het JPEG-formaat. 
-Alhoewel dit het meest gebruikte formaat is zou het een verbetering zijn als het systeem ook met andere formaten om kan gaan. 
-Een probleem is, dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het geen jpeg foto's zijn. 
-Het kan nu gebeuren dat er een gif-afbeelding wordt geupload, die vervolgens de extensie jpg krijgt. 
-Hierdoor geeft de vtkJPEGReader een error, en kan er met dit plaatje niet gemorphd worden. 
-Het weergeven van de afbeelding in de browser gaat wel goed, waardoor het voor de gebruiker niet duidelijk is dat er eigenlijk iets mis is met de afbeelding.
-
-Een oplossing zou kunnen zijn om bij het uploaden van de afbeelding de Python Imaging Library te laten kijken naar de foto, en deze om te laten zetten naar een echt jpeg bestand. 
-Het gevaar hierbij is, dat er door de compressie van het JPEG-formaat er aan scherpte van de foto verloren gaat.
-Een oplossing voor dit probleem zou kunnen zijn om helemaal geen jpeg-bestanden meer op te slaan, en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren, en voor dit formaat zijn dezelfde VTK-library's beschikbaar als voor het jpeg formaat.
-
-Dit is echter een probleem waar wij binnen het project te laat tegenaan liepen, waardoor er geen tijd meer was om dit op te lossen.
-
-\subsection{Verschillende kleuren in flash applicatie} %7.2 <---
-Binnen onze applicatie is het op dit moment al mogelijk om een bitmap te tekenen in een willekeurige kleur. 
-Wat echter nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren te gebruiken.
-Voor de gebruikers zou het intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
-Het moet de gebruiker dan expliciet verteld worden dat de hele bitmap wordt opgeslagen in de kleur waarmee het laatst is gewerkt.
-%TODO voor Bastiaan
-
-\subsection{Opslaan van een lege bitmap}
-Op dit moment is het niet mogelijk om een bestaande bitmap te bewerken naar een lege, omdat dan in de submit de minimale en maximale coördinaten gezet zijn naar defaultwaarden die de server niet aankan. Daarom wordt nu afgevangen dat er een lege bitmap is gesubmit, maar deze wordt verder niet opgeslagen.
-
-De enige reden om een lege bitmap op te slaan is om deze te verwijderen, maar zoals elders beschreven moet dat nu nog via de admin-interface gedaan worden. Lege bitmaps opslaan is niet de manier, en wegens de huidige implementatie wordt de lege dump dus ook niet opgeslagen.
-
-Het systeem zou verbeterd kunnen worden door de Save-knop weg te halen uit de Flash-appliactie als er niets is getekend. Dat maakt het voor de gebruiker duidelijker dat opslaan van een leeg plaatje niet kan. Er moet sowieso ook nog een verwijderknop in het systeem gemaakt worden. Als deze duidelijker aanwezig is voorkomt dit dat de gebruiker een lege bitmap op zou willen slaan.
-
-\subsection{Te grote foto's inladen in de flash-applicate}
-Een vervelende beperking van de Flash-applicatie waar we op een erg laat moment achter kwamen is dat de maximale grootte van een afbeelding die je in Flash kan laden 2880 x 2880 pixels is. De afbeeldingen die gebruikt zullen worden in het systeem zijn doorgaans groter, wat erin resluiteert dat alle pixels die buiten de marge het ondersteunde gebied vallen gewoon niet geladen worden. Het wordt dan niet mogelijk om buiten dit gebied te tekenen en de naar de server geposte dump is ook maximaal 2880 x 2880 pixels.
-
-Er zijn grofweg twee oplossingen te bedenken. De makkelijkste is het resizen van de image naar maximaal 2880 x 2880 pixels voordat deze door de Flash-applicatie geladen wordt. Dit kan het systeem al. Het probleem komt aan de serverkant wanneer de server de geposte dump terug moet rekenen naar volledige grootte. Deze moet opgevraagd worden bij de orignele afbeeldingen die in verkleinde vorm als achtergrond diende. Het probleem bij deze aanpak is dat er geen pixelprecisie meer is in het tekenen over de afbeeldingen, omdat deze geresized wordt. Omdat de resolutie van de afbeeldingen redelijk groot is, is dit geen groot probleem.
-
-%titels zijn voorstellen, kunnen gewijzigd worden
 \subsection{statistische data bij landmarks} %7.5
 Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kan worden bij de aangegeven landmarks.
 Deze data heeft betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
