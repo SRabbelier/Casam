@@ -1,21 +1,42 @@
 \section{Bijlagen}
 \label{Bijlagen}
 \subsection{Prioriteiten}
-\begin{table*}[htbp]
-	\caption{Prioriteiten}
-	\label{tab:Prioriteiten}
-	\begin{tabular}{llll}
-		\large{Database systeem en \\ \large{basic invoer} & \large{Image processing} \\
-		\large{MOET} & & & \\
-		1 Uploaden en verwijderen \\van foto's & 1. Automatisch schalen, draaien \\en verplaatsen\\
-		2. Invoeren / opslaan van \\landmarks & 2. Morphen naar Standard Anatomical \\View \\
-		3. Managen projecten en \\selecties d.m.v. tags & 3. Visualisering landmarks, \\lines en geometrische vormen \\
-		4. Managen MogelijkeMeting en \\koppelen aan projecten & 4. Samenstellen te tonen \\layering \\
-		5. Invoeren/opslaan statistische \\informatie & 5. analyse van statistische \\informatie (bv. landmarks) \\
-		6. User control (login) & \\
-		7. User management - Vooraf \\ingestelde auto-logoff en \\OK-mode & \\
-	\end{tabular}
-\end{table*}
+\begin{multicols}{2}
+\Large{\textbf{Database systeem en basic invoer}}
+\large{\textbf{MOET}}
+\begin{enumeration}
+	\item Uploaden en verwijderen van foto's
+	\item Invoeren en opslaan van landmarks (bijvoorbeeld met behulp van drag en drop)
+	\item Managen van projecten en selectie door middel van tags
+	\item Managen van MogelijkeMetingen en deze koppelen aan projecten
+	\item Invoeren en opslaan van statistische informatie
+	\item User control (login)
+	\item User management, met een vooraf ingesteld auto-logoff en OK-mode
+\end{enumeration}
+
+\Large(\textbf{Image Processing}}
+\large{\textbf{MOET}}
+\begin{enumeration}
+	\item Automatisch schalen, draaien en verplaatsen
+	\item Morphen naar standaard AnatomicalView
+	\item Visualisering van landmarks, lines en geometrische vormen
+	\item Samenstellen te tonen van layering
+	\item Analyse van statistische informatie (bijvoorbeeld van landmarks)
+\end{enumeration}
+\large(\textbf{EVENTUEEL}}
+\begin{enumeration}
+	\item Aligning van (X-ray en) handmatige tekeningen over Standard Anatomical View
+	\item Achtergrondverwijdering
+	\item Visueel tonen van statistische analyse (grafieken, tabellen, visualisering op lichaam)
+	\item Proprocessing (witbalans)
+\end{enumeration}
+\large(\textbf{BUITEN SCOPE}}
+\begin{enumeration}
+	\item Detecteren liniaal en uitrekenen schaling
+	\item 3D-draaiing correctie, camerahoekcorrectie
+	\item Automatische detectie gekleurde landmarks
+\end{enumeration}
+\end{multicols}
 
 \subsection{Ori\"{e}ntatieverslag}
 
