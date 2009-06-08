@@ -7,11 +7,47 @@ Daar waar het mogelijk en handig was hebben we geprogrammeerd in tweetallen. Tij
 Ook tijdens de implementatie fase hebben we veel contact gehad met de leden van het \casamproject en zijn er verschillende tussentijdse presentaties geweest. Steeds hebben we na deze presentaties een uitgebreid overleg gehad over de stand van zaken en ge\"{e}valueerd over hoe het project er voor stond. In sommige gevallen hebben we ook onze prioriteitenlijst aangepast aan de hand van deze vergaderingen.
 
 \subsection{Database systeem}
-Lorem ipsum
+Lorem Ipsum
 
+\subsubsection{Verschillende doorzichtige foto's over elkaar heenleggen om de verschillen te bekijken}
+Voor de weergave van afbeeldingen in het project, is er bedacht dat er meerdere afbeeldingen tegelijk zichtbaar moesten kunnen zijn.
+Hiervoor is er bedacht dat er verschillende afbeeldingen over elkaar heen gelegd gaan worden, met een door de gebruiker in te stellen volgorde en doorzichtigheid.
+Om dit te kunnen realiseren hebben we eerst voor elke afbeelding in het project een eigen slider gemaakt, die pas geladen wordt op het moment dat de afbeelding zichtbaar wordt gemaakt. 
+Met deze slider kan de gebruiker vervolgens zelf instellen met welke doorzichtigheid de corresponderende afbeelding zichtbaar gemaakt moet worden.
+Deze slider was een onderdeel van de Script.aculo.us bibliotheek, waar in het project vaker gebruik van gemaakt wordt.
+Hierna moest het mogelijk gemaakt worden om de volgorde van de weergegeven afbeeldingen aan te passen.
+Dit hebben we gedaan door van de lijst met afbeeldingen in het linker frame een Sortable te maken.
+Dit heeft als voordeel dat de volgorde nu bepaald kan worden door de gewenste zichtbare afbeelding naar boven te slepen.
+Ook wordt de volgorde van de lijst automatisch aangepast op het moment dat er een afbeelding zichtbaar wordt gemaakt, door deze afbeelding naar boven te verplaatsen in de lijst.
+De bovenste afbeelding van de lijst wordt altijd ook de bovenste afbeelding van alle zichtbare afbeeldingen, zodat de bovenste afbeelding altijd de actieve afbeelding is, waarop de bewerkingen worden gedaan.
+\subsubsection{Herkenningspunten bij de afbeeldingen}
+Voor het toevoegen van herkenningspunten aan de afbeeldingen hebben we ervoor gekozen om deze op te slaan in een apart model in de database.
+Aan dit model zit een koppeling met de MogelijkeMetingen vast, evenals met de afbeelding waar het punt bij hoort en het project.
+Om een herkenningspunt (landmark) op te kunnen slaan, moeten deze dingen dan ook eerst bestaan.
+Als er een foto geladen is in het scherm, wordt hier met Javascript een listener aan gekoppeld die reageert als er op de foto geklikt wordt.
+Deze listener wordt weer van de foto afgehaald op het moment dat er een andere foto overheen geladen wordt, en er een andere foto bestempeld wordt als actieve laag.
+Aan deze foto wordt dan weer een listener gekoppeld, die de muisklik op de foto afvangt.
+Als er op de geladen foto's wordt geklikt, wordt de listener (van de foto van de actieve laag) geactiveerd, en wordt er een popup-schermpje getoond waarin de benodigde informatie voor het landmark staat.
+In deze popup dient er een MogelijkeMeting gekozen te worden van het landmark, en wordt er onzichtbaar een ID meegegeven van de foto.
+Als er in de popup dan op 'Save' geklikt wordt, wordt er eerst in de Javascript code gekeken of de landmark al bestond of niet.
+Voor een landmark die al bestond, wordt er een 'repositioning'-change aangemaakt, waarin de nieuwe co\"{o}rdinaten worden opgeslagen, terwijl er voor een nieuwe landmark een 'positioning'-change wordt aangemaakt.
+Hierna wordt er een AJaX call naar de server gedaan.
+Op de server wordt er vervolgens gekeken of er al een landmark bestaat, met het gegeven foto-ID en de gegeven MogelijkeMeting.
+Is dit namelijk zo, dan wordt dit landmark opgehaald, en aangepast.
+Bestaat er nog geen landmark met de gegeven parameters, dan wordt er een nieuwe aangemaakt.
+In beide gevallen wordt het bewuste landmark vanuit de database terug gegeven naar Javascript, door middel van een JSON-string.
+Als het landmark opgeslagen kon worden op de server, wordt de hiervoor aangemaakte change in de Javascript ook opgeslagen.
+Vervolgens wordt voor een bestaand landmark de positie aangepast.
+Voor een bestaand landmark wordt er een nieuw measurement aangemaakt, die op de goede plaats onder de afbeelding wordt geplaatst.
+\subsubsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
 Voorbeeld van de implementatie van de bitmap creator python-javascript-html-flash-javascript-python
+\subsubsection{Toevoegen van relevante papers en websites bij een project}
+\subsubsection{Tags toevoegen bij projecten om ze te categoriseren}
+\subsubsection{Vastleggen van interessante configuraties om de foto's en bijbehorende informatie te tonen, ook wel states genoemd}
+\subsubsection{Afstanden meten in foto's}
+\subsubsection{Een knop aanbieden om een Point Distribution Model te cre\"{e}ren}
 
-Op het eind van het project hadden we veel bereikt. Maar ook is er werk blijven liggen. Voorbeelden hiervan zijn: de ViewMode voor artsen en de analyse van statische data.
+Op het eind van het project hadden we veel bereikt. Maar ook is er werk blijven liggen. De dingen die zijn blijven liggen bespreken we in sectie \ref{Aanbevelingen}
 
 \subsection{Image Processing}
 Dit was \'{e}\'{e}n van de grootste uitdagingen van het project. Niemand had ervaring met de verschillende bibliotheken of uitgebreide ervaring met dit aspect van Image Processing. Er waren verschillende opties om de benodigde technieken te implementeren, zo konden we ze zelf implementeren met behulp van Numpy\cite{numpy}, of gebruik maken van grotere libraries zoals Insight Segmentation and Registration Toolkit (ITK)\cite{ITK} of de Visualization Toolkit (VTK)\cite{vtk}. Verder was er nog de Python Imaging Library (PIL)\cite{pil}, die geschikt is om eenvoudige beeldbewerking te doen. Uiteindelijk is er, mede op advies van Dr. Botha, gekozen voor PIL in combinatie met de VTK bibliotheek. Om aan de vraagstelling te kunnen voldoen, het in kaart brengen van de variaties per landmark en het kunnen projecteren van getekende gebieden op één gemiddeld plaatje, hebben we gekozen om een deel van de methode Active Shape Modeling, genaamd Point Distribution Models, toe te passen in combinatie met Thin Plate Spline transformaties. Hierdoor is het mogelijk voor de onderzoeker om op een wiskundige verantwoorde manier anatomische structuren op een gemiddelde te projecteren en de variaties per landmark te visualiseren.
