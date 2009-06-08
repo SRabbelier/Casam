@@ -114,15 +114,27 @@ In het zoom scherm wordt het huidige plaatje nu twee keer zo groot weergegeven a
 Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
 Dit kan dan later altijd nog uitgebreid worden naar een de gebruiker in te stellen niveau, binnen een aantal vastgestelde grenzen.
 
-De reden waarom wij dit nog niet hebben aangepakt, is dat het voor ons een te groot project zou worden.
-Ook zitten er aan de huidige implementatie nog wat haken en ogen voordat het op deze manier kan werken, omdat nu het huidige plaatje in zijn geheel op 200\% wordt ingeladen in dat frame.
-Als je dit uit gaat breiden naar een aantal vast niveau's is het misschien wat betreft de load nog wel haalbaar de afbeelding op deze niveau's alvast op te halen, maar voor een willekeurig niveau is dit onhaalbaar.
-Een ander alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
-Het nadeel hiervan is dat \'{e}\'{e}n afbeelding dan heel vaak opgehaald moet worden, voordat de gebruiker het gewenste niveau heeft gevonden.
-Een derde optie was om de afbeelding zichzelf te laten vergroten in het zoom-kader, afhankelijk van het niveau. 
-Het grote nadeel van deze oplossing was dat een afbeelding momenteel wordt ingeladen met een grote die afhankelijk is van de grote van zijn container.
+De grootste reden waarom wij dit nog niet hebben aangepakt, is dat er nog een aantal haken en ogen aan de huidige implementatie zitten.
+\begin{description}
+	\item[inladen vaste niveau's] Het inladen van een afbeelding op een aantal vaste niveau's is misschien wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit onhaalbaar.
+	\item[inladen geselecteerd niveau] Een ander alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
+	Het nadeel hiervan is dat \'{e}\'{e}n afbeelding dan heel vaak opgehaald moet worden, voordat de gebruiker het gewenste niveau heeft gevonden.
+	\item[vergroten in venster] Een volgende oplossingis het laten vergroten van de reeds ingeladen afbeelding.
+	Het grote nadeel van deze oplossing was dat een afbeelding momenteel wordt ingeladen met een grote die afhankelijk is van de grote van zijn container.
 Als deze dus klein is, wordt er standaard een foto met heel weinig detail ingeladen.
+Op het moment dat deze foto vervolgens uitvergroot wordt, blijft er in de uitvergrote afbeelding te weinig detail over om bruikbaar te zijn.
+	\item[verkleinen in venster] Een oplossing die eventueel wel zou werken, is om de afbeelding altijd op een maximum percentage in te laden, en deze te verkleinen, afhankelijk van het gewenste niveau.
+Hiervoor hebben wij echter te weinig tijd gehad, waardoor dit eigenlijk is blijven liggen.
+\end{description}
 
 \subsection{schaalweergave in image}
+Omdat een afbeelding nu wordt ingeladen op een grote die afhankelijk is van de grote van zijn container, is er vrijwel altijd sprake van een schaalweergave.
+Dit wordt echter nergens in het systeem getoond.
+Voor de volledigheid van het systeem zou er  bij een afbeelding dus nog een schaalaanduiding van de afbeelding kunnen komen.
+Omdat het daadwerkelijke ophalen van de afbeelding door Python gebeurd, is het wellicht het handigst om deze schaal ook door Python te laten berekenen en terug te laten geven aan de website.
 
 \subsection{export on unix import on windows}
+%TODO: SVERRE
+
+\subsection{HTML en Javascript refactor}
+%TODO: SJORS
