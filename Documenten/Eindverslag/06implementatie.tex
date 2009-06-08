@@ -10,13 +10,14 @@ Zo konden we ons vervolgens concentreren op de Javascript functies welke zouden 
 
 \subsection{Project gerelateerd}
 Daar waar het mogelijk en handig was hebben we geprogrammeerd in tweetallen. 
-Tijdens de implementatie fase hebben we veel gebruik gemaakt van de beschikbare whiteboards, deze waren handig voor het brainstormen en als iemand vast liep dan kon het probleem getekend en uitgelegd worden. 
-Dit alles zorgde voor een goede synergie en hield iedereen de motivatie die hij had goed vast.
+Tijdens de implementatie fase hebben we veel gebruik gemaakt van de beschikbare whiteboards.
+Deze waren handig voor het brainstormen en als iemand vast liep, kon het probleem getekend en uitgelegd worden. 
+Dit alles zorgde voor een goede synergie en hierdoor hield iedereen de motivatie die hij had goed vast.
 Ook tijdens de implementatie fase hebben we veel contact gehad met de leden van het \casamproject en zijn er verschillende tussentijdse presentaties geweest. 
 Steeds hebben we na deze presentaties een uitgebreid overleg gehad over de stand van zaken en ge\"{e}valueerd over hoe het project er voor stond. In sommige gevallen hebben we ook onze prioriteitenlijst aangepast aan de hand van deze vergaderingen.
 
 \subsection{Database systeem}
-Lorem Ipsum
+Voordat we konden beginnen met het database systeem
 
 \subsubsection{Verschillende doorzichtige foto's over elkaar heenleggen om de verschillen te bekijken}
 Voor de weergave van afbeeldingen in het project, is er bedacht dat er meerdere afbeeldingen tegelijk zichtbaar moesten kunnen zijn.
@@ -50,11 +51,24 @@ Vervolgens wordt voor een bestaand landmark de positie aangepast.
 Voor een bestaand landmark wordt er een nieuw measurement aangemaakt, die op de goede plaats onder de afbeelding wordt geplaatst.
 \subsubsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
 Voorbeeld van de implementatie van de bitmap creator python-javascript-html-flash-javascript-python
-\subsubsection{Toevoegen van relevante papers en websites bij een project}
+%TODO BASTIAAN
+\subsubsection{Toevoegen van relevante papers en websites}
+Voor het toevoegen van papers en websites aan een project, hebben wij gekozen om deze ook in een apart model in de database op te slaan.
+In dit model zit een verwijzing naar het project waar de toevoeging bij hoort, en een verwijzing naar de toevoeging zelf.
+Deze verwijzing bestaat in het geval van een website uit een URL, en in het geval van een paper uit een link naar de paper, die op de lokale server wordt opgeslagen.
 \subsubsection{Tags toevoegen bij projecten om ze te categoriseren}
+Om een grote verzameling projecten overzichtelijk te houden, was het noodzakelijk om een aantal trefwoorden (tags) aan een project te kunnen koppelen.
+Ook moest het mogelijk zijn om onderlinge verbanden tussen projecten te leggen, door middel van dezelfde tags.
+Op deze manier kan er dan makkelijk gezocht worden op de tags, en worden alleen de overeenkomstige projecten ook getoond.
+Bij het aanmaken van een project kan er al gekozen worden uit de selectie met bestaande tags, zodat een project direct makkelijk gevonden kan worden.
+Voor het aanmaken van nieuwe tags is het wel nodig om het project te openen.
+Deze nieuwe tags kunnen daarna wel direct aan andere projecten worden gekoppeld.
 \subsubsection{Vastleggen van interessante configuraties om de foto's en bijbehorende informatie te tonen, ook wel states genoemd}
+%TODO SJORS
 \subsubsection{Afstanden meten in foto's}
+%TODO JAAP
 \subsubsection{Een knop aanbieden om een Point Distribution Model te cre\"{e}ren}
+%TODO NOESKA
 
 Op het eind van het project hadden we veel bereikt. Maar ook is er werk blijven liggen. De dingen die zijn blijven liggen bespreken we in sectie \ref{Aanbevelingen}
 
