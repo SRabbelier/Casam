@@ -297,3 +297,8 @@ a.saveChangeButton{
   size: 9px;
   height: 10px;
 }
+.project_export_link{
+	float:left;
+	width:50%;
+	text-align:center;
+}
