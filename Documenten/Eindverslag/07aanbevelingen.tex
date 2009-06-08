@@ -1,7 +1,7 @@
 \section{Aanbevelingen} %7
 \label{Aanbevelingen}
 Hieronder een korte toelichting op werkzaamheden waar wij niet aan toe zijn gekomen. 
-Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten de scope van het project vielen of omdat ze tijdens het project bedacht werden. 
+Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten het bereik van het project vielen of omdat ze tijdens het project bedacht werden. 
 In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
 
 In de toelichting geven we een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
@@ -85,9 +85,9 @@ Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samen
 
 Zelf zijn wij door tijdsdruk hier niet goed meer aan toegekomen, en is het eigenlijk blijven liggen, ondanks dat een degelijke user management in eerste instantie wel een van de eisen het EMC was.
 
-\subsection{verwijderen measurements e.d. zonder admin}
-Wat betreft het verwijderen van een aantal objecten uit het systeem, is er ook nog grote winst te behalen.
-Zo wordt voor het verwijderen van de volgende objecten nu nog de Django-admin-interface gebruikt:
+\subsection{verwijderen measurements zonder admin}
+Wat betreft het verwijderen van objecten uit het systeem, is er grote winst te behalen.
+Zo wordt voor het verwijderen van de volgende objecten nu nog de Django admin-interface gebruikt:
 \begin{itemize}
   \item Bitmaps
   \item Landmarks
@@ -95,24 +95,25 @@ Zo wordt voor het verwijderen van de volgende objecten nu nog de Django-admin-in
   \item Projects
   \item Tags
 \end{itemize}
-Van deze objecten wordt er nu alleen voor projecten ook de mogelijkheid geboden om deze via de normale interface te verwijderen, terwijl het eigenlijk het netst is, om alle objecten via de interface te kunnen verwijderen.
+Van deze objecten wordt er alleen voor projecten ook de mogelijkheid geboden om deze via de normale interface te verwijderen. 
+Terwijl eigenlijk alle objecten via de interface verwijderd moeten worden.
 
-Toen wij hier zelf over aan het nadenken waren, kwamen wij tot de conclusie dat een aantal oplossingen waren die allemaal eigenlijk niet zo goed ginen werken.
-De oplossingen waar wij aan gedacht hebben, staan hier onder beschreven.
+Toen wij hier zelf over aan het nadenken waren, kwamen wij tot de conclusie dat er een aantal oplossingen waren die allemaal eigenlijk niet zo goed zouden werken.
+De oplossingen waar wij aan gedacht hebben, staan hier onder beschreven:
 \begin{description}
-  \item[Inline delete] Een van de mogelijkheden was om in de interface achter elke landmark en elke bitmap een rood kruisje te plaatsen.
-  Hier hebben wij vanaf gezien, omdat wij vonden dat de gewone gebruikersinterface dan eigenlijk veel te vol werd.
-  Verder staan er eigenlijk nergens in de interface kruisjes, en hebben we overal zogenaamde 'managers' voor
-  \item[Bij de image manager] Omdat de landmarks en bitmaps onderdeel zijn van de afbeeldingen, zou het misschien bij de image manager erbij kunnen.
-  Dit zou dan in kunnen houden dat er eerst op de afbeelding geklikt moet worden, waarna er een lijstje met landmarks en bitmaps verschijnt die verwijderd kunnen worden.
-  Nadeel hiervan is dat de image manager eigenlijk niet de plek is om dit soort dingen in te regelen, omdat hij puur bedoeld is voor de afbeeldingen.
-  \item[Delete mode]De radicaalste oplossing was om een 'delete mode' toe te voegen aan de interface.
-  Het idee hierbij was dat je op een knop kon drukken, waarna er eigenlijk een nieuwe interface geladen werd.
-  In deze nieuwe interface kon je dan eigenlijk alles naar een prullenbak slepen, waarna het verwijderd werd op het moment dat je deze 'delete mode' weer verliet.
-  Dit klonk opzich als een heel leuk idee, ware het niet dat dit heel veel tijd zou gaan kosten.
-  Daar kwam nog eens bij dat we niet zeker wisten of dit wel een idee was wat aan zou slaan bij de gebruikers, en of dit voor de gebruikers wel echt intu\"{i}tief was.
-  \item[Eigen manager] Een eigen manager voor de landmarks en bitmaps was waarschijnlijk het beste idee, maar door de tijdsdruk zijn we ook hier niet aan toe gekomen.
-  Het enige wat eigenlijk tegen was op deze oplossing was het feit dat er dan nog een link bij zou komen in de interface.
+  \item[Inline delete] Een van de mogelijkheden is om in de interface achter elke landmark en elke bitmap een rood kruisje te plaatsen.
+  Hier hebben wij vanaf gezien, omdat wij vonden dat de gewone gebruikersinterface dan te vol zou worden.
+  Verder staan er nergens in de interface kruisjes en hebben we overal managers voor
+  \item[Bij de image manager] Omdat de landmarks en bitmaps onderdeel zijn van de afbeeldingen, zou het bij de image manager erbij kunnen.
+  Dit zou dan inhouden dat er eerst op de afbeelding geklikt moet worden, waarna er een lijstje met landmarks en bitmaps verschijnt die verwijderd kunnen worden.
+  Nadeel hiervan is dat de image manager niet de plek is om dit soort dingen in te regelen, omdat hij bedoeld is voor de afbeeldingen.
+  \item[Delete mode]De meest radicale oplossing is om een delete mode toe te voegen aan de interface.
+  Het idee is dat je op een knop kan drukken, waarna er een nieuwe interface geladen wordt.
+  In deze nieuwe interface kan je dan eigenlijk alles naar een prullenbak slepen, waarna het verwijderd word op het moment dat je deze delete mode weer verlaat.
+  Dit klinkt op zich als een leuk idee, echter het zou heel veel tijd gaan kosten.
+  Daar komt nog eens bij dat we niet zeker weten of dit wel een idee was wat aan zou slaan bij de gebruikers, en of dit voor de gebruikers wel intu\"{i}tief is.
+  \item[Eigen manager] Een eigen manager voor de landmarks en bitmaps is waarschijnlijk het beste idee, maar door de tijdsdruk zijn we ook hier niet aan toe gekomen.
+  Het enige tegen deze oplossing was het feit dat er dan nog een link bij zou komen in de interface.
   Gekscherend werd er gezegd dat er bijna behoefte was aan een manager voor de managers, omdat het er inmiddels al zo veel zijn.
 \end{description}
 
@@ -120,29 +121,28 @@ De oplossingen waar wij aan gedacht hebben, staan hier onder beschreven.
 %TODO: NOESKA
 
 \subsection{zoom op meerdere niveau's}
-Een leuke en handige uitbreiding voor de nu aanwezige zoom-functie in de interface, is om het niveau van de zoom in te kunnen stellen.
-In het zoom scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid eigenlijk is, maar idealiter is dit in te stellen naar een willekeurige grootte.
+Een leuke en handige uitbreiding voor de nu aanwezige zoomfunctie in de interface, is om het niveau van de zoom in te kunnen stellen.
+In het zoom-scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid is, maar idealiter is dit in te stellen naar een willekeurige grootte.
 Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
-Dit kan dan later altijd nog uitgebreid worden naar een de gebruiker in te stellen niveau, binnen een aantal vastgestelde grenzen.
+Dit kan dan later nog uitgebreid worden naar een door de gebruiker in te stellen niveau, binnen vastgestelde grenzen.
 
-De grootste reden waarom wij dit nog niet hebben aangepakt, is dat er nog een aantal haken en ogen aan de huidige implementatie zitten.
+Wij hebben dit nog niet aangepakt, omdat er nog een aantal haken en ogen aan de huidige implementatie zitten, namelijk:
 \begin{description}
-	\item[inladen vaste niveau's] Het inladen van een afbeelding op een aantal vaste niveau's is misschien wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit onhaalbaar.
-	\item[inladen geselecteerd niveau] Een ander alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
+	\item[inladen vaste niveau's] Het inladen van een afbeelding op een aantal vaste niveau's is wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit onhaalbaar.
+	\item[inladen geselecteerd niveau] Een alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
 	Het nadeel hiervan is dat \'{e}\'{e}n afbeelding dan heel vaak opgehaald moet worden, voordat de gebruiker het gewenste niveau heeft gevonden.
-	\item[vergroten in venster] Een volgende oplossingis het laten vergroten van de reeds ingeladen afbeelding.
-	Het grote nadeel van deze oplossing was dat een afbeelding momenteel wordt ingeladen met een grote die afhankelijk is van de grote van zijn container.
+	\item[vergroten in venster] Een volgende oplossing is het laten vergroten van de reeds ingeladen afbeelding.
+	Het grote nadeel van deze oplossing is dat een afbeelding momenteel wordt ingeladen met een afmeting die afhankelijk is van de afmeting van zijn container.
 Als deze dus klein is, wordt er standaard een foto met heel weinig detail ingeladen.
-Op het moment dat deze foto vervolgens uitvergroot wordt, blijft er in de uitvergrote afbeelding te weinig detail over om bruikbaar te zijn.
-	\item[verkleinen in venster] Een oplossing die eventueel wel zou werken, is om de afbeelding altijd op een maximum percentage in te laden, en deze te verkleinen, afhankelijk van het gewenste niveau.
-Hiervoor hebben wij echter te weinig tijd gehad, waardoor dit eigenlijk is blijven liggen.
+Op het moment dat deze foto vervolgens uitvergroot wordt, blijft er in de uitvergrootte afbeelding te weinig detail over om bruikbaar te zijn.
+	\item[verkleinen in venster] Een oplossing die zou kunnen werken, is om de afbeelding altijd op een maximum percentage in te laden  en deze te verkleinen, afhankelijk van het gewenste niveau.
 \end{description}
 
 \subsection{schaalweergave in image}
-Omdat een afbeelding nu wordt ingeladen op een grote die afhankelijk is van de grote van zijn container, is er vrijwel altijd sprake van een schaalweergave.
+Omdat een afbeelding nu wordt ingeladen op een formaat dat afhankelijk is van het formaat van zijn container, is er vrijwel altijd sprake van een schaalweergave.
 Dit wordt echter nergens in het systeem getoond.
-Voor de volledigheid van het systeem zou er  bij een afbeelding dus nog een schaalaanduiding van de afbeelding kunnen komen.
-Omdat het daadwerkelijke ophalen van de afbeelding door Python gebeurd, is het wellicht het handigst om deze schaal ook door Python te laten berekenen en terug te laten geven aan de website.
+Voor de volledigheid van het systeem zou er  bij een afbeelding dus nog een schaal moeten worden weergegeven.
+Omdat het daadwerkelijke ophalen van de afbeelding door Python gebeurd is het wellicht het handigst om deze schaal ook door Python te laten berekenen en terug te laten geven aan de website.
 
 \subsection{export on unix import on windows}
 Doordat Windows geen ondersteuning heefd voor reverse seeks is het niet mogelijk om een export die gemaakt is op Unix of Mac OS X te importeren op een Windows server. Vermoedelijk kan dit verholpen worden door de inkomende import eerst naar een tijdelijk bestand weg te schrijven, maar dit is niet zeker. Als ook dat niet werkt dan kan er gekeken worden naar een ander bestandsformaat voor import/export (zoals tar.gz).
