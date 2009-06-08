@@ -49,6 +49,16 @@ Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data, en d
 De analyse van deze data, en het hieruit produceren van bruikbare data, is daarna weer een probleem apart, wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek benodigt.
 Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen, is dat er een PyCha module bestaat, waarmee in Python grafieken gemaakt kunnen worden.
 
+\subsection{uitwerken afstand meet applicatie}
+Vanuit het EMC was de wens opgekomen om het mogelijk te maken om in foto's afstanden te meten.
+Dit zou dan gebruikt kunnen worden bij een deel van de statistische data, zoals dit hierboven al beschreven is.
+Aangezien een van de eerste vragen van het EMC was hebben we hier al even naar gekeken, en een zgn. 'spiky solution' voor gebouwd.
+Hier zat echter nog een niet acceptabele meetfout in, waardoor de functie niet in de uiteindelijke interface terecht is gekomen.
+Er waren echter wel een aantal manieren waarop de nu aanwezige meetfout waarschijnlijk teruggedrongen kon worden:
+\begin{description}
+	\item[TODO] voor Jaap
+\end{description}
+
 \subsection{uitgebreid user management en arts-view mode}
 Wat betreft het huidige user management zijn er nog vele verbeteringen mogelijk.
 Momenteel zijn er namelijk 3 gebruikersgroepen aanwezig, die niet altijd evengoed gecontroleerd worden.
@@ -75,15 +85,40 @@ Van deze objecten wordt er nu alleen voor projecten ook de mogelijkheid geboden 
 
 Toen wij hier zelf over aan het nadenken waren, kwamen wij tot de conclusie dat een aantal oplossingen waren die allemaal eigenlijk niet zo goed ginen werken.
 De oplossingen waar wij aan gedacht hebben, staan hier onder beschreven.
-\subsubsection{Inline delete}
-\subsubsection{}
-\subsubsection{}
+\begin{description}
+  \item[Inline delete] Een van de mogelijkheden was om in de interface achter elke landmark en elke bitmap een rood kruisje te plaatsen.
+  Hier hebben wij vanaf gezien, omdat wij vonden dat de gewone gebruikersinterface dan eigenlijk veel te vol werd.
+  Verder staan er eigenlijk nergens in de interface kruisjes, en hebben we overal zogenaamde 'managers' voor
+  \item[Bij de image manager] Omdat de landmarks en bitmaps onderdeel zijn van de afbeeldingen, zou het misschien bij de image manager erbij kunnen.
+  Dit zou dan in kunnen houden dat er eerst op de afbeelding geklikt moet worden, waarna er een lijstje met landmarks en bitmaps verschijnt die verwijderd kunnen worden.
+  Nadeel hiervan is dat de image manager eigenlijk niet de plek is om dit soort dingen in te regelen, omdat hij puur bedoeld is voor de afbeeldingen.
+  \item[Delete mode]De radicaalste oplossing was om een 'delete mode' toe te voegen aan de interface.
+  Het idee hierbij was dat je op een knop kon drukken, waarna er eigenlijk een nieuwe interface geladen werd.
+  In deze nieuwe interface kon je dan eigenlijk alles naar een prullenbak slepen, waarna het verwijderd werd op het moment dat je deze 'delete mode' weer verliet.
+  Dit klonk opzich als een heel leuk idee, ware het niet dat dit heel veel tijd zou gaan kosten.
+  Daar kwam nog eens bij dat we niet zeker wisten of dit wel een idee was wat aan zou slaan bij de gebruikers, en of dit voor de gebruikers wel echt intu\"{i}tief was.
+  \item[Eigen manager] Een eigen manager voor de landmarks en bitmaps was waarschijnlijk het beste idee, maar door de tijdsdruk zijn we ook hier niet aan toe gekomen.
+  Het enige wat eigenlijk tegen was op deze oplossing was het feit dat er dan nog een link bij zou komen in de interface.
+  Gekscherend werd er gezegd dat er bijna behoefte was aan een manager voor de managers, omdat het er inmiddels al zo veel zijn.
+\end{description}
 
 \subsection{morphen naar standaard AnatomicalView}
-
-\subsection{uitwerken afstand meet applicatie}
+%TODO: NOESKA
 
 \subsection{zoom op meerdere niveau's}
+Een leuke en handige uitbreiding voor de nu aanwezige zoom-functie in de interface, is om het niveau van de zoom in te kunnen stellen.
+In het zoom scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid eigenlijk is, maar idealiter is dit in te stellen naar een willekeurige grootte.
+Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
+Dit kan dan later altijd nog uitgebreid worden naar een de gebruiker in te stellen niveau, binnen een aantal vastgestelde grenzen.
+
+De reden waarom wij dit nog niet hebben aangepakt, is dat het voor ons een te groot project zou worden.
+Ook zitten er aan de huidige implementatie nog wat haken en ogen voordat het op deze manier kan werken, omdat nu het huidige plaatje in zijn geheel op 200\% wordt ingeladen in dat frame.
+Als je dit uit gaat breiden naar een aantal vast niveau's is het misschien wat betreft de load nog wel haalbaar de afbeelding op deze niveau's alvast op te halen, maar voor een willekeurig niveau is dit onhaalbaar.
+Een ander alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
+Het nadeel hiervan is dat \'{e}\'{e}n afbeelding dan heel vaak opgehaald moet worden, voordat de gebruiker het gewenste niveau heeft gevonden.
+Een derde optie was om de afbeelding zichzelf te laten vergroten in het zoom-kader, afhankelijk van het niveau. 
+Het grote nadeel van deze oplossing was dat een afbeelding momenteel wordt ingeladen met een grote die afhankelijk is van de grote van zijn container.
+Als deze dus klein is, wordt er standaard een foto met heel weinig detail ingeladen.
 
 \subsection{schaalweergave in image}
 
