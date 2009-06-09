@@ -73,8 +73,12 @@ Vervolgens wordt voor een bestaand landmark de positie aangepast.
 Voor een bestaand landmark wordt er een nieuw measurement aangemaakt, dat op de goede plaats onder de afbeelding wordt geplaatst.
 
 \subsubsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
-Voorbeeld van de implementatie van de bitmap creator python-javascript-html-flash-javascript-python
-%TODO BASTIAAN
+
+Een plek in ons systeem waar de samenwerking van verschillende deelsystemen en zelfs verschillende talen goed zichtbaar wordt is de manier waarop de Flash-applicatie gebruikt wordt om bitmaps te tekenen. Hieronder staat dit in een sequence-diagram weergegeven.
+
+Het eerste deel van het diagram toont op welke wijze het bestaan van bitmaps geladen wordt in de JavaScript-omgeving. De rest van het diagram toont wat het systeem doet als de gebruiker het tekenen of bewerken van een bitmap kiest.
+
+Eerst wordt in de HTML-pagina een object ingevoegd waarin de Flash-applicatie geladen wordt. Vervolgens laadt de Flash-applicatie de afbeelding waar op getekend gaat worden. Als de gebruiker vervolgens kiest om de bitmap op te slaan wordt de tekening naar de server verzonden, en als deze succesvol opgeslagen is krijgt de Flash-applicatie een bevestiging waarop deze een melding naar de JavaScript-omgeving gemaakt wordt met het verzoek de Flash-applicatie te sluiten. Dit is de laatste actie die in het diagram beschreven wordt.
 
 \includegraphics[width=100]{ sequencediagram }
 
