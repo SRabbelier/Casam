@@ -12,11 +12,12 @@ In dit hoofdstuk bespreken we de softwaretechnologiën die we gaan gebruiken om d
 %TODO: Sverre, go wild! Once again!
 
 \subsection{Visualisation Toolkit (VTK)}
-Voor het implementeren van de benodigde Image Processing Technieken maken we gebruik van de Visualisation Toolkit (VTK)\cite{vtk}. Hierin zitten de benodigde filters om 
-%TODO: Noeska, finish this
+Voor het implementeren van de benodigde Image Processing Technieken maken we gebruik van de Visualisation Toolkit (VTK)\cite{vtk}. 
+VTK is een open source toolkit voor 3D graphics. In ons geval zetten we de toolkit in voor 2D graphics. VTK bestaat uit een C++ class bibliotheek en onder andere een Python interface laag.\cite{vtk2} Er zitten uitgebreide mogelijkheden in op het gebied van Image Processing en visualisatie.
+In de VTK zitten de benodigde filters om Generalized Procrustes Analysis en Principal Component Analysis uit te voeren. Verder bevat de toolkit een implementatie van de Thin Plate Spline transformatie. Door de z-co\"{o}rdinaten op 0 te zetten kan VTK in de 2D ruimte worden gebruikt. 
 
 \subsection{Python Imaging Library (PIL)}
-%TODO: Noeska, get started on this
+Om de wat simpelere Image Processing technieken te implementeren maken we gebruik van de Python Imaging Library (PIL)\cite{pil}. Er is een handbook beschikbaar waarin de functionaliteiten besproken worden.\cite{pilhandbook} Dit kan onder andere ingezet worden voor het resizen van images, puntoperaties, filtering, colour space conversies, rotatie en transformaties. 
 
 \subsection{JavaScript}
 %TODO: Resident JavaScript experts?
