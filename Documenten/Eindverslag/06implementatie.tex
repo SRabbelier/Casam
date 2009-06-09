@@ -19,8 +19,8 @@ Steeds hebben we na zo'n presentatie een uitgebreid overleg gehad over de stand 
 
 \subsection{Database systeem}
 \label{implementatie_database_systeem}
-Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien als Figuur \ref{brainstorm_klassediagram}.
-De uiteindelijke versie van dit model is te zien als Figuur \ref{databasediagram}.
+Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien in Figuur \ref{brainstorm_klassediagram}.
+De uiteindelijke versie van dit model is te zien in Figuur \ref{databasediagram}.
 Een aantal van de belangrijkste wijzgingen zijn:
 \begin{description}
   \item[Measurement types] In het originele model was er een algemeen MeasurementType bedacht, waar alle 3 de types van overerven. 
@@ -29,16 +29,16 @@ Een aantal van de belangrijkste wijzgingen zijn:
   \item[Measurements] De Measurements zelf zijn nu wat in het originele model een PointMeasurement heette.
   Ook de ProjectMeasurementsList is uit het model verdwenen, en vervangen door de algemene PotentialMeasurements.
   \item[Images] Het algemene type Image is in het uiteindelijke model gespaard gebleven.
-  De Patient die echter aan een OriginalImage hing, is uiteindelijk gesneuveld, omdat dit eigenlijk niets toevoegde aan het systeem.
+  De Pati\"{e}nt die echter aan een OriginalImage hing, is gesneuveld, omdat dit niets toevoegde aan het systeem.
   Ook hebben we besloten om EditedImages niet op te slaan, en in plaats daarvan States te bewaren.
-  \item[States en Projectfiles] Deze States zijn samen met de Projectfiles nieuw aan het model toegevoegd.
+  \item[States en Projectfiles] States zijn samen met de Projectfiles aan het model toegevoegd.
   Hierbij zijn de States bedoeld om de huidige configuratie van zichtbare foto's, Bitmaps en Measurements op te slaan en weer op te halen.
   De Projectfiles zijn bedoeld voor de export van een project.
-  \item[Users] In het originele model was er bedacht dat er voor de Users eigenlijk niets nodig zou zijn, omdat het user-management door Django geregeld zou worden.
-  Zoals tijdens de implementatie is gebleken, was dit helaas niet waar, en moesten we er zelf ook nog een UserProfile aan toe voegen.
-  In dit UserProfile staat opgeslagen welke User welke rechten heeft op welk project.
+  \item[Users] In het originele model zou het user-management door Django geregeld worden.
+  Tijdens de implementatie is gebleken, dat we toch nog een UserProfile moeten toevoegen.
+  In dit UserProfile wordt opgeslagen welke Gebruiker welke rechten heeft op welk project.
 \end{description}
-Een aantal andere aspecten van het database systeem staan hieronder uitgewerkt.
+Andere aspecten van het database systeem worden hieronder toegelicht.
 
 \subsubsection{Verschillende doorzichtige foto's over elkaar heen leggen om de verschillen te bekijken}
 Voor de weergave van afbeeldingen binnen het project is er bedacht dat er meerdere afbeeldingen tegelijk zichtbaar moesten kunnen zijn.
