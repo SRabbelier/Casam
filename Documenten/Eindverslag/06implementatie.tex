@@ -84,8 +84,14 @@ Op deze manier kan er dan makkelijk gezocht worden op de tags, en worden alleen 
 Bij het aanmaken van een project kan er al gekozen worden uit de selectie met bestaande tags, zodat een project direct makkelijk gevonden kan worden.
 Voor het aanmaken van nieuwe tags is het wel nodig om het project te openen.
 Deze nieuwe tags kunnen daarna wel direct aan andere projecten worden gekoppeld.
-\subsubsection{Vastleggen van interessante configuraties om de foto's en bijbehorende informatie te tonen, ook wel states genoemd}
-%TODO SJORS
+\subsubsection{States}
+Een onderdeel dat erg lastig bleek te implementeren waren de states.
+States zijn de manier om, wanneer een interessante samenstelling van foto's, landmarks, bitmaps etc. op het scherm staat, deze op te slaan om het later terug te kunnen halen.
+Omdat de software voornamelijk was ontworpen om handelingen te verrichten bij interactie van de gebruiker, bleek het erg moeilijk te zijn om via code een eerder opgeslagen state te herstellen.
+Om dit mogelijk te maken is een ander HTML en JavaScript model nodig, waarvoor een aanbeveling wordt gedaan in hoofdstuk 7.
+Omdat deze aanpassingen nog niet doorgevoerd zijn is een tijdelijke oplossing ge\"{i}mplementeerd die een deel van de HTML structuur opslaat wanneer de gebruiker erom vraagt, en deze kan later in een popup weer worden getoond zodat een soort van statische state ontstaat waar niet in verder gewerkt kan worden.
+Een andere manier zou zijn om de state op te slaan in een plaatje, waarbij het renderen van de browser wordt nagebootst door de Python Image Library.
+Omdat deze manier een moeilijkere implementatie heeft dan het kopie\"eren van de HTML, en niet per s\'e een beter resultaat oplevert, is ervoor gekozen om dit niet te implementeren.
 \subsubsection{Afstanden meten in foto's}
 %TODO JAAP
 \subsubsection{Een knop aanbieden om een Point Distribution Model te cre\"{e}ren}
