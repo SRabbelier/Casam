@@ -51,6 +51,7 @@ Dit hebben we gedaan door van de lijst met afbeeldingen in het linker frame een 
 Dit heeft als voordeel dat de volgorde nu bepaald kan worden door de gewenste zichtbare afbeelding naar boven te slepen.
 Ook wordt de volgorde van de lijst automatisch aangepast op het moment dat er een afbeelding zichtbaar wordt gemaakt, door deze afbeelding naar boven te verplaatsen in de lijst.
 De bovenste afbeelding van de lijst wordt altijd ook de bovenste afbeelding van alle zichtbare afbeeldingen, zodat de bovenste afbeelding altijd de actieve afbeelding is, waarop de bewerkingen worden gedaan.
+
 \subsubsection{Herkenningspunten bij de afbeeldingen}
 Voor het toevoegen van herkenningspunten aan de afbeeldingen hebben we ervoor gekozen om deze op te slaan in een apart model in de database.
 Aan dit model zit een koppeling met de MogelijkeMetingen vast, evenals met de afbeelding waar het punt bij hoort en het project.
@@ -70,9 +71,14 @@ In beide gevallen wordt het bewuste landmark vanuit de database terug gegeven na
 Als het landmark opgeslagen kon worden op de server, wordt de hiervoor aangemaakte change in JavaScript ook opgeslagen.
 Vervolgens wordt voor een bestaand landmark de positie aangepast.
 Voor een bestaand landmark wordt er een nieuw measurement aangemaakt, dat op de goede plaats onder de afbeelding wordt geplaatst.
+
 \subsubsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
 Voorbeeld van de implementatie van de bitmap creator python-javascript-html-flash-javascript-python
 %TODO BASTIAAN
+
+\includegraphics[width=100]{ sequencediagram }
+
+
 \subsubsection{Toevoegen van relevante papers en websites}
 Voor het toevoegen van papers en websites aan een project hebben wij gekozen om deze ook in een apart model in de database op te slaan.
 In dit model zit een verwijzing naar het project waar de toevoeging bij hoort en een verwijzing naar de toevoeging zelf.
