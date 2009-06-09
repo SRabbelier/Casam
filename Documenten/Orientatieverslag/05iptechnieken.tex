@@ -40,7 +40,7 @@ De uitgelijnde trainingsets vormen nu een wolk in de \textit{2n} dimensionale ru
 \subsubsection{Principal Component Analysis}
 
 Principal Component Analysis (PCA) is een manier om patronen in data te herkennen, en de overeenkomsten en verschillen binnen de dataset weer te geven.\cite{pca}
-Als je de covariantiematrix \textit{S} uitrekent en hierop eigen-analyse uitvoert wordt de vorm van de \textit{m x n}-dimensionale puntenwolk een gewogen som van orthogonale vectoren. Hierin zijn de gewichten de eigenwaarden \lambda en de 'assen' die de ruimte opspannen de eigenvectoren \textit{p}. 
+Als je de covariantiematrix \textit{S} uitrekent en hierop eigen-analyse uitvoert wordt de vorm van de \textit{m x n}-dimensionale puntenwolk een gewogen som van orthogonale vectoren. Hierin zijn de gewichten de eigenwaarden $\lambda$ en de 'assen' die de ruimte opspannen de eigenvectoren \textit{p}. 
 De eigenvectoren waarbij de grootste eigenwaarden horen staan hierbij voor de grootste variaties in de dataset. 
 De eigenvector met de hoogste eigenwaarde is de Principal Component, de meest significante relatie tussen de dimensies van de data. 
 De overige eigenvectoren p representeren de andere principal directions. Elk punt op het oppervlakte van het object kan nu gerepresenteerd worden als een lineaire combinatie van p toegevoegd aan de centroid of het gemiddelde van de vorm.
@@ -65,9 +65,9 @@ PCA:
 We use Principal Component Analysis (PCA) to pick out the main axes of the cloud, and model only the first few, which account for the majority of the variation.
 The shape model is then
 
-x = x_mean + Pb
+$x = x_mean + Pb$
 
-where x_mean is the mean of the aligned training examples, P is a 2n x t matrix whose columns are unit vectors along the principal axes of the cloud, and b is a t element vector of shape parameters.
+where $x_mean$ is the mean of the aligned training examples, P is a 2n x t matrix whose columns are unit vectors along the principal axes of the cloud, and b is a t element vector of shape parameters.
 
 (This model has been dubbed a "Point Distribution Model" (PDM), but has little to do with the Point Distribution in statistics)
 
@@ -98,7 +98,7 @@ Varying the most significant parameter.
 
 Varying the second most significant parameter.
 More Complex Shape Models
-In some situations, the gaussian approximation is simplistic, as the pdf for the shapes is significantly non-gaussian. This can arise if sub-parts of the modelled object rotate, leading to curved clouds of training points in the shape space. Several methods have been used to model such clouds. Polynomial approximations (Sozou et al), neural-net formulations (Sozou et al), and polar co-ordinates (Heap & Hogg) have all been tried. The most recent approach is to treat the cloud as a sample from a pdf, use kernel methods to estimate the pdf, and then to approximate this pdf using a mixture of gaussians. The Expectation Maximisation algorithm is used to fit the mixture to the data. To simplify the calculations, PCA is used to determine a low dimensional sub-space containing most of the variation, before the kernel method is applied. In effect, we use the same model as above, but determine stricter limits on the allowed values of the shape parameters b, modelling their distribution with a mixture of gaussians instead of a single gaussian. The allowed values are those for which the pdf is above a threshold, which can be determined using monte-carlo methods from the mixture .
+In some situations, the gaussian approximation is simplistic, as the pdf for the shapes is significantly non-gaussian. This can arise if sub-parts of the modelled object rotate, leading to curved clouds of training points in the shape space. Several methods have been used to model such clouds. Polynomial approximations (Sozou et al), neural-net formulations (Sozou et al), and polar co-ordinates (Heap en Hogg) have all been tried. The most recent approach is to treat the cloud as a sample from a pdf, use kernel methods to estimate the pdf, and then to approximate this pdf using a mixture of gaussians. The Expectation Maximisation algorithm is used to fit the mixture to the data. To simplify the calculations, PCA is used to determine a low dimensional sub-space containing most of the variation, before the kernel method is applied. In effect, we use the same model as above, but determine stricter limits on the allowed values of the shape parameters b, modelling their distribution with a mixture of gaussians instead of a single gaussian. The allowed values are those for which the pdf is above a threshold, which can be determined using monte-carlo methods from the mixture .
 
 
 \subsection{Thin Plate Spline Transform}
