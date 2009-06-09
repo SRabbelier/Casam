@@ -45,55 +45,25 @@ De eigenvectoren waarbij de grootste eigenwaarden horen staan hierbij voor de gr
 De eigenvector met de hoogste eigenwaarde is de Principal Component, de meest significante relatie tussen de dimensies van de data. 
 De overige eigenvectoren p representeren de andere principal directions. Elk punt op het oppervlakte van het object kan nu gerepresenteerd worden als een lineaire combinatie van p toegevoegd aan de centroid of het gemiddelde van de vorm.
 
-Het algoritme:
+Het PCA algoritme:
+\begin{itemize}
+\item Verkrijg de datapunten
+\item Trek er het gemiddelde van af
+\item Bereken de covariantie matrix
+\item Bereken de eigenvectoren en waarden
+\end{itemize}
 
-    * Verkrijg de datapunten
-    * Trek er het gemiddelde van af
-    * Bereken de covariantie matrix
-    * Bereken de eigenvectoren en waarden
-    * Choosing and forming feature vector
-    * Derive new dataset
-    * Get old data back 
-    
-    
-We use Principal Component Analysis (PCA) to pick out the main axes of the cloud, and model only the first few, which account for the majority of the variation.
-The shape model is then
+Nu kunnen we met de belangrijkste modi van variatie (de eigenwaarden met de bijbehorende eigenvectoren) het shape model defini\"{e}ren:
 
-$x = x_mean + Pb$
+$x = x_{mean} + Pb$
 
-where $x_mean$ is the mean of the aligned training examples, P is a 2n x t matrix whose columns are unit vectors along the principal axes of the cloud, and b is a t element vector of shape parameters.
+Hierbij is $x_{mean}$ het gemiddelde van de uitgelijnde shape parameteres, \textit{P} is een \textit{2n x t} matrix waarvan de kolommen de t unit vectoren van de principal assen van de wolk vormen. textit{b} is een t-dimensionale vector gegeven door:
 
-(This model has been dubbed a "Point Distribution Model" (PDM), but has little to do with the Point Distribution in statistics)
+$b = P^{T}(x-\={x})$
 
-By varying the shape parameters within limits learnt from the training set, we can generate new examples.
-
-Such models are used in the Active Shape Model framework to locate new examples in new images.
-Hand Example
-
-Consider the outline of a hand, represented by 72 labelled points.
-Here are some examples from a training set:
-
-By varying the first three parameters of the shape vector, b, one at a time, we can demonstrate some of the modes of variation allowed by the model:
-
-(Each row obtained by varying on parameter and fixing others at zero)
-Face Example
-
-Here represent the shape of the facial structures with 68 points
-
-The first mode of shape variation of a training set containing many different view points tends to represent rotation of the head.
-Brain Structure Example
-
-We can represent the outline of several brain structures in a single model.
-For instance, here is an example from a labelled brain MR image
-
-By varying the first two parameters of the shape vector, b, one at a time, we can demonstrate some of the modes of variation allowed by the model:
-
-Varying the most significant parameter.
-
-Varying the second most significant parameter.
-More Complex Shape Models
-In some situations, the gaussian approximation is simplistic, as the pdf for the shapes is significantly non-gaussian. This can arise if sub-parts of the modelled object rotate, leading to curved clouds of training points in the shape space. Several methods have been used to model such clouds. Polynomial approximations (Sozou et al), neural-net formulations (Sozou et al), and polar co-ordinates (Heap en Hogg) have all been tried. The most recent approach is to treat the cloud as a sample from a pdf, use kernel methods to estimate the pdf, and then to approximate this pdf using a mixture of gaussians. The Expectation Maximisation algorithm is used to fit the mixture to the data. To simplify the calculations, PCA is used to determine a low dimensional sub-space containing most of the variation, before the kernel method is applied. In effect, we use the same model as above, but determine stricter limits on the allowed values of the shape parameters b, modelling their distribution with a mixture of gaussians instead of a single gaussian. The allowed values are those for which the pdf is above a threshold, which can be determined using monte-carlo methods from the mixture .
+Nu is het mogelijk om nieuwe shape voorbeelden te constru\"{e}ren door de shape parameters te vari\"{e}ren. Als er grenzen gesteld worden aan het vari\"eren van de parameters b blijft de gegenereerde shape in de verwachting van de mogelijke shapes. De grenzen worden hierbij gesteld op plus en min drie standaarddeviaties van het gemiddelde.
 
 
 \subsection{Thin Plate Spline Transform}
-%TODO: Noeska, get started on this
+Om de tekeningen daadwerkelijk te gaan morphen gebruiken we een Thin Plate Spline transformatie. De naam Thin Plate Spline 
+komt van een vergelijking met het buigen van een dunne metalen plaat.\cite{tsp} 
