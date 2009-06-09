@@ -1,16 +1,105 @@
 \section{Image Processing Technieken}
 \label{Image Processing Technieken}
-In dit hoofdstuk gaan we in op de theorie achter de gebruikte Image Processing technieken. Allereerst beginnen we met een beschrijving van het Point Distribution Model, dit doen we aan de hand van Generalised Procrustes Analysis en Principal Component Analysis. Tot slot bespreken we kort de theorie achter de Thin Plate Spline transformatie. 
-
+In dit hoofdstuk gaan we in op de theorie achter de gebruikte Image Processing technieken. 
+Allereerst beginnen we met een beschrijving van het Point Distribution Model, dit doen we aan de hand van Generalised Procrustes Analysis en Principal Component Analysis. 
+Tot slot bespreken we kort de theorie achter de Thin Plate Spline transformatie. 
 
 \subsection{Point Distribution Model}
-%TODO: Noeska, get started on this
+Het Point Distribution Model is een model dat de gemiddelde vorm en modes van variatie kan weergeven.\cite{PDM} 
+Een vorm is hierbij een vorm alles wat overblijft als alle locatie, schaling en rotatie effecten eruit gefilterd zijn.\cite{gpa}
+Om een vorm te beschrijven aan de hand van een set van voorbeelden is er een manier nodig om de vorm te defini\"{e}ren. 
+Dit is mogelijk door de expert met landmarks belangrijke punten in de vorm aan te geven. 
+Een landmark is in dit geval een punt dat duidelijk herkenbaar moet zijn in elke foto. 
+Dit kan een bony landmark (komt voort uit de anatomie van de mens) of een zelf gekozen landmark. Een voorbeeld van een landmark bij een foto van de hand kan het topje van de duim zijn. 
+Gegeven een set van \textit{n} landmarks aangegeven in een aantal voorbeelden van een vorm kan er een statistisch shape model worden opgesteld. 
+Om dit te bereiken moeten de foto's eerst in eenzelfde co\"{o}rdinatenframe worden gezet. Dit wordt gedaan met Generalized Procrustes Analysis.
 
 \subsubsection{Generalised Procrustes Analysis}
-%TODO: Noeska, get started on this
+Procrustus Analysis kan worden gebruikt om 2 sets van landmarks uit te lijnen. Generalised Proctrustes Analysis echter kan worden gebruikt om \textit{k} sets van landmarks met elkaar uit te lijnen. 
+Het transleert, roteert en schaalt (eventueel) elke vorm door de som van de gekwadrateerde afstanden tot het gemiddelde te minimaliseren. 
+
+Het algoritme van Generalised Procrustus Analysis werkt als volgt\cite{gpa}:
+\begin{enumerate}
+	\item Selecteer 1 vorm als tijdelijk gemiddelde vorm
+	\item Lijn de overige shapes uit met deze vorm:
+	\begin{itemize}
+		\item Bereken het centroid van elke vorm.
+		\item Lijn alle vormen uit naar de oorsprong.
+		\item Normaliseer de grootte van de centroid van elke vorm.
+		\item Roteer de vorm om uit te lijnen met het nieuwste geschatte gemiddelde.
+	\end{itemize}
+	\item Bereken het nieuwe geschatte gemiddelde uit de uitgelijnde vormen.
+	\item Als het geschatte gemiddelde uit stap 2 en 3 anders zijn, ga dan naar 2 terug. Als dit niet zo is is het ware gemiddelde gevonden.
+\end{enumerate}
+
+Elke vorm kan nu gerepresenteerd worden als een \textit{2n} element vector:\
+$x = (x_{1},...,x_{n},y_{1},...,y_{n})$ 
+
+De uitgelijnde trainingsets vormen nu een wolk in de \textit{2n} dimensionale ruimte. Door Principal Component Analysis uit te voeren kunnen de hoofdassen van de wolk worden berekend.
 
 \subsubsection{Principal Component Analysis}
-%TODO: Noeska, get started on this
+
+Principal Component Analysis (PCA) is een manier om patronen in data te herkennen, en de overeenkomsten en verschillen binnen de dataset weer te geven.\cite{pca}
+Als je de covariantiematrix \textit{S} uitrekent en hierop eigen-analyse uitvoert wordt de vorm van de \textit{m x n}-dimensionale puntenwolk een gewogen som van orthogonale vectoren. Hierin zijn de gewichten de eigenwaarden \lambda en de 'assen' die de ruimte opspannen de eigenvectoren \textit{p}. 
+De eigenvectoren waarbij de grootste eigenwaarden horen staan hierbij voor de grootste variaties in de dataset. 
+De eigenvector met de hoogste eigenwaarde is de Principal Component, de meest significante relatie tussen de dimensies van de data. 
+De overige eigenvectoren p representeren de andere principal directions. Elk punt op het oppervlakte van het object kan nu gerepresenteerd worden als een lineaire combinatie van p toegevoegd aan de centroid of het gemiddelde van de vorm.
+
+In de praktijk moet eerst een statistisch model worden opgebouwd dat de vorm en het uiterlijk van het object representeerd. Dit model wordt getrained aan de hand van een trainingsset van images geannoteerd door een expert. Door de variaties in vorm en uiterlijk binnen de trainingset te analyseren wordt een model gebouwd dat deze variaties kan nabootsen. Om vervolgens een nieuwe image te interpreteren moeten de parameters gevonden worden die het beste een model instantie aan een model matchen. Als dit geslaagd is kunnen bijvoorbeeld de model posities gebruikt worden voor classificatie of als input voor meer verwerking.
+
+Het algoritme: 1. Onderzoek een gebied van de image rondom elk punt Xi (model punt posities) om de beste nabijgelegen match voor X'i (dichtsbijzijnde edge) te vinden. 2. Update de parameters (Xt, Yt, s, (T), b) 3. Pas de constraints aan de parameters toe zodat de shape plausibel blijft (beperk zodat |bi| < 3sqr(?i) 4. Herhaal tot convergentie bereikt is
+
+Xt en Yt: positie s : schaal (T) : orientatie b : set van vorm parameters
+
+PCA:
+
+    * Get data
+    * Subtract the mean
+    * Calculate covariance matrix
+    * Calculate eigenvectors and values
+    * Choosing and forming feature vector
+    * Derive new dataset
+    * Get old data back 
+    
+    
+We use Principal Component Analysis (PCA) to pick out the main axes of the cloud, and model only the first few, which account for the majority of the variation.
+The shape model is then
+
+x = x_mean + Pb
+
+where x_mean is the mean of the aligned training examples, P is a 2n x t matrix whose columns are unit vectors along the principal axes of the cloud, and b is a t element vector of shape parameters.
+
+(This model has been dubbed a "Point Distribution Model" (PDM), but has little to do with the Point Distribution in statistics)
+
+By varying the shape parameters within limits learnt from the training set, we can generate new examples.
+
+Such models are used in the Active Shape Model framework to locate new examples in new images.
+Hand Example
+
+Consider the outline of a hand, represented by 72 labelled points.
+Here are some examples from a training set:
+
+By varying the first three parameters of the shape vector, b, one at a time, we can demonstrate some of the modes of variation allowed by the model:
+
+(Each row obtained by varying on parameter and fixing others at zero)
+Face Example
+
+Here represent the shape of the facial structures with 68 points
+
+The first mode of shape variation of a training set containing many different view points tends to represent rotation of the head.
+Brain Structure Example
+
+We can represent the outline of several brain structures in a single model.
+For instance, here is an example from a labelled brain MR image
+
+By varying the first two parameters of the shape vector, b, one at a time, we can demonstrate some of the modes of variation allowed by the model:
+
+Varying the most significant parameter.
+
+Varying the second most significant parameter.
+More Complex Shape Models
+In some situations, the gaussian approximation is simplistic, as the pdf for the shapes is significantly non-gaussian. This can arise if sub-parts of the modelled object rotate, leading to curved clouds of training points in the shape space. Several methods have been used to model such clouds. Polynomial approximations (Sozou et al), neural-net formulations (Sozou et al), and polar co-ordinates (Heap & Hogg) have all been tried. The most recent approach is to treat the cloud as a sample from a pdf, use kernel methods to estimate the pdf, and then to approximate this pdf using a mixture of gaussians. The Expectation Maximisation algorithm is used to fit the mixture to the data. To simplify the calculations, PCA is used to determine a low dimensional sub-space containing most of the variation, before the kernel method is applied. In effect, we use the same model as above, but determine stricter limits on the allowed values of the shape parameters b, modelling their distribution with a mixture of gaussians instead of a single gaussian. The allowed values are those for which the pdf is above a threshold, which can be determined using monte-carlo methods from the mixture .
+
 
 \subsection{Thin Plate Spline Transform}
 %TODO: Noeska, get started on this
