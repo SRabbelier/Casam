@@ -1,6 +1,9 @@
 \section{Medische Aspecten}
 \label{Software}
-In dit hoofdstuk bespreken we de softwaretechnologiën die we gaan gebruiken om de applicatie te maken. We beginnen met de basis van de applicatie door eerst de IDE, Python en Django te bespreken. Hierna bespreken we de 2 gebruikte bibliotheken, VTK en PIL. Tot slot bespreken we kort JavaScript en Flash.
+In dit hoofdstuk bespreken we de softwaretechnologiën die we gaan gebruiken om de applicatie te maken. 
+We beginnen met de basis van de applicatie door eerst de IDE, Python en Django te bespreken. 
+Hierna bespreken we de 2 gebruikte bibliotheken, VTK en PIL. 
+Tot slot bespreken we kort JavaScript en Flash.
 
 \subsection{Integrated Development Environment (IDE): Eclipse}
 %TODO: Write something nice about Eclipse and PyDev? Any volunteers?
@@ -13,14 +16,24 @@ In dit hoofdstuk bespreken we de softwaretechnologiën die we gaan gebruiken om d
 
 \subsection{Visualisation Toolkit (VTK)}
 Voor het implementeren van de benodigde Image Processing Technieken maken we gebruik van de Visualisation Toolkit (VTK)\cite{vtk}. 
-VTK is een open source toolkit voor 3D graphics. In ons geval zetten we de toolkit in voor 2D graphics. VTK bestaat uit een C++ class bibliotheek en onder andere een Python interface laag.\cite{vtk2} Er zitten uitgebreide mogelijkheden in op het gebied van Image Processing en visualisatie.
-In de VTK zitten de benodigde filters om Generalized Procrustes Analysis en Principal Component Analysis uit te voeren. Verder bevat de toolkit een implementatie van de Thin Plate Spline transformatie. Door de z-co\"{o}rdinaten op 0 te zetten kan VTK in de 2D ruimte worden gebruikt. 
+VTK is een open source toolkit voor 3D graphics. 
+In ons geval zetten we de toolkit in voor 2D graphics. 
+VTK bestaat uit een C++ class bibliotheek en onder andere een Python interface laag.\cite{vtk2} 
+Er zitten uitgebreide mogelijkheden in op het gebied van Image Processing en visualisatie.
+In de VTK zitten de benodigde filters om Generalized Procrustes Analysis en Principal Component Analysis uit te voeren. 
+Verder bevat de toolkit een implementatie van de Thin Plate Spline transformatie. 
+Door de z-co\"{o}rdinaten op 0 te zetten kan VTK in de 2D ruimte worden gebruikt. 
 
 \subsection{Python Imaging Library (PIL)}
-Om de wat simpelere Image Processing technieken te implementeren maken we gebruik van de Python Imaging Library (PIL)\cite{pil}. Er is een handbook beschikbaar waarin de functionaliteiten besproken worden.\cite{pilhandbook} Dit kan onder andere ingezet worden voor het resizen van images, puntoperaties, filtering, colour space conversies, rotatie en transformaties. 
+Om de wat simpelere Image Processing technieken te implementeren maken we gebruik van de Python Imaging Library (PIL)\cite{pil}. 
+Er is een handbook beschikbaar waarin de functionaliteiten besproken worden.\cite{pilhandbook} 
+Dit kan onder andere ingezet worden voor het resizen van images, puntoperaties, filtering, colour space conversies, rotatie en transformaties. 
 
 \subsection{JavaScript}
-%TODO: Resident JavaScript experts?
+Om een mooie en gebruiksvriendelijke user-interface te krijgen, gaan wij gebruik maken van JavaScript.
+Hiervoor zijn er een aantal bibliotheken beschikbaar die ons gaan helpen (Scriptaculous\cite{scriptaculous} en Prototype\cite{prototype}).
+Prototype gaan we onder andere gebruiken vanwege de mooie mogelijkheden om met AJaX om te gaan, en de handige manieren om objecten aan te maken.
+De Scriptaculous bibliotheek biedt ons verschillende mogelijkheden voor visuele toepassingen binnen een website, zoals sliders en draggables
 
 \subsection{Flash}
 %TODO: Bastiaan, your expertise, show us it.
