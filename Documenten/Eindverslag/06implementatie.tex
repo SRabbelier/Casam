@@ -49,7 +49,7 @@ Om projecten te beheren is een soort overzicht gemaakt waarin bestaande projecte
 
 \subsection{Database systeem}
 \label{implementatie_database_systeem}
-Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien in Figuur \ref{brainstorm_klassediagram}.
+Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien in het Requirements Analysis Document.
 De uiteindelijke versie van dit model is te zien in Figuur \ref{fig:databasediagram}.
 Een aantal van de belangrijkste wijzigingen zijn:
 \begin{description}
@@ -139,10 +139,10 @@ Deze nieuwe tags kunnen daarna direct aan andere projecten worden gekoppeld.
 Een onderdeel dat erg lastig bleek te implementeren waren de states.
 States zijn de manier om, wanneer een interessante samenstelling van foto's, landmarks, bitmaps etc. op het scherm staat, deze op te slaan om het later terug te kunnen halen.
 Omdat de software voornamelijk was ontworpen om handelingen te verrichten bij interactie van de gebruiker, bleek het erg moeilijk te zijn om via code een eerder opgeslagen state te herstellen.
-Om dit mogelijk te maken is een ander HTML en JavaScript model nodig, waarvoor een aanbeveling wordt gedaan in hoofdstuk 7.
+Om dit mogelijk te maken is een ander HTML en JavaScript model nodig, waarvoor een aanbeveling wordt gedaan in sectie \ref{html_javascript_refactor}.
 Omdat deze aanpassingen nog niet doorgevoerd zijn is een tijdelijke oplossing ge\"{i}mplementeerd die een deel van de HTML structuur opslaat wanneer de gebruiker erom vraagt, en deze kan later in een popup weer worden getoond zodat een soort van statische state ontstaat waar niet in verder gewerkt kan worden.
 Een andere manier zou zijn om de state op te slaan in een plaatje, waarbij het renderen van de browser wordt nagebootst door de Python Image Library.
-Omdat deze manier een moeilijkere implementatie heeft dan het kopie\"eren van de HTML, en niet per s\'e een beter resultaat oplevert, is ervoor gekozen om dit niet te implementeren.
+Omdat deze manier een moeilijkere implementatie heeft dan het kopie\"{e}ren van de HTML, en niet per s\'{e} een beter resultaat oplevert, is ervoor gekozen om dit niet te implementeren.
 
 \subsubsection{Afstanden meten in foto's}
 We hebben een spike solutions geschreven voor het meten van afstanden in foto's. 
