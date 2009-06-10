@@ -274,7 +274,10 @@ function removePotentialType(typeid){
             $('optgroup_'+typeid).remove();
             parentPotentialMeasurementTypes[i].up().remove();                                                              
           }                                                                
-        }          
+        }
+        // If this was the last type, hide 'editMeasurementsLink'
+        if (parentPotentialMeasurements.length == 0)
+        	$('editMeasurementsLinkDiv').hide();          
       },
       onFailure:function(){
         alert('Something went wrong while deleting potential measurement '+containerDiv.childElements()[0].innerHTML);

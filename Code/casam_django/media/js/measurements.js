@@ -435,6 +435,8 @@ function createPotentialMeasurementType(typeid, typename){
 	optgroup.writeAttribute('label', typename);
 	optgroup.writeAttribute('id', 'optgroup_'+typeid);
 	$('mmmeting').add(optgroup,null);
+	
+	$('editMeasurementsLinkDiv').show();
 }
 
 function createPotentialMeasurement(potid, pottype, potname, potsoort) {
