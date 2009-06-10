@@ -1,6 +1,6 @@
 \section{Aanbevelingen} %7
 \label{Aanbevelingen}
-Hieronder een korte toelichting op de werkzaamheden waar wij niet aan toe zijn gekomen. 
+Hieronder een korte toelichting op de werkzaamheden die als werk voor de toekomst gezien kunnen worden.
 
 Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten het bereik van het project vielen of omdat ze tijdens het project bedacht werden. 
 In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
@@ -28,7 +28,7 @@ Dit is een probleem waar wij binnen het project te laat tegenaan liepen, waardoo
 \subsection{Verschillende kleuren in flash applicatie} %7.2
 Binnen onze applicatie is het op dit moment al mogelijk om een bitmap te tekenen in een willekeurige kleur. 
 Wat nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren te gebruiken.
-Voor de gebruikers zou het intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
+Voor de gebruikers zou het intu\"{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
 Het moet de gebruiker in dat geval expliciet verteld worden dat de hele bitmap wordt opgeslagen in de kleur waarmee het laatst is gewerkt.
 
 
@@ -67,20 +67,20 @@ Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen is dat
 
 \subsection{Uitwerken afstand meet applicatie} %7.6
 \label{customjaap}
-Vanuit het EMC bestaat de wens om het mogelijk te maken om in foto's afstanden te meten.
+Vanuit het Erasmus MC bestaat de wens om het mogelijk te maken om in foto's afstanden te meten.
 Dit zou dan gebruikt kunnen worden bij de statistische data, zoals dit hierboven al beschreven is.
-Aangezien dit \'{e}\'{e}n van de eerste vragen van het EMC was, hebben we hier al even naar gekeken en er een spike solution voor gebouwd.
+Aangezien dit \'{e}\'{e}n van de eerste vragen van het Erasmus MC was, hebben we hier al even naar gekeken en er een spike solution voor gebouwd.
 Hierin zat echter nog een niet acceptabele meetfout, waardoor de functie niet in de uiteindelijke interface terecht is gekomen.
 
 Er was echter wel een aantal manieren waarop de nu aanwezige meetfout waarschijnlijk teruggedrongen kon worden:
 \begin{description}
-	\item[verplaatsen lineaal] Op de foto's van het EMC is een lineaal zichtbaar. 
+	\item[verplaatsen lineaal] Op de foto's van het Erasmus MC is een lineaal zichtbaar. 
 	Echter deze lineaal ligt op de verkeerde positie ten opzichte van waar gemeten wordt, er is namelijk een diepte verschil. 
 	Ook ligt de lineaal niet recht onder de camera, dit zorgt voor een hoek in de kalibratie stap.
 	\item[fout zichtbaar maken] Op dit moment wordt de fout wel uitgerekend. 
 	Deze fout zou zichtbaar moeten worden gemaakt aan de gebruiker, zodat hiermee rekening kan worden gehouden.
 	\item[opslaan kalibratie] Elke keer als een foto wordt geopend moet de kalibratie stap opnieuw worden uitgevoerd. 
-	Hierdoor ontstaat mogelijk onzorgvuldigheid en de kalibratie stap zou moeten worden opgeslagen.
+	Hierdoor ontstaat mogelijk onzorgvuldigheid en de kalibratiestap zou moeten worden opgeslagen.
 	\item[automatische herkenning] Als de lineaal kan worden herkend door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
 \end{description}
 
