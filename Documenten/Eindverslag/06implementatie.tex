@@ -17,6 +17,20 @@ Dit alles zorgde voor een goede synergie en hierdoor hield iedereen de motivatie
 Tijdens de implementatie fase hebben we veel contact gehad met de leden van het \casamproject en zijn er verschillende tussentijdse presentaties geweest. 
 Steeds hebben we na zo'n presentatie een uitgebreid overleg gehad over de stand van zaken en ge\"{e}valueerd  hoe het project er voor stond. In sommige gevallen hebben we ook onze prioriteitenlijst aangepast aan de hand van deze vergaderingen.
 
+\subsection{Interface}
+\label{interface}
+De vormgeving van de interface is van groot belang omdat deze de interactie met de gebruiker faciliteert. Een goed ingedeelde interface versnelt het werk voor de gebruiker.
+
+Wij hebben gekozen voor een indeling met een linker en rechter menu met daartussen een gebied waar foto's getoond worden. De beide menu's zijn ingedeeld als gebieden waarin verschillende tabbladen geladen kunnen worden. Omdat niet elk tabblad altijd nodig is, is het mogelijk deze dicht te klappen.
+
+In het linker menu worden algemene projectgerelateerde instellingen getoond met daaronder de lijst met aan het project gekoppelde foto's met bijbehorende bitmaps en landmarks. In het rechtermenu zijn gereedschappen ondergebracht die bewerkingen met de foto's in het linker menu kunnen doen of hierbij hulp bieden. Bovenin bevindt zich een tabblad waar Mogelijke Metingen aangemaakt en toegepast kunnen worden op de actieve foto. Daaronder bevinden zich tabbladen waarin wijzigingen ongedaan gemaakt kunnen worden en waarin een ingezoomd deel van de foto bekeken kan worden.
+
+De interface is verder voorzien van een aantal popups waarin enkele objecten beheerd kunnen worden. Er is een scherm waarin foto's toegevoegd en verwijdert kunnen worden, en ook de Mogelijke Metingen en types voor Mogelijke Metingen hebben een eigen venster.
+
+Om de interactie behalve efficiënt ook mooi te laten verlopen zijn er wat visuele effecten aan toegevoegd. Hierbij hebben we gebruik gemaakt van effecten die ScriptAculoUs biedt, zoals het oprollen van tabbladen, het laten in- en uitvagen van nieuwe popups op een zwarte achtergrond, etc. Toegevoegde landmarks worden ook even geel gekleurd in het linker menu om aan te geven waar ze terrecht komen als ze zijn aangemaakt.
+
+Om projecten te beheren is een soort thuis-pagina gemaakt waarin bestaande projecten gekozen kunnen worden of nieuwe aangemaakt. De kleine afbeelding die getoond wordt per project wisseld om de paar seconde als slideshow en toont alle foto's die gekoppeld zijn aan het project.
+
 \subsection{Database systeem}
 \label{implementatie_database_systeem}
 Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien in Figuur \ref{brainstorm_klassediagram}.
