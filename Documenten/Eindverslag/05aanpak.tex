@@ -55,18 +55,18 @@ In de ontwerpfase is besloten dat het mogelijk moet zijn om datasets tussen gebr
 \label{aanpak_image_processing}
 De doelen op Image Processing gebied waren: het in kaart brengen van de variaties per landmark en het morphen van getekende structuren (bijvoorbeeld zenuwen of venen) naar een standaardview. Zo kunnen structuren die van verschillende foto's afkomen toch op \'{e}\'{e}n foto worden afgebeeld.
 
-\subsubsection{Point Distribution Model}
+\subsection{Point Distribution Model}
 Om het eerste doel te bereiken hebben we gebruik gemaakt van een subonderdeel van een volledig Active Shape Model, namelijk het Point Distribution Model. Het Active Shape Model is ontwikkeld door Tim Cootes. In de paper An Introduction to Active Shape Models licht hij de theorie toe.\cite{introASM}
 \\
 \\
 Waar het Active Shape Model zich bezighoudt met het automatisch herkennen van structuren binnen een foto, is het Point Distribution Model\cite{pdm} in staat om gegeven een aantal landmarks (van hetzelfde type) op verschillende foto's het gemiddelde en de hoofdassen van variatie weer te geven. Een landmark is een punt dat zo is gekozen dat het in iedere foto te vinden is en duidelijk op iedere foto te vinden is. De landmarks die gebruikt worden voor het Point Distribution Model moeten informatie geven over het verloop van een structuur, bijvoorbeeld het aangeven van het verloop van een bepaalde vene.
 
-\subsubsection{Thin Plate Spline Transformatie}
+\subsection{Thin Plate Spline Transformatie}
 Om het tweede doel te bereiken, het morphen van getekende structuren, is er gebruik gemaakt van een Thin Plate Spline Transformatie (TPS). Om de TPS transformatie uit te voeren zijn landmarks nodig die bepalend zijn voor de vorm van een object. Hierbij kan gedacht worden aan een set van landmarks die bestaat uit bony landmarks \footnote{landmarks die voortkomen uit de anatomie van het menselijk lichaam en voelbaar zijn vanaf de buitenkant}, landmarks die de grenzen van het object aangeven en landmarks die zich op gelijke afstanden van voorgaande landmarks bevinden. 
 Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk het aangeven van lijnen, gebieden of punten die interessant zijn voor de onderzoeker. We hebben ervoor gekozen om de onderzoeker dit realtime in de applicatie te laten doen door het gebruik van Flash.
 
 
-\subsubsection{Tekenen}
+\subsection{Tekenen}
 Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk het aangeven van lijnen of gebieden die interessant zijn voor de onderzoeker. We hebben ervoor gekozen om de onderzoeker dit in de browser te laten doen als ge\"{i}ntegreed tekenprogramma. Hierbij zal het mogelijk zijn elke foto als achtergrond te kiezen en hieroverheen met \'{e}\'{e}n kleur bepaalde gebieden aan te geven.
 \\
 \\

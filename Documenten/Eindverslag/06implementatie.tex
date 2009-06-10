@@ -70,7 +70,7 @@ Een aantal van de belangrijkste wijzgingen zijn:
 \end{description}
 Andere aspecten van het database systeem worden hieronder toegelicht.
 
-\subsubsection{Verschillende doorzichtige foto's over elkaar heen leggen om de verschillen te bekijken}
+\subsection{Verschillende doorzichtige foto's over elkaar heen leggen om de verschillen te bekijken}
 Voor de weergave van afbeeldingen binnen het project is er bedacht dat er meerdere afbeeldingen tegelijk zichtbaar moesten kunnen zijn.
 Hiervoor is er vastgesteld dat er verschillende afbeeldingen over elkaar heen gelegd gaan worden, met een door de gebruiker in te stellen volgorde en doorzichtigheid.
 Om dit te kunnen realiseren hebben we eerst voor elke afbeelding in het project een eigen slider gemaakt, die pas geladen wordt op het moment dat de afbeelding zichtbaar wordt gemaakt. 
@@ -84,7 +84,7 @@ Dit heeft als voordeel dat de volgorde nu bepaald kan worden door de gewenste zi
 Ook wordt de volgorde van de lijst automatisch aangepast op het moment dat er een afbeelding zichtbaar wordt gemaakt, door deze afbeelding naar boven te verplaatsen in de lijst.
 De bovenste afbeelding van de lijst wordt altijd ook de bovenste afbeelding van alle zichtbare afbeeldingen, zodat de bovenste afbeelding altijd de actieve afbeelding is, waarop de bewerkingen worden gedaan.
 
-\subsubsection{Herkenningspunten bij de afbeeldingen}
+\subsection{Herkenningspunten bij de afbeeldingen}
 Voor het toevoegen van herkenningspunten aan de afbeeldingen hebben we ervoor gekozen om deze op te slaan in een apart model in de database.
 Aan dit model zit een koppeling met de MogelijkeMetingen vast, evenals met de afbeelding waar het punt bij hoort en het project.
 Om een herkenningspunt (landmark) op te kunnen slaan, moeten deze eerst bestaan.
@@ -106,7 +106,7 @@ Als het landmark opgeslagen kon worden op de server, wordt de hiervoor aangemaak
 Vervolgens wordt voor een bestaand landmark de positie aangepast.
 Voor een bestaand landmark wordt er een nieuw measurement aangemaakt, dat op de goede plaats onder de afbeelding wordt geplaatst.
 
-\subsubsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
+\subsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
 Een plek in ons systeem waar de samenwerking van verschillende deelsystemen en zelfs verschillende talen goed zichtbaar wordt is de manier waarop de Flash-applicatie gebruikt wordt om bitmaps te tekenen. Hieronder staat dit in een sequence-diagram weergegeven.
 \\
 \\
@@ -122,12 +122,12 @@ Eerst wordt in de HTML-pagina een object ingevoegd waarin de Flash-applicatie ge
 \end{figure}
 
 
-\subsubsection{Toevoegen van relevante papers en websites}
+\subsection{Toevoegen van relevante papers en websites}
 Voor het toevoegen van papers en websites aan een project hebben wij gekozen om deze ook in een apart model in de database op te slaan.
 In dit model zit een verwijzing naar het project waar de toevoeging bij hoort en een verwijzing naar de toevoeging zelf.
 Deze verwijzing bestaat in het geval van een website uit een URL, en in het geval van een paper uit een link naar de paper die op de lokale server wordt opgeslagen.
 
-\subsubsection{Tags toevoegen aan projecten om ze te categoriseren}
+\subsection{Tags toevoegen aan projecten om ze te categoriseren}
 Om een grote verzameling projecten overzichtelijk te houden was het noodzakelijk om een aantal trefwoorden (tags) aan een project te koppelen.
 Ook moest het mogelijk zijn om onderlinge verbanden tussen projecten te leggen door middel van dezelfde tags.
 Op deze manier kan er makkelijk gezocht worden op de tags en worden alleen de overeenkomstige projecten getoond.
@@ -135,7 +135,7 @@ Bij het aanmaken van een project kan er gekozen worden uit de selectie van besta
 Voor het aanmaken van nieuwe tags is het wel nodig om het project te openen.
 Deze nieuwe tags kunnen daarna direct aan andere projecten worden gekoppeld.
 
-\subsubsection{States}
+\subsection{States}
 Een onderdeel dat erg lastig bleek te implementeren waren de states.
 States zijn de manier om, wanneer een interessante samenstelling van foto's, landmarks, bitmaps etc. op het scherm staat, deze op te slaan om het later terug te kunnen halen.
 Omdat de software voornamelijk was ontworpen om handelingen te verrichten bij interactie van de gebruiker, bleek het erg moeilijk te zijn om via code een eerder opgeslagen state te herstellen.
@@ -144,12 +144,12 @@ Omdat deze aanpassingen nog niet doorgevoerd zijn is een tijdelijke oplossing ge
 Een andere manier zou zijn om de state op te slaan in een plaatje, waarbij het renderen van de browser wordt nagebootst door de Python Image Library.
 Omdat deze manier een moeilijkere implementatie heeft dan het kopie\"eren van de HTML, en niet per s\'e een beter resultaat oplevert, is ervoor gekozen om dit niet te implementeren.
 
-\subsubsection{Afstanden meten in foto's}
+\subsection{Afstanden meten in foto's}
 We hebben een spike solutions geschreven voor het meten van afstanden in foto's. 
 Mede door tijdsgebrek en de afhankelijkheid van andere spike solutions zijn we er niet aan toegekomen om dit te implementeren. 
 In sectie \ref{customjaap} gaan we hier verder op in.
 
-\subsubsection{Exporteren}
+\subsection{Exporteren}
 Teneinde het uitwisselen van projecten mogelijk te maken is er een export functionaliteit geschreven die de beheerder in staat stelt een project met alle gegevens die daarbij horen te exporteren, en later weer te importeren.
 Om de export zo min mogelijk afhankelijk te maken van het systeem is gekozen voor een export naar een zipfile, zodat deze zipfile ook zonder het programma gebruikt kan worden om gegevens terug te halen door deze uit te pakken en het daarin bevatte script handmatig uit te voeren.
 In normaal gebruik kan de export opgeslagen worden teneinde op een later tijdstip weer naar het systeem geupload te worden waarna het automatisch geimporteerd wordt.
@@ -167,7 +167,7 @@ Hierdoor is het mogelijk voor de onderzoeker om op een wiskundig verantwoorde ma
 Al snel bleek dat er veel onderzoek nodig was om de theorie achter Principal Component Analysis, Active Shape Models, Point Distribution Models en de Thin Plate Spline Transformaties te doorgronden. 
 Ook kostte het enige extra tijd om met de VTK bibliotheek bekend te raken.
 
-\subsubsection{Point Distribution Model}
+\subsection{Point Distribution Model}
 Om het Point Distribution Model te maken is een set nodig van verschillende landmarks waarvan de variaties en de gemiddelden interessant zijn om weer te geven. 
 Het is van belang om de landmarks zo te kiezen dat ze makkelijk zijn te vinden in elke foto en belangrijke punten aangeven op de structuur waar het om gaat. 
 De gebruiker kan landmarks in de foto aangeven door eerst een landmarktype aan te maken, dan een landmark van een bepaald type en hierbij aan te geven of het een shapedefining landmark is of niet. 
@@ -211,7 +211,7 @@ De lengte van deze lijn geeft de grootte van de mogelijke variatie aan op basis 
 Door de ellipsoids en lijnen weer te geven met een doorzichtige achtergrond is het vervolgens mogelijk om deze als een overlay over de images te projecteren. 
 De overlay wordt opgeslagen in de database en is beschikbaar voor weergave vanuit de interface.
 
-\subsubsection{Thin Plate Spline Transformatie}
+\subsection{Thin Plate Spline Transformatie}
 Om de daadwerkelijke morph uit te voeren van de getekende structuren moesten we eerst een transformatie uitvoeren om verschillen in translaties en rotaties tussen de verschillende foto's te verwijderen. 
 Na overleg met dr. Botha is besloten om dit niet via Generalized Procrustes Aligment te doen, maar om \'{e}\'{e}n foto (in dit geval de eerste) als voorbeeld te nemen en alle andere getekende structuren naar deze foto te morphen. 
 Hierdoor ontstaat een foto met een bestaande anatomie. Dit heeft een groot voordeel ten op zichte van het morphen van alle foto's naar een gemiddelde, want dan onstaat er een gemiddelde foto zonder bestaande anatomie. 
@@ -237,7 +237,7 @@ De source landmarks zijn gelijk aan de output van de eerste transformatie, voor 
 Via de vtkImageReslice wordt nu het eindresultaat bereikt, de bitmaps van alle geselecteerde foto's worden nu, gemorpht naar de active image, weergegeven.
 
 
-\subsubsection{Tekenen}
+\subsection{Tekenen}
 Vanuit de applicatie kan op twee manieren de Flash-applicatie gestart worden. 
 Het kan door in het rechter scherm met Possible Measurements een nieuwe bitmap aan te maken terwijl een afbeelding actief is. 
 De tweede methode is om een bestaande bitmap die aan een image gekoppeld is te bewerken door in het linker vak op de edit-knop te klikken.
@@ -259,7 +259,7 @@ Omdat de applicatie bij elke muisbeweging wel de minimale en maximale co\"{o}rdi
 Als een al bestaande bitmap wordt geladen worden daarbij ook de vorige minimale en maximale coördinaten geladen. 
 Binnen dat bereik scant de Flash-applicatie de oude bitmap pixel voor pixel af totdat de eerste gekleurde pixel gevonden wordt om de vorige kleur te pakken te krijgen. 
 
-\subsubsection{Tekenen: de serverkant}
+\subsection{Tekenen: de serverkant}
 De POST van de Flash-applicatie is zo compact mogelijk opgebouwd. 
 Deze bestaat uit een header met de afmetingen en de co\"{o}rdinaten van het tekengebied. 
 De data zelf bestaan uit nummers die aangeven hoeveel pixels aaneengesloten gekleurd zijn of niet. 
