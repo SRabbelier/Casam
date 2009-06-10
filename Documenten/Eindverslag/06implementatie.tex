@@ -19,7 +19,7 @@ Steeds hebben we na zo'n presentatie een uitgebreid overleg gehad over de stand 
 
 \subsection{Interface}
 \label{interface}
-De vormgeving van de interface is van groot belang omdat deze de interactie met de gebruiker faciliteert. Een goed ingedeelde interface versnelt het werk voor de gebruiker.
+De vormgeving van de interface is van groot belang omdat deze de interactie met de gebruiker faciliteert. Een goed ingedeelde interface verhoogt de productiviteit voor de gebruiker.
 \\
 \begin{figure}[htbp]
 \includegraphics[width=\textwidth]{fig_main}
@@ -50,7 +50,7 @@ Om projecten te beheren is een soort thuis-pagina gemaakt waarin bestaande proje
 \subsection{Database systeem}
 \label{implementatie_database_systeem}
 Voordat we konden beginnen met het database systeem, hebben we eerst een database model gemaakt. De eerste versie van dit model is te zien in Figuur \ref{brainstorm_klassediagram}.
-De uiteindelijke versie van dit model is te zien in Figuur \ref{databasediagram}.
+De uiteindelijke versie van dit model is te zien in Figuur \ref{fig:databasediagram}.
 Een aantal van de belangrijkste wijzgingen zijn:
 \begin{description}
   \item[Measurement types] In het originele model was er een algemeen MeasurementType bedacht, waar alle 3 de types van overerven. 
@@ -59,7 +59,7 @@ Een aantal van de belangrijkste wijzgingen zijn:
   \item[Measurements] De Measurements zelf zijn nu wat in het originele model een PointMeasurement heette.
   Ook de ProjectMeasurementsList is uit het model verdwenen, en vervangen door de algemene PotentialMeasurements.
   \item[Images] Het algemene type Image is in het uiteindelijke model gespaard gebleven.
-  De Pati\"{e}nt die echter aan een OriginalImage hing, is gesneuveld, omdat dit niets toevoegde aan het systeem.
+  De Pati\"{e}nt die echter aan een OriginalImage hing, is verwijdert uit de geplande databaseopzet omdat dit niets toevoegde aan het systeem.
   Ook hebben we besloten om EditedImages niet op te slaan, en in plaats daarvan States te bewaren.
   \item[States en Projectfiles] States zijn samen met de Projectfiles aan het model toegevoegd.
   Hierbij zijn de States bedoeld om de huidige configuratie van zichtbare foto's, Bitmaps en Measurements op te slaan en weer op te halen.
@@ -99,7 +99,7 @@ Als er in de popup dan op 'Save' geklikt wordt, wordt er eerst in de JavaScript 
 Voor een landmark dat al bestaat, wordt er een 'repositioning'-change aangemaakt, waarin de nieuwe co\"{o}rdinaten worden opgeslagen, terwijl er voor een nieuw landmark een 'positioning'-change wordt aangemaakt.
 Hierna wordt er een AJaX call naar de server gedaan.
 Op de server wordt er vervolgens gekeken of er al een landmark bestaat, met het gegeven foto-ID en de gegeven MogelijkeMeting.
-Is dit zo, dan wordt dit landmark opgehaald, en aangepast.
+Dit landmark wordt opgehaald en aangepast als dit zo is.
 Bestaat er nog geen landmark met de gegeven parameters, dan wordt er een nieuwe aangemaakt.
 In beide gevallen wordt het bewuste landmark vanuit de database terug gegeven naar JavaScript, door middel van een JSON-string.
 Als het landmark opgeslagen kon worden op de server, wordt de hiervoor aangemaakte change in JavaScript ook opgeslagen.
@@ -150,9 +150,9 @@ Mede door tijdsgebrek en de afhankelijkheid van andere spike solutions zijn we e
 In sectie \ref{customjaap} gaan we hier verder op in.
 
 \subsubsection{Exporteren}
-Teneinde het uitwisselen van projecten mogelijk te maken is er een export functionaliteit geschreven die de beheerder in staat stelt een project met alle gegevens die daarbij horen te exporteren, en later weer te importeren.
+Om het uitwisselen van projecten mogelijk te maken is er een export functionaliteit geschreven die de beheerder in staat stelt een project met alle gegevens die daarbij horen te exporteren, en later weer te importeren.
 Om de export zo min mogelijk afhankelijk te maken van het systeem is gekozen voor een export naar een zipfile, zodat deze zipfile ook zonder het programma gebruikt kan worden om gegevens terug te halen door deze uit te pakken en het daarin bevatte script handmatig uit te voeren.
-In normaal gebruik kan de export opgeslagen worden teneinde op een later tijdstip weer naar het systeem geupload te worden waarna het automatisch geimporteerd wordt.
+Voor normaal gebruik kan de export opgeslagen worden om op een later tijdstip weer naar het systeem geupload te worden waarna het automatisch ge\"{i}mporteerd wordt.
 
 \subsection{Image Processing}
 \label{implementatie_image_processing}
@@ -171,7 +171,7 @@ Ook kostte het enige extra tijd om met de VTK bibliotheek bekend te raken.
 Om het Point Distribution Model te maken is een set nodig van verschillende landmarks waarvan de variaties en de gemiddelden interessant zijn om weer te geven. 
 Het is van belang om de landmarks zo te kiezen dat ze makkelijk zijn te vinden in elke foto en belangrijke punten aangeven op de structuur waar het om gaat. 
 De gebruiker kan landmarks in de foto aangeven door eerst een landmarktype aan te maken, dan een landmark van een bepaald type en hierbij aan te geven of het een shapedefining landmark is of niet. 
-Nadat de gebruiker in de foto's de gewenste landmarks heeft aangegeven kan hij door 'Analyse selected landmarks' aan te klikken het Point Distribution Model van de geselecteerde landmarks laten uitrekenen en weergeven.
+Nadat de gebruiker in de foto's de gewenste landmarks heeft aangegeven kan hij door 'Analyse selected landmarks' aan te klikken het Point Distribution Model van de geselecteerde landmarks laten uitrekenen en weergeven (zie Figuur \ref{fig:screen1}). 
 \\
 \begin{figure}[htbp]
 \includegraphics[width=\textwidth]{screen1}
@@ -209,7 +209,7 @@ Dit wordt gedaan met behulp van de PIL. Aan de hand van de afmetingen van de ori
 Tussen de extremen van de twee hoofdmodi van variatie wordt een lijn getekend. 
 De lengte van deze lijn geeft de grootte van de mogelijke variatie aan op basis van de voorbeelden uit de gegeven landmarks. 
 Door de ellipsoids en lijnen weer te geven met een doorzichtige achtergrond is het vervolgens mogelijk om deze als een overlay over de images te projecteren. 
-De overlay wordt opgeslagen in de database en is beschikbaar voor weergave vanuit de interface.
+De overlay wordt opgeslagen in de database en is beschikbaar voor weergave vanuit de interface (zie Figuur \ref{fig:screen2}).
 
 \subsubsection{Thin Plate Spline Transformatie}
 Om de daadwerkelijke morph uit te voeren van de getekende structuren moesten we eerst een transformatie uitvoeren om verschillen in translaties en rotaties tussen de verschillende foto's te verwijderen. 
@@ -239,7 +239,7 @@ Net als bij het Point Distribution Model wordt de mode op RigidBody gezet om inf
 Vervolgens wordt de output van deze transformatie gebruikt als source voor de daadwerkelijke morph. 
 Het morphen zelf wordt ge\"{i}mplementeerd met behulp van de vtkThinPlateSplineTransform. 
 De source landmarks zijn gelijk aan de output van de eerste transformatie, voor de target landmarks zijn weer de landmarks van het gekozen active image gekozen. 
-Via de vtkImageReslice wordt nu het eindresultaat bereikt, de bitmaps van alle geselecteerde foto's worden nu, gemorpht naar de active image, weergegeven.
+Via de vtkImageReslice wordt nu het eindresultaat bereikt, de bitmaps van alle geselecteerde foto's worden nu, gemorpht naar de active image, weergegeven (zie Figuur \ref{fig:screen3}).
 
 
 \subsubsection{Tekenen}
@@ -256,7 +256,7 @@ Als de server dit succesvol afvangt en verwerkt krijgt de Flash-applicatie een a
 \\
 Een probleem dat optrad bij grote foto's was dat het afscannen van de tekenlaag enkele seconden kon duren. 
 Om deze reden is er een extra optimalisatie ingebouwd: de applicatie houdt bij in welk gebied getekend is door een minimale en maximale x en y bij te houden. 
-Op deze manier hoeft maar een beperkt deel van de laag gescand te worden, wat meestal significant veel tijd bespaard. 
+Op deze manier hoeft maar een beperkt deel van de laag gescand te worden, wat in de meeste gevallen significant veel tijd bespaard. 
 In het ergste geval is over de hele foto getekend en dan levert deze optimalisatie geen winst maar ook geen verlies op. 
 Omdat de applicatie bij elke muisbeweging wel de minimale en maximale co\"{o}rdinaten bijwerkt kan het zijn dat zij iets minder gevoelig is voor de tekenbeweging zelf, maar uit tests bleek dat dit niet storend was.
 \\
