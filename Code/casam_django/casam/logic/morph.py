@@ -123,26 +123,26 @@ def createMorph(selectedImages,selectedPMs):
     ir.SetInput(r.GetOutput())
     ir.SetInformationInput(r1.GetOutput())
     w = vtk.vtkJPEGWriter()
-    w.SetFileName(os_temp_path+'translated'+images[i].id+'.jpg')
+    w.SetFileName(os_temp_path+'/translated'+images[i].id+'.jpg')
     w.SetInput(ir.GetOutput())
     w.Write()
     r2 = vtk.vtkJPEGReader()
-    r2.SetFileName(os_temp_path+'translated'+images[i].id+'.jpg')
+    r2.SetFileName(os_temp_path+'/translated'+images[i].id+'.jpg')
     r2.Update()  
  
     # the mighty morphing ThinPlateSplineTransform
     morphtransform = vtk.vtkThinPlateSplineTransform()
     morphtransform.SetBasisToR2LogR()
-    morphtransform.SetSourceLandmarks(out)
-    out.Modified()
+    morphtransform.SetSourceLandmarks(lms)
+    lms.Modified()
     morphtransform.SetTargetLandmarks(lmt)
     lmt.Modified()
     morphtransform.Inverse()
     morphtransform.Update()
     morphtransformations.append(morphtransform)
-    ir.SetResliceTransform(morphtransform)
-    ir.SetInput(r2.GetOutput())
-    ir.SetInformationInput(r1.GetOutput())
+
+    #ir.SetInput(r2.GetOutput())
+    #ir.SetInformationInput(r1.GetOutput())
     
     bitmaps = Bitmap.objects.all().filter(image=images[i])
     
@@ -157,12 +157,15 @@ def createMorph(selectedImages,selectedPMs):
       r3.SetFileName(settings.DATADIR + bm.id + '.png')
       r3.Update()
       
-      ir.SetInput(r3.GetOutput())
-      ir.SetInformationInput(r1.GetOutput())
+      ir2 = vtk.vtkImageReslice()
+      ir2.SetInterpolationModeToNearestNeighbor()
+      ir2.SetResliceTransform(morphtransform)
+      ir2.SetInput(r3.GetOutput())
+      ir2.SetInformationInput(r2.GetOutput())
       
       w3 = vtk.vtkPNGWriter()
-      w3.SetFileName(os_temp_path+'morphed'+bm.id+'.png')
-      w3.SetInput(ir.GetOutput())
+      w3.SetFileName(os_temp_path+'/morphed'+bm.id+'.png')
+      w3.SetInput(ir2.GetOutput())
       w3.Write()
       
       bitmap = Bitmap(project=img.project, name='warpedbitmap', image=img, 
@@ -170,7 +173,7 @@ def createMorph(selectedImages,selectedPMs):
                       imageheight=bm.imageheight, minx=bm.minx, miny=bm.miny, maxx=bm.maxx, maxy=bm.maxy)
       bitmap.save()
       
-      im = Image.open(os_temp_path+'morphed'+bm.id+'.png')
+      im = Image.open(os_temp_path+'/morphed'+bm.id+'.png')
       im = im.convert("RGBA")
       im.save(settings.DATADIR + bitmap.id + '.gif', transparency=0)
       
