@@ -9,7 +9,7 @@ In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er nie
 In de toelichting geven we een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
 Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
 
-\subsection{Bestandstypen van foto's} %7.1
+\section{Bestandstypen van foto's} %7.1
 Op dit moment kan de morph-functie alleen foto's van het JPEG-formaat aan. 
 Alhoewel dit het meest gebruikte formaat is, zou het een verbetering zijn als het systeem ook met andere formaten om kan gaan. 
 Een probleem is dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het geen jpeg foto's zijn. 
@@ -25,14 +25,14 @@ Een oplossing voor dit probleem zou kunnen zijn om helemaal geen JPEG-bestanden 
 \\
 Dit is een probleem waar wij binnen het project te laat tegenaan liepen, waardoor er geen tijd meer was om dit op te lossen.
 
-\subsection{Verschillende kleuren in flash applicatie} %7.2
+\section{Verschillende kleuren in flash applicatie} %7.2
 Binnen onze applicatie is het op dit moment al mogelijk om een bitmap te tekenen in een willekeurige kleur. 
 Wat nog niet mogelijk is, is om in \'{e}\'{e}n bitmap meerdere kleuren te gebruiken.
 Voor de gebruikers zou het intu\'{i}tiever zijn om dit wel te kunnen, vooral omdat er bij het tekenen van de bitmap wel met verschillende kleuren gewerkt kan worden.
 Het moet de gebruiker in dat geval expliciet verteld worden dat de hele bitmap wordt opgeslagen in de kleur waarmee het laatst is gewerkt.
 
 
-\subsection{Opslaan van een lege bitmap} %7.3
+\section{Opslaan van een lege bitmap} %7.3
 Op dit moment is het niet mogelijk om een bestaande bitmap te bewerken naar een lege bitmap, omdat dan in de submit de minimale en maximale co\"ordinaten gezet zijn naar standaardwaarden die de server niet aankan. Daarom wordt nu afgevangen dat er een lege bitmap is verstuurd, maar deze wordt verder niet opgeslagen.
 \\
 \\
@@ -41,7 +41,7 @@ De enige reden om een lege bitmap op te slaan is om deze te verwijderen, maar zo
 \\
 Het systeem zou verbeterd kunnen worden door de Save-knop weg te halen uit de Flash-applicatie als er niets is getekend. Dat maakt het voor de gebruiker duidelijk dat opslaan van een leeg plaatje niet kan.
 
-\subsection{Te grote foto's inladen in de flash-applicatie} %7.4
+\section{Te grote foto's inladen in de flash-applicatie} %7.4
 Een beperking van de Flash-applicatie waar we op een laat moment achter kwamen is dat de maximale grootte van een afbeelding die je in Flash kan laden 2880 x 2880 pixels is. De afbeeldingen die gebruikt zullen worden in het systeem zijn doorgaans groter, met als resultaat dat alle pixels die het ondersteunde gebied vallen gewoon niet geladen worden. Het is niet mogelijk om buiten het gebied te tekenen en de naar de server geposte dump is ook maximaal 2880 x 2880 pixels.
 \\
 \\
@@ -50,7 +50,7 @@ Er zijn twee oplossingen te bedenken. De makkelijkste is het schalen van de foto
 \\
 Een tweede oplossing is om het laden van de afbeelding in losse blokken van maximaal 2880 x 2880 pixels op te delen. Dit is nog ingewikkelder omdat de server in dit geval delen van plaatjes moet kunnen teruggeven en de Flash-applicatie dezedelen na elkaar moet kunnen inladen en naast elkaar moet kunnen plaatsen.
 
-\subsection{Statistische data bij landmarks} %7.5
+\section{Statistische data bij landmarks} %7.5
 Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kunnen worden bij de aangegeven landmarks.
 Deze data hebben betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
 In de huidige situatie worden deze data apart in een Excel-sheet bijgehouden en naar een statisticus gebracht.
@@ -65,7 +65,7 @@ De analyse van deze data en het hieruit produceren van bruikbare data is daarna 
 Wat zelfs voor een eerste opzet waarschijnlijk een heleboel onderzoek nodig heeft.
 Het enige licht wat wij nu al een beetje op de zaak kunnen laten schijnen is dat er een PyCha module bestaat waarmee in Python grafieken gemaakt kunnen worden.
 
-\subsection{Uitwerken afstand meet applicatie} %7.6
+\section{Uitwerken afstand meet applicatie} %7.6
 \label{customjaap}
 Vanuit het EMC bestaat de wens om het mogelijk te maken om in foto's afstanden te meten.
 Dit zou dan gebruikt kunnen worden bij de statistische data, zoals dit hierboven al beschreven is.
@@ -84,7 +84,7 @@ Er was echter wel een aantal manieren waarop de nu aanwezige meetfout waarschijn
 	\item[automatische herkenning] Als de lineaal kan worden herkend door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
 \end{description}
 
-\subsection{Uitgebreid user management en arts-view mode} %7.7
+\section{Uitgebreid user management en arts-view mode} %7.7
 Wat betreft het huidige user management zijn er nog veel verbeteringen mogelijk.
 Momenteel zijn er namelijk 3 gebruikersgroepen aanwezig die niet altijd evengoed gecontroleerd worden.
 Zo is het nu voor een arts ook mogelijk om landmarks toe te voegen aan een project, terwijl dit niet zou moeten mogen.
@@ -98,7 +98,7 @@ Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samen
 \\
 Wij zijn door tijdsdruk hier niet goed meer aan toegekomen en het is eigenlijk blijven liggen, ondanks dat een degelijk user management in eerste instantie wel een van de eisen van het EMC was.
 
-\subsection{Verwijderen measurements zonder admin}
+\section{Verwijderen measurements zonder admin}
 Wat betreft het verwijderen van objecten uit het systeem, is er grote winst te behalen.
 Zo wordt voor het verwijderen van de volgende objecten nu nog de Django admin-interface gebruikt:
 \begin{itemize}
@@ -132,10 +132,10 @@ De oplossingen waar wij aan gedacht hebben, staan hieronder beschreven:
   Gekscherend werd er gezegd dat er bijna behoefte is aan een manager voor de managers, omdat het er inmiddels al zo veel zijn.
 \end{description}
 
-\subsection{Image Processing verbeteringen}
+\section{Image Processing verbeteringen}
 Een verbetering van de bestaande technieken zou zijn om na het aangeven van de landmarks in een geuploade foto direct de translatie en rotatie uit te voeren naar de gekozen active image. Hierdoor zou de Generalized Procrustes Analysis die gebruikt wordt bij het construeren van het Point Distribution Model komen te vervallen omdat zowel de landmarks als de afbeeldingen al direct goed getransleerd en geroteerd zijn. Als bijkomend voordeel zijn dan de gemorphte bitmaps beter vergelijkbaar met het Point Distribution Model.
 
-\subsection{Zoom op meerdere niveau's}
+\section{Zoom op meerdere niveau's}
 Een leuke en handige uitbreiding van de nu aanwezige zoomfunctie in de interface, is het instellen van het niveau van de zoom.
 In het zoom-scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid is, maar idealiter is dit in te stellen naar een willekeurige grootte.
 Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
@@ -153,16 +153,16 @@ Op het moment dat deze foto vervolgens uitvergroot wordt, blijft er in de uitver
 	\item[verkleinen in venster] Een oplossing die zou kunnen werken, is om de afbeelding altijd met een maximum percentage in te laden  en deze te verkleinen, afhankelijk van het gewenste niveau.
 \end{description}
 
-\subsection{Schaalweergave in image}
+\section{Schaalweergave in image}
 Omdat een afbeelding nu wordt ingeladen op een formaat dat afhankelijk is van het formaat van zijn container is er vrijwel altijd sprake van een schaalweergave.
 Dit wordt echter nergens in het systeem getoond.
 Voor de volledigheid van het systeem zou er  bij een afbeelding dus nog een schaal moeten worden weergegeven.
 Omdat het daadwerkelijke ophalen van de afbeelding door Python gebeurt is het wellicht het handigst om deze schaal ook door Python te laten berekenen en terug te geven aan de website.
 
-\subsection{Export on unix, import on windows}
+\section{Export on unix, import on windows}
 Doordat Windows geen ondersteuning heeft voor reverse seeks is het niet mogelijk om een export die gemaakt is op Unix of Mac OS X te importeren op een Windows server. Vermoedelijk kan dit verholpen worden door de inkomende import eerst naar een tijdelijk bestand weg te schrijven, maar dit is niet zeker. Als ook dat niet werkt, zou er gekeken kunnen worden naar een ander bestandsformaat voor import/export (zoals tar.gz).
 
-\subsection{HTML en JavaScript refactor}
+\section{HTML en JavaScript refactor}
 Omdat het systeem in korte tijd is ge\"evolueerd naar een uitgebreid systeem is het aan te bevelen om in de toekomst de code te herschrijven.
 Van het scherm dat per project getoond wordt, is het het belangrijkst dat het herschreven wordt, omdat hierin de meeste gebruikershandelingen worden gedaan en het onderdeel is dat het meest uitgebreid zal worden.
 Het is verstandig om een strikte scheiding te maken tussen geladen objecten vanuit de database en de HTML die hiervoor wordt gegenereerd.
