@@ -13,15 +13,15 @@ Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle man
 \subsection{Bestandstypen van foto's} %7.1
 Op dit moment kan de morph-functie alleen foto's van het JPEG-formaat aan. 
 Alhoewel dit het meest gebruikte formaat is, zou het een verbetering zijn als het systeem ook met andere formaten om kan gaan. 
-Een probleem is dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, maar het geen jpeg foto's zijn. 
-Het kan nu gebeuren dat er een gif-afbeelding wordt geupload, die vervolgens de extensie jpg krijgt. 
-Hierdoor geeft de vtkJPEGReader een error, en kan er met dit plaatje niet gemorpht worden. 
+Een probleem is dat de foto's bij het uploaden wel de extensie 'JPG' krijgen, maar het geen JPEG foto's zijn. 
+Het kan nu gebeuren dat er een GIF-afbeelding wordt geupload, die vervolgens de extensie JPG krijgt. 
+Hierdoor geeft de vtkJPEGReader een foutmelding, en kan er met dit plaatje niet gemorpht worden. 
 Het weergeven van de afbeelding in de browser gaat wel goed, waardoor het voor de gebruiker niet duidelijk is dat er eigenlijk iets mis is met de afbeelding.
 \\
 \\
 Een oplossing zou kunnen zijn om bij het uploaden van de afbeelding de Python Imaging Library te laten kijken naar de foto en deze om te laten zetten naar een echt JPEG bestand. 
 Het gevaar hierbij is dat er door de compressie van het JPEG-formaat scherpte van de foto verloren gaat.
-Een oplossing voor dit probleem zou kunnen zijn om helemaal geen JPEG-bestanden meer op te slaan en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren en voor dit formaat zijn dezelfde VTK-library's beschikbaar als voor het JPEG-formaat.
+Een oplossing voor dit probleem zou kunnen zijn om helemaal geen JPEG-bestanden meer op te slaan en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren en voor dit formaat zijn dezelfde VTK-bibliotheken beschikbaar als voor het JPEG-formaat.
 \\
 \\
 Dit is een probleem waar wij binnen het project te laat tegenaan liepen, waardoor er geen tijd meer was om dit op te lossen.
@@ -42,17 +42,17 @@ De enige reden om een lege bitmap op te slaan is om deze te verwijderen, maar zo
 \\
 Het systeem zou verbeterd kunnen worden door de Save-knop weg te halen uit de Flash-applicatie als er niets is getekend. Dat maakt het voor de gebruiker duidelijk dat opslaan van een leeg plaatje niet kan.
 
-\subsection{Te grote foto's inladen in de flash-applicatie} %7.4
+\subsection{Te grote foto's inladen in de Flash-applicatie} %7.4
 Een beperking van de Flash-applicatie waar we op een laat moment achter kwamen is dat de maximale grootte van een afbeelding die je in Flash kan laden 2880 x 2880 pixels is. De afbeeldingen die gebruikt zullen worden in het systeem zijn doorgaans groter, met als resultaat dat alle pixels die het ondersteunde gebied vallen gewoon niet geladen worden. Het is niet mogelijk om buiten het gebied te tekenen en de naar de server geposte dump is ook maximaal 2880 x 2880 pixels.
 \\
 \\
-Er zijn twee oplossingen te bedenken. De makkelijkste is het schalen van de foto naar maximaal 2880 x 2880 pixels voordat deze door de Flash-applicatie geladen wordt, iets dat het systeem al kan. Het probleem verschijnt aan de serverkant wanneer de server de geposte dump terug moet rekenen naar volledige grootte. Deze moet opgevraagd worden bij de originele afbeelding die in verkleinde vorm als achtergrond dient. Het probleem bij deze aanpak is dat er geen pixelprecisie meer is in het tekenen van de afbeeldingen, omdat deze geschaald wordt. Omdat de resolutie van de afbeeldingen redelijk groot is, is dit geen groot probleem.
+Er zijn twee oplossingen te bedenken. De makkelijkste is het schalen van de foto naar maximaal 2880 x 2880 pixels voordat deze door de Flash-applicatie geladen wordt, iets dat het systeem al kan. Het probleem verschijnt aan de serverkant wanneer de server de geposte dump terug moet rekenen naar volledige grootte. Deze moet opgevraagd worden bij de originele afbeelding die in verkleinde vorm als achtergrond dient. Het probleem bij deze aanpak is dat er geen pixel-precisie meer is in het tekenen van de afbeeldingen, omdat deze geschaald wordt. Omdat de resolutie van de afbeeldingen redelijk groot is, is dit geen groot probleem.
 \\
 \\
-Een tweede oplossing is om het laden van de afbeelding in losse blokken van maximaal 2880 x 2880 pixels op te delen. Dit is nog ingewikkelder omdat de server in dit geval delen van plaatjes moet kunnen teruggeven en de Flash-applicatie dezedelen na elkaar moet kunnen inladen en naast elkaar moet kunnen plaatsen.
+Een tweede oplossing is om het laden van de afbeelding in losse blokken van maximaal 2880 x 2880 pixels op te delen. Dit is nog ingewikkelder omdat de server in dit geval delen van plaatjes moet kunnen teruggeven en de Flash-applicatie deze delen na elkaar moet kunnen inladen en naast elkaar moet kunnen plaatsen.
 
 \subsection{Statistische data bij landmarks} %7.5
-Een bekende wens vanuit de gebruikers bij het EMC is dat er statistische data opgeslagen kunnen worden bij de aangegeven landmarks.
+Een bekende wens vanuit de gebruikers bij het Erasmus MC is dat er statistische data opgeslagen kunnen worden bij de aangegeven landmarks.
 Deze data hebben betrekking op de diepte waarop een vene op verschillende punten in het been ligt.
 In de huidige situatie worden deze data apart in een Excel-sheet bijgehouden en naar een statisticus gebracht.
 Deze maakt hier vervolgens in aparte software (SPSS)\cite{spss} een aantal grafieken van, die de gebruiker bij de andere data op wil slaan.
@@ -76,14 +76,14 @@ Hierin zat echter nog een niet acceptabele meetfout, waardoor de functie niet in
 \\
 Er was echter wel een aantal manieren waarop de nu aanwezige meetfout waarschijnlijk teruggedrongen kon worden:
 \begin{description}
-	\item[verplaatsen lineaal] Op de foto's van het Erasmus MC is een lineaal zichtbaar. 
-	Echter deze lineaal ligt op de verkeerde positie ten opzichte van waar gemeten wordt, er is namelijk een diepte verschil. 
-	Ook ligt de lineaal niet recht onder de camera, dit zorgt voor een hoek in de kalibratie stap.
+	\item[verplaatsen liniaal] Op de foto's van het Erasmus MC is een liniaal zichtbaar. 
+	Echter deze liniaal ligt op de verkeerde positie ten opzichte van waar gemeten wordt, er is namelijk een diepte verschil. 
+	Ook ligt de liniaal niet recht onder de camera, dit zorgt voor een hoek in de kalibratie stap.
 	\item[fout zichtbaar maken] Op dit moment wordt de fout wel uitgerekend. 
 	Deze fout zou zichtbaar moeten worden gemaakt aan de gebruiker, zodat hiermee rekening kan worden gehouden.
 	\item[opslaan kalibratie] Elke keer als een foto wordt geopend moet de kalibratie stap opnieuw worden uitgevoerd. 
-	Hierdoor ontstaat mogelijk onzorgvuldigheid en de kalibratiestap zou moeten worden opgeslagen.
-	\item[automatische herkenning] Als de lineaal kan worden herkend door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
+	Hierdoor ontstaat mogelijk onzorgvuldigheid en de kalibratie stap zou moeten worden opgeslagen.
+	\item[automatische herkenning] Als de liniaal kan worden herkend door een algoritme dan kan de kalibratie stap geautomatiseerd worden en wordt de menselijke factor verkleind.
 \end{description}
 
 \subsection{Uitgebreid user management en arts-view mode} %7.7
@@ -95,10 +95,10 @@ Daarnaast zou een gebruiker te allen tijde zijn eigen wachtwoord aan moeten kunn
 \\
 \\
 Zoals al aangegeven is er voor het user management al wel een begin gemaakt, maar dit moet eigenlijk nog uitgebreid worden.
-Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samengewerkt met de permissions die in Django aan gebruikers toegekend kunnen worden, omdat hier eigenlijk nog niets mee gebeurt.
+Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samengewerkt met de rechten die in Django aan gebruikers toegekend kunnen worden, omdat hier eigenlijk nog niets mee gebeurt.
 \\
 \\
-Wij zijn door tijdsdruk hier niet goed meer aan toegekomen en het is eigenlijk blijven liggen, ondanks dat een degelijk user management in eerste instantie wel een van de eisen van het EMC was.
+Wij zijn door tijdsdruk hier niet goed meer aan toegekomen en het is eigenlijk blijven liggen, ondanks dat een degelijk user management in eerste instantie wel een van de eisen van het Erasmus MC was.
 
 \subsection{Verwijderen measurements zonder admin}
 Wat betreft het verwijderen van objecten uit het systeem, is er grote winst te behalen.
@@ -106,8 +106,8 @@ Zo wordt voor het verwijderen van de volgende objecten nu nog de Django admin-in
 \begin{itemize}
   \item Bitmaps
   \item Landmarks
-  \item PDMs
-  \item Projects
+  \item PDM's
+  \item Projecten
   \item Tags
 \end{itemize}
 Van deze objecten wordt er alleen voor projecten ook de mogelijkheid geboden om deze via de normale interface te verwijderen. 
@@ -137,16 +137,16 @@ De oplossingen waar wij aan gedacht hebben, staan hieronder beschreven:
 \subsection{Image Processing verbeteringen}
 Een verbetering van de bestaande technieken zou zijn om na het aangeven van de landmarks in een geuploade foto direct de translatie en rotatie uit te voeren naar de gekozen active image. Hierdoor zou de Generalized Procrustes Analysis die gebruikt wordt bij het construeren van het Point Distribution Model komen te vervallen omdat zowel de landmarks als de afbeeldingen al direct goed getransleerd en geroteerd zijn. Als bijkomend voordeel zijn dan de gemorphte bitmaps beter vergelijkbaar met het Point Distribution Model.
 
-\subsection{Zoom op meerdere niveau's}
-Een leuke en handige uitbreiding van de nu aanwezige zoomfunctie in de interface, is het instellen van het niveau van de zoom.
-In het zoom-scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid is, maar idealiter is dit in te stellen naar een willekeurige grootte.
-Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
+\subsection{Zoom op meerdere niveaus}
+Een leuke en handige uitbreiding van de nu aanwezige zoom-functie in de interface, is het instellen van het niveau van de zoom.
+In het zoomscherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid is, maar idealiter is dit in te stellen naar een willekeurige grootte.
+Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveaus, zoals 150\%, 200\%, 250\% en 300\%.
 Dit kan dan later nog uitgebreid worden naar een door de gebruiker in te stellen niveau, binnen vastgestelde grenzen.
 \\
 Wij hebben dit nog niet aangepakt, omdat er nog een aantal haken en ogen aan de huidige implementatie zitten, namelijk:
 \begin{description}
-	\item[inladen vaste niveau's] Het inladen van een afbeelding op een aantal vaste niveau's is wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit niet haalbaar.
-	\item[inladen geselecteerd niveau] Een alternatief is om de afbeelding met het gewenste zoomniveau op te halen nadat het niveau is ingesteld door de gebruiker.
+	\item[inladen vaste niveaus] Het inladen van een afbeelding op een aantal vaste niveaus is wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit niet haalbaar.
+	\item[inladen geselecteerd niveau] Een alternatief is om de afbeelding met het gewenste zoom-niveau op te halen nadat het niveau is ingesteld door de gebruiker.
 	Het nadeel hiervan is dat \'{e}\'{e}n afbeelding dan heel vaak opgehaald moet worden voordat de gebruiker het gewenste niveau heeft gevonden.
 	\item[vergroten in venster] Een volgende oplossing is het vergroten van de reeds ingeladen afbeelding.
 	Het grote nadeel van deze oplossing is dat een afbeelding momenteel wordt ingeladen met een afmeting die afhankelijk is van de afmeting van zijn container.
@@ -161,7 +161,7 @@ Dit wordt echter nergens in het systeem getoond.
 Voor de volledigheid van het systeem zou er  bij een afbeelding dus nog een schaal moeten worden weergegeven.
 Omdat het daadwerkelijke ophalen van de afbeelding door Python gebeurt is het wellicht het handigst om deze schaal ook door Python te laten berekenen en terug te geven aan de website.
 
-\subsection{Export on unix, import on windows}
+\subsection{Export on Unix, import on Windows}
 Doordat Windows geen ondersteuning heeft voor reverse seeks is het niet mogelijk om een export die gemaakt is op Unix of Mac OS X te importeren op een Windows server. Vermoedelijk kan dit verholpen worden door de inkomende import eerst naar een tijdelijk bestand weg te schrijven, maar dit is niet zeker. Als ook dat niet werkt, zou er gekeken kunnen worden naar een ander bestandsformaat voor import/export (zoals tar.gz).
 
 \subsection{HTML en JavaScript refactor}
