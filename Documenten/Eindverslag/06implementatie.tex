@@ -87,20 +87,21 @@ Vervolgens wordt voor een bestaand landmark de positie aangepast.
 Voor een bestaand landmark wordt er een nieuw measurement aangemaakt, dat op de goede plaats onder de afbeelding wordt geplaatst.
 
 \subsubsection{Afbeeldingen tekenen over foto's om belangrijke gebieden aan te geven, ook wel bitmaps genoemd}
-
 Een plek in ons systeem waar de samenwerking van verschillende deelsystemen en zelfs verschillende talen goed zichtbaar wordt is de manier waarop de Flash-applicatie gebruikt wordt om bitmaps te tekenen. Hieronder staat dit in een sequence-diagram weergegeven.
-
+\\
+\\
 Het eerste deel van het diagram toont op welke wijze het bestaan van bitmaps geladen wordt in de JavaScript-omgeving. De rest van het diagram toont wat het systeem doet als de gebruiker het tekenen of bewerken van een bitmap kiest.
-
+\\
+\\
 Eerst wordt in de HTML-pagina een object ingevoegd waarin de Flash-applicatie geladen wordt. Vervolgens laadt de Flash-applicatie de afbeelding waar op getekend gaat worden. Als de gebruiker vervolgens kiest om de bitmap op te slaan wordt de tekening naar de server verzonden, en als deze succesvol opgeslagen is krijgt de Flash-applicatie een bevestiging waarop deze een melding naar de JavaScript-omgeving gemaakt wordt met het verzoek de Flash-applicatie te sluiten. Dit is de laatste actie die in het diagram beschreven wordt.
 
 \includegraphics[width=0.9\textwidth]{sequencediagram}
-
 
 \subsubsection{Toevoegen van relevante papers en websites}
 Voor het toevoegen van papers en websites aan een project hebben wij gekozen om deze ook in een apart model in de database op te slaan.
 In dit model zit een verwijzing naar het project waar de toevoeging bij hoort en een verwijzing naar de toevoeging zelf.
 Deze verwijzing bestaat in het geval van een website uit een URL, en in het geval van een paper uit een link naar de paper die op de lokale server wordt opgeslagen.
+
 \subsubsection{Tags toevoegen aan projecten om ze te categoriseren}
 Om een grote verzameling projecten overzichtelijk te houden was het noodzakelijk om een aantal trefwoorden (tags) aan een project te koppelen.
 Ook moest het mogelijk zijn om onderlinge verbanden tussen projecten te leggen door middel van dezelfde tags.
@@ -108,6 +109,7 @@ Op deze manier kan er makkelijk gezocht worden op de tags en worden alleen de ov
 Bij het aanmaken van een project kan er gekozen worden uit de selectie van bestaande tags, zodat een project direct makkelijk gevonden kan worden.
 Voor het aanmaken van nieuwe tags is het wel nodig om het project te openen.
 Deze nieuwe tags kunnen daarna direct aan andere projecten worden gekoppeld.
+
 \subsubsection{States}
 Een onderdeel dat erg lastig bleek te implementeren waren de states.
 States zijn de manier om, wanneer een interessante samenstelling van foto's, landmarks, bitmaps etc. op het scherm staat, deze op te slaan om het later terug te kunnen halen.
@@ -116,6 +118,7 @@ Om dit mogelijk te maken is een ander HTML en JavaScript model nodig, waarvoor e
 Omdat deze aanpassingen nog niet doorgevoerd zijn is een tijdelijke oplossing ge\"{i}mplementeerd die een deel van de HTML structuur opslaat wanneer de gebruiker erom vraagt, en deze kan later in een popup weer worden getoond zodat een soort van statische state ontstaat waar niet in verder gewerkt kan worden.
 Een andere manier zou zijn om de state op te slaan in een plaatje, waarbij het renderen van de browser wordt nagebootst door de Python Image Library.
 Omdat deze manier een moeilijkere implementatie heeft dan het kopie\"eren van de HTML, en niet per s\'e een beter resultaat oplevert, is ervoor gekozen om dit niet te implementeren.
+
 \subsubsection{Afstanden meten in foto's}
 We hebben een spike solutions geschreven voor het meten van afstanden in foto's. 
 Mede door tijdsgebrek en de afhankelijkheid van andere spike solutions zijn we er niet aan toegekomen om dit te implementeren. 
@@ -128,34 +131,44 @@ Al snel bleek dat er veel onderzoek nodig was om de theorie achter Principal Com
 
 \subsubsection{Point Distribution Model}
 Om het Point Distribution Model te maken is een set nodig van verschillende landmarks waarvan de variaties en de gemiddelden interessant zijn om weer te geven. Het is van belang om de landmarks zo te kiezen dat ze makkelijk zijn te vinden in elke foto en belangrijke punten aangeven op de structuur waar het om gaat. De gebruiker kan landmarks in de foto aangeven door eerst een landmarktype aan te maken, dan een landmark van een bepaald type en hierbij aan te geven of het een shapedefining landmark is of niet. Nadat de gebruiker in de foto's de gewenste landmarks heeft aangegeven kan hij door 'Analyse selected landmarks' aan te klikken het Point Distribution Model van de geselecteerde landmarks laten uitrekenen en weergeven.
-
+\\
+\\
 Op dit moment wordt in JavaScript gecontroleerd welke images en landmarks geselecteerd zijn en wordt er via een AJaX request de id's van de afbeeldingen en de geselecteerde landmarks per afbeelding doorgegeven. Aan de hand van de id's van de afbeelding en de landmarks worden vervolgens de bijbehorende objecten uit de database gehaald. In de view wordt getest of de geselecteerde landmarks wel geschikt zijn om een Point Distribution Model van te maken. Dit is bijvoorbeeld niet zo als: er geen landmarks geselecteerd zijn, er te weinig landmarks geselecteerd zijn van een type of de geselecteerde landmarks van een geheel ander type zijn. In elk van deze gevallen wordt er een foutmelding aan de gebruiker gegeven in de vorm van een JavaScript alert met de aard van de fout, zodat de gebruiker zijn selectie kan aanpassen.
-
+\\
+\\
 Als de juiste landmarks zijn geselecteerd wordt er allereerst via de co\"{o}rdinaten van de landmarks per afbeelding een vtkUnstructuredGrid aangemaakt met de desbetreffende punten erin als vertices. Vervolgens wordt over deze grids de Generalized Procrustes Analysis uitgevoerd via het vtkProcrustesAlignmentFilter. Dit zorgt ervoor dat de gevonden modi van variatie onafhankelijk van de positie en de rotatie van de objecten zijn. Door ervoor te kiezen om de mode op RigidBody te zetten blijft echter wel de grootte van de structuren behouden. De opgeslagen grids zijn nu iteratief getransleerd en geroteerd naar elkaar toe.
-
+\\
+\\
 Nu is het tijd om de Principal Component Analysis (PCA) op de aligned grids uit te voeren, dit is gedaan met behulp van het vtkPCAAnalysisFilter. Uit het resultaat kunnen de gemiddelde posities per landmark gehaald worden. We hebben er voor gekozen om de eerste twee modi van variatie te berekenen, de hoofdmodus van variatie (eerste mode) zorgt altijd voor de grootste verandering en is de eigenvector met de grootste eigenwaarde die uit de PCA komt. Om deze variaties te berekenen vragen we de GetParameterisedShape en berekenen we hiermee voor de eerste en tweede modus de extremen, dit zijn plus en min 3 standaarddeviaties van het gemiddelde.
-
+\\
+\\
 Nu we de benodigde co\"{o}rdinaten hebben (gemiddelden en extremen) kunnen we beginnen aan de visualisatie van de landmarks. Dit wordt gedaan met behulp van de PIL. Aan de hand van de afmetingen van de originele foto's en de gegeven co\"{o}rdinaten wordt voor het gemiddelde een ellips getekend. Tussen de extremen van de twee hoofdmodi van variatie wordt een lijn getekend. De lengte van deze lijn geeft de grootte van de mogelijke variatie aan op basis van de voorbeelden uit de gegeven landmarks. Door de ellipsoids en lijnen weer te geven met een doorzichtige achtergrond is het vervolgens mogelijk om deze als een overlay over de images te projecteren. De overlay wordt opgeslagen in de database en is beschikbaar voor weergave vanuit de interface.
 
 
 \subsubsection{Thin Plate Spline Transformatie}
 Om de daadwerkelijke morph uit te voeren van de getekende structuren moesten we eerst een transformatie uitvoeren om verschillen in translaties en rotaties tussen de verschillende foto's te verwijderen. Na overleg met dr. Botha is besloten om dit niet via Generalized Procrustes Aligment te doen, maar om \'{e}\'{e}n foto (in dit geval de eerste) als voorbeeld te nemen en alle andere getekende structuren naar deze foto te morphen.  Hierdoor ontstaat een foto met een bestaande anatomie. Dit heeft een groot voordeel ten op zichte van het morphen van alle foto's naar een gemiddelde, want dan onstaat er een gemiddelde foto zonder bestaande anatomie. Helaas kwam de implementatie van dit onderdeel van het project te laat om ook nog het Point Distribution Model volgens deze gedachte te implementeren. 
-
+\\
+\\
 In grote lijnen werkt de implementatie op dezelfde manier als die van het Point Distribution Model met een paar verschillen. Wederom worden landmarks uit de interface ingelezen en opgehaald. Er wordt naast de eerdergenoemde checks ook nog gekeken of de landmarks wel allemaal shapedefining zijn. Voor het morphproces worden namelijk een ander soort landmarks gebruikt dan voor het berekenen van het Point Distribution Model. De shapedefining landmarks zijn landmarks die kenmerkend zijn voor de vorm van het hele object (je kunt bijvoorbeeld denken aan de bony landmarks van het been met daartussen op gelijke afstanden geplaatste landmarks op de omtrek van het been). 
-
+\\
+\\
 Met de gevonden foto's en de bijbehorende landmarks worden de co\"{o}rdinaten van de landmarks ditmaal direct in vtkPoints objecten gezet. Deze vtkPoints worden gebruikt in de vtkLandmarkTransform. Als source landmarks worden per foto de vtkPoints gebruikt en als target de vtkPoints van het gekozen active image. Via vtkImageReslice wordt de daadwerkelijke transformatie uitgevoerd. We kiezen Nearest Neighbour als interpolationmode om ervoor te zorgen dat de kwaliteit van de getekende structuren niet verslechtert. Net als bij het Point Distribution Model wordt de mode op RigidBody gezet om informatie over de grootte niet te verliezen. Vervolgens wordt de output van deze transformatie gebruikt als source voor de daadwerkelijke morph. Het morphen zelf wordt ge\"{i}mplementeerd met behulp van de vtkThinPlateSplineTransform. De source landmarks zijn gelijk aan de output van de eerste transformatie, voor de target landmarks zijn weer de landmarks van het gekozen active image gekozen. Via de vtkImageReslice wordt nu het eindresultaat bereikt, de bitmaps van alle geselecteerde foto's worden nu, gemorpht naar de active image, weergegeven.
 
 
 \subsubsection{Tekenen}
 Vanuit de applicatie kan op twee manieren de Flash-applicatie gestart worden. Het kan door in het rechter scherm met Possible Measurements een nieuwe bitmap aan te maken terwijl een afbeelding actief is. De tweede methode is om een bestaande bitmap die aan een image gekoppeld is te bewerken door in het linker vak op de edit-knop te klikken.
-
+\\
+\\
 Dit opent de Flash-applicatie waaraan in een HTML-tag argumenten meegegeven worden, zoals een verwijzing naar de achtergrondfoto en optioneel een bestaande bitmap. In de Flash-applicatie kan vervolgens in een aparte laag getekend worden in \'{e}\'{e}n kleur. Als op de Save-knop gedrukt wordt scant de Flash-applicatie de hele tekenlaag per pixel om een compacte representatie te maken van de tekening. Deze wordt vervolgens naar de server gestuurd met een HTTP-POST, samen met andere gegevens. Als de server dit succesvol afvangt en verwerkt krijgt de Flash-applicatie een antwoord en roept de applicatie een JavaScript-functie in de browser aan die de Flash-applicatie afsluit.
-
+\\
+\\
 Een probleem dat optrad bij grote foto's was dat het afscannen van de tekenlaag enkele seconden kon duren. Om deze reden is er een extra optimalisatie ingebouwd: de applicatie houdt bij in welk gebied getekend is door een minimale en maximale x en y bij te houden. Op deze manier hoeft maar een beperkt deel van de laag gescand te worden, wat meestal significant veel tijd bespaard. In het ergste geval is over de hele foto getekend en dan levert deze optimalisatie geen winst maar ook geen verlies op. Omdat de applicatie bij elke muisbeweging wel de minimale en maximale co\"{o}rdinaten bijwerkt kan het zijn dat zij iets minder gevoelig is voor de tekenbeweging zelf, maar uit tests bleek dat dit niet storend was.
-
+\\
+\\
 Als een al bestaande bitmap wordt geladen worden daarbij ook de vorige minimale en maximale coördinaten geladen. Binnen dat bereik scant de Flash-applicatie de oude bitmap pixel voor pixel af totdat de eerste gekleurde pixel gevonden wordt om de vorige kleur te pakken te krijgen. 
 
 \subsubsection{Tekenen: de serverkant}
 De POST van de Flash-applicatie is zo compact mogelijk opgebouwd. Deze bestaat uit een header met de afmetingen en de co\"{o}rdinaten van het tekengebied. De data zelf bestaan uit nummers die aangeven hoeveel pixels aaneengesloten gekleurd zijn of niet. Op deze manier bestaat dus een compleet gekleurde bitmap maar uit \'{e}\'{e}n getal.
-
+\\
+\\
 De server bouwt deze representatie om naar een grote string met \'{e}\'{e}n karakter per pixel, die met een methode uit de PIL opgeslagen kan worden als GIF-afbeelding. Er wordt ook een palet gekoppeld aan de GIF-afbeeldingen met als 255'ste waarde de kleur die in de Flash-applicatie gekozen is. Op deze manier wordt de bitmap die in de Flash-applicatie nog uit meerdere kleuren kon bestaan opgeslagen als een GIF-afbeelding met de laatst gebruikte kleur.

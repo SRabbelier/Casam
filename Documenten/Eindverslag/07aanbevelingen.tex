@@ -4,7 +4,8 @@ Hieronder een korte toelichting op de werkzaamheden waar wij niet aan toe zijn g
 
 Sommige van deze werkzaamheden zijn niet gebeurd omdat ze buiten het bereik van het project vielen of omdat ze tijdens het project bedacht werden. 
 In enkele gevallen hadden we wel gepland om het werk te doen maar zijn we er niet aan toe gekomen.  
-
+\\
+\\
 In de toelichting geven we een korte samenvatting van wat er in brainstorm sessies en/of vergaderingen over is afgesproken. 
 Wij hopen op deze manier dat toekomstige groepen op een eenvoudige en snelle manier kunnen verder werken aan het product.
 
@@ -15,11 +16,13 @@ Een probleem is dat de foto's bij het uploaden wel de extensie 'jpg' krijgen, ma
 Het kan nu gebeuren dat er een gif-afbeelding wordt geupload, die vervolgens de extensie jpg krijgt. 
 Hierdoor geeft de vtkJPEGReader een error, en kan er met dit plaatje niet gemorpht worden. 
 Het weergeven van de afbeelding in de browser gaat wel goed, waardoor het voor de gebruiker niet duidelijk is dat er eigenlijk iets mis is met de afbeelding.
-
+\\
+\\
 Een oplossing zou kunnen zijn om bij het uploaden van de afbeelding de Python Imaging Library te laten kijken naar de foto en deze om te laten zetten naar een echt JPEG bestand. 
 Het gevaar hierbij is dat er door de compressie van het JPEG-formaat scherpte van de foto verloren gaat.
 Een oplossing voor dit probleem zou kunnen zijn om helemaal geen JPEG-bestanden meer op te slaan en alle foto's te laten omzetten naar het PNG-formaat. Bij deze omzetting gaat vrijwel geen informatie in de foto verloren en voor dit formaat zijn dezelfde VTK-library's beschikbaar als voor het JPEG-formaat.
-
+\\
+\\
 Dit is een probleem waar wij binnen het project te laat tegenaan liepen, waardoor er geen tijd meer was om dit op te lossen.
 
 \subsection{Verschillende kleuren in flash applicatie} %7.2
@@ -31,16 +34,20 @@ Het moet de gebruiker in dat geval expliciet verteld worden dat de hele bitmap w
 
 \subsection{Opslaan van een lege bitmap} %7.3
 Op dit moment is het niet mogelijk om een bestaande bitmap te bewerken naar een lege bitmap, omdat dan in de submit de minimale en maximale co\"ordinaten gezet zijn naar standaardwaarden die de server niet aankan. Daarom wordt nu afgevangen dat er een lege bitmap is verstuurd, maar deze wordt verder niet opgeslagen.
-
+\\
+\\
 De enige reden om een lege bitmap op te slaan is om deze te verwijderen, maar zoals elders beschreven moet dat nu nog via de admin-interface gedaan worden. Lege bitmaps opslaan is niet de manier en door de huidige implementatie wordt de lege bitmap dus ook niet opgeslagen.
-
+\\
+\\
 Het systeem zou verbeterd kunnen worden door de Save-knop weg te halen uit de Flash-applicatie als er niets is getekend. Dat maakt het voor de gebruiker duidelijk dat opslaan van een leeg plaatje niet kan.
 
 \subsection{Te grote foto's inladen in de flash-applicatie} %7.4
 Een beperking van de Flash-applicatie waar we op een laat moment achter kwamen is dat de maximale grootte van een afbeelding die je in Flash kan laden 2880 x 2880 pixels is. De afbeeldingen die gebruikt zullen worden in het systeem zijn doorgaans groter, met als resultaat dat alle pixels die het ondersteunde gebied vallen gewoon niet geladen worden. Het is niet mogelijk om buiten het gebied te tekenen en de naar de server geposte dump is ook maximaal 2880 x 2880 pixels.
-
+\\
+\\
 Er zijn twee oplossingen te bedenken. De makkelijkste is het schalen van de foto naar maximaal 2880 x 2880 pixels voordat deze door de Flash-applicatie geladen wordt, iets dat het systeem al kan. Het probleem verschijnt aan de serverkant wanneer de server de geposte dump terug moet rekenen naar volledige grootte. Deze moet opgevraagd worden bij de originele afbeelding die in verkleinde vorm als achtergrond dient. Het probleem bij deze aanpak is dat er geen pixelprecisie meer is in het tekenen van de afbeeldingen, omdat deze geschaald wordt. Omdat de resolutie van de afbeeldingen redelijk groot is, is dit geen groot probleem.
-
+\\
+\\
 Een tweede oplossing is om het laden van de afbeelding in losse blokken van maximaal 2880 x 2880 pixels op te delen. Dit is nog ingewikkelder omdat de server in dit geval delen van plaatjes moet kunnen teruggeven en de Flash-applicatie dezedelen na elkaar moet kunnen inladen en naast elkaar moet kunnen plaatsen.
 
 \subsection{Statistische data bij landmarks} %7.5
@@ -50,7 +57,8 @@ In de huidige situatie worden deze data apart in een Excel-sheet bijgehouden en 
 Deze maakt hier vervolgens in aparte software (SPSS)\ref{spss} een aantal grafieken van, die de gebruiker bij de andere data op wil slaan.
 In de toekomst zou het mogelijk moeten zijn om deze data bij de landmarks zelf op te slaan.
 In een ideale situatie zouden zelfs de grafieken in het systeem moeten verschijnen, waarna de gebruikers van een willekeurig punt op de grafiek de waarde op kunnen vragen.
-
+\\
+\\
 Vanwege de complexiteit van het opslaan van de statistische data, het later genereren van de bijbehorende grafieken en het kunnen opvragen van de waardes op een willekeurig punt hebben wij hier nog geen stappen voor ondernomen.
 Een volgende groep zou kunnen beginnen met het enkel toevoegen van de data en deze overzichtelijk weergeven, zonder hier grafieken van te maken.
 De analyse van deze data en het hieruit produceren van bruikbare data is daarna een probleem apart.
@@ -82,10 +90,12 @@ Momenteel zijn er namelijk 3 gebruikersgroepen aanwezig die niet altijd evengoed
 Zo is het nu voor een arts ook mogelijk om landmarks toe te voegen aan een project, terwijl dit niet zou moeten mogen.
 Ook moet het toekennen van rechten aan projecten beter en duidelijker gaan verlopen.
 Daarnaast zou een gebruiker te allen tijde zijn eigen wachtwoord aan moeten kunnen passen, terwijl dat nu alleen door een 'beheerder' gedaan kan worden.
-
+\\
+\\
 Zoals al aangegeven is er voor het user management al wel een begin gemaakt, maar dit moet eigenlijk nog uitgebreid worden.
 Een deel van deze uitbreiding zou ook in kunnen houden dat er nauwer wordt samengewerkt met de permissions die in Django aan gebruikers toegekend kunnen worden, omdat hier eigenlijk nog niets mee gebeurt.
-
+\\
+\\
 Wij zijn door tijdsdruk hier niet goed meer aan toegekomen en het is eigenlijk blijven liggen, ondanks dat een degelijk user management in eerste instantie wel een van de eisen van het EMC was.
 
 \subsection{Verwijderen measurements zonder admin}
@@ -100,7 +110,8 @@ Zo wordt voor het verwijderen van de volgende objecten nu nog de Django admin-in
 \end{itemize}
 Van deze objecten wordt er alleen voor projecten ook de mogelijkheid geboden om deze via de normale interface te verwijderen. 
 Terwijl eigenlijk alle objecten via de interface verwijderd moeten worden.
-
+\\
+\\
 Toen wij hier over aan het nadenken waren, kwamen wij tot de conclusie dat er een aantal oplossingen was die allemaal eigenlijk niet zo goed zouden werken.
 De oplossingen waar wij aan gedacht hebben, staan hieronder beschreven:
 \\
@@ -129,7 +140,7 @@ Een leuke en handige uitbreiding van de nu aanwezige zoomfunctie in de interface
 In het zoom-scherm wordt het huidige plaatje nu twee keer zo groot weergegeven als dat het in werkelijkheid is, maar idealiter is dit in te stellen naar een willekeurige grootte.
 Om dit te bereiken is het wellicht het makkelijkst om te beginnen met het zoomen op een aantal vastgestelde niveau's, zoals 150\%, 200\%, 250\% en 300\%.
 Dit kan dan later nog uitgebreid worden naar een door de gebruiker in te stellen niveau, binnen vastgestelde grenzen.
-
+\\
 Wij hebben dit nog niet aangepakt, omdat er nog een aantal haken en ogen aan de huidige implementatie zitten, namelijk:
 \begin{description}
 	\item[inladen vaste niveau's] Het inladen van een afbeelding op een aantal vaste niveau's is wat betreft de load nog wel haalbaar, maar voor een willekeurig niveau is dit niet haalbaar.

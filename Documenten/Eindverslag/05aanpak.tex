@@ -3,18 +3,22 @@
 Een van de eerste beslissingen die genomen moest worden heeft betrekking op de architectuur van het systeem. 
 Al snel bleek dat de opdrachtgever een voorkeur had voor een webapplicatie die door het hele Erasmus MC op het netwerk simpel en snel gebruikt kon worden. 
 Voor onze Image Processing kregen wij het advies van Dr. Botha om een aantal Python bibliotheken te bekijken en deze indien mogelijk te gebruiken. 
-
+\\
+\\
 De combinatie van deze feiten leidde ons richting Django, wat een Python framework is voor het bouwen van websites met Python. 
 Na wat onderzoek en naar aanleiding van de ervaringen die \'{e}\'{e}n van de projectleden al had met Django hebben we ervoor gekozen om Django te gaan gebruiken. 
-
+\\
+\\
 Voor wat betreft de visuele interactie hebben we gekeken naar verschillende JavaScript bibliotheken. Mede door de uitgebreide ervaringen van diverse leden hebben we uiteindelijk gekozen voor de combinatie van Prototype en Scriptaculous.
-
+\\
+\\
 Tijdens het project bleek uiteindelijk dat er behoefte was aan een tekenapplicatie binnen de omgeving en deze was niet te realiseren via JavaScript en dus is er uiteindelijk ook nog een Flash applicatie geschreven die communiceert met JavaScript.
 
 \subsection{Project gerelateerd}
 \label{aanpak_project_gerelateerd}
 In de begin periode hebben wij ons ingelezen op de basis anatomische kennis die nodig was om de experts van het Erasmus MC te kunnen volgen. Hierbij hebben we vooral veel gebruik gemaakt van de kennis van \'{e}\'{e}n van de groepsleden, die voor ze aan deze studie begon drie jaar al had. Ook zijn we een dag langs geweest bij het EMC en hebben daar een rondleiding gehad door het laboratorium en de snijzalen waar onderzoek wordt gedaan. 
-
+\\
+\\
 Een andere uitdaging was de relatief grote groep studenten voor dit project. 
 Om te voorkomen dat we elkaar te veel in de weg zouden zitten hebben we de diverse delen van het project opgesplitst en de taken duidelijk verdeeld. 
 Daarnaast hebben we gebruik gemaakt van software zoals Trac, dit is een Project Management Systeem. 
@@ -37,11 +41,14 @@ Het database systeem is het onderdeel van het project dat dient om de gebruikte 
 \end{itemize}
 
 Zoals in de paragraaf Aanpak al aangegeven, zouden we gaan werken met Django en moest het product beschikbaar worden als webapplicatie. Django is een Model View Controller opgebouwde taal. Dat wil zeggen dat het datamodel en de functionaliteit met betrekking tot het datamodel gescheiden zijn van de gebruikersinterface en de functionaliteit met betrekking tot de gebruikersinterface. Django heeft ook een duidelijke abstractielaag voor het database gedeelte, een Object-Relational Database Mapping. Deze maakt het mogelijk om in een object\-ge\"{o}rienteerde taal te programmeren, maar de aangemaakte objecten worden direct gemapt op een relationele structuur, zodat de objecten kunnen worden opgeslagen in een relationele database, dit verlicht de implementatie aanzienlijk. Na diverse brainstorm sessies zijn we uiteindelijk uitgekomen op een klasse diagram\pageref{Databasediagram} dat de basis zou gaan vormen voor het database systeem.
-
+\\
+\\
 Ook het gebruikers\-beheer is standaard een onderdeel van Django, waardoor dit voor een groot deel niet meer door ons gedaan zou hoeven worden.
-
+\\
+\\
 Voor de interface hebben we ervoor gekozen om veel gebruik te maken van JavaScript en zijn bibliotheken. Dit gaf ons eenvoudige toegang tot diverse visuele effecten, zoals drag en drop, fade en de sliders). Daarnaast konden we met behulp van JavaScript gebruik maken van de AJaX techniek, hiermee konden we server requests sturen en de pagina updaten zonder dat de gebruiker hier last van had.
-
+\\
+\\
 In de ontwerpfase is besloten dat het mogelijk moet zijn om datasets tussen gebruikers uit te wisselen. Om te zorgen dat gebruikers verschillende projecten kunnen uitwisselen is hier al in een vroeg stadium rekening mee gehouden. Er is voor gekozen alle objecten die worden gebruikt op te slaan met Universal Unique ID's, dat wil zeggen dat de kans dat bij het kopi"{e}ren van objecten objecten een zelfde identificator hebben zodanig klein is, dat hij wordt beschouwd als niet bestaand. Hierdoor is het mogelijk om datasets tussen verschillende databases uit te wisselen zonder dat er conflicten optreden.
 
 \subsection{Image Processing}
@@ -50,7 +57,8 @@ De doelen op Image Processing gebied waren: het in kaart brengen van de variatie
 
 \subsubsection{Point Distribution Model}
 Om het eerste doel te bereiken hebben we gebruik gemaakt van een subonderdeel van een volledig Active Shape Model, namelijk het Point Distribution Model. Het Active Shape Model is ontwikkeld door Tim Cootes. In de paper An Introduction to Active Shape Models licht hij de theorie toe.\cite{introASM}
-
+\\
+\\
 Waar het Active Shape Model zich bezighoudt met het automatisch herkennen van structuren binnen een foto, is het Point Distribution Model\cite{pdm} in staat om gegeven een aantal landmarks (van hetzelfde type) op verschillende foto's het gemiddelde en de hoofdassen van variatie weer te geven. Een landmark is een punt dat zo is gekozen dat het in iedere foto te vinden is en duidelijk op iedere foto te vinden is. De landmarks die gebruikt worden voor het Point Distribution Model moeten informatie geven over het verloop van een structuur, bijvoorbeeld het aangeven van het verloop van een bepaalde vene.
 
 \subsubsection{Thin Plate Spline Transformatie}
@@ -60,7 +68,9 @@ Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk he
 
 \subsubsection{Tekenen}
 Impliciet zit er in dit doel nog een Image Processing doel verwerkt, namelijk het aangeven van lijnen of gebieden die interessant zijn voor de onderzoeker. We hebben ervoor gekozen om de onderzoeker dit in de browser te laten doen als ge\"{i}ntegreed tekenprogramma. Hierbij zal het mogelijk zijn elke foto als achtergrond te kiezen en hieroverheen met \'{e}\'{e}n kleur bepaalde gebieden aan te geven.
-
+\\
+\\
 Binnen de browsers zou dit tekenprogramma gemaakt kunnen worden door gebruik te maken van Canvas, een onderdeel van de nieuwe HTML-standaard, maar deze wordt nog niet ondersteund door Internet Explorer 6. Omdat we tijdens de keuze van de techniek er vanuit gingen dat het systeem in IE 6 moest draaien, hebben we gekozen om niet Canvas maar Flash te gebruiken. Dit vereist een plugin in de browser, maar bijna iedereen heeft deze plugin.
-
+\\
+\\
 Over de theoretische achtergrond van de verschillende gebruikte technieken is meer te vinden in het ori\"{e}ntatieverslag.
