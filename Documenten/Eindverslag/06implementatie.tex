@@ -22,19 +22,19 @@ Steeds hebben we na zo'n presentatie een uitgebreid overleg gehad over de stand 
 De vormgeving van de interface is van groot belang omdat deze de interactie met de gebruiker faciliteert. Een goed ingedeelde interface versnelt het werk voor de gebruiker.
 \\
 \\
-Wij hebben gekozen voor een indeling met een linker en rechter menu met daartussen een gebied waar foto's getoond worden. De beide menu's zijn ingedeeld als gebieden waarin verschillende tabbladen geladen kunnen worden. Omdat niet elk tabblad altijd nodig is, is het mogelijk deze dicht te klappen.
+Wij hebben gekozen voor een indeling met een linker- en rechtermenu met daartussen een gebied waar foto's getoond worden. De beide menu's zijn ingedeeld als gebieden waarin verschillende tabbladen geladen kunnen worden. Omdat niet elk tabblad altijd nodig is, is het mogelijk deze dicht te klappen.
 \\
 \\
-In het linker menu worden algemene projectgerelateerde instellingen getoond met daaronder de lijst met aan het project gekoppelde foto's met bijbehorende bitmaps en landmarks. In het rechtermenu zijn gereedschappen ondergebracht die bewerkingen met de foto's in het linker menu kunnen doen of hierbij hulp bieden. Bovenin bevindt zich een tabblad waar Mogelijke Metingen aangemaakt en toegepast kunnen worden op de actieve foto. Daaronder bevinden zich tabbladen waarin wijzigingen ongedaan gemaakt kunnen worden en waarin een ingezoomd deel van de foto bekeken kan worden.
+In het linkermenu worden algemene projectgerelateerde instellingen getoond met daaronder de lijst met aan het project gekoppelde foto's met bijbehorende bitmaps en landmarks. In het rechtermenu zijn gereedschappen ondergebracht die bewerkingen met de foto's in het linker menu kunnen doen of hierbij hulp bieden. Bovenin bevindt zich een tabblad waar mogelijke metingen aangemaakt en toegepast kunnen worden op de actieve foto. Daaronder bevinden zich tabbladen waarin wijzigingen ongedaan gemaakt kunnen worden en waarin een ingezoomd deel van de foto bekeken kan worden.
 \\
 \\
-De interface is verder voorzien van een aantal popups waarin enkele objecten beheerd kunnen worden. Er is een scherm waarin foto's toegevoegd en verwijdert kunnen worden, en ook de Mogelijke Metingen en types voor Mogelijke Metingen hebben een eigen venster.
+De interface is verder voorzien van een aantal pop-ups waarin enkele objecten beheerd kunnen worden. Er is een scherm waarin foto's toegevoegd en verwijdert kunnen worden, en ook de Mogelijke Metingen en types voor Mogelijke Metingen hebben een eigen pop-up venster. Als de pop-up vensters actief zijn moeten deze eerst gesloten worden voordat verder gewerkt kan worden in het overzicht.
 \\
 \\
-Om de interactie behalve efficiënt ook mooi te laten verlopen zijn er wat visuele effecten aan toegevoegd. Hierbij hebben we gebruik gemaakt van effecten die ScriptAculoUs biedt, zoals het oprollen van tabbladen, het laten in- en uitvagen van nieuwe popups op een zwarte achtergrond, etc. Toegevoegde landmarks worden ook even geel gekleurd in het linker menu om aan te geven waar ze terrecht komen als ze zijn aangemaakt.
+Om de interactie behalve effici\"{e}nt ook mooi te laten verlopen zijn er wat visuele effecten aan toegevoegd. Hierbij hebben we gebruik gemaakt van effecten die Scriptaculous biedt, zoals het oprollen van tabbladen, het laten in- en uitvagen van nieuwe pop-ups op een zwarte achtergrond, etc. Toegevoegde landmarks worden ook even geel gekleurd in het linker menu om aan te geven waar ze terecht komen als ze zijn aangemaakt. 
 \\
 \\
-Om projecten te beheren is een soort thuis-pagina gemaakt waarin bestaande projecten gekozen kunnen worden of nieuwe aangemaakt. De kleine afbeelding die getoond wordt per project wisseld om de paar seconde als slideshow en toont alle foto's die gekoppeld zijn aan het project.
+Om projecten te beheren is een soort thuis-pagina gemaakt waarin bestaande projecten gekozen kunnen worden of nieuwe aangemaakt. De kleine afbeelding die getoond wordt per project wisselt om de paar seconde als slideshow en toont alle foto's die gekoppeld zijn aan het project.
 
 \subsection{Database systeem}
 \label{implementatie_database_systeem}
@@ -133,6 +133,9 @@ We hebben een spike solutions geschreven voor het meten van afstanden in foto's.
 Mede door tijdsgebrek en de afhankelijkheid van andere spike solutions zijn we er niet aan toegekomen om dit te implementeren. 
 In sectie \ref{customjaap} gaan we hier verder op in.
 
+\subsubsection{Exporteren}
+%TODO Sverre
+
 \subsection{Image Processing}
 \label{implementatie_image_processing}
 Image Processing was \'{e}\'{e}n van de grootste uitdagingen van het project. 
@@ -153,6 +156,11 @@ De gebruiker kan landmarks in de foto aangeven door eerst een landmarktype aan t
 Nadat de gebruiker in de foto's de gewenste landmarks heeft aangegeven kan hij door 'Analyse selected landmarks' aan te klikken het Point Distribution Model van de geselecteerde landmarks laten uitrekenen en weergeven.
 \\
 \\
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{screen1}
+\caption{Drie verschillende benen met hun landmarks en bitmaps}
+\end{figure}
+
 Op dit moment wordt in JavaScript gecontroleerd welke images en landmarks geselecteerd zijn en wordt er via een AJaX request de id's van de afbeeldingen en de geselecteerde landmarks per afbeelding doorgegeven. 
 Aan de hand van de id's van de afbeelding en de landmarks worden vervolgens de bijbehorende objecten uit de database gehaald. 
 In de view wordt getest of de geselecteerde landmarks wel geschikt zijn om een Point Distribution Model van te maken. 
