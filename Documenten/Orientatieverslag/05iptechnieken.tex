@@ -20,7 +20,8 @@ Dit wordt gedaan met Generalized Procrustes Analysis.
 Procrustus Analysis kan worden gebruikt om 2 sets van landmarks uit te lijnen. 
 Generalised Proctrustes Analysis echter kan worden gebruikt om \textit{k} sets van landmarks met elkaar uit te lijnen. 
 Het transleert, roteert en schaalt (eventueel) elke vorm door de som van de gekwadrateerde afstanden tot het gemiddelde te minimaliseren. 
-
+\\
+\\
 Het algoritme van Generalised Procrustus Analysis werkt als volgt\cite{gpa}:
 \begin{enumerate}
 	\item Selecteer 1 vorm als tijdelijk gemiddelde vorm
@@ -34,10 +35,11 @@ Het algoritme van Generalised Procrustus Analysis werkt als volgt\cite{gpa}:
 	\item Bereken het nieuwe geschatte gemiddelde uit de uitgelijnde vormen.
 	\item Als het geschatte gemiddelde uit stap 2 en 3 anders zijn, ga dan naar 2 terug. Als dit niet zo is is het ware gemiddelde gevonden.
 \end{enumerate}
-
+\noindent
 Elke vorm kan nu gerepresenteerd worden als een \textit{2n} element vector:
 $x = (x_{1},...,x_{n},y_{1},...,y_{n})$
-
+\\
+\\
 De uitgelijnde trainingsets vormen nu een wolk in de \textit{2n} dimensionale ruimte. 
 Door Principal Component Analysis uit te voeren kunnen de hoofdassen van de wolk worden berekend.
 
@@ -49,7 +51,8 @@ Hierin zijn de gewichten de eigenwaarden $\lambda$ en de 'assen' die de ruimte o
 De eigenvectoren waarbij de grootste eigenwaarden horen staan hierbij voor de grootste variaties in de dataset. 
 De eigenvector met de hoogste eigenwaarde is de Principal Component, de meest significante relatie tussen de dimensies van de data. 
 De overige eigenvectoren p representeren de andere principal directions. Elk punt op het oppervlakte van het object kan nu gerepresenteerd worden als een lineaire combinatie van p toegevoegd aan de centroid of het gemiddelde van de vorm.
-
+\\
+\\
 Het PCA algoritme:
 \begin{itemize}
 \item Verkrijg de datapunten
@@ -57,20 +60,24 @@ Het PCA algoritme:
 \item Bereken de covariantie matrix
 \item Bereken de eigenvectoren en waarden
 \end{itemize}
-
+\noindent
 Nu kunnen we met de belangrijkste modi van variatie (de eigenwaarden met de bijbehorende eigenvectoren) het shape model defini\"{e}ren:
-
-$x = x_{mean} + Pb$
-
-Hierbij is $x_{mean}$ het gemiddelde van de uitgelijnde shape parameteres, \textit{P} is een \textit{2n x t} matrix waarvan de kolommen de t unit vectoren van de principal assen van de wolk vormen. \textit{b} is een t-dimensionale vector gegeven door:
-
-%$b = P^{T}(x-\={x})$
-
+\\
+\\
+$x \approx \bar{x} + Pb$
+\\
+\\
+Hierbij is $\bar{x}$ het gemiddelde van de uitgelijnde shape parameteres, \textit{P} is een \textit{2n * t} matrix waarvan de kolommen de t unit vectoren van de principal assen van de wolk vormen. \textit{b} is een t-dimensionale vector gegeven door:
+\\
+\\
+$b = P^{T}(x-\bar{x})$
+\\
+\\
 Nu is het mogelijk om nieuwe shape voorbeelden te constru\"{e}ren door de shape parameters te vari\"{e}ren. Als er grenzen gesteld worden aan het vari\"{e}ren van de parameters b blijft de gegenereerde shape in de verwachting van de mogelijke shapes. De grenzen worden hierbij gesteld op plus en min drie standaarddeviaties van het gemiddelde.
 
 
 \subsection{Thin Plate Spline Transform}
 Om de tekeningen daadwerkelijk te gaan morphen gebruiken we een Thin Plate Spline transformatie. De naam Thin Plate Spline 
-komt van een vergelijking met het buigen van een dunne metalen plaat.\cite{tsp} 
+komt van een vergelijking met het buigen van een dunne metalen plaat.\cite{tps} 
 Een spline zelf is een speciale functie die een kromme beschrijft die bestaat uit aaneengeschakelde stukjes polynoom.
-Via elegante wiskunde wordt de afhankelijkheid uitgedrukt van de fysieke buig-energie van een dunne metalen plaat op punt constraints/cite(tsp2)
+Via elegante wiskunde wordt de afhankelijkheid uitgedrukt van de fysieke buig-energie van een dunne metalen plaat op punt constraints.\cite{tps2}
