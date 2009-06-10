@@ -21,12 +21,11 @@ Steeds hebben we na zo'n presentatie een uitgebreid overleg gehad over de stand 
 \label{interface}
 De vormgeving van de interface is van groot belang omdat deze de interactie met de gebruiker faciliteert. Een goed ingedeelde interface versnelt het werk voor de gebruiker.
 \\
-\\
-\begin{figure}
-\includegraphics[width=0.9\textwidth]{fig_main}
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{fig_main}
 \caption{De indeling van het hoofdscherm}
+\label{fig:hoofdscherm_indeling}
 \end{figure}
-\\
 \\
 Wij hebben gekozen voor een indeling met een linker- en rechtermenu met daartussen een gebied waar foto's getoond worden. De beide menu's zijn ingedeeld als gebieden waarin verschillende tabbladen geladen kunnen worden. Omdat niet elk tabblad altijd nodig is, is het mogelijk deze dicht te klappen.
 \\
@@ -42,9 +41,10 @@ Om de interactie behalve effici\"{e}nt ook mooi te laten verlopen zijn er wat vi
 \\
 Om projecten te beheren is een soort thuis-pagina gemaakt waarin bestaande projecten gekozen kunnen worden of nieuwe aangemaakt. De kleine afbeelding die getoond wordt per project wisselt om de paar seconde als slideshow en toont alle foto's die gekoppeld zijn aan het project.
 
-\begin{figure}
-\includegraphics[width=0.9\textwidth]{fig_home}
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{fig_home}
 \caption{De projectselectiepagina}
+\label{fig:projectselectiescherm}
 \end{figure}
 
 \subsection{Database systeem}
@@ -115,7 +115,12 @@ Het eerste deel van het diagram toont op welke wijze het bestaan van bitmaps gel
 \\
 Eerst wordt in de HTML-pagina een object ingevoegd waarin de Flash-applicatie geladen wordt. Vervolgens laadt de Flash-applicatie de afbeelding waar op getekend gaat worden. Als de gebruiker vervolgens kiest om de bitmap op te slaan wordt de tekening naar de server verzonden, en als deze succesvol opgeslagen is krijgt de Flash-applicatie een bevestiging waarop deze een melding naar de JavaScript-omgeving gemaakt wordt met het verzoek de Flash-applicatie te sluiten. Dit is de laatste actie die in het diagram beschreven wordt.
 
-\includegraphics[width=0.9\textwidth]{sequencediagram}
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{sequencediagram}
+\caption{Sequencediagram}
+\label{fig:sequencediagram}
+\end{figure}
+
 
 \subsubsection{Toevoegen van relevante papers en websites}
 Voor het toevoegen van papers en websites aan een project hebben wij gekozen om deze ook in een apart model in de database op te slaan.
@@ -168,12 +173,12 @@ Het is van belang om de landmarks zo te kiezen dat ze makkelijk zijn te vinden i
 De gebruiker kan landmarks in de foto aangeven door eerst een landmarktype aan te maken, dan een landmark van een bepaald type en hierbij aan te geven of het een shapedefining landmark is of niet. 
 Nadat de gebruiker in de foto's de gewenste landmarks heeft aangegeven kan hij door 'Analyse selected landmarks' aan te klikken het Point Distribution Model van de geselecteerde landmarks laten uitrekenen en weergeven.
 \\
-\\
-\begin{figure}
-\includegraphics[width=0.9\textwidth]{screen1}
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{screen1}
 \caption{Drie verschillende benen met hun landmarks en bitmaps}
+\label{fig:screen1}
 \end{figure}
-
+\\
 Op dit moment wordt in JavaScript gecontroleerd welke images en landmarks geselecteerd zijn en wordt er via een AJaX request de id's van de afbeeldingen en de geselecteerde landmarks per afbeelding doorgegeven. 
 Aan de hand van de id's van de afbeelding en de landmarks worden vervolgens de bijbehorende objecten uit de database gehaald. 
 In de view wordt getest of de geselecteerde landmarks wel geschikt zijn om een Point Distribution Model van te maken. 
@@ -194,13 +199,18 @@ We hebben er voor gekozen om de eerste twee modi van variatie te berekenen, de h
 Om deze variaties te berekenen vragen we de GetParameterisedShape en berekenen we hiermee voor de eerste en tweede modus de extremen, dit zijn plus en min 3 standaarddeviaties van het gemiddelde.
 \\
 \\
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{screen2}
+\caption{Point Distribution Model van de outlines van 3 benen}
+\label{fig:screen2}
+\end{figure}
+
 Nu we de benodigde co\"{o}rdinaten hebben (gemiddelden en extremen) kunnen we beginnen aan de visualisatie van de landmarks. 
 Dit wordt gedaan met behulp van de PIL. Aan de hand van de afmetingen van de originele foto's en de gegeven co\"{o}rdinaten wordt voor het gemiddelde een ellips getekend. 
 Tussen de extremen van de twee hoofdmodi van variatie wordt een lijn getekend. 
 De lengte van deze lijn geeft de grootte van de mogelijke variatie aan op basis van de voorbeelden uit de gegeven landmarks. 
 Door de ellipsoids en lijnen weer te geven met een doorzichtige achtergrond is het vervolgens mogelijk om deze als een overlay over de images te projecteren. 
 De overlay wordt opgeslagen in de database en is beschikbaar voor weergave vanuit de interface.
-
 
 \subsubsection{Thin Plate Spline Transformatie}
 Om de daadwerkelijke morph uit te voeren van de getekende structuren moesten we eerst een transformatie uitvoeren om verschillen in translaties en rotaties tussen de verschillende foto's te verwijderen. 
